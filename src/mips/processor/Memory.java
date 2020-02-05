@@ -6,7 +6,6 @@
 package mips.processor;
 
 import GUI.Main_GUI;
-import java.util.Arrays;
 
 /**
  *

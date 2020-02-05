@@ -115,6 +115,8 @@ public class Screen extends javax.swing.JFrame {
         };
         ;
 
+        setAlwaysOnTop(true);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(

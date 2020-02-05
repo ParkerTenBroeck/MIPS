@@ -140,6 +140,7 @@ public class Memory_GUI extends javax.swing.JFrame {
         memoryPointersLable = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setAlwaysOnTop(true);
 
         valsScrollPane.setBorder(null);
 

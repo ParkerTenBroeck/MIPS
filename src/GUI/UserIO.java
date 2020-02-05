@@ -122,6 +122,7 @@ public class UserIO extends javax.swing.JFrame {
         inputTextFeild = new javax.swing.JTextField();
 
         setTitle("User IO");
+        setAlwaysOnTop(true);
         addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 formFocusGained(evt);

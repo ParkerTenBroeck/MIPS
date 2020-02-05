@@ -32,6 +32,7 @@ public class Processor implements Runnable {
 
     public static void reset() {
         stop();
+        instructionsRan = 0;
         Registers.reset();
         FileWriteReader.reloadMXNFile();
         Main_GUI.refresh();

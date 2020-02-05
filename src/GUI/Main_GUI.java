@@ -7,8 +7,17 @@ package GUI;
 
 import Compiler.ASMCompiler;
 import Compiler.StringToOpcode;
+import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.io.File;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 import mips.FileWriteReader;
 import mips.processor.Memory;
@@ -19,23 +28,24 @@ import mips.processor.Processor;
  * @author parke
  */
 public class Main_GUI extends javax.swing.JFrame {
-    
+
     private static Thread autoUpdateThread;
     private static boolean autoUpdate;
     private static UserIO userIO = new UserIO();
     private static final Screen screen = new Screen();
-    
+
     public static synchronized boolean isRunning() {
         return autoUpdate;
     }
-    public static boolean isLinked(){
+
+    public static boolean isLinked() {
         return linkedButton.isSelected();
     }
-    
+
     public static synchronized boolean canBreak() {
         return enableBreak.isSelected();
     }
-    
+
     private static synchronized void startAutoUpdate() {
         Main_GUI.autoUpdate = true;
         autoUpdateThread = new Thread() {
@@ -45,36 +55,36 @@ public class Main_GUI extends javax.swing.JFrame {
                     try {
                         Thread.sleep(100);
                     } catch (Exception e) {
-                        
+
                     }
-                    
+
                 }
             }
         };
         autoUpdateThread.setName("autoUpdate");
         autoUpdateThread.start();
     }
-    
+
     private static synchronized void stopAutoUpdate() {
         Main_GUI.autoUpdate = false;
     }
-    
+
     public static void stop() {
         startButton.setSelected(false);
         stopAutoUpdate();
         Processor.stop();
     }
-    
+
     public static Component getFrame() {
         return mainPanel;
     }
-    
+
     public static void refreshAll() {
         ASM_GUI.setTextAreaFromASMFile();
         InstructionMemory_GUI.refreshValues();
         refresh();
     }
-    
+
     public static void showScreen() {
         screen.setVisible(true);
     }
@@ -90,7 +100,7 @@ public class Main_GUI extends javax.swing.JFrame {
         Thread.currentThread().setName("GUI");
         refresh();
     }
-    
+
     public static void setLookAndFeel() {
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -104,7 +114,7 @@ public class Main_GUI extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Main_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
     }
-    
+
     public static synchronized void refresh() {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -114,19 +124,19 @@ public class Main_GUI extends javax.swing.JFrame {
             }
         });
     }
-    
+
     public static void openUserIO() {
         if (!userIO.isFocused()) {
             userIO.setVisible(true);
             userIO.requestFocus();
         }
-        
+
     }
-    
+
     public static void infoBox(String titleBar, String infoMessage) {
         JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: " + titleBar, JOptionPane.INFORMATION_MESSAGE);
     }
-    
+
     public static int confirmBox(String titleBar, String infoMessage) {
         return JOptionPane.showConfirmDialog(null, infoMessage, titleBar, JOptionPane.INFORMATION_MESSAGE);
     }
@@ -167,13 +177,10 @@ public class Main_GUI extends javax.swing.JFrame {
         saveAsMenuButton = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
         optionsMenu = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        checkForUpdates = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MIPS");
@@ -401,8 +408,13 @@ public class Main_GUI extends javax.swing.JFrame {
 
         optionsMenu.setText("Options");
 
-        jMenuItem4.setText("Check updates");
-        optionsMenu.add(jMenuItem4);
+        checkForUpdates.setText("Check updates");
+        checkForUpdates.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkForUpdatesActionPerformed(evt);
+            }
+        });
+        optionsMenu.add(checkForUpdates);
 
         menuBar.add(optionsMenu);
 
@@ -416,21 +428,15 @@ public class Main_GUI extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem1);
 
-        jMenuItem2.setText("Instructions");
+        jMenuItem2.setText("Documentation");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem2);
 
         menuBar.add(jMenu1);
-
-        jMenu2.setText("Emulator");
-
-        jCheckBoxMenuItem1.setSelected(true);
-        jCheckBoxMenuItem1.setText("Safty Run");
-        jMenu2.add(jCheckBoxMenuItem1);
-
-        jMenuItem3.setText("Encoding Instructions");
-        jMenu2.add(jMenuItem3);
-
-        menuBar.add(jMenu2);
 
         setJMenuBar(menuBar);
 
@@ -521,7 +527,7 @@ public class Main_GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_newMenuButtonActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
+        new imageFrame("/Images/asciiChart.bmp");
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void aboutLinkedFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutLinkedFileActionPerformed
@@ -532,12 +538,21 @@ public class Main_GUI extends javax.swing.JFrame {
         ASM_GUI.setEnable(!linkedButton.isSelected());
     }//GEN-LAST:event_linkedButtonActionPerformed
 
+    private void checkForUpdatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkForUpdatesActionPerformed
+        Browser.openLinkInBrowser("https://github.com/ParkerTenBroeck/MIPS");
+    }//GEN-LAST:event_checkForUpdatesActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private static javax.swing.JLabel InstructionsRan;
     private static javax.swing.JButton aboutButton;
     private static javax.swing.JButton aboutLinkedFile;
     private static GUI.ASM_GUI asmGui;
+    private static javax.swing.JMenuItem checkForUpdates;
     private static javax.swing.JButton compileButton;
     private static javax.swing.JLabel delayLable;
     private static javax.swing.JSlider delaySlider;
@@ -545,13 +560,9 @@ public class Main_GUI extends javax.swing.JFrame {
     private static javax.swing.JCheckBox enableBreak;
     private static javax.swing.JMenu fileMenu;
     private static GUI.InstructionMemory_GUI instructionMemory_GUI;
-    private static javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private static javax.swing.JMenu jMenu1;
-    private static javax.swing.JMenu jMenu2;
     private static javax.swing.JMenuItem jMenuItem1;
     private static javax.swing.JMenuItem jMenuItem2;
-    private static javax.swing.JMenuItem jMenuItem3;
-    private static javax.swing.JMenuItem jMenuItem4;
     private static javax.swing.JCheckBox linkedButton;
     private static javax.swing.JPanel mainPanel;
     private static javax.swing.JButton memoryButton;
