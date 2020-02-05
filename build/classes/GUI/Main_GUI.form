@@ -55,7 +55,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="checkForUpdates">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Check updates"/>
+                <Property name="text" type="java.lang.String" value="Check for updates"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="checkForUpdatesActionPerformed"/>

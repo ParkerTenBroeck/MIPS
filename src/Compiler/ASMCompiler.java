@@ -58,10 +58,14 @@ public class ASMCompiler {
 
     private static void getInstructions() {
         currentInstructions = new ArrayList();
-        ArrayList<String> temp = new ArrayList(FileWriteReader.getASMList());
-
-        for (int i = 0; i < temp.size(); i++) {
-            currentInstructions.add(new Object[]{temp.get(i), (int) i});
+        try {
+            ArrayList<String> temp = new ArrayList(FileWriteReader.getASMList());
+            
+            for (int i = 0; i < temp.size(); i++) {
+                currentInstructions.add(new Object[]{temp.get(i), (int) i});
+            }
+        } catch (Exception e) {
+            stopFlag = true;
         }
     }
 
@@ -344,5 +348,5 @@ public class ASMCompiler {
         return new byte[]{
             (byte) value};
     }
-   
+
 }

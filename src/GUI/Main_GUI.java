@@ -408,7 +408,7 @@ public class Main_GUI extends javax.swing.JFrame {
 
         optionsMenu.setText("Options");
 
-        checkForUpdates.setText("Check updates");
+        checkForUpdates.setText("Check for updates");
         checkForUpdates.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 checkForUpdatesActionPerformed(evt);
@@ -543,7 +543,7 @@ public class Main_GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_checkForUpdatesActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
+        Browser.openLinkInBrowser("https://github.com/ParkerTenBroeck/MIPS/blob/master/MIPS%20documentation/MIPS%20Instructions-Traps-Registers.pdf");
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
 
