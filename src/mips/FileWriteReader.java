@@ -153,6 +153,9 @@ public class FileWriteReader {
         }
         return false;
     }
+    public static boolean isASMFileSaved(){
+        return isFileSaved || Main_GUI.isLinked();
+    }
 
     public static boolean saveAsASMFile() {
         try {

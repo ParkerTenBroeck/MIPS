@@ -5,8 +5,8 @@
 
 #define push($a)[
 add $4, $0, $a
-sw $a, main($stackRegister)
-add $29, $29, 1
+sw $a, main(stackRegister)
+addi $29, $29, 1
 ]
 
 #define pushAndJump(address)[

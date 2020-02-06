@@ -423,7 +423,7 @@ public class StringToOpcode {
 
     private static int decodeMemoryOpPointerAddress(String parameter) {
         try {
-            return ASMCompiler.getIndex(parameter.split("\\(")[0]);
+            return ASMCompiler.getIndex(ASMCompiler.findAndReplacePreProcessorValue(parameter.split("\\(")[0]));
         } catch (Exception e) {
             ASMCompiler.error("Invalid Memory Pointer");
         }
@@ -432,7 +432,7 @@ public class StringToOpcode {
 
     private static int decodeMemoryOpRegister(String parameter) {
         try {
-            return decodeRegister(parameter.split("\\(")[1].split("\\)")[0]);
+            return decodeRegister(ASMCompiler.findAndReplacePreProcessorValue(parameter.split("\\(")[1].split("\\)")[0]));
         } catch (Exception e) {
             ASMCompiler.error("Brackets not closed");
         }
