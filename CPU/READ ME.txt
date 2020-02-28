@@ -1,0 +1,10 @@
+This was just a side project 
+
+MIPS CPU created in logisim 
+
+TODO
+
+-add load and read instructions for memory operations 
+
+
+ 

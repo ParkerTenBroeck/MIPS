@@ -3,10 +3,25 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/GUI/Memory_GUI.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/GUI/UserIO.java</file>
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/Compiler/ASMCompiler.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/Compiler/PreProcessor.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/Compiler/StringToOpcode.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/GUI/Browser.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/GUI/imageFrame.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/GUI/Main_GUI.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/GUI/ComboBoxSearchable.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/GUI/ASM_GUI.java</file>
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/mips/processor/SystemCall.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/mips/processor/Processor.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/mips/processor/Memory.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/Compiler/ASMCompiler_old.java</file>
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/Compiler/DotCodeDecoder.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/mips/FileWriteReader.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/GUI/Screen.java</file>
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/mips/processor/InstructionDecode.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/GUI/InstructionToString.java</file>
         </group>
     </open-files>
 </project-private>
