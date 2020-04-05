@@ -9,7 +9,7 @@ import static GUI.InstructionToString.instructionToString;
 import javax.swing.DefaultListModel;
 import mips.FileWriteReader;
 import mips.processor.Memory;
-import static mips.processor.Memory.getWord;
+import static mips.processor.Memory.superGetWord;
 import static mips.processor.Registers.getPc;
 
 /**
@@ -37,7 +37,7 @@ public class InstructionMemory_GUI extends javax.swing.JPanel {
         DefaultListModel listModel = new DefaultListModel();
 
         for (int i = 0; i < Memory.getSize(); i += 4) {
-            listModel.addElement(instructionToString(getWord(i)));
+            listModel.addElement(instructionToString(superGetWord(i)));
         }
         instructionList.setModel(listModel);
 

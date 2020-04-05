@@ -560,7 +560,7 @@ public class Main_GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void aboutLinkedFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutLinkedFileActionPerformed
-        infoBox("", "Linked files cannot be written to by this program \n and are loaded from the file every time compiled. \n This is usful if another text editor is used");
+        infoBox("", "Linked Files can only be read by this program \n and are loaded from the file every time compiled. \n This is usful is another text editor is being used");
     }//GEN-LAST:event_aboutLinkedFileActionPerformed
 
     private void linkedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linkedButtonActionPerformed

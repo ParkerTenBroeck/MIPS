@@ -95,6 +95,9 @@ public class ASMCompiler {
     }
 
     public static int getIndex(String memoryPointer) {
+        if(memoryPointers == null){
+            return -1;
+        }
         memoryPointer = memoryPointer.replaceAll(":", "");
         for (Object[] pointer : memoryPointers) {
             if (((String) pointer[1]).equals(memoryPointer)) {

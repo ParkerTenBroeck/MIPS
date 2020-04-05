@@ -33,20 +33,8 @@ public class Memory {
             Main_GUI.infoBox("Error", "getWord Memory out of bounds " + index);
             return -1;
         } else {
-            int mem4 = 0;
-            int mem3 = 0;
-            int mem2 = 0;
-            int mem1 = 0;
-            try {
-                mem4 = Memory.memory[index] & 0xFF;
-                mem3 = Memory.memory[index + 1] & 0xFF;
-                mem2 = Memory.memory[index + 2] & 0xFF;
-                mem1 = Memory.memory[index + 3] & 0xFF;
-            } catch (Exception e) {
 
-            }
-
-            return mem1 | mem2 << 8 | mem3 << 16 | mem4 << 24;
+            return superGetWord(index);
         }
     }
 
@@ -58,10 +46,7 @@ public class Memory {
             return -1;
         } else {
 
-            int mem2 = Memory.memory[index] & 0xFF;
-            int mem1 = Memory.memory[index + 1] & 0xFF;
-
-            return mem1 | mem2 << 8;
+            return superGetHalfWord(index);
         }
     }
 
@@ -71,8 +56,51 @@ public class Memory {
             Main_GUI.infoBox("Error", "getByte Memory out of bounds " + index);
             return -1;
         } else {
-            return Memory.memory[index] & 0xFF;
+            return superGetByte(index);
         }
+    }
+
+    public static int superGetWord(int index) { //doesnt throw an error when trying to get memory out of bounds
+
+        int mem4 = 0xCD;
+        int mem3 = 0xCD;
+        int mem2 = 0xCD;
+        int mem1 = 0xCD;
+        try {
+            mem4 = Memory.memory[index] & 0xFF;
+            mem3 = Memory.memory[index + 1] & 0xFF;
+            mem2 = Memory.memory[index + 2] & 0xFF;
+            mem1 = Memory.memory[index + 3] & 0xFF;
+
+        } catch (Exception e) {
+
+        }
+        return mem1 | mem2 << 8 | mem3 << 16 | mem4 << 24;
+    }
+
+    public static int superGetHalfWord(int index) { //doesnt throw an error when trying to get memory out of bounts
+
+        int mem1 = 0xCD;
+        int mem2 = 0xCD;
+        try {
+            mem2 = Memory.memory[index] & 0xFF;
+            mem1 = Memory.memory[index + 1] & 0xFF;
+        } catch (Exception e) {
+
+        }
+        return mem1 | mem2 << 8;
+    }
+
+    public static int superGetByte(int index) {
+
+        int mem1 = 0xCD;
+        try{
+            mem1 = Memory.memory[index] & 0xFF;
+        }catch(Exception e){
+            
+        }
+        return mem1;
+        
     }
 
     public static boolean setWord(int index, int val) {

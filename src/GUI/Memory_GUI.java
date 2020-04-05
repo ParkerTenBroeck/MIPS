@@ -94,7 +94,7 @@ public class Memory_GUI extends javax.swing.JFrame {
 
                     tempMemPos[i - startingPos][0] = String.format("%8s", Integer.toHexString(i)).replaceAll(" ", "0");
 
-                    int val = Memory.getByte(i) & 0xFF;
+                    int val = Memory.superGetByte(i) & 0xFF;
                     tempData[i - startingPos][0] = val;
                     tempData[i - startingPos][1] = String.format("%8s", Integer.toBinaryString(val)).replaceAll(" ", "0");
                     tempData[i - startingPos][2] = String.format("%2s", Integer.toHexString(val)).replaceAll(" ", "0");

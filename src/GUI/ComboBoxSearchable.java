@@ -6,6 +6,7 @@
 package GUI;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
@@ -21,6 +22,7 @@ public class ComboBoxSearchable {
 
     public ComboBoxSearchable(JComboBox comboBox, ArrayList<String> items) {
         comboBox.setEditable(true);
+        Collections.sort(items, String.CASE_INSENSITIVE_ORDER);
         this.items = items;
         this.comboBox = comboBox;
 
@@ -92,16 +94,16 @@ public class ComboBoxSearchable {
 
     public void ComboBoxFocusLost(java.awt.event.FocusEvent evt) {
 
-        if (comboBox.getItemAt(0) != null) {
-            String text = ((JTextField) evt.getSource()).getText();
-            comboBox.setModel(filterListByString(items, text));
-            ((JTextField) comboBox.getEditor().getEditorComponent())
-                    .setText((String) comboBox.getItemAt(0));
-        } else {
-            comboBox.setModel(filterListByString(items, ""));
-            ((JTextField) comboBox.getEditor().getEditorComponent())
-                    .setText(null);
-        }
+//        if (comboBox.getItemAt(0) != null) {
+//            String text = ((JTextField) evt.getSource()).getText();
+//            comboBox.setModel(filterListByString(items, text));
+//            ((JTextField) comboBox.getEditor().getEditorComponent())
+//                    .setText((String) comboBox.getItemAt(0));
+//        } else {
+//            comboBox.setModel(filterListByString(items, ""));
+//            ((JTextField) comboBox.getEditor().getEditorComponent())
+//                    .setText(null);
+//        }
     }
 
     public void ComboBoxKeyEvent(java.awt.event.KeyEvent evt) {
@@ -137,18 +139,11 @@ public class ComboBoxSearchable {
     public static DefaultComboBoxModel filterListByString(ArrayList<String> items, String searchQuarry) {
         ArrayList<String> sortedList = new ArrayList();
         for (String item : items) {
-            if (doesStringContainAll(item.toLowerCase(), searchQuarry.toLowerCase().split(" "))) {
+            if (item.startsWith(searchQuarry)) {
                 sortedList.add(item);
             }
         }
         return new DefaultComboBoxModel(sortedList.toArray());
     }
-        public static boolean doesStringContainAll(String item1, String[] item2) {
-        for (String subString : item2) {
-            if (!item1.contains(subString)) {
-                return false;
-            }
-        }
-        return true;
-    }
+
 }
