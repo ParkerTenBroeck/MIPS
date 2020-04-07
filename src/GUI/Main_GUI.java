@@ -5,7 +5,7 @@
  */
 package GUI;
 
-import Compiler.ASMCompiler;
+import Compilerv2.ASMCompiler;
 import Compiler.StringToOpcode;
 import java.awt.BorderLayout;
 import java.awt.Component;

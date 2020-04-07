@@ -215,6 +215,10 @@ public class FileWriteReader {
             return null;
         }
     }
+    
+    public static String getASMFilePath(){
+        return currentASMFile.getPath();
+    }
 
     public static void loadFile(File file) {
 

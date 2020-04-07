@@ -8,9 +8,9 @@ package Compiler;
 import static Compiler.DotCodeDecoder.getDotData;
 import static Compiler.DotCodeDecoder.isDotData;
 import static Compiler.StringToOpcode.stringToOpcode;
+import static Compilerv2.PreProcessor.preProcess;
 import GUI.Main_GUI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import mips.FileWriteReader;
 import mips.processor.Memory;
@@ -31,18 +31,20 @@ public class ASMCompiler {
     private static ArrayList<PreProcessor> preProcessor;
 
     public static void compile() {
-        stopFlag = false;
-        memoryIndex = 0;
-        realIndex = 0;
-        memory.clear();
-
-        FileWriteReader.saveASMFile();
-        getInstructions();
-
-        compileAndCleanInstructions();
-
-        FileWriteReader.saveMXNFile();
-        Main_GUI.refreshAll();
+//        stopFlag = false;
+//        memoryIndex = 0;
+//        realIndex = 0;
+//        memory.clear();
+//        
+        preProcess(null, true);
+//
+//        FileWriteReader.saveASMFile();
+//        getInstructions();
+//
+//        compileAndCleanInstructions();
+//
+//        FileWriteReader.saveMXNFile();
+//        Main_GUI.refreshAll();
     }
 
     public static String findAndReplacePreProcessorValue(String parameter) {
