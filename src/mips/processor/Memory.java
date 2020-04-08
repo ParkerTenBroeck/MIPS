@@ -6,6 +6,7 @@
 package mips.processor;
 
 import GUI.Main_GUI;
+import static mips.processor.Processor.logRunTimeError;
 
 /**
  *
@@ -29,8 +30,7 @@ public class Memory {
 
     public static int getWord(int index) {
         if (index + 3 > Memory.memory.length) {
-            Main_GUI.stop();
-            Main_GUI.infoBox("Error", "getWord Memory out of bounds " + index);
+            logRunTimeError("getWord Memory out of bounds " + index);
             return -1;
         } else {
 
@@ -40,9 +40,7 @@ public class Memory {
 
     public static int getHalfWord(int index) {
         if (index + 1 > memory.length) {
-
-            Main_GUI.stop();
-            Main_GUI.infoBox("Error", "getHalfWord Memory out of bounds " + index);
+            logRunTimeError("getHalfWord Memory out of bounds " + index);
             return -1;
         } else {
 
@@ -52,8 +50,7 @@ public class Memory {
 
     public static int getByte(int index) {
         if (index > Memory.memory.length - 1) {
-            Main_GUI.stop();
-            Main_GUI.infoBox("Error", "getByte Memory out of bounds " + index);
+            logRunTimeError("getByte Memory out of bounds " + index);
             return -1;
         } else {
             return superGetByte(index);
@@ -105,8 +102,7 @@ public class Memory {
 
     public static boolean setWord(int index, int val) {
         if (index + 3 > Memory.memory.length) {
-            Main_GUI.stop();
-            Main_GUI.infoBox("Error", "setWord Memory out of bounds " + index);
+            logRunTimeError("setWord Memory out of bounds " + index);
             return false;
         } else {
 
@@ -127,7 +123,7 @@ public class Memory {
     public static boolean setHalfWord(int index, int val) {
         if (index + 1 > Memory.memory.length) {
             Main_GUI.stop();
-            Main_GUI.infoBox("Error", "setHalfWord Memory out of bounds " + index);
+            logRunTimeError("setHalfWord Memory out of bounds " + index);
             return false;
         } else {
 
@@ -144,7 +140,7 @@ public class Memory {
     public static boolean setByte(int index, int val) {
         if (index > Memory.memory.length - 1) {
             Main_GUI.stop();
-            Main_GUI.infoBox("Error", "setByte Memory out of bounds " + index);
+            logRunTimeError("setByte Memory out of bounds " + index);
             return false;
         } else {
             memory[index] = (byte) val;

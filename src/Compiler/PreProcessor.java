@@ -5,227 +5,310 @@
  */
 package Compiler;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.logging.Level;
+import mips.FileWriteReader;
 
 /**
  *
  * @author parke
  */
-public class PreProcessor {
+abstract class Define {
 
-    private String[] args;
-    private String name;
-    private int realLine;
-
-    private String value;
-    private ArrayList<String> lines = new ArrayList();
-
-    public enum Type {
-        CODE, VALUE
-    };
-
-    private final Type type;
-
-    public Type getType() {
-        return type;
+    enum Type {
+        DATA, INLINE
     }
 
-    public int getRealLine() {
-        return realLine;
+    String name;
+
+    abstract Type getType();
+
+    abstract ArrayList<UserLine> parseString(UserLine input);
+
+    String getName() {
+        return this.name;
+    }
+}
+
+class DefineData extends Define {
+
+    String value;
+
+    @Override
+    Type getType() {
+        return Type.DATA;
     }
 
-    public PreProcessor(Object[] line) {
+    @Override
+    ArrayList<UserLine> parseString(UserLine input) {
 
-        String constructorString = (String) line[0];
-        realLine = (int) line[1];
-
-        if (constructorString.contains("(")) {
-            type = Type.CODE;
-            initCodeType(constructorString);
-        } else {
-            type = Type.VALUE;
-            initValueType(constructorString);
+        if (!input.line.contains(name)) {
+            ArrayList<UserLine> lines = new ArrayList();
+            lines.add(input);
+            return lines;
         }
 
-    }
+        String start;
+        String[] args;
 
-    private void initCodeType(String constructorString) {
         try {
-            name = constructorString.split(" ")[1].split("\\(")[0];
-            if (!constructorString.split(" ")[1].contains("(")) {
-                ASMCompiler.error("Invalid name for define");
-            }
+            start = input.line.split(" ")[0].trim();
         } catch (Exception e) {
-            name = "";
-            ASMCompiler.error("Invalid name for define");
+            start = input.line;
         }
-        args = getArgs(constructorString);
-
-    }
-
-    private void initValueType(String constructorString) {
         try {
-            name = constructorString.split(" ")[1];
-            value = constructorString.split(" ")[2];//carrot haha funny
-        } catch (Exception e) {
-            name = "";
-            ASMCompiler.error("Invalid name for define");
-        }
-    }
-
-    public String[] getArgs(String line) {
-        String[] args = new String[0];
-
-        Matcher m = Pattern.compile("\\(([^)]+)\\)").matcher(line);
-        try {
-            while (m.find()) {
-                args = m.group(1).split(",");
-            }
-
-        } catch (Exception e) {
-            ASMCompiler.error("Invalid arguments");
-        }
-        if (args != null) {
+            args = input.line.replace(start, "").split(",");
             for (int i = 0; i < args.length; i++) {
                 args[i] = args[i].trim();
             }
+        } catch (Exception e) {
+            args = new String[]{""};
+        }
+
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].equals(this.name)) {
+                args[i] = this.value;
+            }
+        }
+        input.line = start + " " + String.join(",", args);
+
+        ArrayList<UserLine> lines = new ArrayList();
+        lines.add(input);
+
+        return lines;
+    }
+};
+
+class InlineData extends Define {
+
+    @Override
+    Type getType() {
+        return Type.INLINE;
+    }
+
+    @Override
+    ArrayList<UserLine> parseString(UserLine input) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+};
+
+public class PreProcessor {
+
+    private static ArrayList<Define> defines;
+
+    private static ArrayList<UserLine> importFile(UserLine line) {
+        line.line = line.line.replaceFirst("#include ", "");
+        line.line = line.line.trim();
+        return loadFile(line.line, line.realLineNumber);
+    }
+
+    private static ArrayList<UserLine> loadFile(String filePath, int realLineOfFilePath) {
+        BufferedReader reader;
+
+        filePath = filePath.replaceAll("\"", "");
+        
+        File tempFile;
+        if (filePath.contains(":")) {
+            tempFile = new File(filePath);
         } else {
-            ASMCompiler.error("Invalid arguments");
-        }
-        return args;
-    }
-
-    public void addLine(String line) {
-        lines.add(line);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public ArrayList<Object[]> getInstructionsWithArgs(Object[] line) {
-
-        String instructionLine = (String) line[0];
-        int lineNumber = (int) line[1];
-
-        ArrayList<Object[]> temp = new ArrayList();
-
-        String[] instructionArgs = getArgs(instructionLine);
-
-        if (this.args.length != instructionArgs.length) {
-            ASMCompiler.error("Wrong number of arguments");
-            return null;
+            tempFile = new File(FileWriteReader.getASMFilePath().substring(0, FileWriteReader.getASMFilePath().lastIndexOf("\\") + 1) + filePath);
         }
 
-        for (int l = 0; l < lines.size(); l++) {
-
-            String currentLine = lines.get(l);
-
-            for (int a = 0; a < args.length; a++) {
-
-                currentLine = currentLine.replace(args[a], instructionArgs[a]);
-
+        ArrayList<UserLine> file = new ArrayList();
+        try {
+            reader = new BufferedReader(new FileReader(tempFile));
+            String line = reader.readLine();
+            while (line != null) {
+                file.add(new UserLine(line, realLineOfFilePath));
+                line = reader.readLine();
             }
-            temp.add(new Object[]{currentLine, (int) lineNumber});
-
+            ASMCompiler.logCompilerMessage("[Pre Processor] Included File: " + tempFile.getAbsolutePath());
+        } catch (Exception e) {
+            ASMCompiler.PreProcessorError("Cannot read file Specified" + " " + e.getMessage(), realLineOfFilePath);
         }
-
-        return temp;
+        return file;
     }
 
-    public static PreProcessor nextPreProcessor(ArrayList<Object[]> instructions) {
-        for (int i = 0; i < instructions.size(); i++) {
-            String line = (String) instructions.get(i)[0];
-            if (line.contains("#define")) {
-                return createPreProcessorAtIndex(i, instructions);
-            }
-        }
-        return null;
-    }
-
-    public static PreProcessor createPreProcessorAtIndex(int index, ArrayList<Object[]> instructions) {
-
-        Object[] line = instructions.get(index);
-        instructions.remove(index);
-
-        if (!((String) line[0]).contains("(")) {
-
-            PreProcessor temp = new PreProcessor(line);
-            findAndReplacePreProcessors(instructions, temp);
-            return temp;
-
+    private static void addToDefineData(UserLine line) {
+        line.line = line.line.replaceFirst("#define ", "");
+        line.line = line.line.trim();
+        String[] nameAndValue = line.line.split(" ");
+        if (nameAndValue.length != 2) {
+            ASMCompiler.PreProcessorError("Cannot add Define too many/little arguments or Name has Space", line.realLineNumber);
         } else {
-            PreProcessor temp = new PreProcessor(line);
-            line = instructions.get(index);
-
-            try {
-                while (!((String) line[0]).startsWith("]")) {
-                    temp.addLine((String) line[0]);
-                    instructions.remove(index);
-                    line = instructions.get(index);
-                }
-                instructions.remove(index);
-                findAndReplacePreProcessors(instructions, temp);
-                return temp;
-            } catch (UnsupportedOperationException e) {
-                ASMCompiler.error("Define never closed");
-            } catch (Exception e) {
-                ASMCompiler.error("Error parsing string");
-            }
+            DefineData dd = new DefineData();
+            dd.name = nameAndValue[0].trim();
+            dd.value = nameAndValue[1].trim();
+            defines.add(dd);
         }
-        return null;
     }
 
-    public static void findAndReplacePreProcessors(ArrayList<Object[]> instructions, PreProcessor preProcessor) {
-
-        Object[] o;
-        String line;
-        int lineNumber;
-
-        for (int i = instructions.size() - 1; i >= 0; i--) {
-            o = instructions.get(i);
-            line = (String) o[0];
-            lineNumber = (int) o[1];
-            
-            try{
-                
-            }catch(Exception e){
-                
-            }
-            //lineNumber = 0;
-
-            if (preProcessor.getType() == Type.CODE) {
-
-                if (line.split("\\(")[0].trim().equals(preProcessor.getName())) {
-                    instructions.remove(i);
-                    instructions.addAll(i, preProcessor.getInstructionsWithArgs(o));
-                    for (Object[] temp : instructions) {
-                    }
+    private static void removeFromDefineData(UserLine line) {
+        line.line = line.line.replaceFirst("#undef ", "");
+        line.line = line.line.trim();
+        String name = line.line.trim();
+        if (name.contains(" ")) {
+            ASMCompiler.PreProcessorError("Cannot Have Spaces In Name", line.realLineNumber);
+        } else {
+            for (int i = 0; i < defines.size(); i++) {
+                if (defines.get(i).name.equals(name)) {
+                    defines.remove(i);
+                    return;
                 }
+            }
+            ASMCompiler.PreProcessorError("Cannot Remove Define doesnot exist", line.realLineNumber);
+        }
+    }
 
-            } else if (preProcessor.getType() == Type.VALUE) { //string parcer decodes this 
-                
-                
+    private static void sortDefineData() { //sorts from larges name to smalles name
+        Comparator c = new Comparator<Define>() {
+            public int compare(Define s1, Define s2) {
+                return Integer.compare(s2.name.length(), s1.name.length());
+            }
+        };
+        Collections.sort(defines, c);
+    }
 
-//                if (line.contains(preProcessor.getName())) {
-//                    
-//                    int temp = line.indexOf(preProcessor.getName());
-//                    
-//                    Object[] tempO = new Object[]{line.replace(preProcessor.getName(), preProcessor.getValue()), (int) lineNumber};
-//                    instructions.set(i, tempO);
-//
-//                }
+    private static ArrayList<UserLine> preProcessLine(UserLine line) {
+
+        ArrayList<UserLine> lines = new ArrayList();
+
+        for (Define def : defines) {
+            if (def.getType() == Define.Type.DATA) {
+                line = def.parseString(line).get(0);//DATA should only return a size of one 
+
+            } else if (def.getType() == Define.Type.INLINE) {
 
             } else {
-                ASMCompiler.error("PreProcessor " + lineNumber + " invalid type");
+                ASMCompiler.PreProcessorError("Invalid # value", line.realLineNumber);
             }
         }
+        lines.add(line);
+        return lines;
     }
 
-    public String getValue() {
-        return value;
+    private static String cleanLine(String line) {
+
+        line = line.trim(); //gets the full user line
+
+        if (line.equals("")) {
+            return "";
+        }
+
+        try {
+            if (line.contains(";")) {
+                line = line.split(";")[0];//strips line of any comments
+            }
+        } catch (Exception e) {
+            return "";
+        }
+        if (line.equals("")) {
+            return "";
+        }
+
+        //normalfying instructions
+        String start;
+        String[] args;
+
+        try {
+            start = line.split(" ")[0].trim();
+        } catch (Exception e) {
+            start = line;
+        }
+        try {
+            args = line.replace(start, "").split(",");
+            for (int i = 0; i < args.length; i++) {
+                args[i] = args[i].trim();
+            }
+        } catch (Exception e) {
+            args = new String[]{""};
+        }
+
+        line = start + " " + String.join(",", args);
+
+        return line.trim();
+    }
+
+    public static ArrayList<UserLine> preProcess(ArrayList<UserLine> file, boolean outputFile) {
+
+        //file = loadFile("C:\\Users\\parke\\OneDrive\\Documents\\GitHub\\MIPS\\Examples\\snake 2.asm", 1);
+        defines = new ArrayList();
+
+        if (file == null) {
+            return new ArrayList();
+        }
+
+        for (int i = 0; i < file.size(); i++) {
+
+            UserLine currentLine = file.get(i);
+
+            try {
+                currentLine.line = cleanLine(currentLine.line);
+            } catch (Exception e) {
+                ASMCompiler.PreProcessorError("Cannot Clean Line", currentLine.realLineNumber);
+            }
+
+            if (currentLine.line.equals("") || currentLine.line.equals("/n")) { //if line is empty delete it and move on
+                file.remove(i);
+                i--;
+                continue;
+            }
+
+            if (currentLine.line.startsWith("#include")) {
+                file.remove(i);
+                file.addAll(i, importFile(currentLine));
+                i--;
+
+            } else if (currentLine.line.startsWith("#define")) {
+                file.remove(i);
+                addToDefineData(currentLine);
+                sortDefineData();
+                i--;
+
+            } else if (currentLine.line.startsWith("#undef")) {
+                file.remove(i);
+                removeFromDefineData(currentLine);
+                sortDefineData();
+                i--;
+
+                // } else if (currentLine.line.startsWith("#defineinline")) { //maybe
+            } else {
+                file.remove(i);
+                ArrayList<UserLine> temp = preProcessLine(currentLine);
+                if (temp.size() == 0) {
+                    i--;
+                } else {
+                    file.addAll(i, temp);
+                }
+            }
+        }
+
+        if (outputFile) {
+            writePreProcessedFile(file);
+        }
+        defines.clear();
+        return file;
+    }
+
+    private static void writePreProcessedFile(ArrayList<UserLine> fileInfo) {
+        File tempFile = new File("preProcessedFile.asm");
+        try (PrintWriter out = new PrintWriter(tempFile)) {
+
+            for (int i = 0; i < fileInfo.size(); i++) {
+
+                out.println(fileInfo.get(i).line);
+            }
+            ASMCompiler.logCompilerMessage("Pre Processed File Wrote to:" + tempFile.getAbsolutePath());
+            out.flush();
+        } catch (Exception e) {
+            ASMCompiler.logCompilerError("Unable to write Pre Processed File to:" + tempFile.getAbsolutePath() + " " + e.getMessage());
+        }
+
     }
 }

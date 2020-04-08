@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Compilerv2;
+package Compiler_Old;
+
+import static Compiler_Old.ASMCompiler.error;
 /**
  *
  * @author parke
@@ -22,6 +24,12 @@ public class StringToOpcode {
                 opCodeString = instruction.split(" ")[0];
                 opCodeString = opCodeString.trim();
                 parameter = instruction.substring(opCodeString.length()).split(",");
+                for (int i = 0; i < parameter.length; i++) {
+                    
+                    parameter[i] = parameter[i].trim();
+                    parameter[i] = ASMCompiler.findAndReplacePreProcessorValue(parameter[i]);
+                    
+                }
             } catch (Exception e) {
                 error("Invalid parameters");
                 return 0;

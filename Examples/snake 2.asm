@@ -6,13 +6,13 @@ main:
 ;add $31, $1, $0
 ;use this when calling functions outside of main loop 
 
-#define lol 5
-#define loll 7
-trap lol
-trap loll
-#undef lol
-#define lol 10
-trap lol
+;#define lol 5
+;#define loll 7
+;trap lol
+;trap loll
+;#undef lol
+;#define lol 10
+;trap lol
 
 lw $4, screenSizeX($0) ; setScreenSize
 lw $5, screenSizeY($0)

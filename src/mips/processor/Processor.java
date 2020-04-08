@@ -7,6 +7,7 @@ package mips.processor;
 
 import GUI.Main_GUI;
 import mips.FileWriteReader;
+import mips.Log;
 import static mips.processor.InstructionDecode.runInstruction;
 import static mips.processor.Memory.getWord;
 import static mips.processor.Registers.getPc;
@@ -82,11 +83,24 @@ public class Processor implements Runnable {
     }
 
     public static void singleStep() {
-        if(!runInstruction(getOpCode())){
-                        Main_GUI.stop();
-            Main_GUI.infoBox("Error", "invalid OpCode at " + Registers.getPc());
+        if (!runInstruction(getOpCode())) {
+
+            logRunTimeError("invalid OpCode at " + Registers.getPc());
         }
         instructionsRan++;
+    }
+
+    public static void logRunTimeError(String message) {
+        Main_GUI.stop();
+        Log.logError("[RunTime] " + message);
+    }
+
+    public static void logRunTimeWarning(String message) {
+        Log.logWarning("[RunTime] " + message);
+    }
+
+    public static void logRunTimeMessage(String message) {
+        Log.logMessage("[RunTime] " + message);
     }
 
 }

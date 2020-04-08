@@ -12,6 +12,8 @@ import GUI.UserIO;
 import static GUI.UserIO.outputNumber;
 import static GUI.UserIO.outputUnicode;
 import java.awt.Color;
+import static mips.processor.Processor.logRunTimeError;
+import static mips.processor.Processor.logRunTimeMessage;
 import static mips.processor.Registers.getRegister;
 import static mips.processor.Registers.setRegister;
 
@@ -33,6 +35,7 @@ public class SystemCall {
                     Main_GUI.stop();
                     Processor.reset();
                     Main_GUI.infoBox("Stop", "program has been halted");
+                    logRunTimeMessage("Program has been halted");
                     break;
 
                 case 1:  //outputs a number to output
@@ -97,6 +100,9 @@ public class SystemCall {
                 case 111: // breaks the program if break is enabled
                     if (Main_GUI.canBreak()) {
                         Main_GUI.stop();
+                        logRunTimeMessage("Program has reached a breakpoint");
+                    }else{
+                        logRunTimeMessage("Program has attempted to break");
                     }
                     break;
 
@@ -134,8 +140,7 @@ public class SystemCall {
                     break;
 
                 default:
-                    Main_GUI.stop();
-                    Main_GUI.infoBox("Error", "invalid trap command");
+                    logRunTimeError("invalid trap command");
                     break;
             }
         } catch (Exception e) {

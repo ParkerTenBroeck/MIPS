@@ -22,7 +22,7 @@ public class Memory_GUI extends javax.swing.JFrame {
         initComponents();
         memoryPositionScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         memoryPositionScrollPane.getVerticalScrollBar().setModel(valsScrollPane.getVerticalScrollBar().getModel());
-        cbs = new ComboBoxSearchable(memoryLables, ASMCompiler.getMemoryPointers());
+        cbs = new ComboBoxSearchable(memoryLables, ASMCompiler.getMemoryLables());
         updateMemoryValues();
         this.show(true);
     }
@@ -305,7 +305,7 @@ public class Memory_GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_autoUpdateButtonActionPerformed
 
     private void memoryLablesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_memoryLablesActionPerformed
-        startingPosition.setText(Integer.toString(ASMCompiler.getIndex(cbs.getEnteredText())));
+        startingPosition.setText(Integer.toString(ASMCompiler.getByteIndexOfMemoryLable(cbs.getEnteredText(), -1)));
         updateMemoryValues();
     }//GEN-LAST:event_memoryLablesActionPerformed
 

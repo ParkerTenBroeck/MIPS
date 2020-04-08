@@ -5,353 +5,477 @@
  */
 package Compiler;
 
-import static Compiler.DotCodeDecoder.getDotData;
-import static Compiler.DotCodeDecoder.isDotData;
-import static Compiler.StringToOpcode.stringToOpcode;
-import static Compilerv2.PreProcessor.preProcess;
 import GUI.Main_GUI;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.List;
 import mips.FileWriteReader;
+import mips.Log;
 import mips.processor.Memory;
 
-/**
- *
- * @author parke
- */
+class ByteP {
+
+    public byte b;
+
+    public ByteP() {
+
+    }
+
+    public ByteP(byte b) {
+        this.b = b;
+    }
+
+};
+
+abstract class CompileTimeUserLine {
+
+    UserLine line;
+    ByteP bytes[];
+    int startingByteAddress;
+
+    public abstract int getByteSize();
+
+    public abstract void finalCompilePass();
+};
+
+class dotData extends CompileTimeUserLine {//must have instruction and data preented at the time of creation
+
+    public dotData(UserLine us, byte[] _bytes) {
+        this.line = us;
+        this.bytes = new ByteP[_bytes.length];
+        for (int i = 0; i < _bytes.length; i++) {
+            this.bytes[i] = new ByteP(_bytes[i]);
+        }
+    }
+
+    @Override
+    public int getByteSize() {
+        return this.bytes.length;
+    }
+
+    @Override
+    public void finalCompilePass() { //possibly add error checking 
+
+    }
+
+};
+
+class asmInstruction extends CompileTimeUserLine {
+
+    public asmInstruction(UserLine us) {
+        this.line = us;
+        bytes = new ByteP[4];
+        for (int i = 0; i < 4; i++) {
+            bytes[i] = new ByteP((byte) 0xcd);
+        }
+    }
+
+    @Override
+    public int getByteSize() {
+        return 4; //instruction size is always 4
+    }
+
+    @Override
+    public void finalCompilePass() {
+        byte[] temp = StringToOpcode.stringToOpcode(this);
+
+        if (bytes.length != temp.length) {
+            //error
+            return;
+        }
+
+        for (int i = 0; i < temp.length; i++) {
+            bytes[i].b = temp[i];
+        }
+    }
+
+};
+
+class UserLine {
+
+    public String line;
+    public int realLineNumber;
+
+    public UserLine(String line) {
+        this.line = line;
+    }
+
+    public UserLine(int realLineNumber) {
+        this.realLineNumber = realLineNumber;
+    }
+
+    public UserLine(String line, int realLineNumber) {
+        this.line = line;
+        this.realLineNumber = realLineNumber;
+    }
+
+    public UserLine() {
+    }
+}
+
+class MemoryChunk {
+
+    MemoryLable startLable;
+    ArrayList<CompileTimeUserLine> chunkData;
+
+    public MemoryChunk(MemoryLable lable) {
+        this.startLable = lable;
+        this.chunkData = new ArrayList();
+    }
+
+    public void addData(CompileTimeUserLine ctul) {
+        this.chunkData.add(ctul);
+    }
+
+    public int getSize() {
+        int size = 0;
+        for (int i = 0; i < chunkData.size(); i++) {
+            size += chunkData.get(i).getByteSize();
+        }
+        return size;
+    }
+
+}
+
+class Origin {
+
+    final int byteOrigin;
+    ArrayList<MemoryChunk> memoryChunks;
+
+    public Origin(int byteOrigin) {
+        this.byteOrigin = byteOrigin;
+        memoryChunks = new ArrayList();
+    }
+
+    public Origin(UserLine line) {
+        this.byteOrigin = ASMCompiler.parseInt(line.line.split(" ")[1]);
+        memoryChunks = new ArrayList();
+    }
+
+    public void addMemoryChunk(MemoryChunk mc) {
+        memoryChunks.add(mc);
+    }
+};
+
 public class ASMCompiler {
 
-    private static ArrayList<Object[]> currentInstructions;
-    private static final List<Byte> memory = new ArrayList<Byte>();
-    private static ArrayList<Object[]> memoryPointers;
-    private static int memoryIndex;
-    private static int realIndex;
-    private static boolean stopFlag = false;
-
-    private static ArrayList<PreProcessor> preProcessor;
+    static private ArrayList<MemoryLable> memoryLables;
+    static private ArrayList<Origin> origins;
+    static private ArrayList<ByteP> memoryByteList;
 
     public static void compile() {
-//        stopFlag = false;
-//        memoryIndex = 0;
-//        realIndex = 0;
-//        memory.clear();
-//        
-        preProcess(null, true);
-//
-//        FileWriteReader.saveASMFile();
-//        getInstructions();
-//
-//        compileAndCleanInstructions();
-//
-//        FileWriteReader.saveMXNFile();
-//        Main_GUI.refreshAll();
+
+        memoryLables = new ArrayList();
+        memoryByteList = new ArrayList();
+        origins = new ArrayList();
+
+        FileWriteReader.saveASMFile();
+        ArrayList<UserLine> temp = getInstructions();
+
+        temp = PreProcessor.preProcess(temp, Main_GUI.savePreProcessedFile());
+
+        findMemoryPointersAndChunkifyMemory(temp);
+
+        addOriginsToByteList(); //adds instructions to bytelist in order according to file and origins and sets the respecting addresses of memory lables
+
+        runFinalCompilePass(); //compiles code once memory lable locations are known
+
+        Memory.setMemory(createByteArrayFromByteList());
+
+        if (Main_GUI.saveCompilationInfo()) {
+            saveOriginsToFile();
+        }
+
+        FileWriteReader.saveMXNFile();
+        Main_GUI.refreshAll();
+
+        temp.clear();
+        memoryByteList.clear();
+        origins.clear();
     }
 
-    public static String findAndReplacePreProcessorValue(String parameter) {
-        for (PreProcessor pre : preProcessor) {
-            if (pre.getType() == PreProcessor.Type.VALUE) {
-                if (pre.getName().equals(parameter)) {
-                    return pre.getValue();
+    public static void saveOriginsToFile() {
+
+        int maxSizeMemoryLable = 0;
+        int maxSizeInstruction = 0;
+
+        for (MemoryLable ml : memoryLables) {
+            if (ml.name.length() > maxSizeMemoryLable) {
+                maxSizeMemoryLable = ml.name.length();
+            }
+        }
+        maxSizeMemoryLable++;
+
+        for (Origin org : origins) {
+            for (MemoryChunk mc : org.memoryChunks) {
+                for (CompileTimeUserLine ctul : mc.chunkData) {
+                    if (ctul.line.line.length() > maxSizeInstruction) {
+                        maxSizeInstruction = ctul.line.line.length();
+                    }
                 }
+
             }
         }
-        return parameter;
-    }
+        maxSizeInstruction++;
 
-    private static void getInstructions() {
-        currentInstructions = new ArrayList();
-        try {
-            ArrayList<String> temp = new ArrayList(FileWriteReader.getASMList());
-            
-            for (int i = 0; i < temp.size(); i++) {
-                currentInstructions.add(new Object[]{temp.get(i), (int) i});
+        File file = new File("CompilationInfo.txt");
+
+        try (PrintWriter out = new PrintWriter(file)) {
+
+            out.println("Compilation Info of File: " + FileWriteReader.getASMFilePath());
+            out.println();
+
+            for (Origin org : origins) {
+
+                if (org.byteOrigin == 0 && org.memoryChunks.isEmpty()) {//skips pre made origin if it is not in ise
+                    continue;
+                }
+
+                out.println("Origin at: " + String.format("%08X", org.byteOrigin));
+                out.println();
+
+                for (MemoryChunk mc : org.memoryChunks) {
+
+                    if (mc.startLable.name.equals("") && mc.chunkData.isEmpty()) { //skips pre made lable if it is empty
+                        continue;
+                    }
+
+                    out.println("   " + "Memory Lable: "
+                            + String.format("%-" + maxSizeMemoryLable + "s", mc.startLable.name + ",")
+                            + " Memory Adress: " + String.format("%08X", mc.startLable.byteAddress));
+                    out.println();
+
+                    for (CompileTimeUserLine ctul : mc.chunkData) {
+
+                        out.print("       " + "Instruction/Data: "
+                                + String.format("%-" + maxSizeInstruction + "s", ctul.line.line)
+                                + " Starting Memory Adress: "
+                                + String.format("%08X", ctul.startingByteAddress) + " Bytes: ");
+
+                        for (ByteP b : ctul.bytes) {
+                            out.print(String.format("%02X", ((int) b.b) & 0xFF) + " ");
+                        }
+                        out.println();
+                    }
+                    out.println();
+                }
+
+                out.println();
+
             }
+
+            ASMCompiler.logCompilerMessage("Compilation Info File Wrote to: " + file.getAbsolutePath());
+            out.flush();
         } catch (Exception e) {
-            stopFlag = true;
+            ASMCompiler.logCompilerError("Unable to write Pre Processed File to: " + file.getAbsolutePath() + " " + e.getMessage());
         }
     }
 
-    public static ArrayList<String> getMemoryPointers() {
+    public static byte[] createByteArrayFromByteList() {
+        byte[] temp = new byte[memoryByteList.size()];
 
-        if (memoryPointers == null) {
-            return null;
-        }
-
-        ArrayList<String> temp = new ArrayList();
-
-        for (Object[] pointer : memoryPointers) {
-            temp.add((String) pointer[1]);
+        for (int i = 0; i < memoryByteList.size(); i++) {
+            try {
+                temp[i] = memoryByteList.get(i).b;
+            } catch (Exception e) {
+                temp[i] = (byte) 0xcd;
+            }
         }
         return temp;
-    } //only used for GUI
+    }
 
-    public static int getRelativeIndexOffset(String memoryPointer) {
-        memoryPointer = memoryPointer.replaceAll(":", "");
-        for (Object[] pointer : memoryPointers) {
-            if (((String) pointer[1]).equals(memoryPointer)) {
-                return ((int) pointer[0]) / 4 - (memoryIndex + 4) / 4;
+    public static int getByteIndexOfMemoryLable(String memoryLable, int realLineNumberOfOpCode) {
+        for (int i = 0; i < memoryLables.size(); i++) {
+            if (memoryLables.get(i).name.equals(memoryLable)) {
+                return memoryLables.get(i).byteAddress;
             }
         }
-        error("Memory pointer not found");
+        ASMCompiler.MemoryLableError("Memory Lable does not exist", realLineNumberOfOpCode);
         return -1;
     }
 
-    public static int getIndex(String memoryPointer) {
-        if(memoryPointers == null){
-            return -1;
-        }
-        memoryPointer = memoryPointer.replaceAll(":", "");
-        for (Object[] pointer : memoryPointers) {
-            if (((String) pointer[1]).equals(memoryPointer)) {
-                return ((int) pointer[0]);
-            }
-        }
-        error("Memory pointer not found");
-        return -1;
-    }
-
-    private static void findAndCleanPreProcessors() {
-
-//        preProcessorCode = new ArrayList();
-//        preProcessorValues = new ArrayList();
-//
-//        for (int i = 0; i < currentInstructions.size(); i++) {
-//
-//            String line = (String) currentInstructions.get(i)[0];
-//            int lineNumber = (int) currentInstructions.get(i)[1];
-//
-//            if (line.startsWith("#define") && line.contains("[")) {
-//
-//                currentInstructions.remove(i);
-//                PreProcessor temp = new PreProcessor(line);
-//                line = (String) currentInstructions.get(i)[0];
-//                lineNumber = (int) currentInstructions.get(i)[1];
-//
-//                while (true) {
-//                    if (line.contains("]")) {
-//                        currentInstructions.remove(i);
-//                        i = -1;
-//                        break;
-//                    }
-//                    temp.addLine(line);
-//
-//                    currentInstructions.remove(i);
-//                    try {
-//                        line = (String) currentInstructions.get(i)[0];
-//                        lineNumber = (int) currentInstructions.get(i)[1];
-//
-//                        if (line.contains("#") || line.contains(":")) {
-//                            ASMCompiler.error("Define never closed");
-//                        }
-//
-//                    } catch (Exception e) {
-//                        ASMCompiler.error("Define never closed");
-//                    }
-//                }
-//                //currentInstructions.remove(i);
-//                preProcessorCode.add(temp);
-//                findPreProcessors();
-//            }
-//            
-//            if (line.startsWith("#define")) {
-//                try {
-//                    String name = line.split(" ")[1];
-//                    String thingToReplace = line.split(" ")[2];
-//                    currentInstructions.remove(i);
-//                    i --;
-//
-//                    for (int l = 0; l < currentInstructions.size(); l++) {
-//                        currentInstructions.get(l)[0] = ((String) currentInstructions.get(l)[0]).replace(name, thingToReplace);
-//                    }
-//                } catch (Exception e) {
-//                    ASMCompiler.error("Invalid define");
-//                }
-//            }
-//
-//        }
-//        
-//        for(Object[] o: currentInstructions){
-//        }
-        preProcessor = new ArrayList();
-        PreProcessor nextPreProcessor;
-        while ((nextPreProcessor = PreProcessor.nextPreProcessor(currentInstructions)) != null) {
-            for (PreProcessor pre : preProcessor) {
-                realIndex = pre.getRealLine();
-                if (pre.getName().equals(nextPreProcessor.getName())) {
-                    ASMCompiler.error("Pre Processor cannot have the same name");
+    private static void runFinalCompilePass() { //for every CompileTimeUserLine (instruction) run the final compilation pass 
+        for (Origin org : origins) {
+            for (MemoryChunk mc : org.memoryChunks) {
+                for (CompileTimeUserLine ctul : mc.chunkData) {
+                    ctul.finalCompilePass();
                 }
             }
-            preProcessor.add(nextPreProcessor);
-        }
-        realIndex = 0;
-
-    }
-
-//    private static void findPreProcessors() {
-//
-//        for (int i = 0; i < currentInstructions.size(); i++) {
-//            String line = (String) currentInstructions.get(i)[0];
-//            int lineNumber = (int) currentInstructions.get(i)[1];
-//            //while((PreProcessor p = new PreProcessor(line)) != null){}
-//
-//            for (int p = 0; p < preProcessorCode.size(); p++) {
-//
-//                if (line.split("\\(")[0].trim().equals(preProcessorCode.get(p).getName())) {
-//
-//                    currentInstructions.remove(i);
-//
-//                    ArrayList<String> linesToAdd = preProcessorCode.get(p).getInstructionsWithArgs(line);
-//
-//                    ArrayList<Object[]> temp = new ArrayList();
-//                    for (int l = 0; l < linesToAdd.size(); l++) {
-//                        temp.add(new Object[]{linesToAdd.get(l), lineNumber});
-//
-//                    }
-//                    if (temp.size() > 0) {
-//                        currentInstructions.addAll(i, temp);
-//                    } else {
-//                        ASMCompiler.error("Define cannot by empty");
-//                    }
-//
-//                }
-//            }
-//        }
-//    }
-    private static void findAndCleanMemoryPointers() {
-
-        memoryPointers = new ArrayList();
-
-        int index = 0;
-
-        for (int i = 0; i < currentInstructions.size(); i++) {
-
-            String ci = (String) currentInstructions.get(i)[0];
-
-            if (ci == null) {
-
-            } else if (ci.contains(":")) {
-                memoryPointers.add(new Object[]{index, ci.replaceAll(":", "")});
-                currentInstructions.remove(i);
-                i--;
-
-            } else if (ci.startsWith(".")) {
-                if (isDotData(ci)) {
-
-                    byte[] data = getDotData(ci);
-
-                    index += data.length;
-                }
-                continue;
-
-            } else {
-                index += 4;
-            }
         }
     }
 
-    private static void cleanInstructionList() {
-        for (int i = currentInstructions.size() - 1; i >= 0; i--) {
+    private static void addOriginsToByteList() {
 
-            String ci = (String) currentInstructions.get(i)[0];
-            ci = ci.replaceAll("\t", "");
-            ci = ci.replaceAll("\n", "");
-            ci = ci.trim().replaceAll("\\s+", " ");
+        int currentByteIndex;
 
-            if (!(ci.equals("") || ci == null)) {
+        for (Origin org : origins) { //for all origins
+            currentByteIndex = org.byteOrigin; //sets the starting byte address
 
-                if (ci.contains(";")) {
-
-                    if (ci.startsWith(";")) {
-                        currentInstructions.remove(i);
-                        continue;
-                    } else {
-                        ci = ci.split(";")[0];
-                        ci = ci.trim();
-                        if (ci.equals("")) {
-                            currentInstructions.remove(i);
-                            continue;
-                        }
-                    }
-                }
-                currentInstructions.set(i, new Object[]{ci, (int) currentInstructions.get(i)[1]});
-            } else {
-                currentInstructions.remove(i);
-            }
-        }
-    }
-
-    private static void compileAndCleanInstructions() {
-
-        cleanInstructionList();
-        findAndCleanPreProcessors();
-        findAndCleanMemoryPointers();
-        compileInstructions();
-
-    }
-
-    public static void error(String string) {
-        Main_GUI.infoBox("Error", "line " + (realIndex + 1) + "; " + string);
-        stopFlag = true;
-    }
-
-    public static void compileInstructions() {
-
-        for (Object[] line : currentInstructions) {
-
-            String string = (String) line[0];
-            realIndex = (int) line[1];
-
-            if (string.startsWith(".")) { //dote codes 
-                if (isDotData(string)) {
-
-                    byte[] data = getDotData(string);
-
-                    for (int i = memoryIndex; i < data.length + memoryIndex; i++) {
-                        memory.add(i, data[i - memoryIndex]);
-                    }
-                    memoryIndex += data.length;
-                }
-                continue;
-            } else {
+            for (MemoryChunk mc : org.memoryChunks) { //for all memory chunks inside origin
 
                 try {
-                    int opcodeInt = stringToOpcode(string, memoryIndex);
-                    byte[] opcode = intTo4ByteArray(opcodeInt);
-                    memory.add(memoryIndex, opcode[0]);
-                    memory.add(memoryIndex + 1, opcode[1]);
-                    memory.add(memoryIndex + 2, opcode[2]);
-                    memory.add(memoryIndex + 3, opcode[3]);
-                    memoryIndex += 4;
-
+                    while (memoryByteList.get(currentByteIndex) != null) { //keeps looking for a new locaiton
+                        currentByteIndex++;
+                    }
                 } catch (Exception e) {
-                    ASMCompiler.error("Error parsing string");
+                    //does not matter if it doesnt exist
+                }
+                mc.startLable.byteAddress = currentByteIndex; //sets the byte address of the chunks memory lable
+
+                for (CompileTimeUserLine ctul : mc.chunkData) {
+
+                    try {
+                        while (memoryByteList.get(currentByteIndex) != null) { //keeps looking for a new locaiton
+                            currentByteIndex++;
+                        }
+                    } catch (Exception e) {
+                        //does not matter if it doesnt exist
+                    }
+                    ctul.startingByteAddress = currentByteIndex;
+
+                    for (ByteP b : ctul.bytes) { //for every byte insize the CompuleTimeUserLine add to byteList
+
+                        try {
+                            while (memoryByteList.get(currentByteIndex) != null) { //keeps looking for a new locaiton
+                                currentByteIndex++;
+                            }
+                        } catch (Exception e) {
+                            //does not matter if it doesnt exist
+                        }
+                        while (memoryByteList.size() < currentByteIndex + 1) {
+                            memoryByteList.add(null);
+                        }
+                        memoryByteList.set(currentByteIndex, b);
+                        currentByteIndex++;
+                    }
                 }
             }
         }
-        byte[] myStuff = new byte[memory.size()];
-        for (int i = 0; i < memory.size(); i++) {
-            myStuff[i] = memory.get(i);
+    }
+//    private static int getSizeOfMemoryChunks() { //out dated should not use
+//        int size = 0;
+//
+//        for (int i = 0; i < memoryChunks.size(); i++) {
+//            size += memoryChunks.get(i).getSize();
+//        }
+//        return size;
+//    }
+
+    private static void findMemoryPointersAndChunkifyMemory(ArrayList<UserLine> file) { //finds all memory pointers and splits the file into memory chunks
+
+        int memoryLableIndex = 0;
+        MemoryLable ml;
+        MemoryChunk mc = new MemoryChunk(new MemoryLable(new UserLine("", -1), -1));
+        Origin org = new Origin(0);
+
+        for (int i = 0; i < file.size(); i++) {
+
+            UserLine currentLine = file.get(i);
+
+            if (currentLine.line.contains(":")) { //if theres a new memoryLable add last memory chunk to memoryChunks and create a new current memoryChunk and add the new memory lable to memoryLables
+                org.addMemoryChunk(mc);
+                ml = new MemoryLable(currentLine, memoryLableIndex);
+                mc = new MemoryChunk(ml);
+                addMemoryLable(ml);
+                memoryLableIndex++;
+            } else if (currentLine.line.startsWith(".org")) { //adds origin to list of origins and 
+                org.addMemoryChunk(mc);
+                addOrigin(org);
+                org = new Origin(currentLine);
+                mc = new MemoryChunk(new MemoryLable(new UserLine("", -1), -1));
+            } else {
+                mc.addData(userLineToCompileTimeUserLine(currentLine));
+            }
         }
-        Memory.setMemory(myStuff);
+        org.addMemoryChunk(mc); //adds last data
+        addOrigin(org);
     }
 
-    public static final byte[] intTo4ByteArray(int value) {
-        return new byte[]{
-            (byte) (value >>> 24),
-            (byte) (value >>> 16),
-            (byte) (value >>> 8),
-            (byte) value};
+    private static void addOrigin(Origin org) {
+        origins.add(0, org);
     }
 
-    public static final byte[] intTo2ByteArray(int value) {
-        return new byte[]{
-            (byte) (value >>> 8),
-            (byte) value};
+    private static void addMemoryLable(MemoryLable ml) {
+
+        for (int i = 0; i < memoryLables.size(); i++) {
+            if (ml.name.equals(memoryLables.get(i).name)) {
+                ASMCompiler.MemoryLableError("Cannot have Duplicate Memory Lables", ml.line.realLineNumber);
+                return;
+            }
+        }
+        memoryLables.add(ml);
     }
 
-    public static final byte[] intTo1ByteArray(int value) {
-        return new byte[]{
-            (byte) value};
+    private static CompileTimeUserLine userLineToCompileTimeUserLine(UserLine line) {
+
+        if (line.line.startsWith(".")) {
+            return new dotData(line, DotCodeDecoder.getDotData(line)); //
+        } else {
+            return new asmInstruction(line);
+        }
     }
 
+    private static ArrayList<UserLine> getInstructions() {
+        BufferedReader reader;
+        int lineNumber = 0;
+
+        ArrayList<UserLine> file = new ArrayList();
+        try {
+            reader = new BufferedReader(new FileReader(FileWriteReader.getASMFilePath()));
+            String line = reader.readLine();
+            while (line != null) {
+
+                file.add(new UserLine(line, lineNumber));
+                lineNumber++;
+                line = reader.readLine();
+            }
+        } catch (Exception e) {
+            //error
+        }
+        return file;
+    }
+
+    public static void PreProcessorError(String message, int line) {
+
+        logCompilerError("[PreProcessor]: on line " + line + " " + message);
+    }
+
+    public static void DotCodeDecoderError(String message, int line) {
+        logCompilerError("[DotCode]: on line " + line + " " + message);
+    }
+
+    public static void OpCodeError(String message, int line) {
+        logCompilerError("[OpCode]: on line " + line + " " + message);
+    }
+
+    public static void MemoryLableError(String message, int line) {
+        logCompilerError("[MemoryLable]: on line " + line + " " + message);
+    }
+
+    public static void ArgumentError(String message, int line) {
+        logCompilerError("[Argument]: on line " + line + " " + message);
+    }
+
+    public static void logCompilerError(String message) {
+        Log.logError("[Compiler]" + message);
+    }
+
+    public static void logCompilerMessage(String message) {
+        Log.logMessage("[Compiler] " + message);
+    }
+
+    public static int parseInt(String string) { //to add functionality later
+
+        if (string.contains("x")) {
+            return Integer.parseInt(string.split("x")[1], Integer.parseInt(string.split("x")[0]));
+        }
+
+        return Integer.parseInt(string.trim());
+    }
+
+    public static ArrayList<MemoryLable> getMemoryLables() {
+        return (ArrayList<MemoryLable>) memoryLables.clone();
+    }
 }

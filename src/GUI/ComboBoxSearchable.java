@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import Compiler.MemoryLable;
 import java.util.ArrayList;
 import java.util.Collections;
 import javax.swing.DefaultComboBoxModel;
@@ -20,7 +21,14 @@ public class ComboBoxSearchable {
     private ArrayList<String> items = new ArrayList();
     private JComboBox comboBox;
 
-    public ComboBoxSearchable(JComboBox comboBox, ArrayList<String> items) {
+    public ComboBoxSearchable(JComboBox comboBox, ArrayList<MemoryLable> newItems) {
+
+        items = new ArrayList();
+
+        for (MemoryLable ml:newItems) {
+            items.add(ml.name);
+        }
+
         comboBox.setEditable(true);
         Collections.sort(items, String.CASE_INSENSITIVE_ORDER);
         this.items = items;

@@ -5,25 +5,15 @@
  */
 package GUI;
 
-import Compilerv2.ASMCompiler;
+import Compiler.ASMCompiler;
 import Compiler.StringToOpcode;
-import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.File;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.UIManager;
 import mips.FileWriteReader;
-import mips.processor.Memory;
 import mips.processor.Processor;
 
 /**
@@ -206,6 +196,8 @@ public class Main_GUI extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
+        savePreProcessedFileButton = new javax.swing.JCheckBoxMenuItem();
+        saveCompileInformationButton = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("MIPS");
@@ -469,6 +461,19 @@ public class Main_GUI extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem2);
 
+        savePreProcessedFileButton.setSelected(true);
+        savePreProcessedFileButton.setText("Save PreProcessed File");
+        jMenu1.add(savePreProcessedFileButton);
+
+        saveCompileInformationButton.setSelected(true);
+        saveCompileInformationButton.setText("Save CompileInformation");
+        saveCompileInformationButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveCompileInformationButtonActionPerformed(evt);
+            }
+        });
+        jMenu1.add(saveCompileInformationButton);
+
         menuBar.add(jMenu1);
 
         setJMenuBar(menuBar);
@@ -575,6 +580,17 @@ public class Main_GUI extends javax.swing.JFrame {
         Browser.openLinkInBrowser("https://github.com/ParkerTenBroeck/MIPS/blob/master/MIPS%20documentation/MIPS%20Instructions-Traps-Registers.pdf");
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+    private void saveCompileInformationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveCompileInformationButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_saveCompileInformationButtonActionPerformed
+
+    public static boolean savePreProcessedFile(){
+        return savePreProcessedFileButton.isSelected();
+    }
+    public static boolean saveCompilationInfo(){
+        return saveCompileInformationButton.isSelected();
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private static javax.swing.JLabel InstructionsRan;
@@ -602,7 +618,9 @@ public class Main_GUI extends javax.swing.JFrame {
     private static GUI.Register_GUI registers;
     private static javax.swing.JButton resetButton;
     private static javax.swing.JMenuItem saveAsMenuButton;
+    private static javax.swing.JCheckBoxMenuItem saveCompileInformationButton;
     private static javax.swing.JMenuItem saveMenuButton;
+    private static javax.swing.JCheckBoxMenuItem savePreProcessedFileButton;
     private static javax.swing.JButton screenButton;
     private static javax.swing.JButton singleStepButton;
     private static javax.swing.JToggleButton startButton;

@@ -5,9 +5,6 @@
  */
 package Compiler;
 
-import static Compiler.ASMCompiler.intTo1ByteArray;
-import static Compiler.ASMCompiler.intTo2ByteArray;
-import static Compiler.ASMCompiler.intTo4ByteArray;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,30 +14,17 @@ import java.util.regex.Pattern;
  */
 public class DotCodeDecoder {
 
-    public static int getOrg(String string) {
+//    public static boolean isDotData(String string) { //should not be used
+//        if (string.contains(".ascii") || string.contains(".byte") || string.contains(".hword") || string.contains(".word") || string.contains(".space")) {
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
+    
+    public static byte[] getDotData(UserLine line) {
 
-        if (!string.contains(".org")) {
-            return -1;
-        }
-
-        string = string.trim();
-        try {
-            return Integer.parseInt(string.split(" ")[1]);
-        } catch (Exception e) {
-            ASMCompiler.error("Invalid origin");
-            return -1;
-        }
-    }
-
-    public static boolean isDotData(String string) {
-        if (string.contains(".ascii") || string.contains(".byte") || string.contains(".hword") || string.contains(".word") || string.contains(".space")) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    static byte[] getDotData(String string) {
+        String string = line.line;
 
         if (string.contains(".space")) {
 
@@ -53,7 +37,7 @@ public class DotCodeDecoder {
             while (m.find()) {
                 return m.group(1).getBytes();
             }
-            ASMCompiler.error("Invalid string");
+            ASMCompiler.DotCodeDecoderError("Invalid string", line.realLineNumber);
             return new byte[0];
 
         } else if (string.contains(".byte")) {
@@ -70,7 +54,7 @@ public class DotCodeDecoder {
 
                 return tempByte;
             } catch (Exception e) {
-                ASMCompiler.error("Invalid byte");
+                ASMCompiler.DotCodeDecoderError("Invalid byte", line.realLineNumber);
                 return new byte[0];
             }
 
@@ -90,7 +74,7 @@ public class DotCodeDecoder {
 
                 return tempByte;
             } catch (Exception e) {
-                ASMCompiler.error("Invalid half word");
+                ASMCompiler.DotCodeDecoderError("Invalid half word", line.realLineNumber);
                 return new byte[0];
             }
 
@@ -112,12 +96,31 @@ public class DotCodeDecoder {
 
                 return tempByte;
             } catch (Exception e) {
-                ASMCompiler.error("Invalid word");
+                ASMCompiler.DotCodeDecoderError("Invalid word", line.realLineNumber);
                 return new byte[0];
             }
 
         }
-        ASMCompiler.error("invalid dotCode");
+        ASMCompiler.DotCodeDecoderError("invalid dotCode", line.realLineNumber);
         return new byte[0];
+    }
+    
+        public static final byte[] intTo4ByteArray(int value) {
+        return new byte[]{
+            (byte) (value >>> 24),
+            (byte) (value >>> 16),
+            (byte) (value >>> 8),
+            (byte) value};
+    }
+
+    public static final byte[] intTo2ByteArray(int value) {
+        return new byte[]{
+            (byte) (value >>> 8),
+            (byte) value};
+    }
+
+    public static final byte[] intTo1ByteArray(int value) {
+        return new byte[]{
+            (byte) value};
     }
 }

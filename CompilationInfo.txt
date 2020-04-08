@@ -1,0 +1,766 @@
+Compilation Info of File: C:\Users\parke\OneDrive\Documents\GitHub\MIPS\Examples\test.asm
+
+Origin at: 00000000
+
+   Memory Lable: main,                              Memory Adress: 00000000
+
+       Instruction/Data: lw $4,screenSizeX($0)                       Starting Memory Adress: 00000000 Bytes: 8C 04 08 41 
+       Instruction/Data: lw $5,screenSizeY($0)                       Starting Memory Adress: 00000004 Bytes: 8C 05 08 45 
+       Instruction/Data: trap 150                                    Starting Memory Adress: 00000008 Bytes: 68 00 00 96 
+       Instruction/Data: add $29,$0,$0                               Starting Memory Adress: 0000000C Bytes: 00 00 E8 20 
+       Instruction/Data: addi $4,$0,2                                Starting Memory Adress: 00000010 Bytes: 20 04 00 02 
+       Instruction/Data: sw $4,snakeSize($0)                         Starting Memory Adress: 00000014 Bytes: AC 04 08 49 
+       Instruction/Data: addi $4,$0,1                                Starting Memory Adress: 00000018 Bytes: 20 04 00 01 
+       Instruction/Data: sw $4,snakeCurrentSize($0)                  Starting Memory Adress: 0000001C Bytes: AC 04 08 4D 
+       Instruction/Data: addi $4,$0,0                                Starting Memory Adress: 00000020 Bytes: 20 04 00 00 
+       Instruction/Data: sw $4,snakeDirection($0)                    Starting Memory Adress: 00000024 Bytes: AC 04 08 51 
+       Instruction/Data: addi $4,$0,0                                Starting Memory Adress: 00000028 Bytes: 20 04 00 00 
+       Instruction/Data: addi $8,$0,2                                Starting Memory Adress: 0000002C Bytes: 20 08 00 02 
+       Instruction/Data: lw $5,screenSizeX($0)                       Starting Memory Adress: 00000030 Bytes: 8C 05 08 41 
+       Instruction/Data: div $5,$8                                   Starting Memory Adress: 00000034 Bytes: 00 A8 00 1A 
+       Instruction/Data: mflo $5                                     Starting Memory Adress: 00000038 Bytes: 00 00 28 12 
+       Instruction/Data: addi $8,$0,2                                Starting Memory Adress: 0000003C Bytes: 20 08 00 02 
+       Instruction/Data: lw $6,screenSizeY($0)                       Starting Memory Adress: 00000040 Bytes: 8C 06 08 45 
+       Instruction/Data: div $6,$8                                   Starting Memory Adress: 00000044 Bytes: 00 C8 00 1A 
+       Instruction/Data: mflo $6                                     Starting Memory Adress: 00000048 Bytes: 00 00 30 12 
+       Instruction/Data: lw $7,snakeSize($0)                         Starting Memory Adress: 0000004C Bytes: 8C 07 08 49 
+       Instruction/Data: jal writeSnakeArray                         Starting Memory Adress: 00000050 Bytes: 0C 00 01 5C 
+       Instruction/Data: jal newFoodPos                              Starting Memory Adress: 00000054 Bytes: 0C 00 00 BB 
+       Instruction/Data: jal drawScreen                              Starting Memory Adress: 00000058 Bytes: 0C 00 01 6D 
+
+   Memory Lable: loop,                              Memory Adress: 0000005C
+
+       Instruction/Data: jal userInput                               Starting Memory Adress: 0000005C Bytes: 0C 00 00 64 
+       Instruction/Data: jal collision                               Starting Memory Adress: 00000060 Bytes: 0C 00 00 17 
+       Instruction/Data: lb $3,snakeRainbow($0)                      Starting Memory Adress: 00000064 Bytes: 80 03 08 40 
+       Instruction/Data: bgtz $3,1                                   Starting Memory Adress: 00000068 Bytes: 1C 60 00 01 
+       Instruction/Data: bgtz $4,gameOver                            Starting Memory Adress: 0000006C Bytes: 1C 80 00 06 
+       Instruction/Data: jal snakeStep                               Starting Memory Adress: 00000070 Bytes: 0C 00 00 E7 
+       Instruction/Data: jal checkFood                               Starting Memory Adress: 00000074 Bytes: 0C 00 00 9A 
+       Instruction/Data: jal drawScreen                              Starting Memory Adress: 00000078 Bytes: 0C 00 01 65 
+       Instruction/Data: addi $4,$0,40                               Starting Memory Adress: 0000007C Bytes: 20 04 00 28 
+       Instruction/Data: trap 106                                    Starting Memory Adress: 00000080 Bytes: 68 00 00 6A 
+       Instruction/Data: j loop                                      Starting Memory Adress: 00000084 Bytes: 0B FF FF F5 
+
+   Memory Lable: gameOver,                          Memory Adress: 00000088
+
+       Instruction/Data: jal clearScreen                             Starting Memory Adress: 00000088 Bytes: 0C 00 01 AA 
+       Instruction/Data: jal printGameOverMessage                    Starting Memory Adress: 0000008C Bytes: 0C 00 00 03 
+       Instruction/Data: jal userInput                               Starting Memory Adress: 00000090 Bytes: 0C 00 00 57 
+       Instruction/Data: j main                                      Starting Memory Adress: 00000094 Bytes: 0B FF FF DA 
+       Instruction/Data: trap 0                                      Starting Memory Adress: 00000098 Bytes: 68 00 00 00 
+
+   Memory Lable: printGameOverMessage,              Memory Adress: 0000009C
+
+       Instruction/Data: lw $8,snakeSize($0)                         Starting Memory Adress: 0000009C Bytes: 8C 08 08 49 
+       Instruction/Data: addi $8,$8,-2                               Starting Memory Adress: 000000A0 Bytes: 21 08 FF FE 
+       Instruction/Data: lw $9,foodWorth($0)                         Starting Memory Adress: 000000A4 Bytes: 8C 09 08 59 
+       Instruction/Data: div $8,$9                                   Starting Memory Adress: 000000A8 Bytes: 01 09 00 1A 
+       Instruction/Data: mflo $4                                     Starting Memory Adress: 000000AC Bytes: 00 00 20 12 
+       Instruction/Data: trap 1                                      Starting Memory Adress: 000000B0 Bytes: 68 00 00 01 
+       Instruction/Data: addi $4,$0,10                               Starting Memory Adress: 000000B4 Bytes: 20 04 00 0A 
+       Instruction/Data: trap 101                                    Starting Memory Adress: 000000B8 Bytes: 68 00 00 65 
+       Instruction/Data: jr $31                                      Starting Memory Adress: 000000BC Bytes: 03 E0 00 08 
+
+   Memory Lable: collision,                         Memory Adress: 000000C0
+
+       Instruction/Data: add $1,$31,$0                               Starting Memory Adress: 000000C0 Bytes: 03 E0 08 20 
+       Instruction/Data: jal pushAll                                 Starting Memory Adress: 000000C4 Bytes: 0C 00 01 C8 
+       Instruction/Data: jal wallCollision                           Starting Memory Adress: 000000C8 Bytes: 0C 00 00 26 
+       Instruction/Data: jal popAll                                  Starting Memory Adress: 000000CC Bytes: 0C 00 01 D1 
+       Instruction/Data: add $31,$1,$0                               Starting Memory Adress: 000000D0 Bytes: 00 20 F8 20 
+       Instruction/Data: bgtz $4,collisionReturnOne                  Starting Memory Adress: 000000D4 Bytes: 1C 80 00 06 
+       Instruction/Data: add $1,$31,$0                               Starting Memory Adress: 000000D8 Bytes: 03 E0 08 20 
+       Instruction/Data: jal pushAll                                 Starting Memory Adress: 000000DC Bytes: 0C 00 01 C2 
+       Instruction/Data: jal selfColision                            Starting Memory Adress: 000000E0 Bytes: 0C 00 00 05 
+       Instruction/Data: jal popAll                                  Starting Memory Adress: 000000E4 Bytes: 0C 00 01 CB 
+       Instruction/Data: add $31,$1,$0                               Starting Memory Adress: 000000E8 Bytes: 00 20 F8 20 
+       Instruction/Data: jr $31                                      Starting Memory Adress: 000000EC Bytes: 03 E0 00 08 
+
+   Memory Lable: collisionReturnOne,                Memory Adress: 000000F0
+
+       Instruction/Data: addi $4,$0,1                                Starting Memory Adress: 000000F0 Bytes: 20 04 00 01 
+       Instruction/Data: jr $31                                      Starting Memory Adress: 000000F4 Bytes: 03 E0 00 08 
+
+   Memory Lable: selfColision,                      Memory Adress: 000000F8
+
+       Instruction/Data: add $4,$0,$0                                Starting Memory Adress: 000000F8 Bytes: 00 00 20 20 
+       Instruction/Data: add $1,$31,$0                               Starting Memory Adress: 000000FC Bytes: 03 E0 08 20 
+       Instruction/Data: jal pushAll                                 Starting Memory Adress: 00000100 Bytes: 0C 00 01 B9 
+       Instruction/Data: jal readSnakeArray                          Starting Memory Adress: 00000104 Bytes: 0C 00 01 38 
+       Instruction/Data: jal popAll                                  Starting Memory Adress: 00000108 Bytes: 0C 00 01 C2 
+       Instruction/Data: add $31,$1,$0                               Starting Memory Adress: 0000010C Bytes: 00 20 F8 20 
+       Instruction/Data: add $10,$4,$0                               Starting Memory Adress: 00000110 Bytes: 00 80 50 20 
+       Instruction/Data: add $11,$5,$0                               Starting Memory Adress: 00000114 Bytes: 00 A0 58 20 
+       Instruction/Data: lw $8,snakeCurrentSize($0)                  Starting Memory Adress: 00000118 Bytes: 8C 08 08 4D 
+       Instruction/Data: addi $8,$8,-1                               Starting Memory Adress: 0000011C Bytes: 21 08 FF FF 
+       Instruction/Data: beq $8,$0,selfColisionReturnZero            Starting Memory Adress: 00000120 Bytes: 11 00 00 0C 
+
+   Memory Lable: selfCollisionLoop,                 Memory Adress: 00000124
+
+       Instruction/Data: add $4,$8,$0                                Starting Memory Adress: 00000124 Bytes: 01 00 20 20 
+       Instruction/Data: add $1,$31,$0                               Starting Memory Adress: 00000128 Bytes: 03 E0 08 20 
+       Instruction/Data: jal pushAll                                 Starting Memory Adress: 0000012C Bytes: 0C 00 01 AE 
+       Instruction/Data: jal readSnakeArray                          Starting Memory Adress: 00000130 Bytes: 0C 00 01 2D 
+       Instruction/Data: jal popAll                                  Starting Memory Adress: 00000134 Bytes: 0C 00 01 B7 
+       Instruction/Data: add $31,$1,$0                               Starting Memory Adress: 00000138 Bytes: 00 20 F8 20 
+       Instruction/Data: sub $4,$4,$10                               Starting Memory Adress: 0000013C Bytes: 00 8A 20 22 
+       Instruction/Data: sub $5,$5,$11                               Starting Memory Adress: 00000140 Bytes: 00 AB 28 22 
+       Instruction/Data: or $4,$4,$5                                 Starting Memory Adress: 00000144 Bytes: 00 85 20 25 
+       Instruction/Data: beq $4,$0,selfColisionReturnOne             Starting Memory Adress: 00000148 Bytes: 10 80 00 04 
+       Instruction/Data: addi $8,$8,-1                               Starting Memory Adress: 0000014C Bytes: 21 08 FF FF 
+       Instruction/Data: bgtz $8,selfCollisionLoop                   Starting Memory Adress: 00000150 Bytes: 1D 00 FF F4 
+
+   Memory Lable: selfColisionReturnZero,            Memory Adress: 00000154
+
+       Instruction/Data: add $4,$0,$0                                Starting Memory Adress: 00000154 Bytes: 00 00 20 20 
+       Instruction/Data: jr $31                                      Starting Memory Adress: 00000158 Bytes: 03 E0 00 08 
+
+   Memory Lable: selfColisionReturnOne,             Memory Adress: 0000015C
+
+       Instruction/Data: addi $4,$0,1                                Starting Memory Adress: 0000015C Bytes: 20 04 00 01 
+       Instruction/Data: jr $31                                      Starting Memory Adress: 00000160 Bytes: 03 E0 00 08 
+
+   Memory Lable: wallCollision,                     Memory Adress: 00000164
+
+       Instruction/Data: add $4,$0,$0                                Starting Memory Adress: 00000164 Bytes: 00 00 20 20 
+       Instruction/Data: add $1,$31,$0                               Starting Memory Adress: 00000168 Bytes: 03 E0 08 20 
+       Instruction/Data: jal pushAll                                 Starting Memory Adress: 0000016C Bytes: 0C 00 01 9E 
+       Instruction/Data: jal readSnakeArray                          Starting Memory Adress: 00000170 Bytes: 0C 00 01 1D 
+       Instruction/Data: jal popAll                                  Starting Memory Adress: 00000174 Bytes: 0C 00 01 A7 
+       Instruction/Data: add $31,$1,$0                               Starting Memory Adress: 00000178 Bytes: 00 20 F8 20 
+       Instruction/Data: lw $8,screenSizeX($0)                       Starting Memory Adress: 0000017C Bytes: 8C 08 08 41 
+       Instruction/Data: addi $8,$8,-1                               Starting Memory Adress: 00000180 Bytes: 21 08 FF FF 
+       Instruction/Data: lw $9,screenSizeY($0)                       Starting Memory Adress: 00000184 Bytes: 8C 09 08 45 
+       Instruction/Data: addi $9,$9,-1                               Starting Memory Adress: 00000188 Bytes: 21 29 FF FF 
+       Instruction/Data: addi $10,$0,1                               Starting Memory Adress: 0000018C Bytes: 20 0A 00 01 
+       Instruction/Data: beq $6,$10,wallCollisionUp                  Starting Memory Adress: 00000190 Bytes: 10 CA 00 06 
+       Instruction/Data: addi $10,$0,0                               Starting Memory Adress: 00000194 Bytes: 20 0A 00 00 
+       Instruction/Data: beq $6,$10,wallCollisionRight               Starting Memory Adress: 00000198 Bytes: 10 CA 00 06 
+       Instruction/Data: addi $10,$0,3                               Starting Memory Adress: 0000019C Bytes: 20 0A 00 03 
+       Instruction/Data: beq $6,$10,wallCollisionDown                Starting Memory Adress: 000001A0 Bytes: 10 CA 00 06 
+       Instruction/Data: addi $10,$0,2                               Starting Memory Adress: 000001A4 Bytes: 20 0A 00 02 
+       Instruction/Data: beq $6,$10,wallCollisionLeft                Starting Memory Adress: 000001A8 Bytes: 10 CA 00 06 
+
+   Memory Lable: wallCollisionUp,                   Memory Adress: 000001AC
+
+       Instruction/Data: bne $5,$0,wallCollisionReturnFalse          Starting Memory Adress: 000001AC Bytes: 14 A0 00 07 
+       Instruction/Data: j wallCollisionReturnTrue                   Starting Memory Adress: 000001B0 Bytes: 08 00 00 08 
+
+   Memory Lable: wallCollisionRight,                Memory Adress: 000001B4
+
+       Instruction/Data: bne $4,$8,wallCollisionReturnFalse          Starting Memory Adress: 000001B4 Bytes: 14 88 00 05 
+       Instruction/Data: j wallCollisionReturnTrue                   Starting Memory Adress: 000001B8 Bytes: 08 00 00 06 
+
+   Memory Lable: wallCollisionDown,                 Memory Adress: 000001BC
+
+       Instruction/Data: bne $5,$9,wallCollisionReturnFalse          Starting Memory Adress: 000001BC Bytes: 14 A9 00 03 
+       Instruction/Data: j wallCollisionReturnTrue                   Starting Memory Adress: 000001C0 Bytes: 08 00 00 04 
+
+   Memory Lable: wallCollisionLeft,                 Memory Adress: 000001C4
+
+       Instruction/Data: bne $4,$0,wallCollisionReturnFalse          Starting Memory Adress: 000001C4 Bytes: 14 80 00 01 
+       Instruction/Data: j wallCollisionReturnTrue                   Starting Memory Adress: 000001C8 Bytes: 08 00 00 02 
+
+   Memory Lable: wallCollisionReturnFalse,          Memory Adress: 000001CC
+
+       Instruction/Data: add $4,$0,$0                                Starting Memory Adress: 000001CC Bytes: 00 00 20 20 
+       Instruction/Data: jr $31                                      Starting Memory Adress: 000001D0 Bytes: 03 E0 00 08 
+
+   Memory Lable: wallCollisionReturnTrue,           Memory Adress: 000001D4
+
+       Instruction/Data: addi $4,$0,1                                Starting Memory Adress: 000001D4 Bytes: 20 04 00 01 
+       Instruction/Data: jr $31                                      Starting Memory Adress: 000001D8 Bytes: 03 E0 00 08 
+
+   Memory Lable: delay,                             Memory Adress: 000001DC
+
+       Instruction/Data: addi $8,$0,300                              Starting Memory Adress: 000001DC Bytes: 20 08 01 2C 
+       Instruction/Data: sll $8,$8,10                                Starting Memory Adress: 000001E0 Bytes: 00 08 42 80 
+
+   Memory Lable: delayLoop,                         Memory Adress: 000001E4
+
+       Instruction/Data: addi $8,$8,-1                               Starting Memory Adress: 000001E4 Bytes: 21 08 FF FF 
+       Instruction/Data: bgtz $8,delayLoop                           Starting Memory Adress: 000001E8 Bytes: 1D 00 FF FE 
+       Instruction/Data: jr $31                                      Starting Memory Adress: 000001EC Bytes: 03 E0 00 08 
+
+   Memory Lable: userInput,                         Memory Adress: 000001F0
+
+       Instruction/Data: addi $8,$0,10                               Starting Memory Adress: 000001F0 Bytes: 20 08 00 0A 
+       Instruction/Data: lw $7,snakeDirection($0)                    Starting Memory Adress: 000001F4 Bytes: 8C 07 08 51 
+       Instruction/Data: addi $4,$0,114                              Starting Memory Adress: 000001F8 Bytes: 20 04 00 72 
+       Instruction/Data: trap 104                                    Starting Memory Adress: 000001FC Bytes: 68 00 00 68 
+       Instruction/Data: addi $4,$0,1                                Starting Memory Adress: 00000200 Bytes: 20 04 00 01 
+       Instruction/Data: blez $2,1                                   Starting Memory Adress: 00000204 Bytes: 18 40 00 01 
+       Instruction/Data: sb $4,snakeRainbow($0)                      Starting Memory Adress: 00000208 Bytes: A0 04 08 40 
+       Instruction/Data: addi $4,$0,110                              Starting Memory Adress: 0000020C Bytes: 20 04 00 6E 
+       Instruction/Data: trap 104                                    Starting Memory Adress: 00000210 Bytes: 68 00 00 68 
+       Instruction/Data: blez $2,1                                   Starting Memory Adress: 00000214 Bytes: 18 40 00 01 
+       Instruction/Data: sb $0,snakeRainbow($0)                      Starting Memory Adress: 00000218 Bytes: A0 00 08 40 
+       Instruction/Data: addi $4,$0,100                              Starting Memory Adress: 0000021C Bytes: 20 04 00 64 
+       Instruction/Data: trap 104                                    Starting Memory Adress: 00000220 Bytes: 68 00 00 68 
+       Instruction/Data: addi $6,$0,2                                Starting Memory Adress: 00000224 Bytes: 20 06 00 02 
+       Instruction/Data: beq $7,$6,1                                 Starting Memory Adress: 00000228 Bytes: 10 E6 00 01 
+       Instruction/Data: bgtz $2,userInputRight                      Starting Memory Adress: 0000022C Bytes: 1C 40 00 10 
+       Instruction/Data: addi $4,$0,119                              Starting Memory Adress: 00000230 Bytes: 20 04 00 77 
+       Instruction/Data: trap 104                                    Starting Memory Adress: 00000234 Bytes: 68 00 00 68 
+       Instruction/Data: addi $6,$0,3                                Starting Memory Adress: 00000238 Bytes: 20 06 00 03 
+       Instruction/Data: beq $7,$6,1                                 Starting Memory Adress: 0000023C Bytes: 10 E6 00 01 
+       Instruction/Data: bgtz $2,userInputUp                         Starting Memory Adress: 00000240 Bytes: 1C 40 00 0E 
+       Instruction/Data: addi $4,$0,97                               Starting Memory Adress: 00000244 Bytes: 20 04 00 61 
+       Instruction/Data: trap 104                                    Starting Memory Adress: 00000248 Bytes: 68 00 00 68 
+       Instruction/Data: addi $6,$0,0                                Starting Memory Adress: 0000024C Bytes: 20 06 00 00 
+       Instruction/Data: beq $7,$6,1                                 Starting Memory Adress: 00000250 Bytes: 10 E6 00 01 
+       Instruction/Data: bgtz $2,userInputLeft                       Starting Memory Adress: 00000254 Bytes: 1C 40 00 0C 
+       Instruction/Data: addi $4,$0,115                              Starting Memory Adress: 00000258 Bytes: 20 04 00 73 
+       Instruction/Data: trap 104                                    Starting Memory Adress: 0000025C Bytes: 68 00 00 68 
+       Instruction/Data: addi $6,$0,1                                Starting Memory Adress: 00000260 Bytes: 20 06 00 01 
+       Instruction/Data: beq $7,$6,1                                 Starting Memory Adress: 00000264 Bytes: 10 E6 00 01 
+       Instruction/Data: bgtz $2,userInputDown                       Starting Memory Adress: 00000268 Bytes: 1C 40 00 0A 
+       Instruction/Data: j endUserInput                              Starting Memory Adress: 0000026C Bytes: 08 00 00 0C 
+
+   Memory Lable: userInputRight,                    Memory Adress: 00000270
+
+       Instruction/Data: addi $4,$0,0                                Starting Memory Adress: 00000270 Bytes: 20 04 00 00 
+       Instruction/Data: sw $4,snakeDirection($0)                    Starting Memory Adress: 00000274 Bytes: AC 04 08 51 
+       Instruction/Data: j endUserInput                              Starting Memory Adress: 00000278 Bytes: 08 00 00 09 
+
+   Memory Lable: userInputUp,                       Memory Adress: 0000027C
+
+       Instruction/Data: addi $4,$0,1                                Starting Memory Adress: 0000027C Bytes: 20 04 00 01 
+       Instruction/Data: sw $4,snakeDirection($0)                    Starting Memory Adress: 00000280 Bytes: AC 04 08 51 
+       Instruction/Data: j endUserInput                              Starting Memory Adress: 00000284 Bytes: 08 00 00 06 
+
+   Memory Lable: userInputLeft,                     Memory Adress: 00000288
+
+       Instruction/Data: addi $4,$0,2                                Starting Memory Adress: 00000288 Bytes: 20 04 00 02 
+       Instruction/Data: sw $4,snakeDirection($0)                    Starting Memory Adress: 0000028C Bytes: AC 04 08 51 
+       Instruction/Data: j endUserInput                              Starting Memory Adress: 00000290 Bytes: 08 00 00 03 
+
+   Memory Lable: userInputDown,                     Memory Adress: 00000294
+
+       Instruction/Data: addi $4,$0,3                                Starting Memory Adress: 00000294 Bytes: 20 04 00 03 
+       Instruction/Data: sw $4,snakeDirection($0)                    Starting Memory Adress: 00000298 Bytes: AC 04 08 51 
+       Instruction/Data: j endUserInput                              Starting Memory Adress: 0000029C Bytes: 08 00 00 00 
+
+   Memory Lable: endUserInput,                      Memory Adress: 000002A0
+
+       Instruction/Data: add $4,$0,$0                                Starting Memory Adress: 000002A0 Bytes: 00 00 20 20 
+       Instruction/Data: add $1,$31,$0                               Starting Memory Adress: 000002A4 Bytes: 03 E0 08 20 
+       Instruction/Data: jal pushAll                                 Starting Memory Adress: 000002A8 Bytes: 0C 00 01 4F 
+       Instruction/Data: jal readSnakeArray                          Starting Memory Adress: 000002AC Bytes: 0C 00 00 CE 
+       Instruction/Data: jal popAll                                  Starting Memory Adress: 000002B0 Bytes: 0C 00 01 58 
+       Instruction/Data: add $31,$1,$0                               Starting Memory Adress: 000002B4 Bytes: 00 20 F8 20 
+       Instruction/Data: lw $7,snakeDirection($0)                    Starting Memory Adress: 000002B8 Bytes: 8C 07 08 51 
+       Instruction/Data: add $6,$5,$0                                Starting Memory Adress: 000002BC Bytes: 00 A0 30 20 
+       Instruction/Data: add $5,$4,$0                                Starting Memory Adress: 000002C0 Bytes: 00 80 28 20 
+       Instruction/Data: add $4,$0,$0                                Starting Memory Adress: 000002C4 Bytes: 00 00 20 20 
+       Instruction/Data: add $1,$31,$0                               Starting Memory Adress: 000002C8 Bytes: 03 E0 08 20 
+       Instruction/Data: jal pushAll                                 Starting Memory Adress: 000002CC Bytes: 0C 00 01 46 
+       Instruction/Data: jal writeSnakeArray                         Starting Memory Adress: 000002D0 Bytes: 0C 00 00 BC 
+       Instruction/Data: jal popAll                                  Starting Memory Adress: 000002D4 Bytes: 0C 00 01 4F 
+       Instruction/Data: add $31,$1,$0                               Starting Memory Adress: 000002D8 Bytes: 00 20 F8 20 
+       Instruction/Data: jr $31                                      Starting Memory Adress: 000002DC Bytes: 03 E0 00 08 
+
+   Memory Lable: checkFood,                         Memory Adress: 000002E0
+
+       Instruction/Data: add $4,$0,$0                                Starting Memory Adress: 000002E0 Bytes: 00 00 20 20 
+       Instruction/Data: add $1,$31,$0                               Starting Memory Adress: 000002E4 Bytes: 03 E0 08 20 
+       Instruction/Data: jal pushAll                                 Starting Memory Adress: 000002E8 Bytes: 0C 00 01 3F 
+       Instruction/Data: jal readSnakeArray                          Starting Memory Adress: 000002EC Bytes: 0C 00 00 BE 
+       Instruction/Data: jal popAll                                  Starting Memory Adress: 000002F0 Bytes: 0C 00 01 48 
+       Instruction/Data: add $31,$1,$0                               Starting Memory Adress: 000002F4 Bytes: 00 20 F8 20 
+       Instruction/Data: add $8,$4,$0                                Starting Memory Adress: 000002F8 Bytes: 00 80 40 20 
+       Instruction/Data: add $9,$5,$0                                Starting Memory Adress: 000002FC Bytes: 00 A0 48 20 
+       Instruction/Data: add $1,$31,$0                               Starting Memory Adress: 00000300 Bytes: 03 E0 08 20 
+       Instruction/Data: jal pushAll                                 Starting Memory Adress: 00000304 Bytes: 0C 00 01 38 
+       Instruction/Data: jal getFoodPos                              Starting Memory Adress: 00000308 Bytes: 0C 00 00 38 
+       Instruction/Data: jal popAll                                  Starting Memory Adress: 0000030C Bytes: 0C 00 01 41 
+       Instruction/Data: add $31,$1,$0                               Starting Memory Adress: 00000310 Bytes: 00 20 F8 20 
+       Instruction/Data: bne $8,$4,checkFoodReturn                   Starting Memory Adress: 00000314 Bytes: 15 04 00 0A 
+       Instruction/Data: bne $9,$5,checkFoodReturn                   Starting Memory Adress: 00000318 Bytes: 15 25 00 09 
+       Instruction/Data: lw $10,snakeSize($0)                        Starting Memory Adress: 0000031C Bytes: 8C 0A 08 49 
+       Instruction/Data: lw $11,foodWorth($0)                        Starting Memory Adress: 00000320 Bytes: 8C 0B 08 59 
+       Instruction/Data: add $10,$10,$11                             Starting Memory Adress: 00000324 Bytes: 01 4B 50 20 
+       Instruction/Data: sw $10,snakeSize($0)                        Starting Memory Adress: 00000328 Bytes: AC 0A 08 49 
+       Instruction/Data: add $1,$31,$0                               Starting Memory Adress: 0000032C Bytes: 03 E0 08 20 
+       Instruction/Data: jal pushAll                                 Starting Memory Adress: 00000330 Bytes: 0C 00 01 2D 
+       Instruction/Data: jal newFoodPos                              Starting Memory Adress: 00000334 Bytes: 0C 00 00 03 
+       Instruction/Data: jal popAll                                  Starting Memory Adress: 00000338 Bytes: 0C 00 01 36 
+       Instruction/Data: add $31,$1,$0                               Starting Memory Adress: 0000033C Bytes: 00 20 F8 20 
+
+   Memory Lable: checkFoodReturn,                   Memory Adress: 00000340
+
+       Instruction/Data: jr $31                                      Starting Memory Adress: 00000340 Bytes: 03 E0 00 08 
+
+   Memory Lable: newFoodPos,                        Memory Adress: 00000344
+
+       Instruction/Data: lw $8,screenSizeX($0)                       Starting Memory Adress: 00000344 Bytes: 8C 08 08 41 
+       Instruction/Data: addi $8,$8,-1                               Starting Memory Adress: 00000348 Bytes: 21 08 FF FF 
+       Instruction/Data: lw $9,screenSizeY($0)                       Starting Memory Adress: 0000034C Bytes: 8C 09 08 45 
+       Instruction/Data: addi $9,$9,-1                               Starting Memory Adress: 00000350 Bytes: 21 29 FF FF 
+       Instruction/Data: add $4,$0,$0                                Starting Memory Adress: 00000354 Bytes: 00 00 20 20 
+       Instruction/Data: add $5,$8,$0                                Starting Memory Adress: 00000358 Bytes: 01 00 28 20 
+       Instruction/Data: trap 99                                     Starting Memory Adress: 0000035C Bytes: 68 00 00 63 
+       Instruction/Data: add $10,$2,$0                               Starting Memory Adress: 00000360 Bytes: 00 40 50 20 
+       Instruction/Data: add $4,$0,$0                                Starting Memory Adress: 00000364 Bytes: 00 00 20 20 
+       Instruction/Data: add $5,$9,$0                                Starting Memory Adress: 00000368 Bytes: 01 20 28 20 
+       Instruction/Data: trap 99                                     Starting Memory Adress: 0000036C Bytes: 68 00 00 63 
+       Instruction/Data: add $11,$2,$0                               Starting Memory Adress: 00000370 Bytes: 00 40 58 20 
+       Instruction/Data: add $4,$10,$0                               Starting Memory Adress: 00000374 Bytes: 01 40 20 20 
+       Instruction/Data: add $5,$11,$0                               Starting Memory Adress: 00000378 Bytes: 01 60 28 20 
+       Instruction/Data: add $1,$31,$0                               Starting Memory Adress: 0000037C Bytes: 03 E0 08 20 
+       Instruction/Data: jal pushAll                                 Starting Memory Adress: 00000380 Bytes: 0C 00 01 19 
+       Instruction/Data: jal setFoodPos                              Starting Memory Adress: 00000384 Bytes: 0C 00 00 1E 
+       Instruction/Data: jal popAll                                  Starting Memory Adress: 00000388 Bytes: 0C 00 01 22 
+       Instruction/Data: add $31,$1,$0                               Starting Memory Adress: 0000038C Bytes: 00 20 F8 20 
+       Instruction/Data: jr $31                                      Starting Memory Adress: 00000390 Bytes: 03 E0 00 08 
+
+   Memory Lable: drawFood,                          Memory Adress: 00000394
+
+       Instruction/Data: add $1,$31,$0                               Starting Memory Adress: 00000394 Bytes: 03 E0 08 20 
+       Instruction/Data: jal pushAll                                 Starting Memory Adress: 00000398 Bytes: 0C 00 01 13 
+       Instruction/Data: jal getFoodPos                              Starting Memory Adress: 0000039C Bytes: 0C 00 00 13 
+       Instruction/Data: jal popAll                                  Starting Memory Adress: 000003A0 Bytes: 0C 00 01 1C 
+       Instruction/Data: add $31,$1,$0                               Starting Memory Adress: 000003A4 Bytes: 00 20 F8 20 
+       Instruction/Data: add $11,$4,$0                               Starting Memory Adress: 000003A8 Bytes: 00 80 58 20 
+       Instruction/Data: add $12,$5,$0                               Starting Memory Adress: 000003AC Bytes: 00 A0 60 20 
+       Instruction/Data: lb $10,snakeRainbow($0)                     Starting Memory Adress: 000003B0 Bytes: 80 0A 08 40 
+       Instruction/Data: bgtz $10,2                                  Starting Memory Adress: 000003B4 Bytes: 1D 40 00 02 
+       Instruction/Data: addi $6,$0,255                              Starting Memory Adress: 000003B8 Bytes: 20 06 00 FF 
+       Instruction/Data: sll $6,$6,16                                Starting Memory Adress: 000003BC Bytes: 00 06 34 00 
+       Instruction/Data: blez $10,8                                  Starting Memory Adress: 000003C0 Bytes: 19 40 00 08 
+       Instruction/Data: trap 130                                    Starting Memory Adress: 000003C4 Bytes: 68 00 00 82 
+       Instruction/Data: sra $4,$2,3                                 Starting Memory Adress: 000003C8 Bytes: 00 02 20 C3 
+       Instruction/Data: addi $5,$0,255                              Starting Memory Adress: 000003CC Bytes: 20 05 00 FF 
+       Instruction/Data: addi $6,$0,255                              Starting Memory Adress: 000003D0 Bytes: 20 06 00 FF 
+       Instruction/Data: trap 155                                    Starting Memory Adress: 000003D4 Bytes: 68 00 00 9B 
+       Instruction/Data: add $6,$4,$0                                Starting Memory Adress: 000003D8 Bytes: 00 80 30 20 
+       Instruction/Data: add $4,$11,$0                               Starting Memory Adress: 000003DC Bytes: 01 60 20 20 
+       Instruction/Data: add $5,$12,$0                               Starting Memory Adress: 000003E0 Bytes: 01 80 28 20 
+       Instruction/Data: trap 151                                    Starting Memory Adress: 000003E4 Bytes: 68 00 00 97 
+       Instruction/Data: jr $31                                      Starting Memory Adress: 000003E8 Bytes: 03 E0 00 08 
+
+   Memory Lable: getFoodPos,                        Memory Adress: 000003EC
+
+       Instruction/Data: lw $4,foodPos($0)                           Starting Memory Adress: 000003EC Bytes: 8C 04 08 55 
+       Instruction/Data: sra $5,$4,8                                 Starting Memory Adress: 000003F0 Bytes: 00 04 2A 03 
+       Instruction/Data: andi $4,$4,255                              Starting Memory Adress: 000003F4 Bytes: 30 84 00 FF 
+       Instruction/Data: andi $5,$5,255                              Starting Memory Adress: 000003F8 Bytes: 30 A5 00 FF 
+       Instruction/Data: jr $31                                      Starting Memory Adress: 000003FC Bytes: 03 E0 00 08 
+
+   Memory Lable: setFoodPos,                        Memory Adress: 00000400
+
+       Instruction/Data: sll $5,$5,8                                 Starting Memory Adress: 00000400 Bytes: 00 05 2A 00 
+       Instruction/Data: or $4,$4,$5                                 Starting Memory Adress: 00000404 Bytes: 00 85 20 25 
+       Instruction/Data: sw $4,foodPos($0)                           Starting Memory Adress: 00000408 Bytes: AC 04 08 55 
+       Instruction/Data: jr $31                                      Starting Memory Adress: 0000040C Bytes: 03 E0 00 08 
+
+   Memory Lable: snakeStep,                         Memory Adress: 00000410
+
+       Instruction/Data: lw $8,snakeCurrentSize($0)                  Starting Memory Adress: 00000410 Bytes: 8C 08 08 4D 
+       Instruction/Data: addi $8,$8,-1                               Starting Memory Adress: 00000414 Bytes: 21 08 FF FF 
+       Instruction/Data: add $1,$31,$0                               Starting Memory Adress: 00000418 Bytes: 03 E0 08 20 
+       Instruction/Data: jal pushAll                                 Starting Memory Adress: 0000041C Bytes: 0C 00 00 F2 
+       Instruction/Data: jal grow                                    Starting Memory Adress: 00000420 Bytes: 0C 00 00 0C 
+       Instruction/Data: jal popAll                                  Starting Memory Adress: 00000424 Bytes: 0C 00 00 FB 
+       Instruction/Data: add $31,$1,$0                               Starting Memory Adress: 00000428 Bytes: 00 20 F8 20 
+
+   Memory Lable: snakeStepLoop,                     Memory Adress: 0000042C
+
+       Instruction/Data: add $4,$8,$0                                Starting Memory Adress: 0000042C Bytes: 01 00 20 20 
+       Instruction/Data: add $1,$31,$0                               Starting Memory Adress: 00000430 Bytes: 03 E0 08 20 
+       Instruction/Data: jal pushAll                                 Starting Memory Adress: 00000434 Bytes: 0C 00 00 EC 
+       Instruction/Data: jal snakeSingleStep                         Starting Memory Adress: 00000438 Bytes: 0C 00 00 1B 
+       Instruction/Data: jal popAll                                  Starting Memory Adress: 0000043C Bytes: 0C 00 00 F5 
+       Instruction/Data: add $31,$1,$0                               Starting Memory Adress: 00000440 Bytes: 00 20 F8 20 
+       Instruction/Data: addi $8,$8,-1                               Starting Memory Adress: 00000444 Bytes: 21 08 FF FF 
+       Instruction/Data: addi $9,$8,1                                Starting Memory Adress: 00000448 Bytes: 21 09 00 01 
+       Instruction/Data: bgtz $9,snakeStepLoop                       Starting Memory Adress: 0000044C Bytes: 1D 20 FF F7 
+       Instruction/Data: jr $31                                      Starting Memory Adress: 00000450 Bytes: 03 E0 00 08 
+
+   Memory Lable: grow,                              Memory Adress: 00000454
+
+       Instruction/Data: lw $8,snakeCurrentSize($0)                  Starting Memory Adress: 00000454 Bytes: 8C 08 08 4D 
+       Instruction/Data: lw $9,snakeSize($0)                         Starting Memory Adress: 00000458 Bytes: 8C 09 08 49 
+       Instruction/Data: beq $8,$9,growReturn                        Starting Memory Adress: 0000045C Bytes: 11 09 00 11 
+       Instruction/Data: addi $4,$8,-1                               Starting Memory Adress: 00000460 Bytes: 21 04 FF FF 
+       Instruction/Data: add $1,$31,$0                               Starting Memory Adress: 00000464 Bytes: 03 E0 08 20 
+       Instruction/Data: jal pushAll                                 Starting Memory Adress: 00000468 Bytes: 0C 00 00 DF 
+       Instruction/Data: jal readSnakeArray                          Starting Memory Adress: 0000046C Bytes: 0C 00 00 5E 
+       Instruction/Data: jal popAll                                  Starting Memory Adress: 00000470 Bytes: 0C 00 00 E8 
+       Instruction/Data: add $31,$1,$0                               Starting Memory Adress: 00000474 Bytes: 00 20 F8 20 
+       Instruction/Data: add $7,$6,$0                                Starting Memory Adress: 00000478 Bytes: 00 C0 38 20 
+       Instruction/Data: add $6,$5,$0                                Starting Memory Adress: 0000047C Bytes: 00 A0 30 20 
+       Instruction/Data: add $5,$4,$0                                Starting Memory Adress: 00000480 Bytes: 00 80 28 20 
+       Instruction/Data: add $4,$8,$0                                Starting Memory Adress: 00000484 Bytes: 01 00 20 20 
+       Instruction/Data: add $1,$31,$0                               Starting Memory Adress: 00000488 Bytes: 03 E0 08 20 
+       Instruction/Data: jal pushAll                                 Starting Memory Adress: 0000048C Bytes: 0C 00 00 D6 
+       Instruction/Data: jal writeSnakeArray                         Starting Memory Adress: 00000490 Bytes: 0C 00 00 4C 
+       Instruction/Data: jal popAll                                  Starting Memory Adress: 00000494 Bytes: 0C 00 00 DF 
+       Instruction/Data: add $31,$1,$0                               Starting Memory Adress: 00000498 Bytes: 00 20 F8 20 
+       Instruction/Data: addi $4,$8,1                                Starting Memory Adress: 0000049C Bytes: 21 04 00 01 
+       Instruction/Data: sw $4,snakeCurrentSize($0)                  Starting Memory Adress: 000004A0 Bytes: AC 04 08 4D 
+
+   Memory Lable: growReturn,                        Memory Adress: 000004A4
+
+       Instruction/Data: jr $31                                      Starting Memory Adress: 000004A4 Bytes: 03 E0 00 08 
+
+   Memory Lable: snakeSingleStep,                   Memory Adress: 000004A8
+
+       Instruction/Data: add $16,$4,$0                               Starting Memory Adress: 000004A8 Bytes: 00 80 80 20 
+       Instruction/Data: blez $16,snakeSingleStepDirectionIndexZero  Starting Memory Adress: 000004AC Bytes: 1A 00 00 10 
+       Instruction/Data: addi $4,$4,-1                               Starting Memory Adress: 000004B0 Bytes: 20 84 FF FF 
+       Instruction/Data: add $1,$31,$0                               Starting Memory Adress: 000004B4 Bytes: 03 E0 08 20 
+       Instruction/Data: jal pushAll                                 Starting Memory Adress: 000004B8 Bytes: 0C 00 00 CB 
+       Instruction/Data: jal readSnakeArray                          Starting Memory Adress: 000004BC Bytes: 0C 00 00 4A 
+       Instruction/Data: jal popAll                                  Starting Memory Adress: 000004C0 Bytes: 0C 00 00 D4 
+       Instruction/Data: add $31,$1,$0                               Starting Memory Adress: 000004C4 Bytes: 00 20 F8 20 
+       Instruction/Data: add $7,$6,$0                                Starting Memory Adress: 000004C8 Bytes: 00 C0 38 20 
+       Instruction/Data: add $6,$5,$0                                Starting Memory Adress: 000004CC Bytes: 00 A0 30 20 
+       Instruction/Data: add $5,$4,$0                                Starting Memory Adress: 000004D0 Bytes: 00 80 28 20 
+       Instruction/Data: addi $4,$16,0                               Starting Memory Adress: 000004D4 Bytes: 22 04 00 00 
+       Instruction/Data: add $1,$31,$0                               Starting Memory Adress: 000004D8 Bytes: 03 E0 08 20 
+       Instruction/Data: jal pushAll                                 Starting Memory Adress: 000004DC Bytes: 0C 00 00 C2 
+       Instruction/Data: jal writeSnakeArray                         Starting Memory Adress: 000004E0 Bytes: 0C 00 00 38 
+       Instruction/Data: jal popAll                                  Starting Memory Adress: 000004E4 Bytes: 0C 00 00 CB 
+       Instruction/Data: add $31,$1,$0                               Starting Memory Adress: 000004E8 Bytes: 00 20 F8 20 
+       Instruction/Data: jr $31                                      Starting Memory Adress: 000004EC Bytes: 03 E0 00 08 
+
+   Memory Lable: snakeSingleStepDirectionIndexZero, Memory Adress: 000004F0
+
+       Instruction/Data: add $1,$31,$0                               Starting Memory Adress: 000004F0 Bytes: 03 E0 08 20 
+       Instruction/Data: jal pushAll                                 Starting Memory Adress: 000004F4 Bytes: 0C 00 00 BC 
+       Instruction/Data: jal readSnakeArray                          Starting Memory Adress: 000004F8 Bytes: 0C 00 00 3B 
+       Instruction/Data: jal popAll                                  Starting Memory Adress: 000004FC Bytes: 0C 00 00 C5 
+       Instruction/Data: add $31,$1,$0                               Starting Memory Adress: 00000500 Bytes: 00 20 F8 20 
+       Instruction/Data: lw $10,screenSizeX($0)                      Starting Memory Adress: 00000504 Bytes: 8C 0A 08 41 
+       Instruction/Data: addi $10,$10,-1                             Starting Memory Adress: 00000508 Bytes: 21 4A FF FF 
+       Instruction/Data: lw $11,screenSizeY($0)                      Starting Memory Adress: 0000050C Bytes: 8C 0B 08 45 
+       Instruction/Data: addi $11,$11,-1                             Starting Memory Adress: 00000510 Bytes: 21 6B FF FF 
+       Instruction/Data: addi $7,$0,0                                Starting Memory Adress: 00000514 Bytes: 20 07 00 00 
+       Instruction/Data: beq $6,$7,snakeSingleStepRight              Starting Memory Adress: 00000518 Bytes: 10 C7 00 06 
+       Instruction/Data: addi $7,$0,1                                Starting Memory Adress: 0000051C Bytes: 20 07 00 01 
+       Instruction/Data: beq $6,$7,snakeSingleStepUp                 Starting Memory Adress: 00000520 Bytes: 10 C7 00 0A 
+       Instruction/Data: addi $7,$0,2                                Starting Memory Adress: 00000524 Bytes: 20 07 00 02 
+       Instruction/Data: beq $6,$7,snakeSingleStepLeft               Starting Memory Adress: 00000528 Bytes: 10 C7 00 0E 
+       Instruction/Data: addi $7,$0,3                                Starting Memory Adress: 0000052C Bytes: 20 07 00 03 
+       Instruction/Data: beq $6,$7,snakeSingleStepDown               Starting Memory Adress: 00000530 Bytes: 10 C7 00 12 
+
+   Memory Lable: snakeSingleStepRight,              Memory Adress: 00000534
+
+       Instruction/Data: bne $4,$10,2                                Starting Memory Adress: 00000534 Bytes: 14 8A 00 02 
+       Instruction/Data: add $4,$0,$0                                Starting Memory Adress: 00000538 Bytes: 00 00 20 20 
+       Instruction/Data: j snakeSingleStepDirection                  Starting Memory Adress: 0000053C Bytes: 08 00 00 15 
+       Instruction/Data: beq $4,$10,1                                Starting Memory Adress: 00000540 Bytes: 10 8A 00 01 
+       Instruction/Data: addi $4,$4,1                                Starting Memory Adress: 00000544 Bytes: 20 84 00 01 
+       Instruction/Data: j snakeSingleStepDirection                  Starting Memory Adress: 00000548 Bytes: 08 00 00 12 
+
+   Memory Lable: snakeSingleStepUp,                 Memory Adress: 0000054C
+
+       Instruction/Data: bne $5,$0,2                                 Starting Memory Adress: 0000054C Bytes: 14 A0 00 02 
+       Instruction/Data: add $5,$11,$0                               Starting Memory Adress: 00000550 Bytes: 01 60 28 20 
+       Instruction/Data: j snakeSingleStepDirection                  Starting Memory Adress: 00000554 Bytes: 08 00 00 0F 
+       Instruction/Data: beq $5,$0,1                                 Starting Memory Adress: 00000558 Bytes: 10 A0 00 01 
+       Instruction/Data: addi $5,$5,-1                               Starting Memory Adress: 0000055C Bytes: 20 A5 FF FF 
+       Instruction/Data: j snakeSingleStepDirection                  Starting Memory Adress: 00000560 Bytes: 08 00 00 0C 
+
+   Memory Lable: snakeSingleStepLeft,               Memory Adress: 00000564
+
+       Instruction/Data: bne $4,$0,2                                 Starting Memory Adress: 00000564 Bytes: 14 80 00 02 
+       Instruction/Data: add $4,$10,$0                               Starting Memory Adress: 00000568 Bytes: 01 40 20 20 
+       Instruction/Data: j snakeSingleStepDirection                  Starting Memory Adress: 0000056C Bytes: 08 00 00 09 
+       Instruction/Data: beq $4,$0,1                                 Starting Memory Adress: 00000570 Bytes: 10 80 00 01 
+       Instruction/Data: addi $4,$4,-1                               Starting Memory Adress: 00000574 Bytes: 20 84 FF FF 
+       Instruction/Data: j snakeSingleStepDirection                  Starting Memory Adress: 00000578 Bytes: 08 00 00 06 
+
+   Memory Lable: snakeSingleStepDown,               Memory Adress: 0000057C
+
+       Instruction/Data: bne $5,$11,2                                Starting Memory Adress: 0000057C Bytes: 14 AB 00 02 
+       Instruction/Data: add $5,$0,$0                                Starting Memory Adress: 00000580 Bytes: 00 00 28 20 
+       Instruction/Data: j snakeSingleStepDirection                  Starting Memory Adress: 00000584 Bytes: 08 00 00 03 
+       Instruction/Data: beq $5,$11,1                                Starting Memory Adress: 00000588 Bytes: 10 AB 00 01 
+       Instruction/Data: addi $5,$5,1                                Starting Memory Adress: 0000058C Bytes: 20 A5 00 01 
+       Instruction/Data: j snakeSingleStepDirection                  Starting Memory Adress: 00000590 Bytes: 08 00 00 00 
+
+   Memory Lable: snakeSingleStepDirection,          Memory Adress: 00000594
+
+       Instruction/Data: add $17,$4,$0                               Starting Memory Adress: 00000594 Bytes: 00 80 88 20 
+       Instruction/Data: add $18,$5,$0                               Starting Memory Adress: 00000598 Bytes: 00 A0 90 20 
+       Instruction/Data: add $4,$16,$0                               Starting Memory Adress: 0000059C Bytes: 02 00 20 20 
+       Instruction/Data: add $5,$17,$0                               Starting Memory Adress: 000005A0 Bytes: 02 20 28 20 
+       Instruction/Data: add $6,$18,$0                               Starting Memory Adress: 000005A4 Bytes: 02 40 30 20 
+       Instruction/Data: lw $7,snakeDirection($0)                    Starting Memory Adress: 000005A8 Bytes: 8C 07 08 51 
+       Instruction/Data: add $1,$31,$0                               Starting Memory Adress: 000005AC Bytes: 03 E0 08 20 
+       Instruction/Data: jal pushAll                                 Starting Memory Adress: 000005B0 Bytes: 0C 00 00 8D 
+       Instruction/Data: jal writeSnakeArray                         Starting Memory Adress: 000005B4 Bytes: 0C 00 00 03 
+       Instruction/Data: jal popAll                                  Starting Memory Adress: 000005B8 Bytes: 0C 00 00 96 
+       Instruction/Data: add $31,$1,$0                               Starting Memory Adress: 000005BC Bytes: 00 20 F8 20 
+       Instruction/Data: jr $31                                      Starting Memory Adress: 000005C0 Bytes: 03 E0 00 08 
+
+   Memory Lable: writeSnakeArray,                   Memory Adress: 000005C4
+
+       Instruction/Data: sll $6,$6,8                                 Starting Memory Adress: 000005C4 Bytes: 00 06 32 00 
+       Instruction/Data: sll $7,$7,16                                Starting Memory Adress: 000005C8 Bytes: 00 07 3C 00 
+       Instruction/Data: or $5,$5,$6                                 Starting Memory Adress: 000005CC Bytes: 00 A6 28 25 
+       Instruction/Data: or $5,$5,$7                                 Starting Memory Adress: 000005D0 Bytes: 00 A7 28 25 
+       Instruction/Data: addi $8,$0,4                                Starting Memory Adress: 000005D4 Bytes: 20 08 00 04 
+       Instruction/Data: mult $4,$8                                  Starting Memory Adress: 000005D8 Bytes: 00 88 00 18 
+       Instruction/Data: mflo $4                                     Starting Memory Adress: 000005DC Bytes: 00 00 20 12 
+       Instruction/Data: sw $5,snake($4)                             Starting Memory Adress: 000005E0 Bytes: AC 85 09 ED 
+       Instruction/Data: jr $31                                      Starting Memory Adress: 000005E4 Bytes: 03 E0 00 08 
+
+   Memory Lable: readSnakeArray,                    Memory Adress: 000005E8
+
+       Instruction/Data: addi $8,$0,4                                Starting Memory Adress: 000005E8 Bytes: 20 08 00 04 
+       Instruction/Data: mult $4,$8                                  Starting Memory Adress: 000005EC Bytes: 00 88 00 18 
+       Instruction/Data: mflo $4                                     Starting Memory Adress: 000005F0 Bytes: 00 00 20 12 
+       Instruction/Data: lw $8,snake($4)                             Starting Memory Adress: 000005F4 Bytes: 8C 88 09 ED 
+       Instruction/Data: andi $4,$8,255                              Starting Memory Adress: 000005F8 Bytes: 31 04 00 FF 
+       Instruction/Data: sra $5,$8,8                                 Starting Memory Adress: 000005FC Bytes: 00 08 2A 03 
+       Instruction/Data: andi $5,$5,255                              Starting Memory Adress: 00000600 Bytes: 30 A5 00 FF 
+       Instruction/Data: sra $6,$8,16                                Starting Memory Adress: 00000604 Bytes: 00 08 34 03 
+       Instruction/Data: andi $6,$6,255                              Starting Memory Adress: 00000608 Bytes: 30 C6 00 FF 
+       Instruction/Data: jr $31                                      Starting Memory Adress: 0000060C Bytes: 03 E0 00 08 
+
+   Memory Lable: drawScreen,                        Memory Adress: 00000610
+
+       Instruction/Data: add $1,$31,$0                               Starting Memory Adress: 00000610 Bytes: 03 E0 08 20 
+       Instruction/Data: jal pushAll                                 Starting Memory Adress: 00000614 Bytes: 0C 00 00 74 
+       Instruction/Data: jal clearScreen                             Starting Memory Adress: 00000618 Bytes: 0C 00 00 46 
+       Instruction/Data: jal popAll                                  Starting Memory Adress: 0000061C Bytes: 0C 00 00 7D 
+       Instruction/Data: add $31,$1,$0                               Starting Memory Adress: 00000620 Bytes: 00 20 F8 20 
+       Instruction/Data: add $1,$31,$0                               Starting Memory Adress: 00000624 Bytes: 03 E0 08 20 
+       Instruction/Data: jal pushAll                                 Starting Memory Adress: 00000628 Bytes: 0C 00 00 6F 
+       Instruction/Data: jal drawSnake                               Starting Memory Adress: 0000062C Bytes: 0C 00 00 09 
+       Instruction/Data: jal popAll                                  Starting Memory Adress: 00000630 Bytes: 0C 00 00 78 
+       Instruction/Data: add $31,$1,$0                               Starting Memory Adress: 00000634 Bytes: 00 20 F8 20 
+       Instruction/Data: add $1,$31,$0                               Starting Memory Adress: 00000638 Bytes: 03 E0 08 20 
+       Instruction/Data: jal pushAll                                 Starting Memory Adress: 0000063C Bytes: 0C 00 00 6A 
+       Instruction/Data: jal drawFood                                Starting Memory Adress: 00000640 Bytes: 0F FF FF 54 
+       Instruction/Data: jal popAll                                  Starting Memory Adress: 00000644 Bytes: 0C 00 00 73 
+       Instruction/Data: add $31,$1,$0                               Starting Memory Adress: 00000648 Bytes: 00 20 F8 20 
+       Instruction/Data: trap 153                                    Starting Memory Adress: 0000064C Bytes: 68 00 00 99 
+       Instruction/Data: jr $31                                      Starting Memory Adress: 00000650 Bytes: 03 E0 00 08 
+
+   Memory Lable: drawSnake,                         Memory Adress: 00000654
+
+       Instruction/Data: lw $8,snakeCurrentSize($0)                  Starting Memory Adress: 00000654 Bytes: 8C 08 08 4D 
+       Instruction/Data: addi $8,$8,-1                               Starting Memory Adress: 00000658 Bytes: 21 08 FF FF 
+       Instruction/Data: blez $8,drawSnakeReturn                     Starting Memory Adress: 0000065C Bytes: 19 00 00 27 
+
+   Memory Lable: drawSnakeLoop,                     Memory Adress: 00000660
+
+       Instruction/Data: add $4,$8,$0                                Starting Memory Adress: 00000660 Bytes: 01 00 20 20 
+       Instruction/Data: add $1,$31,$0                               Starting Memory Adress: 00000664 Bytes: 03 E0 08 20 
+       Instruction/Data: jal pushAll                                 Starting Memory Adress: 00000668 Bytes: 0C 00 00 5F 
+       Instruction/Data: jal readSnakeArray                          Starting Memory Adress: 0000066C Bytes: 0F FF FF DE 
+       Instruction/Data: jal popAll                                  Starting Memory Adress: 00000670 Bytes: 0C 00 00 68 
+       Instruction/Data: add $31,$1,$0                               Starting Memory Adress: 00000674 Bytes: 00 20 F8 20 
+       Instruction/Data: lw $10,snakeCurrentSize($0)                 Starting Memory Adress: 00000678 Bytes: 8C 0A 08 4D 
+       Instruction/Data: addi $11,$0,2                               Starting Memory Adress: 0000067C Bytes: 20 0B 00 02 
+       Instruction/Data: div $10,$11                                 Starting Memory Adress: 00000680 Bytes: 01 4B 00 1A 
+       Instruction/Data: mflo $11                                    Starting Memory Adress: 00000684 Bytes: 00 00 58 12 
+       Instruction/Data: add $10,$11,$10                             Starting Memory Adress: 00000688 Bytes: 01 6A 50 20 
+       Instruction/Data: lb $12,snakeRainbow($0)                     Starting Memory Adress: 0000068C Bytes: 80 0C 08 40 
+       Instruction/Data: addi $6,$0,255                              Starting Memory Adress: 00000690 Bytes: 20 06 00 FF 
+       Instruction/Data: blez $12,1                                  Starting Memory Adress: 00000694 Bytes: 19 80 00 01 
+       Instruction/Data: sub $11,$8,$10                              Starting Memory Adress: 00000698 Bytes: 01 0A 58 22 
+       Instruction/Data: bgtz $12,1                                  Starting Memory Adress: 0000069C Bytes: 1D 80 00 01 
+       Instruction/Data: sub $11,$10,$8                              Starting Memory Adress: 000006A0 Bytes: 01 48 58 22 
+       Instruction/Data: mult $6,$11                                 Starting Memory Adress: 000006A4 Bytes: 00 CB 00 18 
+       Instruction/Data: mflo $6                                     Starting Memory Adress: 000006A8 Bytes: 00 00 30 12 
+       Instruction/Data: div $6,$10                                  Starting Memory Adress: 000006AC Bytes: 00 CA 00 1A 
+       Instruction/Data: mflo $6                                     Starting Memory Adress: 000006B0 Bytes: 00 00 30 12 
+       Instruction/Data: lb $12,snakeRainbow($0)                     Starting Memory Adress: 000006B4 Bytes: 80 0C 08 40 
+       Instruction/Data: blez $12,noRainbow                          Starting Memory Adress: 000006B8 Bytes: 19 80 00 09 
+       Instruction/Data: add $10,$4,$0                               Starting Memory Adress: 000006BC Bytes: 00 80 50 20 
+       Instruction/Data: add $11,$5,$0                               Starting Memory Adress: 000006C0 Bytes: 00 A0 58 20 
+       Instruction/Data: addi $4,$6,0                                Starting Memory Adress: 000006C4 Bytes: 20 C4 00 00 
+       Instruction/Data: addi $5,$0,255                              Starting Memory Adress: 000006C8 Bytes: 20 05 00 FF 
+       Instruction/Data: addi $6,$0,255                              Starting Memory Adress: 000006CC Bytes: 20 06 00 FF 
+       Instruction/Data: trap 155                                    Starting Memory Adress: 000006D0 Bytes: 68 00 00 9B 
+       Instruction/Data: add $6,$4,$0                                Starting Memory Adress: 000006D4 Bytes: 00 80 30 20 
+       Instruction/Data: add $4,$10,$0                               Starting Memory Adress: 000006D8 Bytes: 01 40 20 20 
+       Instruction/Data: add $5,$11,$0                               Starting Memory Adress: 000006DC Bytes: 01 60 28 20 
+
+   Memory Lable: noRainbow,                         Memory Adress: 000006E0
+
+       Instruction/Data: lb $12,snakeRainbow($0)                     Starting Memory Adress: 000006E0 Bytes: 80 0C 08 40 
+       Instruction/Data: bgtz $12,1                                  Starting Memory Adress: 000006E4 Bytes: 1D 80 00 01 
+       Instruction/Data: sll $6,$6,8                                 Starting Memory Adress: 000006E8 Bytes: 00 06 32 00 
+       Instruction/Data: trap 151                                    Starting Memory Adress: 000006EC Bytes: 68 00 00 97 
+       Instruction/Data: addi $8,$8,-1                               Starting Memory Adress: 000006F0 Bytes: 21 08 FF FF 
+       Instruction/Data: addi $9,$8,0                                Starting Memory Adress: 000006F4 Bytes: 21 09 00 00 
+       Instruction/Data: bgtz $9,drawSnakeLoop                       Starting Memory Adress: 000006F8 Bytes: 1D 20 FF D9 
+
+   Memory Lable: drawSnakeReturn,                   Memory Adress: 000006FC
+
+       Instruction/Data: add $4,$0,$0                                Starting Memory Adress: 000006FC Bytes: 00 00 20 20 
+       Instruction/Data: add $1,$31,$0                               Starting Memory Adress: 00000700 Bytes: 03 E0 08 20 
+       Instruction/Data: jal pushAll                                 Starting Memory Adress: 00000704 Bytes: 0C 00 00 38 
+       Instruction/Data: jal readSnakeArray                          Starting Memory Adress: 00000708 Bytes: 0F FF FF B7 
+       Instruction/Data: jal popAll                                  Starting Memory Adress: 0000070C Bytes: 0C 00 00 41 
+       Instruction/Data: add $31,$1,$0                               Starting Memory Adress: 00000710 Bytes: 00 20 F8 20 
+       Instruction/Data: addi $6,$0,255                              Starting Memory Adress: 00000714 Bytes: 20 06 00 FF 
+       Instruction/Data: lb $12,snakeRainbow($0)                     Starting Memory Adress: 00000718 Bytes: 80 0C 08 40 
+       Instruction/Data: blez $12,1                                  Starting Memory Adress: 0000071C Bytes: 19 80 00 01 
+       Instruction/Data: sll $6,$6,16                                Starting Memory Adress: 00000720 Bytes: 00 06 34 00 
+       Instruction/Data: bgtz $12,1                                  Starting Memory Adress: 00000724 Bytes: 1D 80 00 01 
+       Instruction/Data: sll $6,$6,8                                 Starting Memory Adress: 00000728 Bytes: 00 06 32 00 
+       Instruction/Data: trap 151                                    Starting Memory Adress: 0000072C Bytes: 68 00 00 97 
+       Instruction/Data: jr $31                                      Starting Memory Adress: 00000730 Bytes: 03 E0 00 08 
+
+   Memory Lable: clearScreen,                       Memory Adress: 00000734
+
+       Instruction/Data: lw $9,screenSizeY($0)                       Starting Memory Adress: 00000734 Bytes: 8C 09 08 45 
+
+   Memory Lable: clearScreenYLoop,                  Memory Adress: 00000738
+
+       Instruction/Data: lw $8,screenSizeX($0)                       Starting Memory Adress: 00000738 Bytes: 8C 08 08 41 
+
+   Memory Lable: clearScreenXLoop,                  Memory Adress: 0000073C
+
+       Instruction/Data: addi $4,$8,-1                               Starting Memory Adress: 0000073C Bytes: 21 04 FF FF 
+       Instruction/Data: addi $5,$9,-1                               Starting Memory Adress: 00000740 Bytes: 21 25 FF FF 
+       Instruction/Data: add $6,$0,$0                                Starting Memory Adress: 00000744 Bytes: 00 00 30 20 
+       Instruction/Data: trap 151                                    Starting Memory Adress: 00000748 Bytes: 68 00 00 97 
+       Instruction/Data: addi $8,$8,-1                               Starting Memory Adress: 0000074C Bytes: 21 08 FF FF 
+       Instruction/Data: bgtz $8,clearScreenXLoop                    Starting Memory Adress: 00000750 Bytes: 1D 00 FF FA 
+       Instruction/Data: addi $9,$9,-1                               Starting Memory Adress: 00000754 Bytes: 21 29 FF FF 
+       Instruction/Data: bgtz $9,clearScreenYLoop                    Starting Memory Adress: 00000758 Bytes: 1D 20 FF F7 
+       Instruction/Data: jr $31                                      Starting Memory Adress: 0000075C Bytes: 03 E0 00 08 
+
+   Memory Lable: if,                                Memory Adress: 00000760
+
+       Instruction/Data: addi $8,$0,0                                Starting Memory Adress: 00000760 Bytes: 20 08 00 00 
+       Instruction/Data: beq $7,$8,ifEqual                           Starting Memory Adress: 00000764 Bytes: 10 E8 00 0A 
+       Instruction/Data: addi $8,$0,1                                Starting Memory Adress: 00000768 Bytes: 20 08 00 01 
+       Instruction/Data: beq $7,$8,ifNotEqual                        Starting Memory Adress: 0000076C Bytes: 10 E8 00 0A 
+       Instruction/Data: addi $8,$0,2                                Starting Memory Adress: 00000770 Bytes: 20 08 00 02 
+       Instruction/Data: beq $7,$8,ifLessThan                        Starting Memory Adress: 00000774 Bytes: 10 E8 00 0A 
+       Instruction/Data: addi $8,$0,3                                Starting Memory Adress: 00000778 Bytes: 20 08 00 03 
+       Instruction/Data: beq $7,$8,ifGreaterThan                     Starting Memory Adress: 0000077C Bytes: 10 E8 00 0B 
+       Instruction/Data: addi $8,$0,4                                Starting Memory Adress: 00000780 Bytes: 20 08 00 04 
+       Instruction/Data: beq $7,$8,ifLessThanOrEqual                 Starting Memory Adress: 00000784 Bytes: 10 E8 00 0C 
+       Instruction/Data: addi $8,$0,5                                Starting Memory Adress: 00000788 Bytes: 20 08 00 05 
+       Instruction/Data: beq $7,$8,ifGreaterThanOrEqual              Starting Memory Adress: 0000078C Bytes: 10 E8 00 0E 
+
+   Memory Lable: ifEqual,                           Memory Adress: 00000790
+
+       Instruction/Data: beq $5,$6,ifReturnOne                       Starting Memory Adress: 00000790 Bytes: 10 A6 00 13 
+       Instruction/Data: j ifReturnZero                              Starting Memory Adress: 00000794 Bytes: 08 00 00 10 
+
+   Memory Lable: ifNotEqual,                        Memory Adress: 00000798
+
+       Instruction/Data: bne $5,$6,ifReturnOne                       Starting Memory Adress: 00000798 Bytes: 14 A6 00 11 
+       Instruction/Data: j ifReturnZero                              Starting Memory Adress: 0000079C Bytes: 08 00 00 0E 
+
+   Memory Lable: ifLessThan,                        Memory Adress: 000007A0
+
+       Instruction/Data: slt $8,$5,$6                                Starting Memory Adress: 000007A0 Bytes: 00 A6 40 2A 
+       Instruction/Data: bgtz $8,ifReturnOne                         Starting Memory Adress: 000007A4 Bytes: 1D 00 00 0E 
+       Instruction/Data: j ifReturnZero                              Starting Memory Adress: 000007A8 Bytes: 08 00 00 0B 
+
+   Memory Lable: ifGreaterThan,                     Memory Adress: 000007AC
+
+       Instruction/Data: slt $8,$6,$5                                Starting Memory Adress: 000007AC Bytes: 00 C5 40 2A 
+       Instruction/Data: bgtz $8,ifReturnOne                         Starting Memory Adress: 000007B0 Bytes: 1D 00 00 0B 
+       Instruction/Data: j ifReturnZero                              Starting Memory Adress: 000007B4 Bytes: 08 00 00 08 
+
+   Memory Lable: ifLessThanOrEqual,                 Memory Adress: 000007B8
+
+       Instruction/Data: addi $6,$6,1                                Starting Memory Adress: 000007B8 Bytes: 20 C6 00 01 
+       Instruction/Data: slt $8,$5,$6                                Starting Memory Adress: 000007BC Bytes: 00 A6 40 2A 
+       Instruction/Data: bgtz $8,ifReturnOne                         Starting Memory Adress: 000007C0 Bytes: 1D 00 00 07 
+       Instruction/Data: j ifReturnZero                              Starting Memory Adress: 000007C4 Bytes: 08 00 00 04 
+
+   Memory Lable: ifGreaterThanOrEqual,              Memory Adress: 000007C8
+
+       Instruction/Data: addi $5,$5,1                                Starting Memory Adress: 000007C8 Bytes: 20 A5 00 01 
+       Instruction/Data: slt $8,$6,$5                                Starting Memory Adress: 000007CC Bytes: 00 C5 40 2A 
+       Instruction/Data: bgtz $8,ifReturnOne                         Starting Memory Adress: 000007D0 Bytes: 1D 00 00 03 
+       Instruction/Data: j ifReturnZero                              Starting Memory Adress: 000007D4 Bytes: 08 00 00 00 
+
+   Memory Lable: ifReturnZero,                      Memory Adress: 000007D8
+
+       Instruction/Data: addi $7,$0,0                                Starting Memory Adress: 000007D8 Bytes: 20 07 00 00 
+       Instruction/Data: jr $31                                      Starting Memory Adress: 000007DC Bytes: 03 E0 00 08 
+
+   Memory Lable: ifReturnOne,                       Memory Adress: 000007E0
+
+       Instruction/Data: addi $7,$0,1                                Starting Memory Adress: 000007E0 Bytes: 20 07 00 01 
+       Instruction/Data: jr $31                                      Starting Memory Adress: 000007E4 Bytes: 03 E0 00 08 
+
+   Memory Lable: pushAll,                           Memory Adress: 000007E8
+
+       Instruction/Data: addi $29,$29,4                              Starting Memory Adress: 000007E8 Bytes: 23 BD 00 04 
+       Instruction/Data: sw $1,stack($29)                            Starting Memory Adress: 000007EC Bytes: AF A1 08 5D 
+       Instruction/Data: addi $29,$29,4                              Starting Memory Adress: 000007F0 Bytes: 23 BD 00 04 
+       Instruction/Data: sw $8,stack($29)                            Starting Memory Adress: 000007F4 Bytes: AF A8 08 5D 
+       Instruction/Data: addi $29,$29,4                              Starting Memory Adress: 000007F8 Bytes: 23 BD 00 04 
+       Instruction/Data: sw $9,stack($29)                            Starting Memory Adress: 000007FC Bytes: AF A9 08 5D 
+       Instruction/Data: addi $29,$29,4                              Starting Memory Adress: 00000800 Bytes: 23 BD 00 04 
+       Instruction/Data: sw $10,stack($29)                           Starting Memory Adress: 00000804 Bytes: AF AA 08 5D 
+       Instruction/Data: addi $29,$29,4                              Starting Memory Adress: 00000808 Bytes: 23 BD 00 04 
+       Instruction/Data: sw $11,stack($29)                           Starting Memory Adress: 0000080C Bytes: AF AB 08 5D 
+       Instruction/Data: jr $31                                      Starting Memory Adress: 00000810 Bytes: 03 E0 00 08 
+
+   Memory Lable: popAll,                            Memory Adress: 00000814
+
+       Instruction/Data: lw $11,stack($29)                           Starting Memory Adress: 00000814 Bytes: 8F AB 08 5D 
+       Instruction/Data: addi $29,$29,-4                             Starting Memory Adress: 00000818 Bytes: 23 BD FF FC 
+       Instruction/Data: lw $10,stack($29)                           Starting Memory Adress: 0000081C Bytes: 8F AA 08 5D 
+       Instruction/Data: addi $29,$29,-4                             Starting Memory Adress: 00000820 Bytes: 23 BD FF FC 
+       Instruction/Data: lw $9,stack($29)                            Starting Memory Adress: 00000824 Bytes: 8F A9 08 5D 
+       Instruction/Data: addi $29,$29,-4                             Starting Memory Adress: 00000828 Bytes: 23 BD FF FC 
+       Instruction/Data: lw $8,stack($29)                            Starting Memory Adress: 0000082C Bytes: 8F A8 08 5D 
+       Instruction/Data: addi $29,$29,-4                             Starting Memory Adress: 00000830 Bytes: 23 BD FF FC 
+       Instruction/Data: lw $1,stack($29)                            Starting Memory Adress: 00000834 Bytes: 8F A1 08 5D 
+       Instruction/Data: addi $29,$29,-4                             Starting Memory Adress: 00000838 Bytes: 23 BD FF FC 
+       Instruction/Data: jr $31                                      Starting Memory Adress: 0000083C Bytes: 03 E0 00 08 
+
+   Memory Lable: data,                              Memory Adress: 00000840
+
+
+   Memory Lable: snakeRainbow,                      Memory Adress: 00000840
+
+       Instruction/Data: .byte 0                                     Starting Memory Adress: 00000840 Bytes: 00 
+
+   Memory Lable: screenSizeX,                       Memory Adress: 00000841
+
+       Instruction/Data: .word 62                                    Starting Memory Adress: 00000841 Bytes: 00 00 00 3E 
+
+   Memory Lable: screenSizeY,                       Memory Adress: 00000845
+
+       Instruction/Data: .word 40                                    Starting Memory Adress: 00000845 Bytes: 00 00 00 28 
+
+   Memory Lable: snakeSize,                         Memory Adress: 00000849
+
+       Instruction/Data: .word 1                                     Starting Memory Adress: 00000849 Bytes: 00 00 00 01 
+
+   Memory Lable: snakeCurrentSize,                  Memory Adress: 0000084D
+
+       Instruction/Data: .word 1                                     Starting Memory Adress: 0000084D Bytes: 00 00 00 01 
+
+   Memory Lable: snakeDirection,                    Memory Adress: 00000851
+
+       Instruction/Data: .word 0                                     Starting Memory Adress: 00000851 Bytes: 00 00 00 00 
+
+   Memory Lable: foodPos,                           Memory Adress: 00000855
+
+       Instruction/Data: .word 0                                     Starting Memory Adress: 00000855 Bytes: 00 00 00 00 
+
+   Memory Lable: foodWorth,                         Memory Adress: 00000859
+
+       Instruction/Data: .word 4                                     Starting Memory Adress: 00000859 Bytes: 00 00 00 04 
+
+   Memory Lable: stack,                             Memory Adress: 0000085D
+
+       Instruction/Data: .space 400                                  Starting Memory Adress: 0000085D Bytes: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+
+   Memory Lable: snake,                             Memory Adress: 000009ED
+
+       Instruction/Data: .space 5000                                 Starting Memory Adress: 000009ED Bytes: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+       Instruction/Data: .space 3                                    Starting Memory Adress: 00001D75 Bytes: 00 00 00 
+
+

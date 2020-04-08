@@ -5,34 +5,36 @@
  */
 package Compiler;
 
-import static Compiler.ASMCompiler.error;
+import java.nio.ByteBuffer;
+
 /**
  *
  * @author parke
  */
 public class StringToOpcode {
+    
+    private static int currentOpCodeLine;
+    private static int currentByteIndex;
 
-    public static int stringToOpcode(String instruction, int index) {
+    public static byte[] stringToOpcode(CompileTimeUserLine ctul) {
 
+        String instruction = ctul.line.line;
+        currentOpCodeLine = ctul.line.realLineNumber;
+        currentByteIndex = ctul.startingByteAddress;
+        
         String opCodeString = "";
         String[] parameter = null;
 
         if (instruction == null || instruction.equals("")) {
-            error("instruction null");
+            ASMCompiler.OpCodeError("instruction null", ctul.line.realLineNumber);
         } else {
             try {
                 opCodeString = instruction.split(" ")[0];
                 opCodeString = opCodeString.trim();
                 parameter = instruction.substring(opCodeString.length()).split(",");
-                for (int i = 0; i < parameter.length; i++) {
-                    
-                    parameter[i] = parameter[i].trim();
-                    parameter[i] = ASMCompiler.findAndReplacePreProcessorValue(parameter[i]);
-                    
-                }
             } catch (Exception e) {
-                error("Invalid parameters");
-                return 0;
+                 ASMCompiler.OpCodeError("Invalid parameters", ctul.line.realLineNumber);
+                return new byte[0];
             }
         }
 
@@ -353,13 +355,13 @@ public class StringToOpcode {
                 return jumpEncoding(0B011010, decodeImmediateValue(parameter[0]));
 
             default:
-                error("Invalid opcode");
-                return -1;
+                ASMCompiler.OpCodeError("Invalid opcode", ctul.line.realLineNumber);
+                return new byte[0];
         }
         //return -1;
     }
 
-    private static int registerEncoding(int o, int s, int t, int d, int a, int f) {
+    private static byte[] registerEncoding(int o, int s, int t, int d, int a, int f) {
         o = o & 0B111111;
         s = s & 0B11111;
         t = t & 0B11111;
@@ -367,44 +369,47 @@ public class StringToOpcode {
         a = a & 0B11111;
         f = f & 0B111111;
 
-        return (o << 26) | (s << 21) | (t << 16) | (d << 11) | (a << 6) | f;
+        int temp =  (o << 26) | (s << 21) | (t << 16) | (d << 11) | (a << 6) | f;
+        return ByteBuffer.allocate(4).putInt(temp).array();
     }
 
-    private static int immediateEncoding(int o, int s, int t, int i) {
+    private static byte[] immediateEncoding(int o, int s, int t, int i) {
         o = o & 0B111111;
         s = s & 0B11111;
         t = t & 0B11111;
         i = i & 0xFFFF;
 
-        return (o << 26) | (s << 21) | (t << 16) | i;
+        int temp = (o << 26) | (s << 21) | (t << 16) | i;
+        return ByteBuffer.allocate(4).putInt(temp).array();
 
     }
 
-    private static int jumpEncoding(int o, int i) {
+    private static byte[] jumpEncoding(int o, int i) {
         o = o & 0B111111;
         i = i & 0x3FFFFFF;
 
-        return (o << 26) | i;
+        int temp =  (o << 26) | i;
+        return ByteBuffer.allocate(4).putInt(temp).array();
     }
 
     public static int decodeRegister(String parameter) {
         if (!parameter.contains("$")) {
-            ASMCompiler.error("Invalid register");
+            ASMCompiler.ArgumentError("Invalid register",currentOpCodeLine);
             return 0;
         }
         try {
-            return decodeInt(parameter.replace("$", ""));
+            return ASMCompiler.parseInt(parameter.replace("$", ""));
         } catch (Exception e) {
-            ASMCompiler.error("Invalid register number");
+            ASMCompiler.ArgumentError("Invalid register number", currentOpCodeLine);
         }
         return 0;
     }
 
     private static int decodeImmediateValue(String parameter) {
         try {
-            return decodeInt(parameter);
+            return ASMCompiler.parseInt(parameter);
         } catch (Exception e) {
-            ASMCompiler.error("Invalid immediate value");
+            ASMCompiler.ArgumentError("Invalid immediate value", currentOpCodeLine);
         }
         return 0;
     }
@@ -412,39 +417,29 @@ public class StringToOpcode {
     private static int decodeMemoryPointerJump(String parameter) {
         
         try{
-            int temp = decodeInt(parameter);
+            int temp = ASMCompiler.parseInt(parameter);
             return temp;
         }catch(Exception e){
             
         }
-        
-        return ASMCompiler.getRelativeIndexOffset(parameter.trim());
+        return ((ASMCompiler.getByteIndexOfMemoryLable(parameter.trim(), currentOpCodeLine) - currentByteIndex) >> 2) - 1;
     }
 
     private static int decodeMemoryOpPointerAddress(String parameter) {
         try {
-            return ASMCompiler.getIndex(ASMCompiler.findAndReplacePreProcessorValue(parameter.split("\\(")[0]));
+            return (ASMCompiler.getByteIndexOfMemoryLable((parameter.split("\\(")[0]), currentOpCodeLine));
         } catch (Exception e) {
-            ASMCompiler.error("Invalid Memory Pointer");
+            ASMCompiler.ArgumentError("Invalid Memory Pointer", currentOpCodeLine);
         }
         return 0;
     }
 
     private static int decodeMemoryOpRegister(String parameter) {
         try {
-            return decodeRegister(ASMCompiler.findAndReplacePreProcessorValue(parameter.split("\\(")[1].split("\\)")[0]));
+            return decodeRegister((parameter.split("\\(")[1].split("\\)")[0]));
         } catch (Exception e) {
-            ASMCompiler.error("Brackets not closed");
+            ASMCompiler.ArgumentError("Brackets not closed", currentOpCodeLine);
         }
         return 0;
-    }
-
-    private static int decodeInt(String string) { //to add functionality later
-
-        if (string.contains("x")) {
-            return Integer.parseInt(string.split("x")[1], Integer.parseInt(string.split("x")[0]));
-        }
-
-        return Integer.parseInt(string.trim());
     }
 }
