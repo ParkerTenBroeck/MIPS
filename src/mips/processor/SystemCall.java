@@ -85,7 +85,6 @@ public class SystemCall {
                     break;
 
                 case 106: //sleeps number of millis in register 4 munus the time difference from the last call
-                    System.out.println(getRegister(4) - (System.currentTimeMillis() - lastTimeCheck));
                     try {
                         Thread.sleep(getRegister(4) - (System.currentTimeMillis() - lastTimeCheck));
                         

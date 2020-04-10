@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFileChooser;
 import mips.processor.Memory;
@@ -212,12 +213,18 @@ public class FileWriteReader {
         try {
             return Files.readAllLines(Paths.get(currentASMFile.getAbsolutePath()));
         } catch (Exception e) {
-            return null;
+            Log.logError("No File Selected");
+            return new ArrayList();
         }
     }
     
     public static String getASMFilePath(){
+        try{
         return currentASMFile.getPath();
+        }catch(Exception e){
+            //Log.logError("No File Selected");
+            return "";
+        }
     }
 
     public static void loadFile(File file) {

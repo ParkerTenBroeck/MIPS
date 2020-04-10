@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Compiler;
+package Compiler.DataClasses;
 
 
 public class MemoryLable {
 
-    final UserLine line;
+    final public UserLine line;
     final public String name;
     int byteAddress;
     final int lableIndex; //the number of lables that have come before this atarting at the top of the file
@@ -28,5 +28,9 @@ public class MemoryLable {
 
     public void setByteAddress(int nAddress) {
         this.byteAddress = nAddress;
+    }
+    
+    public int getByteAddress(){
+        return this.byteAddress;
     }
 };

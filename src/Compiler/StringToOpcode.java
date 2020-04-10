@@ -5,6 +5,8 @@
  */
 package Compiler;
 
+import Compiler.DataClasses.AbstractArgumentList;
+import Compiler.DataClasses.UserLine;
 import java.nio.ByteBuffer;
 
 /**
@@ -12,30 +14,27 @@ import java.nio.ByteBuffer;
  * @author parke
  */
 public class StringToOpcode {
-    
+
     private static int currentOpCodeLine;
     private static int currentByteIndex;
 
     public static byte[] stringToOpcode(CompileTimeUserLine ctul) {
 
-        String instruction = ctul.line.line;
-        currentOpCodeLine = ctul.line.realLineNumber;
+        String instruction = ctul.ul.line;
+        currentOpCodeLine = ctul.ul.realLineNumber;
         currentByteIndex = ctul.startingByteAddress;
-        
+
         String opCodeString = "";
         String[] parameter = null;
 
         if (instruction == null || instruction.equals("")) {
-            ASMCompiler.OpCodeError("instruction null", ctul.line.realLineNumber);
+            ASMCompiler.OpCodeError("instruction null", ctul.ul.realLineNumber);
         } else {
-            try {
-                opCodeString = instruction.split(" ")[0];
-                opCodeString = opCodeString.trim();
-                parameter = instruction.substring(opCodeString.length()).split(",");
-            } catch (Exception e) {
-                 ASMCompiler.OpCodeError("Invalid parameters", ctul.line.realLineNumber);
-                return new byte[0];
-            }
+            opCodeString = instruction.split(" ")[0];
+
+            AbstractArgumentList aal = new AbstractArgumentList(instruction.substring(opCodeString.length()), new char[]{',', '(', ')'});
+            parameter = aal.args;
+            opCodeString = opCodeString.trim();
         }
 
         switch (opCodeString) {
@@ -282,50 +281,50 @@ public class StringToOpcode {
             //load instruction
             case "lb":
                 return immediateEncoding(0B100000,
-                        decodeMemoryOpRegister(parameter[1]),
+                        decodeMemoryOpRegister(parameter[2]),
                         decodeRegister(parameter[0]),
                         decodeMemoryOpPointerAddress(parameter[1]));
 
             case "lbu":
                 return immediateEncoding(0B100100,
-                        decodeMemoryOpRegister(parameter[1]),
+                        decodeMemoryOpRegister(parameter[2]),
                         decodeRegister(parameter[0]),
                         decodeMemoryOpPointerAddress(parameter[1]));
 
             case "lh":
                 return immediateEncoding(0B100001,
-                        decodeMemoryOpRegister(parameter[1]),
+                        decodeMemoryOpRegister(parameter[2]),
                         decodeRegister(parameter[0]),
                         decodeMemoryOpPointerAddress(parameter[1]));
 
             case "lhu":
                 return immediateEncoding(0B100101,
-                        decodeMemoryOpRegister(parameter[1]),
+                        decodeMemoryOpRegister(parameter[2]),
                         decodeRegister(parameter[0]),
                         decodeMemoryOpPointerAddress(parameter[1]));
 
             case "lw":
                 return immediateEncoding(0B100011,
-                        decodeMemoryOpRegister(parameter[1]),
+                        decodeMemoryOpRegister(parameter[2]),
                         decodeRegister(parameter[0]),
                         decodeMemoryOpPointerAddress(parameter[1]));
 
             //store instructions
             case "sb":
                 return immediateEncoding(0B101000,
-                        decodeMemoryOpRegister(parameter[1]),
+                        decodeMemoryOpRegister(parameter[2]),
                         decodeRegister(parameter[0]),
                         decodeMemoryOpPointerAddress(parameter[1]));
 
             case "sh":
                 return immediateEncoding(0B101001,
-                        decodeMemoryOpRegister(parameter[1]),
+                        decodeMemoryOpRegister(parameter[2]),
                         decodeRegister(parameter[0]),
                         decodeMemoryOpPointerAddress(parameter[1]));
 
             case "sw":
                 return immediateEncoding(0B101011,
-                        decodeMemoryOpRegister(parameter[1]),
+                        decodeMemoryOpRegister(parameter[2]),
                         decodeRegister(parameter[0]),
                         decodeMemoryOpPointerAddress(parameter[1]));
 
@@ -355,7 +354,7 @@ public class StringToOpcode {
                 return jumpEncoding(0B011010, decodeImmediateValue(parameter[0]));
 
             default:
-                ASMCompiler.OpCodeError("Invalid opcode", ctul.line.realLineNumber);
+                ASMCompiler.OpCodeError("Invalid opcode", ctul.ul.realLineNumber);
                 return new byte[0];
         }
         //return -1;
@@ -369,7 +368,7 @@ public class StringToOpcode {
         a = a & 0B11111;
         f = f & 0B111111;
 
-        int temp =  (o << 26) | (s << 21) | (t << 16) | (d << 11) | (a << 6) | f;
+        int temp = (o << 26) | (s << 21) | (t << 16) | (d << 11) | (a << 6) | f;
         return ByteBuffer.allocate(4).putInt(temp).array();
     }
 
@@ -388,13 +387,13 @@ public class StringToOpcode {
         o = o & 0B111111;
         i = i & 0x3FFFFFF;
 
-        int temp =  (o << 26) | i;
+        int temp = (o << 26) | i;
         return ByteBuffer.allocate(4).putInt(temp).array();
     }
 
-    public static int decodeRegister(String parameter) {
+    private static int decodeRegister(String parameter) {
         if (!parameter.contains("$")) {
-            ASMCompiler.ArgumentError("Invalid register",currentOpCodeLine);
+            ASMCompiler.ArgumentError("Invalid register", currentOpCodeLine);
             return 0;
         }
         try {
@@ -415,19 +414,27 @@ public class StringToOpcode {
     }
 
     private static int decodeMemoryPointerJump(String parameter) {
-        
-        try{
+
+        try {
             int temp = ASMCompiler.parseInt(parameter);
             return temp;
-        }catch(Exception e){
-            
+        } catch (Exception e) {
+
         }
         return ((ASMCompiler.getByteIndexOfMemoryLable(parameter.trim(), currentOpCodeLine) - currentByteIndex) >> 2) - 1;
     }
 
     private static int decodeMemoryOpPointerAddress(String parameter) {
+
         try {
-            return (ASMCompiler.getByteIndexOfMemoryLable((parameter.split("\\(")[0]), currentOpCodeLine));
+            int temp = ASMCompiler.parseInt(parameter);
+            return temp;
+        } catch (Exception e) {
+
+        }
+
+        try {
+            return (ASMCompiler.getByteIndexOfMemoryLable(parameter, currentOpCodeLine));
         } catch (Exception e) {
             ASMCompiler.ArgumentError("Invalid Memory Pointer", currentOpCodeLine);
         }
@@ -436,10 +443,14 @@ public class StringToOpcode {
 
     private static int decodeMemoryOpRegister(String parameter) {
         try {
-            return decodeRegister((parameter.split("\\(")[1].split("\\)")[0]));
+            return decodeRegister(parameter);
         } catch (Exception e) {
-            ASMCompiler.ArgumentError("Brackets not closed", currentOpCodeLine);
+            ASMCompiler.ArgumentError("Brackets not closed or Invalid Register", currentOpCodeLine);
         }
         return 0;
+    }
+
+    public static int getInstructionSize(UserLine ul) { //to be implemented
+        return 4;
     }
 }

@@ -288,8 +288,8 @@ public class ASMCompiler {
     }
 
     public static void error(String string) {
-        Main_GUI.infoBox("Error", "line " + (realIndex + 1) + "; " + string);
-        stopFlag = true;
+        //Main_GUI.infoBox("Error", "line " + (realIndex + 1) + "; " + string);
+        //stopFlag = true;
     }
 
     public static void compileInstructions() {

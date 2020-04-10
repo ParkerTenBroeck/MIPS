@@ -1,4 +1,8 @@
 main:
+jal 3
+trap 5
+trap 7
+trap 10
 lw $4,screenSizeX($0)
 lw $5,screenSizeY($0)
 trap 150

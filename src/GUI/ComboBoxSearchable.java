@@ -5,7 +5,7 @@
  */
 package GUI;
 
-import Compiler.MemoryLable;
+import Compiler.DataClasses.MemoryLable;
 import java.util.ArrayList;
 import java.util.Collections;
 import javax.swing.DefaultComboBoxModel;

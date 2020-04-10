@@ -5,6 +5,7 @@
  */
 package Compiler;
 
+import Compiler.DataClasses.UserLine;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

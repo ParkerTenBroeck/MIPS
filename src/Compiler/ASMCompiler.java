@@ -5,12 +5,15 @@
  */
 package Compiler;
 
+import Compiler.DataClasses.MemoryLable;
+import Compiler.DataClasses.UserLine;
 import GUI.Main_GUI;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 import mips.FileWriteReader;
 import mips.Log;
 import mips.processor.Memory;
@@ -31,28 +34,29 @@ class ByteP {
 
 abstract class CompileTimeUserLine {
 
-    UserLine line;
-    ByteP bytes[];
+    public final UserLine ul;
+    public final ByteP bytes[];
     int startingByteAddress;
 
-    public abstract int getByteSize();
+    protected CompileTimeUserLine(UserLine ul, ByteP[] bytes){
+        this.ul = ul;
+        this.bytes = bytes;
+    }
+    
+    public final int getByteSize() {
+        return this.bytes.length;
+    }
 
     public abstract void finalCompilePass();
 };
 
 class dotData extends CompileTimeUserLine {//must have instruction and data preented at the time of creation
 
-    public dotData(UserLine us, byte[] _bytes) {
-        this.line = us;
-        this.bytes = new ByteP[_bytes.length];
+    public dotData(UserLine ul, byte[] _bytes) {
+        super(ul,  new ByteP[_bytes.length]);
         for (int i = 0; i < _bytes.length; i++) {
             this.bytes[i] = new ByteP(_bytes[i]);
         }
-    }
-
-    @Override
-    public int getByteSize() {
-        return this.bytes.length;
     }
 
     @Override
@@ -64,17 +68,11 @@ class dotData extends CompileTimeUserLine {//must have instruction and data pree
 
 class asmInstruction extends CompileTimeUserLine {
 
-    public asmInstruction(UserLine us) {
-        this.line = us;
-        bytes = new ByteP[4];
-        for (int i = 0; i < 4; i++) {
+    public asmInstruction(UserLine ul) {
+        super(ul, new ByteP[StringToOpcode.getInstructionSize(ul)]);
+        for (int i = 0; i < bytes.length; i++) {
             bytes[i] = new ByteP((byte) 0xcd);
         }
-    }
-
-    @Override
-    public int getByteSize() {
-        return 4; //instruction size is always 4
     }
 
     @Override
@@ -93,27 +91,7 @@ class asmInstruction extends CompileTimeUserLine {
 
 };
 
-class UserLine {
 
-    public String line;
-    public int realLineNumber;
-
-    public UserLine(String line) {
-        this.line = line;
-    }
-
-    public UserLine(int realLineNumber) {
-        this.realLineNumber = realLineNumber;
-    }
-
-    public UserLine(String line, int realLineNumber) {
-        this.line = line;
-        this.realLineNumber = realLineNumber;
-    }
-
-    public UserLine() {
-    }
-}
 
 class MemoryChunk {
 
@@ -172,6 +150,10 @@ public class ASMCompiler {
         origins = new ArrayList();
 
         FileWriteReader.saveASMFile();
+
+        Log.clearDisplay();
+        ASMCompiler.logCompilerMessage("Started Compilation of file: " + FileWriteReader.getASMFilePath());
+
         ArrayList<UserLine> temp = getInstructions();
 
         temp = PreProcessor.preProcess(temp, Main_GUI.savePreProcessedFile());
@@ -211,8 +193,8 @@ public class ASMCompiler {
         for (Origin org : origins) {
             for (MemoryChunk mc : org.memoryChunks) {
                 for (CompileTimeUserLine ctul : mc.chunkData) {
-                    if (ctul.line.line.length() > maxSizeInstruction) {
-                        maxSizeInstruction = ctul.line.line.length();
+                    if (ctul.ul.line.length() > maxSizeInstruction) {
+                        maxSizeInstruction = ctul.ul.line.length();
                     }
                 }
 
@@ -244,13 +226,13 @@ public class ASMCompiler {
 
                     out.println("   " + "Memory Lable: "
                             + String.format("%-" + maxSizeMemoryLable + "s", mc.startLable.name + ",")
-                            + " Memory Adress: " + String.format("%08X", mc.startLable.byteAddress));
+                            + " Memory Adress: " + String.format("%08X", mc.startLable.getByteAddress()));
                     out.println();
 
                     for (CompileTimeUserLine ctul : mc.chunkData) {
 
                         out.print("       " + "Instruction/Data: "
-                                + String.format("%-" + maxSizeInstruction + "s", ctul.line.line)
+                                + String.format("%-" + maxSizeInstruction + "s", ctul.ul.line)
                                 + " Starting Memory Adress: "
                                 + String.format("%08X", ctul.startingByteAddress) + " Bytes: ");
 
@@ -289,7 +271,7 @@ public class ASMCompiler {
     public static int getByteIndexOfMemoryLable(String memoryLable, int realLineNumberOfOpCode) {
         for (int i = 0; i < memoryLables.size(); i++) {
             if (memoryLables.get(i).name.equals(memoryLable)) {
-                return memoryLables.get(i).byteAddress;
+                return memoryLables.get(i).getByteAddress();
             }
         }
         ASMCompiler.MemoryLableError("Memory Lable does not exist", realLineNumberOfOpCode);
@@ -322,7 +304,7 @@ public class ASMCompiler {
                 } catch (Exception e) {
                     //does not matter if it doesnt exist
                 }
-                mc.startLable.byteAddress = currentByteIndex; //sets the byte address of the chunks memory lable
+                mc.startLable.setByteAddress(currentByteIndex); //sets the byte address of the chunks memory lable
 
                 for (CompileTimeUserLine ctul : mc.chunkData) {
 
@@ -418,21 +400,14 @@ public class ASMCompiler {
     }
 
     private static ArrayList<UserLine> getInstructions() {
-        BufferedReader reader;
         int lineNumber = 0;
 
         ArrayList<UserLine> file = new ArrayList();
-        try {
-            reader = new BufferedReader(new FileReader(FileWriteReader.getASMFilePath()));
-            String line = reader.readLine();
-            while (line != null) {
+        List<String> temp = FileWriteReader.getASMList();
 
-                file.add(new UserLine(line, lineNumber));
-                lineNumber++;
-                line = reader.readLine();
-            }
-        } catch (Exception e) {
-            //error
+        for (String line : temp) {
+            file.add(new UserLine(line, lineNumber));
+            lineNumber++;
         }
         return file;
     }
@@ -459,11 +434,15 @@ public class ASMCompiler {
     }
 
     public static void logCompilerError(String message) {
-        Log.logError("[Compiler]" + message);
+        Log.logError("[Compiler] " + message);
     }
 
     public static void logCompilerMessage(String message) {
         Log.logMessage("[Compiler] " + message);
+    }
+
+    public static void logCompilerWarning(String message) {
+        Log.logWarning("[Compiler] " + message);
     }
 
     public static int parseInt(String string) { //to add functionality later

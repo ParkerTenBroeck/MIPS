@@ -91,7 +91,10 @@ public class Processor implements Runnable {
     }
 
     public static void logRunTimeError(String message) {
+        if(Main_GUI.breakOnRunTimeError()){
         Main_GUI.stop();
+        Main_GUI.refreshAll();
+        }
         Log.logError("[RunTime] " + message);
     }
 
