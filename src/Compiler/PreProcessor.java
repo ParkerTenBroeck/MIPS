@@ -69,7 +69,7 @@ public class PreProcessor {
 
         } else if (statementName.startsWith("inline")) {
 
-            statements.add(new inline(currentLine, file, index));
+            statements.add(new definline(currentLine, file, index));
 
         } else {
             ASMCompiler.PreProcessorError("Not a valid Statement", currentLine.realLineNumber);

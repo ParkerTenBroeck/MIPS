@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public abstract class Statement {
 
-    public final String STATEMENT_NAME = this.getClass().getSimpleName();
+    public final String STATEMENT_NAME = this.getClass().getSimpleName().toLowerCase();
     public final String IDENTIFIRE;
 
     public Statement(UserLine ul) {

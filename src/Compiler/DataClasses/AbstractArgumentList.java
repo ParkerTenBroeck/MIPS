@@ -5,6 +5,8 @@
  */
 package Compiler.DataClasses;
 
+import java.util.Collection;
+
 /**
  *
  * @author parke
@@ -12,7 +14,7 @@ package Compiler.DataClasses;
 public class AbstractArgumentList {
 
     public String[] args;
-    private char[] dividers;
+    public char[] dividers;
 
     public AbstractArgumentList(String string) {
         abstractifyString(string, new char[]{' ', ',', '(', ')', '[', ']', '{', '}'});
@@ -73,4 +75,105 @@ public class AbstractArgumentList {
         temp += args[dividers.length];
         return temp;
     }
+
+    /**
+     *
+     * @param open
+     * @param close
+     * @return
+     *
+     * Warning open and closing chars must be already be used by the dividers
+     * used in the constructor
+     *
+     * if the arguments are not properly enclosed in the specified chars an
+     * error will be thrown
+     */
+    //everything below this point does not work
+    
+        public static void main(String[] args) {
+            String temp = "hello(this(is((a)test))to)see(if)something(works(right))";
+            treeToString(treeFromString(temp, 0, temp.length() - 1));
+            System.out.println(str);
+        }
+    
+    public String[][] encloseArgsWithChars(char open, char close) {
+
+        Node<AbstractArgumentList> test = new Node();
+        
+        return null;
+    }
+
+  
+// function to construct tree from string 
+public static Node treeFromString(String str, int si, int ei) 
+{ 
+    // Base case 
+    if (si > ei) 
+        return null; 
+  
+    // new root 
+    Node root = new Node();
+    root.data = str.substring(si, str.indexOf("(", si));
+    int index = -1; 
+  
+    // if next char is '(' find the index of 
+    // its complement ')' 
+    if (si + 1 <= ei && str.contains("(")) {
+        //index = findIndex(str, si + 1, ei); 
+        int count = 1;
+        
+        while(count != 0){
+            
+        }
+        index = str.substring(si).indexOf(")");
+    }
+    
+    // if index found 
+    if (index != -1) { 
+  
+        // call for left subtree 
+        root.left = treeFromString(str, si + str.substring(si, str.indexOf("(", si)).length() + 1, index - 1); 
+  
+        // call for right subtree 
+        root.right = treeFromString(str, index + 2, ei - 1); 
+    } 
+    return root; 
+} 
+
+    static String str = "";
+    static void treeToString(Node<String> root) {
+        
+        // bases case 
+        if (root == null) {
+            return;
+        }
+
+        // push the root data as character 
+        str += root.data;
+
+        // if leaf node, then return 
+        if (root.left == null && root.right == null) {
+            return;
+        }
+
+        // for left subtree 
+        str += ('(');
+        treeToString(root.left);
+        //str += (')'); 
+
+        // only if right child is present to 
+        // avoid extra parenthesis 
+        if (root.right != null) {
+            str += (')');
+            treeToString(root.right);
+            //str += (')'); 
+        }
+    }
+}
+
+class Node<T> {
+
+    public T data;
+    public Node left, right;
+
 }
