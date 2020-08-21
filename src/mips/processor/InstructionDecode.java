@@ -197,7 +197,7 @@ public class InstructionDecode {
                 break;
 
             case 0B001001: //addiu
-                setRegister(t, getRegister(s) + SEi);
+                setRegister(t, getRegister(s) + ZEi);
                 break;
 
             case 0B001100: //andi

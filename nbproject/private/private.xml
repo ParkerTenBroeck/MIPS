@@ -2,6 +2,24 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/Compiler/PreProcessorStatements/If.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/mips/MIPS.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/Compiler/PreProcessor.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/Compiler/ASMCompiler.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/Images/info.png</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/GUI/Browser.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/mips/Log.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/Compiler/DataClasses/UserLine.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/GUI/ASM_GUI.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/Compiler/DataClasses/MemoryLable.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/mips/processor/Processor.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/Images/asciiChart.bmp</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/mips/processor/Memory.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/Compiler/DataClasses/AbstractArgumentList.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/mips/FileWriteReader.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/mips/processor/InstructionDecode.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/Compiler/PreProcessorStatements/Statement.java</file>
+        </group>
     </open-files>
 </project-private>

@@ -32,9 +32,18 @@ public class StringToOpcode {
         } else {
             opCodeString = instruction.split(" ")[0];
 
+            if (instruction.endsWith(")")) {
+                instruction = instruction.substring(0, instruction.length() - 1);
+            }
             AbstractArgumentList aal = new AbstractArgumentList(instruction.substring(opCodeString.length()), new char[]{',', '(', ')'});
             parameter = aal.args;
             opCodeString = opCodeString.trim();
+        }
+        if (getNumberOfArguments(new UserLine(opCodeString, ctul.ul.realLineNumber)) != parameter.length) {
+            ASMCompiler.OpCodeError("Wrong number of arguments used for (" + opCodeString + ") needed "
+                    + getNumberOfArguments(new UserLine(opCodeString, ctul.ul.realLineNumber))
+                    + " found " + parameter.length, currentOpCodeLine);
+            return new byte[0];
         }
 
         switch (opCodeString) {
@@ -408,9 +417,14 @@ public class StringToOpcode {
         try {
             return ASMCompiler.parseInt(parameter);
         } catch (Exception e) {
-            ASMCompiler.ArgumentError("Invalid immediate value", currentOpCodeLine);
+
+            int num = ASMCompiler.getByteIndexOfMemoryLable(parameter.trim(), currentOpCodeLine);
+            if (num == -1) {
+                ASMCompiler.ArgumentError("Invalid immediate value", currentOpCodeLine);
+                return 0;
+            }
+            return num;
         }
-        return 0;
     }
 
     private static int decodeMemoryPointerJump(String parameter) {
@@ -452,5 +466,171 @@ public class StringToOpcode {
 
     public static int getInstructionSize(UserLine ul) { //to be implemented
         return 4;
+    }
+
+    public static int getNumberOfArguments(UserLine ul) {
+        switch (ul.line) {
+
+            //arithmetic and logical instructions
+            case "add":
+                return 3;
+
+            case "addu":
+                return 3;
+
+            case "addi":
+                return 3;
+
+            case "addiu":
+                return 3;
+
+            case "and":
+                return 3;
+
+            case "andi":
+                return 3;
+
+            case "div":
+                return 2;
+
+            case "divu":
+                return 2;
+
+            case "mult":
+                return 2;
+
+            case "multu":
+                return 2;
+
+            case "nor":
+                return 3;
+
+            case "or":
+                return 3;
+
+            case "ori":
+                return 3;
+
+            case "sll":
+                return 3;
+            case "sllv":
+                return 3;
+
+            case "sra":
+                return 3;
+
+            case "srav":
+                return 3;
+
+            case "srl":
+                return 3;
+
+            case "srlv":
+                return 3;
+
+            case "sub":
+                return 3;
+
+            case "subu":
+                return 3;
+
+            case "xor":
+                return 3;
+
+            case "xori":
+                return 3;
+
+            //constant manipulating instructions
+            case "lhi":
+                return 2;
+
+            case "llo":
+                return 2;
+
+            //comparison instruction
+            case "slt":
+                return 3;
+
+            case "sltu":
+                return 3;
+
+            case "slti":
+                return 3;
+
+            case "sltiu":
+                return 3;
+
+            //branch instructions
+            case "beq":
+                return 3;
+
+            case "bgtz":
+                return 2;
+
+            case "blez":
+                return 2;
+
+            case "bne":
+                return 3;
+
+            //jump instructions
+            case "j":
+                return 1;
+
+            case "jal":
+                return 1;
+
+            case "jalr":
+                return 1;
+
+            case "jr":
+                return 1;
+
+            //load instruction
+            case "lb":
+                return 3;
+
+            case "lbu":
+                return 3;
+
+            case "lh":
+                return 3;
+            case "lhu":
+                return 3;
+
+            case "lw":
+                return 3;
+
+            //store instructions
+            case "sb":
+                return 3;
+
+            case "sh":
+                return 3;
+
+            case "sw":
+                return 3;
+
+            //data movement instructions
+            case "mfhi":
+                return 1;
+
+            case "mflo":
+                return 1;
+
+            case "mthi":
+                return 1;
+
+            case "mtlo":
+                return 1;
+
+            //system calls
+            case "trap":
+                return 1;
+
+            default:
+                ASMCompiler.OpCodeError("Invalid opcode", ul.realLineNumber);
+                return 0;
+        }
     }
 }

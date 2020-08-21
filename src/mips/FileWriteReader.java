@@ -10,7 +10,6 @@ import GUI.Main_GUI;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -29,6 +28,7 @@ public class FileWriteReader {
     private static File currentMXNFile;
 
     private static boolean isFileSaved;
+    private static boolean isFileReadOnly = false;
 
     private static void importMXFile(File file) {
 
@@ -68,6 +68,9 @@ public class FileWriteReader {
     }
 
     public static void reloadMXNFile() {
+        
+        if(isFileReadOnly)return;
+        
         if (currentMXNFile == null) {
             Memory.setMemory(null);
             return;
@@ -121,6 +124,9 @@ public class FileWriteReader {
     }
 
     public static void saveMXNFile() {
+        if (isFileReadOnly) {
+            return;
+        }
         try {
             if (currentASMFile != null && currentASMFile.exists()) {
                 currentMXNFile = new File(currentASMFile.getPath().split("\\.")[0] + ".mxn");
@@ -137,6 +143,9 @@ public class FileWriteReader {
     }
 
     public static boolean saveASMFile() {
+        if (isFileReadOnly) {
+            return false;
+        }
         if (Main_GUI.isLinked()) {
             reloadASMFile();
             return true;
@@ -154,11 +163,15 @@ public class FileWriteReader {
         }
         return false;
     }
-    public static boolean isASMFileSaved(){
-        return isFileSaved || Main_GUI.isLinked();
+
+    public static boolean isASMFileSaved() {
+        return isFileSaved || Main_GUI.isLinked() || isFileReadOnly;
     }
 
     public static boolean saveAsASMFile() {
+        if (isFileReadOnly) {
+            return false;
+        }
         try {
             final JFileChooser fc = new JFileChooser();
             int returnVal = fc.showOpenDialog(Main_GUI.getFrame());
@@ -198,6 +211,9 @@ public class FileWriteReader {
     }
 
     public static void writeToASMFile() {
+        if (isFileReadOnly) {
+            return;
+        }
         currentASMFile.delete();
 
         try {
@@ -217,18 +233,47 @@ public class FileWriteReader {
             return new ArrayList();
         }
     }
-    
-    public static String getASMFilePath(){
-        try{
-        return currentASMFile.getPath();
-        }catch(Exception e){
+
+    public static String getASMFilePath() {
+        try {
+            return currentASMFile.getPath();
+        } catch (Exception e) {
             //Log.logError("No File Selected");
             return "";
         }
     }
 
-    public static void loadFile(File file) {
+    public static void loadExampleFile(File file) {
+        FileWriteReader.setFileReadOnly(true);
 
+        String extention = null;
+        String path = null;
+
+        try {
+            extention = file.getPath().split("\\.")[1];
+            path = file.getPath().split("\\.")[0];
+        } catch (Exception e) {
+            Main_GUI.infoBox("Error", file.getPath() + " is not a valid file");
+            return;
+        }
+
+        if (extention.equals("asm")) {
+            currentMXNFile = null;
+            currentASMFile = file;
+
+        } else if (extention.equals("mxn")) {
+            currentASMFile = null;
+            currentMXNFile = file;
+
+        }
+    }
+
+    public static void loadFile(File file) {
+        if (file.canWrite()) {
+            FileWriteReader.setFileReadOnly(false);
+        } else {
+            FileWriteReader.setFileReadOnly(true);
+        }
         if (file == null || !file.exists()) {
             return;
         }
@@ -255,6 +300,7 @@ public class FileWriteReader {
             importMXFile(file);
 
         } else {
+
             Main_GUI.infoBox("Error", file.getPath() + "/n is not a valid file");
         }
         reloadFiles();
@@ -271,6 +317,10 @@ public class FileWriteReader {
         }
         loadFile(fc.getSelectedFile());
 
+    }
+
+    public static void setFileReadOnly(boolean state) {
+        isFileReadOnly = state;
     }
 
     public static void newFile() {

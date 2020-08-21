@@ -14,7 +14,6 @@ import GUI.Main_GUI;
 public class MIPS {
 
     public static void main(String[] args) {
-        
         Main_GUI gui = new Main_GUI();
     }
 

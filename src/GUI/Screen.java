@@ -7,6 +7,7 @@ package GUI;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -24,6 +25,13 @@ public class Screen extends javax.swing.JFrame {
     private static BufferedImage imageBuffer = new BufferedImage(25, 16, BufferedImage.TYPE_INT_RGB);
 
     private static final ArrayList<KeyEvent> keysPressed = new ArrayList();
+
+    public static void fillScreen(int val) {
+        Graphics2D graphics = image.createGraphics();
+
+        graphics.setPaint(new Color(val));
+        graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
+    }
 
     public Screen() {
         initComponents();

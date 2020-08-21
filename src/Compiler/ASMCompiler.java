@@ -8,9 +8,7 @@ package Compiler;
 import Compiler.DataClasses.MemoryLable;
 import Compiler.DataClasses.UserLine;
 import GUI.Main_GUI;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -410,11 +408,6 @@ public class ASMCompiler {
             lineNumber++;
         }
         return file;
-    }
-
-    public static void PreProcessorError(String message, int line) {
-
-        logCompilerError("[PreProcessor]: on line " + line + " " + message);
     }
 
     public static void DotCodeDecoderError(String message, int line) {

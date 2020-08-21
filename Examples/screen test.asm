@@ -3,21 +3,21 @@
 
 #define screenSizeX 29
 
-#define push($a)[
+#definline push $a
 add $4, $0, $a
 sw $a, main(stackRegister)
 addi $29, $29, 1
-]
+#endinline
 
-#define pushAndJump(address)[
-push($4)
+#definline pushAndJump address
+push $4 
 j address
-]
+#endinline
 
 main:
 trap -1
 
-pushAndJump(main)
+pushAndJump main 
 addi $4, $0, screenSizeX
 
 trap -1

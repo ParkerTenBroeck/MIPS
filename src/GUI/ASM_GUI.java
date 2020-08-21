@@ -5,12 +5,8 @@
  */
 package GUI;
 
-import java.awt.Color;
 import java.util.List;
 import javax.swing.text.DefaultStyledDocument;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
 import mips.FileWriteReader;
 
 /**

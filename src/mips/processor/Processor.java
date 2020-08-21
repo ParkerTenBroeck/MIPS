@@ -70,7 +70,9 @@ public class Processor implements Runnable {
     }
 
     private static void delayNano(long time) {
-
+        if (time == 0) {
+            return;
+        }
         long start = System.nanoTime();
         long end = 0;
         do {
@@ -82,7 +84,22 @@ public class Processor implements Runnable {
         return getWord(getPc());
     }
 
-    public static void singleStep() {
+    public static void runSingleStep() {
+        if (isRunning == true) {
+            return;
+        }
+        
+        isRunning = true;
+        Thread thread = new Thread() {
+            public void run() {
+                singleStep();
+                isRunning = false;
+            }
+        };
+        thread.start();
+    }
+
+    private static void singleStep() {
         if (!runInstruction(getOpCode())) {
 
             logRunTimeError("invalid OpCode at " + Registers.getPc());
@@ -91,9 +108,9 @@ public class Processor implements Runnable {
     }
 
     public static void logRunTimeError(String message) {
-        if(Main_GUI.breakOnRunTimeError()){
-        Main_GUI.stop();
-        Main_GUI.refreshAll();
+        if (Main_GUI.breakOnRunTimeError()) {
+            Main_GUI.stop();
+            Main_GUI.refreshAll();
         }
         Log.logError("[RunTime] " + message);
     }

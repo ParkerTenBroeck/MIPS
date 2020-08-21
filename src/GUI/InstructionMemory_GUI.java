@@ -32,7 +32,7 @@ public class InstructionMemory_GUI extends javax.swing.JPanel {
 
     public static void refreshValues() {
         
-        FileWriteReader.reloadMXNFile();
+        FileWriteReader.reloadMXNFile();  
 
         DefaultListModel listModel = new DefaultListModel();
 

@@ -50,6 +50,17 @@ public class UserIO extends javax.swing.JFrame {
         }
     }
 
+    public static boolean waitForEnter() {
+        while (enteredText.charAt(enteredText.length() - 1) == '\n') {
+            try {
+                Thread.sleep(100);
+            } catch (Exception e) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public UserIO() {
         initComponents();
     }
@@ -68,7 +79,7 @@ public class UserIO extends javax.swing.JFrame {
         outputTextArea.append(String.valueOf((char) c));
         outputTextArea.setCaretPosition(outputTextArea.getDocument().getLength());
         try {
-            //Thread.sleep(1);
+            Thread.sleep(1);
         } catch (Exception e) {
 
         }

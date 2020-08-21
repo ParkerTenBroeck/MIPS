@@ -12,9 +12,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import mips.FileWriteReader;
 
 /**
  *
@@ -22,7 +19,9 @@ import mips.FileWriteReader;
  */
 public class PreProcessor {
 
-    public static ArrayList<Statement> statements;
+    public static final Statement[] validStatements = {new DEFINE(), new DEFINLINE(), new IF(), new INCLUDE(), new UNDEF()};
+
+    private static ArrayList<Statement> statements;
 
 //    private static ArrayList<UserLine> importFile(UserLine line) {
 //        line.line = line.line.replaceFirst("#include ", "");
@@ -44,59 +43,86 @@ public class PreProcessor {
                 file.add(new UserLine(line, realLineOfFilePath));
                 line = reader.readLine();
             }
-            ASMCompiler.logCompilerMessage("[Pre Processor] Loaded File: " + tempFile.getAbsolutePath());
+            PreProcessor.logPreProcessorMessage("[Pre Processor] Loaded File: " + tempFile.getAbsolutePath());
         } catch (Exception e) {
-            ASMCompiler.PreProcessorError("Cannot read file Specified" + " " + e.getMessage(), realLineOfFilePath);
+            PreProcessor.logPreProcessorError("Cannot read file Specified" + " " + e.getMessage(), realLineOfFilePath);
         }
         return file;
     }
 
-    private static void handleStatement(ArrayList<UserLine> file, int index) {
+    private static Statement generateStatement(ArrayList<UserLine> file, int index) {
 
         UserLine currentLine = file.get(index);
-        String statementName = currentLine.line.replace("#", "");
-        file.remove(index);
 
-        if (statementName.startsWith("include")) {
+        for (Statement validStatement : validStatements) {
+            if (validStatement.doesStatementBelongToMe(currentLine)) {
+                Statement temp = validStatement.generateStatement(file, index, statements);
 
-            statements.add(new include(currentLine, file, index));
+                if (!temp.IDENTIFIRE.isEmpty()) {
+                    statements.add(temp);
+                }
 
-        } else if (statementName.startsWith("define")) {
-            statements.add(new define(currentLine));
-
-        } else if (statementName.startsWith("undef")) {
-            new undef(currentLine);
-
-        } else if (statementName.startsWith("inline")) {
-
-            statements.add(new definline(currentLine, file, index));
-
-        } else {
-            ASMCompiler.PreProcessorError("Not a valid Statement", currentLine.realLineNumber);
+                return temp;
+            }
         }
-
+        PreProcessor.logPreProcessorError("Not a valid Statement", currentLine.realLineNumber);
+        return null;
     }
 
     private static ArrayList<UserLine> preProcessLine(UserLine line) {
 
-        ArrayList<UserLine> lines = new ArrayList();
-        lines.add(line);
+        ArrayList<UserLine> oldLines = new ArrayList();
+        ArrayList<UserLine> newLines = new ArrayList();
+        oldLines.add(line);
 
-        for (Statement stat : statements) {
-
-            for (int i = 0; i < lines.size(); i++) {
-
-                UserLine currentLine = lines.get(i);
-
-                if (stat.canEditUserLine() && !line.line.startsWith("#")) {
-                    currentLine = stat.parseString(currentLine).get(0);
-                } else if (stat.canEditStatement() && line.line.startsWith("#")) {
-                    currentLine = stat.parseString(currentLine).get(0);
-                }
-                lines.set(i, currentLine);
-            }
+        if (line.line.startsWith("call")) {
+            System.out.print("se");
         }
-        return lines;
+
+        for (int r = 0; r < 5; r++) {
+
+            for (int i = 0; i < oldLines.size(); i++) {
+                ArrayList<UserLine> temp = new ArrayList();
+                temp.add(oldLines.get(i));
+                
+                for (Statement statement : statements) {
+                    if (statement.canModifyNonStatements()) {
+                        
+                        UserLine currentLine;
+                        for(int j = 0; j < temp.size(); j ++){
+                            currentLine = temp.get(j);
+                            temp.remove(j);
+                            //ArrayList<UserLine> secondTemp = statement.parseNonStatement(currentLine);
+                            //temp.ensureCapacity(temp.size() + secondTemp.size());
+                            temp.addAll(j, statement.parseNonStatement(currentLine));
+                        }
+                    }
+                }
+                //oldLines.remove(i);
+                newLines.addAll(temp);
+            }
+            oldLines = newLines;
+            newLines = new ArrayList();
+        }
+
+//        ArrayList<UserLine> lines = new ArrayList();
+//        lines.add(line);
+//
+//        for (Statement stat : statements) {
+//
+//            for (int i = 0; i < lines.size(); i++) {
+//
+//                UserLine currentLine = lines.get(i);
+//
+//                if (stat.canModifyNonStatements() && !line.line.startsWith("#")) {
+//                    currentLine = stat.parseNonStatement(currentLine).get(0);
+//                } else if (stat.canModifyDefindedStatements() && line.line.startsWith("#")) {
+//                    currentLine = stat.parseNonStatement(currentLine).get(0);
+//                }
+//                lines.set(i, currentLine);
+//            }
+//        }
+        return oldLines;
     }
 
     private static String cleanLine(String line) {
@@ -146,47 +172,59 @@ public class PreProcessor {
         //file = loadFile("C:\\Users\\parke\\OneDrive\\Documents\\GitHub\\MIPS\\Examples\\snake 2.asm", 1);
         statements = new ArrayList();
 
-        if (file == null) {
-            return new ArrayList();
+        ArrayList<UserLine> preProcessedFile = subPreProcess(file);
+
+        if (outputFile) {
+            writePreProcessedFile(preProcessedFile);
+        }
+        statements.clear();
+        return preProcessedFile;
+    }
+
+    private static ArrayList<UserLine> subPreProcess(ArrayList<UserLine> data) { //pre processes data in included data or nested is statements
+
+        ArrayList<UserLine> cleanedData = new ArrayList();
+        ArrayList<UserLine> preProcessedData = new ArrayList();
+
+        if (data == null) {
+            return preProcessedData;
         }
 
-        for (int i = 0; i < file.size(); i++) {
+        for (int i = 0; i < data.size(); i++) {
 
-            UserLine currentLine = file.get(i);
+            UserLine currentLine = data.get(i);
 
             try {
                 currentLine.line = cleanLine(currentLine.line);
             } catch (Exception e) {
-                ASMCompiler.PreProcessorError("Cannot Clean Line", currentLine.realLineNumber);
+                PreProcessor.logPreProcessorError("Cannot Clean Line", currentLine.realLineNumber); //cleans the line (fixes spacing and removes comments)
             }
 
             if (currentLine.line.equals("") || currentLine.line.equals("/n")) { //if line is empty delete it and move on
-                file.remove(i);
-                i--;
                 continue;
             }
-
-            file.remove(i);
-            ArrayList<UserLine> temp = preProcessLine(currentLine);
-            if (temp.size() == 0) {
-                i--;
-            } else {
-                file.addAll(i, temp);
-            }
-
-            if (currentLine.line.startsWith("#")) {
-                handleStatement(file, i);
-                i--;
-                continue;
-            }
+            cleanedData.add(currentLine);
 
         }
 
-        if (outputFile) {
-            writePreProcessedFile(file);
+        for (int i = 0; i < cleanedData.size(); i++) {
+            UserLine currentLine = cleanedData.get(i);
+
+            if (currentLine.line.startsWith("#")) { //handles new preprossesor statemtns
+
+                Statement statement = generateStatement(cleanedData, i);
+
+                if (statement.canGenerateAddedData()) {
+                    preProcessedData.addAll(subPreProcess(statement.getGeneratedAddedData()));
+                }
+                i += statement.getSizeOfStatement() - 1;
+                continue;
+            }
+
+            preProcessedData.addAll(preProcessLine(currentLine)); //preprocesses line and adds resulting line / lines to pre processed file
+
         }
-        statements.clear();
-        return file;
+        return preProcessedData;
     }
 
     private static void writePreProcessedFile(ArrayList<UserLine> fileInfo) {
@@ -197,11 +235,41 @@ public class PreProcessor {
 
                 out.println(fileInfo.get(i).line);
             }
-            ASMCompiler.logCompilerMessage("Pre Processed File Wrote to:" + tempFile.getAbsolutePath());
+            PreProcessor.logPreProcessorMessage("Pre Processed File Wrote to:" + tempFile.getAbsolutePath());
             out.flush();
         } catch (Exception e) {
-            ASMCompiler.logCompilerError("Unable to write Pre Processed File to:" + tempFile.getAbsolutePath() + " " + e.getMessage());
+            PreProcessor.logPreProcessorError("Unable to write Pre Processed File to:" + tempFile.getAbsolutePath() + " " + e.getMessage());
         }
 
+    }
+
+    public static void logPreProcessorError(String message, int line) {
+
+        ASMCompiler.logCompilerError("[PreProcessor]: on line " + line + " " + message);
+    }
+
+    public static void logPreProcessorWarning(String message, int line) {
+
+        ASMCompiler.logCompilerWarning("[PreProcessor]: on line " + line + " " + message);
+    }
+
+    public static void logPreProcessorMessage(String message, int line) {
+
+        ASMCompiler.logCompilerMessage("[PreProcessor]: on line " + line + " " + message);
+    }
+
+    public static void logPreProcessorError(String message) {
+
+        ASMCompiler.logCompilerError("[PreProcessor]: " + message);
+    }
+
+    public static void logPreProcessorWarning(String message) {
+
+        ASMCompiler.logCompilerWarning("[PreProcessor]: " + message);
+    }
+
+    public static void logPreProcessorMessage(String message) {
+
+        ASMCompiler.logCompilerMessage("[PreProcessor]: " + message);
     }
 }

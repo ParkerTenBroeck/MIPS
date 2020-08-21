@@ -33,8 +33,8 @@ public class SystemCall {
 
                 case 0:   //stops the program
                     Main_GUI.stop();
-                    Processor.reset();
-                    Main_GUI.infoBox("Stop", "program has been halted");
+                    //Processor.reset();
+                    //Main_GUI.infoBox("Stop", "program has been halted");
                     logRunTimeMessage("Program has been halted");
                     break;
 
@@ -43,13 +43,63 @@ public class SystemCall {
                     outputNumber(Registers.getRegister(4));
                     break;
 
-                case 4:
-                    break;
+                case 4: //Print the ASCIIZ string to console starting at the address in $4
+                {
+                    openUserIO();
+                    int max = 4000;
+                    int i = 0;
+                    int index = getRegister(4);
+                    int step = getRegister(5);
+                    if(step == 0){
+                        step = 1;
+                    }
+                    if (step == 1) {
+                        while (Memory.getByte(index) != 0 && i <= max) {
+                            outputUnicode(Memory.getByte(index));
+                            index++;
+                            i++;
+                        }
+                    } else if (step == 2) {
+                        while (Memory.getHalfWord(index * 2) != 0 && i <= max) {
+                            outputUnicode(Memory.getHalfWord(index * 2));
+                            index++;
+                            i++;
+                        }
+                    } else if (step > 2) {
+                        while (Memory.getWord(index * step) != 0 && i <= max) {
+                            outputUnicode(Memory.getWord(index * step));
+                            index++;
+                            i++;
+                        }
+                    }
+
+                    if (i >= max) {
+                        Processor.logRunTimeError("Trap 4 reached limit of " + max + " while printing string possibly non terminated string");
+                    }
+                }
+                break;
 
                 case 5: //gets an integer from the user
                     openUserIO();
                     setRegister(2, UserIO.getInt());
                     break;
+
+                case 8: //Read a string from the user console and store at the address in $4.Length of buffer in $5* Need to allocate one more word than used (for the terminating 0 in theASCIIZ string)
+                {
+                    int bufferSize = getRegister(5);
+                    int memoryOffset = getRegister(4);
+                    int i = 0;
+                    if (UserIO.waitForEnter()) {
+                        return;
+                    }
+                    while (UserIO.hasChar() && i < bufferSize) {
+                        Memory.setWord(memoryOffset + i * 4, UserIO.getNextChar());
+                        i++;
+                    }
+                    Memory.setWord(memoryOffset + (i + 1) * 4, 0); //terminating zero
+                }
+                Registers.setRegister(2, UserIO.getNextChar());
+                break;
 
                 case 99:  //sets a random number between register 4 and 5
                     setRegister(2, (int) (Math.random() * (getRegister(5) + 1 - getRegister(4))) + getRegister(4));
@@ -87,21 +137,21 @@ public class SystemCall {
                 case 106: //sleeps number of millis in register 4 munus the time difference from the last call
                     try {
                         Thread.sleep(getRegister(4) - (System.currentTimeMillis() - lastTimeCheck));
-                        
+
                     } catch (Exception e) {
 
                     }
-                    
+
                     lastTimeCheck = System.currentTimeMillis();
-                 
+
                     break;
 
                 case 111: // breaks the program if break is enabled
                     if (Main_GUI.canBreak()) {
                         Main_GUI.stop();
                         logRunTimeMessage("Program has reached a breakpoint");
-                    }else{
-                        logRunTimeMessage("Program has attempted to break");
+                    } else {
+                        //logRunTimeMessage("Program has attempted to break");
                     }
                     break;
 
@@ -126,16 +176,23 @@ public class SystemCall {
                     Screen.updateScreen();
                     break;
 
-                case 154:   //hsv 0 - 255, h $4, s $5, v $6 - returns rgb values into register 4, 5, 6
+                case 154: //hsv 0 - 255, h $4, s $5, v $6 - returns rgb values into register 4, 5, 6
+                {
                     Color color = new Color(Color.HSBtoRGB((float) (getRegister(4) / 255.0), (float) getRegister(5) / (float) 255.0, (float) getRegister(6) / (float) 255.0));
                     setRegister(4, color.getRed());
                     setRegister(5, color.getRed());
                     setRegister(6, color.getRed());
-                    break;
+                }
+                break;
 
                 case 155: //hsv 0 - 255, h $4, s $5, v $6 - returns color int $4
+                {
                     int colorInt = Color.HSBtoRGB((float) (getRegister(4) / 255.0), (float) getRegister(5) / (float) 255.0, (float) getRegister(6) / (float) 255.0);
                     setRegister(4, colorInt);
+                }
+                    break;
+                case 156:
+                    Screen.fillScreen(getRegister(4));
                     break;
 
                 default:

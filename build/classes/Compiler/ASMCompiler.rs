@@ -1,8 +1,0 @@
-Compiler.MemoryChunk
-Compiler.ASMCompiler
-Compiler.asmInstruction
-Compiler.Origin
-Compiler.CompileTimeUserLine
-Compiler.UserLine
-Compiler.ByteP
-Compiler.dotData

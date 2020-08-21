@@ -9,6 +9,7 @@ main:
 jal 3
 #define lol 5
 #define loll 7
+#define loll 7
 trap lol
 trap loll
 #undef lol
@@ -209,18 +210,6 @@ wallCollisionReturnTrue:
 addi $4, $0, 1   
 jr $31; returns 1
 
-
-
-delay:
-
-addi $8, $0, 300
-sll $8, $8, 10
-
-delayLoop:
-addi $8, $8, -1
-bgtz $8, delayLoop
-
-jr $31 ;returns 
 
 userInput:
 
