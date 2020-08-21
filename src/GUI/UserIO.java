@@ -23,9 +23,7 @@ public class UserIO extends javax.swing.JFrame {
         }
 
         try {
-            System.out.println(enteredText);
             int i = Integer.parseInt(enteredText.substring(0, enteredText.length() - 1));
-            System.out.println(i);
             enteredText = "";
             return i;
         } catch (Exception e) {

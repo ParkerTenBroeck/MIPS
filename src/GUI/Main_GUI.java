@@ -29,16 +29,13 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
-import javax.swing.MenuElement;
 import javax.swing.UIManager;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import mips.FileWriteReader;
 import mips.Log;
-import mips.MIPS;
 import mips.processor.Processor;
-import sun.misc.Launcher;
 
 /**
  *
@@ -144,7 +141,6 @@ public class Main_GUI extends javax.swing.JFrame {
                 Processor.reset();
                 FileWriteReader.loadExampleFile(new File(((JMenuItem) evt.getSource()).getName()));
                 ASMCompiler.compile();
-                System.out.println(((JMenuItem) evt.getSource()).getName());
             }
         };
 
@@ -168,12 +164,10 @@ public class Main_GUI extends javax.swing.JFrame {
             JMenu jMenu = new JMenu();
             jMenu.setText(file.getName());
             jMenu.setName(file.getAbsolutePath());
-            System.out.println(file.getName());
             for (File f2 : file.listFiles()) {
                 if (f2.isDirectory()) {
                     jMenu.add(generateJMenuFromFile(f2, al));
                 } else {
-                    System.out.println("    " + f2.getName());
                     JMenuItem jMenuItem = new JMenuItem();
                     jMenuItem.setText(f2.getName());
                     jMenuItem.setName(f2.getAbsolutePath());
@@ -341,7 +335,7 @@ public class Main_GUI extends javax.swing.JFrame {
             }
         });
 
-        aboutButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/info.png"))); // NOI18N
+        aboutButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/info.png"))); // NOI18N
         aboutButton.setBorderPainted(false);
         aboutButton.setContentAreaFilled(false);
         aboutButton.setFocusPainted(false);
@@ -440,7 +434,7 @@ public class Main_GUI extends javax.swing.JFrame {
             }
         });
 
-        aboutLinkedFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/info.png"))); // NOI18N
+        aboutLinkedFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/info.png"))); // NOI18N
         aboutLinkedFile.setBorderPainted(false);
         aboutLinkedFile.setContentAreaFilled(false);
         aboutLinkedFile.setFocusPainted(false);
@@ -722,7 +716,7 @@ public class Main_GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_newMenuButtonActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        new imageFrame("/Images/asciiChart.bmp");
+        new imageFrame("/images/asciiChart.bmp");
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void aboutLinkedFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutLinkedFileActionPerformed

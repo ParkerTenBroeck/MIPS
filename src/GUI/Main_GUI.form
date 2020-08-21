@@ -331,7 +331,7 @@
                     <Component class="javax.swing.JButton" name="aboutButton">
                       <Properties>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/Images/info.png"/>
+                          <Image iconType="3" name="/images/info.png"/>
                         </Property>
                         <Property name="borderPainted" type="boolean" value="false"/>
                         <Property name="contentAreaFilled" type="boolean" value="false"/>
@@ -340,6 +340,9 @@
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="aboutButtonActionPerformed"/>
                       </Events>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="Main_GUI_aboutButton"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JLabel" name="InstructionsRan">
                       <Properties>
@@ -474,7 +477,7 @@
                     <Component class="javax.swing.JButton" name="aboutLinkedFile">
                       <Properties>
                         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/Images/info.png"/>
+                          <Image iconType="3" name="/images/info.png"/>
                         </Property>
                         <Property name="borderPainted" type="boolean" value="false"/>
                         <Property name="contentAreaFilled" type="boolean" value="false"/>

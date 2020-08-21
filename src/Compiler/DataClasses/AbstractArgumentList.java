@@ -93,7 +93,6 @@ public class AbstractArgumentList {
         public static void main(String[] args) {
             String temp = "hello(this(is((a)test))to)see(if)something(works(right))";
             treeToString(treeFromString(temp, 0, temp.length() - 1));
-            System.out.println(str);
         }
     
     public String[][] encloseArgsWithChars(char open, char close) {

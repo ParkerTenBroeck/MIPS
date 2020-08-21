@@ -1,3 +1,2 @@
 Compiler.DataClasses.Node
-Compiler.DataClasses.SyntaxTree
 Compiler.DataClasses.AbstractArgumentList

@@ -67,7 +67,6 @@ public class dragAndDrop {
                         else if (flavors[i].isFlavorSerializedObjectType()) {
                             dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
                             Object o = tr.getTransferData(flavors[i]);
-                            System.out.println(o);
                             dtde.dropComplete(true);
                             return;
                         } // How about an input stream?

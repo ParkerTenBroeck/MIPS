@@ -74,11 +74,7 @@ public class PreProcessor {
         ArrayList<UserLine> oldLines = new ArrayList();
         ArrayList<UserLine> newLines = new ArrayList();
         oldLines.add(line);
-
-        if (line.line.startsWith("call")) {
-            System.out.print("se");
-        }
-
+        
         for (int r = 0; r < 5; r++) {
 
             for (int i = 0; i < oldLines.size(); i++) {

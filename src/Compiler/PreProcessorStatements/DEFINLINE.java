@@ -29,7 +29,7 @@ public class DEFINLINE extends Statement {
         super(input);
         calculateSizeOfStatement(file, index);
 
-        AbstractArgumentList aal = new AbstractArgumentList(input.line.replace("#definline "+ this.IDENTIFIRE + " ", ""),
+        AbstractArgumentList aal = new AbstractArgumentList(input.line.replace("#definline ", ""),
                 new char[]{',', '(', ')'});
 
         args = Arrays.copyOf(aal.args, aal.args.length);
@@ -79,7 +79,6 @@ public class DEFINLINE extends Statement {
         return parsedInlineLines;
 
     }
-
     @Override
     public boolean canModifyNonStatements() {
         return true;
@@ -92,7 +91,7 @@ public class DEFINLINE extends Statement {
 
     @Override
     protected String createIdentifire(UserLine ul) {
-        return ul.line.replace("#definline ", "").split(" ")[0];
+        return ul.line.replace("#inline ", "").split(" ")[0];
     }
 
     @Override
