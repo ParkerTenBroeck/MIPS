@@ -6,6 +6,12 @@
 package GUI;
 
 import Compiler.ASMCompiler;
+import Compiler.DataClasses.MemoryLable;
+import GUI.lookandfeel.ModernButtonUI;
+import GUI.lookandfeel.ModernScrollPane;
+import java.util.ArrayList;
+import javax.swing.JButton;
+import javax.swing.JToggleButton;
 import javax.swing.ScrollPaneConstants;
 import mips.processor.Memory;
 
@@ -22,7 +28,8 @@ public class Memory_GUI extends javax.swing.JFrame {
         initComponents();
         memoryPositionScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         memoryPositionScrollPane.getVerticalScrollBar().setModel(valsScrollPane.getVerticalScrollBar().getModel());
-        cbs = new ComboBoxSearchable(memoryLables, ASMCompiler.getMemoryLables());
+        ArrayList<MemoryLable> memoryLablesAL =  ASMCompiler.getMemoryLables();
+        cbs = new ComboBoxSearchable(memoryLables, memoryLablesAL);
         updateMemoryValues();
         this.show(true);
     }
@@ -125,41 +132,32 @@ public class Memory_GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        valsScrollPane = new javax.swing.JScrollPane();
-        valsTable = new javax.swing.JTable();
-        memoryPositionScrollPane = new javax.swing.JScrollPane();
+        StuffHolder1 = new javax.swing.JPanel();
+        memoryPositionScrollPane = new ModernScrollPane();
+ ;
         memoryPositionTable = new javax.swing.JTable();
+        valsScrollPane = new ModernScrollPane();  ;
+        valsTable = new javax.swing.JTable();
         StuffHolder = new javax.swing.JPanel();
         startingPosition = new javax.swing.JFormattedTextField();
         startingPositionLable = new javax.swing.JLabel();
         lengthLable = new javax.swing.JLabel();
         length = new javax.swing.JFormattedTextField();
-        updateButton = new javax.swing.JButton();
-        autoUpdateButton = new javax.swing.JToggleButton();
+        updateButton =  new JButton() {                  @Override          public void updateUI() {                      setUI(new ModernButtonUI(this));                  }              };  ;
+        autoUpdateButton =  new JToggleButton() {                  @Override          public void updateUI() {                      setUI(new ModernButtonUI(this));                  }              };  ;
         memoryLables = new javax.swing.JComboBox<>();
         memoryPointersLable = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
 
-        valsScrollPane.setBorder(null);
-
-        valsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Dec", "Bin", "Hex", "ASCII"
-            }
-        ));
-        valsTable.setToolTipText("");
-        valsScrollPane.setViewportView(valsTable);
+        StuffHolder1.setBackground(new java.awt.Color(51, 51, 51));
 
         memoryPositionScrollPane.setBorder(null);
+        memoryPositionScrollPane.setOpaque(false);
 
+        memoryPositionTable.setBackground(new java.awt.Color(102, 102, 102));
+        memoryPositionTable.setForeground(new java.awt.Color(204, 204, 204));
         memoryPositionTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null},
@@ -172,10 +170,59 @@ public class Memory_GUI extends javax.swing.JFrame {
             }
         ));
         memoryPositionTable.setEnabled(false);
+        memoryPositionTable.setGridColor(new java.awt.Color(51, 51, 51));
+        memoryPositionTable.setOpaque(false);
         memoryPositionScrollPane.setViewportView(memoryPositionTable);
 
+        valsScrollPane.setBorder(null);
+
+        valsTable.setBackground(new java.awt.Color(102, 102, 102));
+        valsTable.setForeground(new java.awt.Color(204, 204, 204));
+        valsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Dec", "Bin", "Hex", "ASCII"
+            }
+        ));
+        valsTable.setToolTipText("");
+        valsTable.setGridColor(new java.awt.Color(51, 51, 51));
+        valsScrollPane.setViewportView(valsTable);
+
+        javax.swing.GroupLayout StuffHolder1Layout = new javax.swing.GroupLayout(StuffHolder1);
+        StuffHolder1.setLayout(StuffHolder1Layout);
+        StuffHolder1Layout.setHorizontalGroup(
+            StuffHolder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, StuffHolder1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(memoryPositionScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(valsScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 567, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        StuffHolder1Layout.setVerticalGroup(
+            StuffHolder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(StuffHolder1Layout.createSequentialGroup()
+                .addGap(102, 102, 102)
+                .addGroup(StuffHolder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(valsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
+                    .addComponent(memoryPositionScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        StuffHolder.setBackground(new java.awt.Color(51, 51, 51));
+
+        startingPosition.setBackground(new java.awt.Color(102, 102, 102));
+        startingPosition.setBorder(null);
+        startingPosition.setForeground(new java.awt.Color(204, 204, 204));
         startingPosition.setText("0");
 
+        startingPositionLable.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        startingPositionLable.setForeground(new java.awt.Color(204, 204, 204));
         startingPositionLable.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         startingPositionLable.setText("Mem Position");
         startingPositionLable.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -183,20 +230,28 @@ public class Memory_GUI extends javax.swing.JFrame {
         startingPositionLable.setMinimumSize(new java.awt.Dimension(80, 16));
         startingPositionLable.setPreferredSize(new java.awt.Dimension(80, 16));
 
+        lengthLable.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        lengthLable.setForeground(new java.awt.Color(204, 204, 204));
         lengthLable.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lengthLable.setText("Length");
         lengthLable.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
+        length.setBackground(new java.awt.Color(102, 102, 102));
+        length.setBorder(null);
+        length.setForeground(new java.awt.Color(204, 204, 204));
         length.setText("10");
 
+        updateButton.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         updateButton.setText("Update");
         updateButton.setFocusable(false);
+        updateButton.setOpaque(false);
         updateButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 updateButtonActionPerformed(evt);
             }
         });
 
+        autoUpdateButton.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         autoUpdateButton.setText("Auto Update");
         autoUpdateButton.setFocusable(false);
         autoUpdateButton.addActionListener(new java.awt.event.ActionListener() {
@@ -205,13 +260,18 @@ public class Memory_GUI extends javax.swing.JFrame {
             }
         });
 
+        memoryLables.setBackground(new java.awt.Color(102, 102, 102));
+        memoryLables.setForeground(new java.awt.Color(102, 102, 102));
         memoryLables.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        memoryLables.setOpaque(false);
         memoryLables.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 memoryLablesActionPerformed(evt);
             }
         });
 
+        memoryPointersLable.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        memoryPointersLable.setForeground(new java.awt.Color(204, 204, 204));
         memoryPointersLable.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         memoryPointersLable.setText("Memory Lables");
         memoryPointersLable.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -222,20 +282,18 @@ public class Memory_GUI extends javax.swing.JFrame {
             StuffHolderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, StuffHolderLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(StuffHolderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(StuffHolderLayout.createSequentialGroup()
-                        .addComponent(startingPosition, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(length, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(StuffHolderLayout.createSequentialGroup()
-                        .addComponent(startingPositionLable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lengthLable, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(updateButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(autoUpdateButton)
+                .addGroup(StuffHolderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(startingPosition)
+                    .addComponent(startingPositionLable, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(StuffHolderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lengthLable, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                    .addComponent(length))
+                .addGap(66, 66, 66)
+                .addComponent(updateButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(autoUpdateButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
                 .addGroup(StuffHolderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(memoryLables, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(memoryPointersLable, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE))
@@ -249,44 +307,32 @@ public class Memory_GUI extends javax.swing.JFrame {
                     .addGroup(StuffHolderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(startingPositionLable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lengthLable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(memoryPointersLable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(memoryPointersLable, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(StuffHolderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(startingPosition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(length, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(memoryLables, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(StuffHolderLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(StuffHolderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(startingPosition, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(length, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(memoryLables, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(updateButton)
                     .addComponent(autoUpdateButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(StuffHolder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(memoryPositionScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(valsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
-                        .addContainerGap())))
+            .addComponent(StuffHolder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(StuffHolder1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(StuffHolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(valsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE)
-                    .addComponent(memoryPositionScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addContainerGap())
+                .addContainerGap(400, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(StuffHolder1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -354,6 +400,7 @@ public class Memory_GUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel StuffHolder;
+    private javax.swing.JPanel StuffHolder1;
     private javax.swing.JToggleButton autoUpdateButton;
     private javax.swing.JFormattedTextField length;
     private javax.swing.JLabel lengthLable;

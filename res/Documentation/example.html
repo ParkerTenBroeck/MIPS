@@ -1,0 +1,61 @@
+
+<html>
+
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<div>
+
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+ <script type="text/javascript">
+    $(document).ready(function(){
+            var k = $("object")[0].innerHTML;
+            alert(k);
+            $("object")[0].innerHTML = "testing";
+        });
+ </script>
+<OBJECT id="exbruntwo" type="text/html"></OBJECT>
+<div>
+
+<embed type="text/html" id="ll"  ></embed>
+
+<script>
+let params = new URLSearchParams(location.search);
+//params.get('name') # => "n1"
+//params.getAll('name') # => ["n1", "n2"]
+console.log(params.get('link'))
+document.getElementById("exbruntwo").data = params.get('link');
+document.getElementById("ll").src = params.get('link');
+
+
+console.log(document.getElementById("ll").innerHTML);
+
+var t=document.querySelector("#exbruntwo");
+var htmlDocument= t.contentDocument;
+console.log(htmlDocument);
+/*
+
+
+*/
+/*
+
+var t=document.querySelector("#exbruntwo");
+var htmlDocument= t.contentDocument;
+
+$('object').load(function() {
+    // find the element needed
+    page = $('object').contents().find('div');
+    // alert to check
+    alert(page.html());
+});
+
+console.log(htmlDocument);
+console.log(new  XMLSerializer().serializeToString(htmlDocument));
+document.getElementById("exbruh").innerHTML  =new  XMLSerializer().serializeToString(htmlDocument);
+
+*/
+
+</script>
+</html>

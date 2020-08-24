@@ -5,7 +5,11 @@
  */
 package GUI;
 
+import GUI.lookandfeel.RoundedBorder;
+import java.awt.Color;
 import javax.swing.JTable;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import mips.processor.Registers;
 
 /**
@@ -19,6 +23,31 @@ public class Register_GUI extends javax.swing.JPanel {
      */
     public Register_GUI() {
         initComponents();
+        this.setBorder(new RoundedBorder(new Color(70, 70, 70), 00, 15));
+        this.pc1.setGridColor(new Color(70, 70, 70));
+        this.pc.setGridColor(new Color(70, 70, 70));
+        this.lowHigh.setGridColor(new Color(70, 70, 70));
+        this.registers.setGridColor(new Color(70, 70, 70));
+
+        configTable(this.pc);
+        configTable(this.pc1);
+        configTable(this.lowHigh);
+        configTable(this.registers);
+
+        //this.pc.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
+        //this.pc1.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
+        //this.lowHigh.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
+        //this.registers.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
+        //Register_GUI.pc.setT
+    }
+
+    private static void configTable(JTable table) {
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
+        TableColumnModel colModel = table.getColumnModel();
+        colModel.getColumn(0).setPreferredWidth(90);
+        colModel.getColumn(1).setPreferredWidth(250);
+        colModel.getColumn(2).setPreferredWidth(80);
+        colModel.getColumn(3).setPreferredWidth(90);
     }
 
     public static synchronized void updateVals() {
@@ -60,21 +89,18 @@ public class Register_GUI extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pc = new javax.swing.JTable();
         pc1 = new javax.swing.JTable();
+        pc = new javax.swing.JTable();
         lowHigh = new javax.swing.JTable();
         registers = new javax.swing.JTable();
 
-        pc.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {"PC", null, null, null}
-            },
-            new String [] {
-                "Register", "Bin", "Hex", "Dec"
-            }
-        ));
-        pc.setEnabled(false);
+        setBackground(new java.awt.Color(102, 102, 102));
+        setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        setOpaque(false);
 
+        pc1.setBackground(new java.awt.Color(102, 102, 102));
+        pc1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        pc1.setForeground(new java.awt.Color(204, 204, 204));
         pc1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"Name", "Bin", "Hex", "Dec"}
@@ -84,7 +110,26 @@ public class Register_GUI extends javax.swing.JPanel {
             }
         ));
         pc1.setEnabled(false);
+        pc1.setOpaque(false);
 
+        pc.setBackground(new java.awt.Color(102, 102, 102));
+        pc.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        pc.setForeground(new java.awt.Color(204, 204, 204));
+        pc.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"PC", null, null, null}
+            },
+            new String [] {
+                "Register", "Bin", "Hex", "Dec"
+            }
+        ));
+        pc.setEnabled(false);
+        pc.setGridColor(new java.awt.Color(51, 51, 51));
+        pc.setOpaque(false);
+
+        lowHigh.setBackground(new java.awt.Color(102, 102, 102));
+        lowHigh.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        lowHigh.setForeground(new java.awt.Color(204, 204, 204));
         lowHigh.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"Low", null, null, null},
@@ -96,7 +141,12 @@ public class Register_GUI extends javax.swing.JPanel {
             }
         ));
         lowHigh.setEnabled(false);
+        lowHigh.setGridColor(new java.awt.Color(204, 204, 204));
+        lowHigh.setOpaque(false);
 
+        registers.setBackground(new java.awt.Color(102, 102, 102));
+        registers.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        registers.setForeground(new java.awt.Color(204, 204, 204));
         registers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"1", null, null, null},
@@ -136,21 +186,22 @@ public class Register_GUI extends javax.swing.JPanel {
             }
         ));
         registers.setEnabled(false);
+        registers.setOpaque(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pc1, javax.swing.GroupLayout.DEFAULT_SIZE, 439, Short.MAX_VALUE)
-            .addComponent(pc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(registers, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
             .addComponent(lowHigh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(registers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pc1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(pc1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(9, 9, 9)
                 .addComponent(pc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lowHigh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)

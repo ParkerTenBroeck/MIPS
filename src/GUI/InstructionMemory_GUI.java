@@ -5,7 +5,9 @@
  */
 package GUI;
 
+import GUI.lookandfeel.RoundedBorder;
 import static GUI.InstructionToString.instructionToString;
+import java.awt.Color;
 import javax.swing.DefaultListModel;
 import mips.FileWriteReader;
 import mips.processor.Memory;
@@ -17,34 +19,35 @@ import static mips.processor.Registers.getPc;
  * @author parke
  */
 public class InstructionMemory_GUI extends javax.swing.JPanel {
-
+    
     private static int toMiddle = 0;
-
+    
     public InstructionMemory_GUI() {
         initComponents();
+        this.setBorder(new RoundedBorder(new Color(0, 0, 51), 0, 15));
     }
-
+    
     public static synchronized void refresh() {
         instructionList.setSelectedIndex(getPc() / 4);
         instructionList.ensureIndexIsVisible((getPc() / 4) - toMiddle);
         instructionList.ensureIndexIsVisible((getPc() / 4) + toMiddle); //sets the  
     }
-
+    
     public static void refreshValues() {
         
-        FileWriteReader.reloadMXNFile();  
-
+        FileWriteReader.reloadMXNFile();        
+        
         DefaultListModel listModel = new DefaultListModel();
-
+        
         for (int i = 0; i < Memory.getSize(); i += 4) {
             listModel.addElement(instructionToString(superGetWord(i)));
         }
         instructionList.setModel(listModel);
-
+        
         if (instructionList.getModel().getSize() > 0) {
             toMiddle = (instructionList.getVisibleRect().height / instructionList.getCellBounds(0, 0).height) / 2;
         }
-
+        
         refresh();
     }
 
@@ -57,23 +60,28 @@ public class InstructionMemory_GUI extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
+        modernScrollPane2 = new GUI.lookandfeel.ModernScrollPane();
         instructionList = new javax.swing.JList<>();
 
+        setOpaque(false);
+
+        instructionList.setBackground(new java.awt.Color(0, 0, 51));
+        instructionList.setForeground(new java.awt.Color(204, 204, 204));
         instructionList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         instructionList.setFocusable(false);
         instructionList.setRequestFocusEnabled(false);
-        jScrollPane1.setViewportView(instructionList);
+        instructionList.setSelectionBackground(new java.awt.Color(0, 204, 153));
+        modernScrollPane2.setViewportView(instructionList);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+            .addComponent(modernScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
+            .addComponent(modernScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -81,5 +89,6 @@ public class InstructionMemory_GUI extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private static javax.swing.JList<String> instructionList;
     private static javax.swing.JScrollPane jScrollPane1;
+    private static GUI.lookandfeel.ModernScrollPane modernScrollPane2;
     // End of variables declaration//GEN-END:variables
 }

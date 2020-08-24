@@ -29,8 +29,8 @@ public class DEFINLINE extends Statement {
         super(input);
         calculateSizeOfStatement(file, index);
 
-        AbstractArgumentList aal = new AbstractArgumentList(input.line.replace("#definline ", ""),
-                new char[]{',', '(', ')'});
+        AbstractArgumentList aal = new AbstractArgumentList(input.line.replace("#definline "+this.IDENTIFIRE, "").trim(),
+                new char[]{','});
 
         args = Arrays.copyOf(aal.args, aal.args.length);
 
@@ -40,10 +40,13 @@ public class DEFINLINE extends Statement {
                 if (file.get(i).line.startsWith("#endinline")) {
                     break;
                 } else {
-                    PreProcessor.logPreProcessorError("Cannot have Statement inside Statement", file.get(i).realLineNumber);
+                    //PreProcessor.logPreProcessorError("Cannot have Statement inside Statement", file.get(i).realLineNumber);
                 }
             } else {
                 inlineUserLines.add(file.get(i));
+            }
+            if(i == file.size() - 1){
+                PreProcessor.logPreProcessorError("Reached end of file #definline never terminated use #endinline", file.get(i).realLineNumber);
             }
         }
     }
@@ -55,7 +58,7 @@ public class DEFINLINE extends Statement {
 
         if (input.line.startsWith(this.IDENTIFIRE + " ") || input.line.equals(this.IDENTIFIRE)) {
 
-            AbstractArgumentList inputAal = new AbstractArgumentList(input.line.replace(IDENTIFIRE + " ", ""), new char[]{',', ' '});
+            AbstractArgumentList inputAal = new AbstractArgumentList(input.line.replace(IDENTIFIRE, "").trim(), new char[]{','});
             if(inputAal.args.length != this.args.length){
                 //error
             }
@@ -91,7 +94,7 @@ public class DEFINLINE extends Statement {
 
     @Override
     protected String createIdentifire(UserLine ul) {
-        return ul.line.replace("#inline ", "").split(" ")[0];
+        return ul.line.replace("#definline ", "").split(" ")[0];
     }
 
     @Override

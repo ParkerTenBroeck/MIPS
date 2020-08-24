@@ -126,9 +126,10 @@ public class UserIO extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        outputTextArea = new javax.swing.JTextArea();
+        jPanel2 = new javax.swing.JPanel();
         inputTextFeild = new javax.swing.JTextField();
+        modernScrollPane1 = new GUI.lookandfeel.ModernScrollPane();
+        outputTextArea = new javax.swing.JTextArea();
 
         setTitle("User IO");
         setAlwaysOnTop(true);
@@ -143,33 +144,58 @@ public class UserIO extends javax.swing.JFrame {
             }
         });
 
-        outputTextArea.setEditable(false);
-        outputTextArea.setColumns(20);
-        outputTextArea.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
-        outputTextArea.setRows(5);
-        outputTextArea.setFocusable(false);
-        outputTextArea.setRequestFocusEnabled(false);
-        jScrollPane1.setViewportView(outputTextArea);
+        jPanel2.setBackground(new java.awt.Color(102, 102, 102));
 
+        inputTextFeild.setBackground(new java.awt.Color(0, 0, 51));
+        inputTextFeild.setForeground(new java.awt.Color(204, 204, 204));
+        inputTextFeild.setBorder(null);
+        inputTextFeild.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inputTextFeildActionPerformed(evt);
+            }
+        });
         inputTextFeild.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 inputTextFeildKeyTyped(evt);
             }
         });
 
+        outputTextArea.setEditable(false);
+        outputTextArea.setBackground(new java.awt.Color(0, 0, 51));
+        outputTextArea.setColumns(20);
+        outputTextArea.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        outputTextArea.setForeground(new java.awt.Color(204, 204, 204));
+        outputTextArea.setRows(5);
+        outputTextArea.setFocusable(false);
+        outputTextArea.setRequestFocusEnabled(false);
+        modernScrollPane1.setViewportView(outputTextArea);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(inputTextFeild)
+            .addComponent(modernScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1000, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addComponent(modernScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(inputTextFeild, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1000, Short.MAX_VALUE)
-            .addComponent(inputTextFeild)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(inputTextFeild, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -190,6 +216,10 @@ public class UserIO extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         Main_GUI.stop();
     }//GEN-LAST:event_formWindowClosing
+
+    private void inputTextFeildActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputTextFeildActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inputTextFeildActionPerformed
 
     /**
      * @param args the command line arguments
@@ -229,7 +259,9 @@ public class UserIO extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private static javax.swing.JTextField inputTextFeild;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private GUI.lookandfeel.ModernScrollPane modernScrollPane1;
     private static javax.swing.JTextArea outputTextArea;
     // End of variables declaration//GEN-END:variables
 }

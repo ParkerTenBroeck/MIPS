@@ -1,3 +1,4 @@
+Compiler.Directive
 Compiler.MemoryChunk
 Compiler.ASMCompiler
 Compiler.asmInstruction

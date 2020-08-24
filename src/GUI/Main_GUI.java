@@ -6,35 +6,42 @@
 package GUI;
 
 import Compiler.ASMCompiler;
+import GUI.lookandfeel.ModernButtonUI;
+import GUI.lookandfeel.ModernJMenu;
+import GUI.lookandfeel.ModernJMenuBar;
+import GUI.lookandfeel.ModernJMenuIten;
+import GUI.lookandfeel.ModernSliderUI;
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Component;
-import java.awt.Menu;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.ActionListener;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.geom.Area;
+import java.awt.geom.RoundRectangle2D;
 import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.Enumeration;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.BoundedRangeModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
+import javax.swing.JSlider;
+import javax.swing.JToggleButton;
 import javax.swing.UIManager;
-import javax.swing.text.DefaultCaret;
-import javax.swing.text.Document;
-import javax.swing.text.SimpleAttributeSet;
+import javax.swing.border.AbstractBorder;
 import mips.FileWriteReader;
 import mips.Log;
+import mips.ResourceHandler;
 import mips.processor.Processor;
 
 /**
@@ -112,7 +119,8 @@ public class Main_GUI extends javax.swing.JFrame {
         setLookAndFeel();
         initComponents();
 
-        makeTextAreaAutoScroll(virtualConsolLog);
+        //new ModernSliderUI(this.delaySlider);
+        //makeTextAreaAutoScroll(virtualConsolLog);
         WindowListener exitListener = new WindowAdapter() {
 
             @Override
@@ -134,22 +142,24 @@ public class Main_GUI extends javax.swing.JFrame {
         };
         this.addWindowListener(exitListener);
 
-        ActionListener al = new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FileWriteReader.saveASMFile();
-                Processor.stop();
-                Processor.reset();
-                FileWriteReader.loadExampleFile(new File(((JMenuItem) evt.getSource()).getName()));
-                ASMCompiler.compile();
-            }
-        };
-
         try {
-            for (Component comp : generateJMenuFromFile(new File(getClass().getResource("/Examples").toURI()), al).getMenuComponents()) {
+
+            ActionListener al = new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    FileWriteReader.saveASMFile();
+                    Processor.stop();
+                    Processor.reset();
+                    FileWriteReader.loadExampleFile(new File(((JMenuItem) evt.getSource()).getName()));
+                    ASMCompiler.compile();
+                }
+            };
+
+            for (Component comp : generateJMenuFromFile(new File(ResourceHandler.EXAMPLES_PATH), al).getMenuComponents()) {
                 Main_GUI.exampleMenu.add((JComponent) comp);
             }
 
-        } catch (URISyntaxException ex) {
+        } catch (Exception ex) {
+            //appendMessageToVirtualConsoleLog(ex.toString(), null);
             Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -162,14 +172,35 @@ public class Main_GUI extends javax.swing.JFrame {
     private static JMenu generateJMenuFromFile(File file, ActionListener al) {
         if (file.isDirectory()) {
             JMenu jMenu = new JMenu();
-            jMenu.setText(file.getName());
+
+            String name = file.getName();
+            if (name.contains("‰")) {
+                try {
+                    name = name.split("‰")[2];
+                } catch (Exception e) {
+
+                }
+            }
+
+            jMenu.setText(name);
             jMenu.setName(file.getAbsolutePath());
             for (File f2 : file.listFiles()) {
                 if (f2.isDirectory()) {
                     jMenu.add(generateJMenuFromFile(f2, al));
                 } else {
+                    if (f2.getName().split("\\.")[0].equals("mx")) {
+                        continue;
+                    }
+                    String namef2 = f2.getName().split("\\.")[0];
+                    if (namef2.contains("‰")) {
+                        try {
+                            namef2 = namef2.split("‰")[2];
+                        } catch (Exception e) {
+
+                        }
+                    }
                     JMenuItem jMenuItem = new JMenuItem();
-                    jMenuItem.setText(f2.getName());
+                    jMenuItem.setText(namef2);
                     jMenuItem.setName(f2.getAbsolutePath());
                     jMenuItem.addActionListener(al);
                     jMenu.add(jMenuItem);
@@ -212,10 +243,6 @@ public class Main_GUI extends javax.swing.JFrame {
 
     }
 
-    public static void infoBox(String titleBar, String infoMessage) {
-        JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: " + titleBar, JOptionPane.INFORMATION_MESSAGE);
-    }
-
     public static int confirmBox(String titleBar, String infoMessage) {
         return JOptionPane.showConfirmDialog(null, infoMessage, titleBar, JOptionPane.INFORMATION_MESSAGE);
     }
@@ -230,31 +257,47 @@ public class Main_GUI extends javax.swing.JFrame {
     private void initComponents() {
 
         mainPanel = new javax.swing.JPanel();
-        jSplitPane2 = new javax.swing.JSplitPane();
+        jPanel1 = new javax.swing.JPanel();
+        log1 = new mips.Log();
         jPanel2 = new javax.swing.JPanel();
         buttonBarPanel = new javax.swing.JPanel();
-        compileButton = new javax.swing.JButton();
-        startButton = new javax.swing.JToggleButton();
-        stopButton = new javax.swing.JButton();
-        singleStepButton = new javax.swing.JButton();
-        memoryButton = new javax.swing.JButton();
-        userIOButton = new javax.swing.JButton();
-        screenButton = new javax.swing.JButton();
+        compileButton =  new JButton() {
+            @Override
+            public void updateUI() {
+                setUI(new ModernButtonUI(this));
+            }
+        };
+        ;
+        startButton =  new JToggleButton() {                  @Override          public void updateUI() {                      setUI(new ModernButtonUI(this));                  }              };  ;
+        stopButton =  new JButton() {                 @Override         public void updateUI() {                     setUI(new ModernButtonUI(this));                 }             }; ;
+        singleStepButton =  new JButton() {                 @Override         public void updateUI() {                     setUI(new ModernButtonUI(this));                 }             }; ;
+        memoryButton =  new JButton() {                 @Override         public void updateUI() {                     setUI(new ModernButtonUI(this));                 }             }; ;
+        userIOButton =  new JButton() {                 @Override         public void updateUI() {                     setUI(new ModernButtonUI(this));                 }             }; ;
+        screenButton =  new JButton() {                 @Override         public void updateUI() {                     setUI(new ModernButtonUI(this));                 }             }; ;
         aboutButton = new javax.swing.JButton();
         InstructionsRan = new javax.swing.JLabel();
-        resetButton = new javax.swing.JButton();
+        resetButton =  new JButton() {                 @Override         public void updateUI() {                     setUI(new ModernButtonUI(this));                 }             }; ;
         jPanel4 = new javax.swing.JPanel();
-        asmGui = new GUI.ASM_GUI();
-        registers = new GUI.Register_GUI();
-        instructionMemory_GUI = new GUI.InstructionMemory_GUI();
+        aSM_GUI1 = new GUI.ASM_GUI();
+        register_GUI1 = new GUI.Register_GUI();
+        instructionMemory_GUI1 = new GUI.InstructionMemory_GUI();
         jPanel3 = new javax.swing.JPanel();
-        linkedButton = new javax.swing.JCheckBox();
+        linkedButton =  new JCheckBox() {                  
+            @Override          
+            public void updateUI() {                      
+                setUI(new ModernButtonUI(this, new Rectangle(14,14)));                  
+            }              
+        };  ;
         aboutLinkedFile = new javax.swing.JButton();
-        delaySlider = new javax.swing.JSlider();
+        enableBreak =  new JCheckBox() {                     @Override             public void updateUI() {                         setUI(new ModernButtonUI(this, new Rectangle(14,14)));                     }                };  ;
+        delaySlider =  new JSlider() {
+            @Override
+            public void updateUI() {
+                setUI(new ModernSliderUI(this));
+            }
+        };
+        ;
         delayLable = new javax.swing.JLabel();
-        enableBreak = new javax.swing.JCheckBox();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        virtualConsolLog = new javax.swing.JTextPane();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuButton = new javax.swing.JMenuItem();
@@ -274,19 +317,41 @@ public class Main_GUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("MIPS");
+        setBackground(new java.awt.Color(102, 102, 102));
 
-        jSplitPane2.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        mainPanel.setBackground(new java.awt.Color(51, 51, 51));
 
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(log1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(log1, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
+        );
+
+        jPanel2.setOpaque(false);
         jPanel2.setPreferredSize(new java.awt.Dimension(500, 762));
 
+        buttonBarPanel.setBackground(new java.awt.Color(102, 102, 102));
+        buttonBarPanel.setOpaque(false);
+
+        compileButton.setBackground(new java.awt.Color(0, 51, 255));
+        compileButton.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        compileButton.setForeground(new java.awt.Color(255, 255, 255));
         compileButton.setText("Compile");
+        compileButton.setBorderPainted(false);
         compileButton.setFocusable(false);
+        compileButton.setOpaque(false);
         compileButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 compileButtonActionPerformed(evt);
             }
         });
 
+        startButton.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         startButton.setText("Start");
         startButton.setFocusable(false);
         startButton.addActionListener(new java.awt.event.ActionListener() {
@@ -295,40 +360,50 @@ public class Main_GUI extends javax.swing.JFrame {
             }
         });
 
+        stopButton.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         stopButton.setText("Stop");
         stopButton.setFocusable(false);
+        stopButton.setOpaque(false);
         stopButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 stopButtonActionPerformed(evt);
             }
         });
 
+        singleStepButton.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         singleStepButton.setText("Single Step");
         singleStepButton.setFocusable(false);
+        singleStepButton.setOpaque(false);
         singleStepButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 singleStepButtonActionPerformed(evt);
             }
         });
 
+        memoryButton.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         memoryButton.setText("Memory");
         memoryButton.setFocusable(false);
+        memoryButton.setOpaque(false);
         memoryButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 memoryButtonActionPerformed(evt);
             }
         });
 
+        userIOButton.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         userIOButton.setText("User IO");
         userIOButton.setFocusable(false);
+        userIOButton.setOpaque(false);
         userIOButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 userIOButtonActionPerformed(evt);
             }
         });
 
+        screenButton.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         screenButton.setText("Screen");
         screenButton.setFocusable(false);
+        screenButton.setOpaque(false);
         screenButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 screenButtonActionPerformed(evt);
@@ -345,10 +420,14 @@ public class Main_GUI extends javax.swing.JFrame {
             }
         });
 
+        InstructionsRan.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        InstructionsRan.setForeground(new java.awt.Color(255, 255, 255));
         InstructionsRan.setText("InstructionsRan");
 
+        resetButton.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         resetButton.setText("Reset");
         resetButton.setFocusable(false);
+        resetButton.setOpaque(false);
         resetButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 resetButtonActionPerformed(evt);
@@ -389,19 +468,17 @@ public class Main_GUI extends javax.swing.JFrame {
                     .addComponent(aboutButton)
                     .addGroup(buttonBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(compileButton)
-                        .addComponent(startButton)
                         .addComponent(stopButton)
                         .addComponent(singleStepButton)
                         .addComponent(memoryButton)
                         .addComponent(userIOButton)
                         .addComponent(screenButton)
                         .addComponent(resetButton)
-                        .addComponent(InstructionsRan))))
+                        .addComponent(InstructionsRan)
+                        .addComponent(startButton))))
         );
 
-        registers.setMaximumSize(new java.awt.Dimension(200, 597));
-
-        instructionMemory_GUI.setMaximumSize(new java.awt.Dimension(238, 267));
+        jPanel4.setOpaque(false);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -409,25 +486,29 @@ public class Main_GUI extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(asmGui, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addComponent(aSM_GUI1, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(registers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(register_GUI1, javax.swing.GroupLayout.PREFERRED_SIZE, 680, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(instructionMemory_GUI, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(instructionMemory_GUI1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(asmGui, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(registers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(instructionMemory_GUI, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(instructionMemory_GUI1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(register_GUI1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(aSM_GUI1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        linkedButton.setSelected(true);
+        jPanel3.setOpaque(false);
+
+        linkedButton.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        linkedButton.setForeground(new java.awt.Color(204, 204, 204));
         linkedButton.setText("Linked File");
+        linkedButton.setOpaque(false);
         linkedButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 linkedButtonActionPerformed(evt);
@@ -444,56 +525,62 @@ public class Main_GUI extends javax.swing.JFrame {
             }
         });
 
+        enableBreak.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        enableBreak.setForeground(new java.awt.Color(204, 204, 204));
+        enableBreak.setSelected(true);
+        enableBreak.setText("Enable BreakPoints");
+        enableBreak.setToolTipText("");
+        enableBreak.setFocusable(false);
+        enableBreak.setOpaque(false);
+
+        delaySlider.setForeground(new java.awt.Color(0, 204, 153));
         delaySlider.setMaximum(1000);
         delaySlider.setValue(0);
         delaySlider.setFocusable(false);
+        delaySlider.setOpaque(false);
         delaySlider.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 delaySliderMouseReleased(evt);
             }
         });
 
+        delayLable.setBackground(new java.awt.Color(255, 255, 255));
+        delayLable.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        delayLable.setForeground(new java.awt.Color(255, 255, 255));
         delayLable.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         delayLable.setText("Delay");
-
-        enableBreak.setSelected(true);
-        enableBreak.setText("Enable BreakPoints");
-        enableBreak.setFocusable(false);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(12, 12, 12)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(enableBreak)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(linkedButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(aboutLinkedFile, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(delayLable, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(delaySlider, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(123, 123, 123)
-                .addComponent(enableBreak))
+                        .addComponent(aboutLinkedFile, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(delaySlider, javax.swing.GroupLayout.DEFAULT_SIZE, 677, Short.MAX_VALUE)
+                    .addComponent(delayLable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(191, 191, 191))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(enableBreak)
-                    .addComponent(delayLable))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(delaySlider, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(linkedButton)
                     .addComponent(aboutLinkedFile, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(linkedButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(delayLable, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(enableBreak)
+                    .addComponent(delaySlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -513,31 +600,29 @@ public class Main_GUI extends javax.swing.JFrame {
                 .addComponent(buttonBarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap())
         );
-
-        jSplitPane2.setTopComponent(jPanel2);
-
-        virtualConsolLog.setEditable(false);
-        virtualConsolLog.setBackground(new java.awt.Color(153, 153, 153));
-        virtualConsolLog.setContentType("HTML/plain"); // NOI18N
-        virtualConsolLog.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jScrollPane1.setViewportView(virtualConsolLog);
-
-        jSplitPane2.setBottomComponent(jScrollPane1);
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1061, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1096, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 937, Short.MAX_VALUE)
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 744, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        menuBar.setBackground(new java.awt.Color(51, 51, 51));
+        menuBar.setBorder(null);
+        menuBar.setOpaque(false);
 
         fileMenu.setText("File");
 
@@ -648,7 +733,7 @@ public class Main_GUI extends javax.swing.JFrame {
 
     private void singleStepButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_singleStepButtonActionPerformed
         if (!startButton.isSelected()) {
-            
+
             Processor.runSingleStep();
         }
         refresh();
@@ -690,6 +775,7 @@ public class Main_GUI extends javax.swing.JFrame {
     private void compileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compileButtonActionPerformed
         Processor.stop();
         Processor.reset();
+        UserIO.clearOutput();
         ASMCompiler.compile();
     }//GEN-LAST:event_compileButtonActionPerformed
 
@@ -720,8 +806,8 @@ public class Main_GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void aboutLinkedFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutLinkedFileActionPerformed
-        Log.logWarning("Linked Files can only be read by this program and are loaded from the file every time compiled. This is usful is another text editor is being used");
-        infoBox("Message", "Linked Files can only be read by this program \n and are loaded from the file every time compiled. \n This is usful is another text editor is being used");
+        Log.logCustomMessage("Linked Files can only be read by this program and are loaded from the file every time compiled. This is usful is another text editor is being used", true, false, true, Color.BLUE, null);
+        //infoBox("Message", "Linked Files can only be read by this program \n and are loaded from the file every time compiled. \n This is usful is another text editor is being used");
     }//GEN-LAST:event_aboutLinkedFileActionPerformed
 
     private void linkedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linkedButtonActionPerformed
@@ -733,7 +819,14 @@ public class Main_GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_checkForUpdatesActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        Browser.openLinkInBrowser("https://github.com/ParkerTenBroeck/MIPS/blob/master/MIPS%20documentation/MIPS%20Instructions-Traps-Registers.pdf");
+
+        //new HTMLFrame();
+        try {
+            Browser.openLinkInBrowser(ResourceHandler.DOCUMENTATION_PATH + "\\index.html");
+        } catch (Exception ex) {
+            Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //Browser.openLinkInBrowser("https://github.com/ParkerTenBroeck/MIPS/blob/master/MIPS%20documentation/MIPS%20Instructions-Traps-Registers.pdf");
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void saveCompileInformationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveCompileInformationButtonActionPerformed
@@ -748,64 +841,16 @@ public class Main_GUI extends javax.swing.JFrame {
         return saveCompileInformationButton.isSelected();
     }
 
-    public static void appendMessageToVirtualConsoleLog(String message, SimpleAttributeSet att) {
-        Document doc = virtualConsolLog.getStyledDocument();
-        try {
-            doc.insertString(doc.getLength(), message + "\n", att);
-        } catch (Exception exc) {
-            exc.printStackTrace();
-        }
-
-    }
-
     public static boolean breakOnRunTimeError() {
         return breakProgramOnRTEButton.isSelected();
-    }
-
-    public static void makeTextAreaAutoScroll(JTextPane textArea) {
-
-        // Get the text area's scroll pane :
-        final JScrollPane scrollPane = (JScrollPane) (textArea.getParent().getParent());
-
-        // Disable the auto scroll :
-        ((DefaultCaret) textArea.getCaret()).setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-
-        // Add a listener to the vertical scroll bar :
-        scrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
-
-            private int _val = 0;
-            private int _ext = 0;
-            private int _max = 0;
-
-            private final BoundedRangeModel _model = scrollPane.getVerticalScrollBar().getModel();
-
-            @Override
-            public void adjustmentValueChanged(AdjustmentEvent e) {
-
-                // Get the new max :
-                int newMax = _model.getMaximum();
-
-                // If the new max has changed and if we were scrolled to bottom :
-                if (newMax != _max && (_val + _ext == _max)) {
-
-                    // Scroll to bottom :
-                    _model.setValue(_model.getMaximum() - _model.getExtent());
-                }
-
-                // Save the new values :
-                _val = _model.getValue();
-                _ext = _model.getExtent();
-                _max = _model.getMaximum();
-            }
-        });
     }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private static javax.swing.JLabel InstructionsRan;
+    private static GUI.ASM_GUI aSM_GUI1;
     private static javax.swing.JButton aboutButton;
     private static javax.swing.JButton aboutLinkedFile;
-    private static GUI.ASM_GUI asmGui;
     private static javax.swing.JCheckBoxMenuItem breakProgramOnRTEButton;
     private static javax.swing.JPanel buttonBarPanel;
     private static javax.swing.JMenuItem checkForUpdates;
@@ -816,23 +861,23 @@ public class Main_GUI extends javax.swing.JFrame {
     private static javax.swing.JCheckBox enableBreak;
     private static javax.swing.JMenu exampleMenu;
     private static javax.swing.JMenu fileMenu;
-    private static GUI.InstructionMemory_GUI instructionMemory_GUI;
+    private static GUI.InstructionMemory_GUI instructionMemory_GUI1;
     private static javax.swing.JMenu jMenu1;
     private static javax.swing.JMenuItem jMenuItem1;
     private static javax.swing.JMenuItem jMenuItem2;
+    private static javax.swing.JPanel jPanel1;
     private static javax.swing.JPanel jPanel2;
     private static javax.swing.JPanel jPanel3;
     private static javax.swing.JPanel jPanel4;
-    private static javax.swing.JScrollPane jScrollPane1;
-    private static javax.swing.JSplitPane jSplitPane2;
     private static javax.swing.JCheckBox linkedButton;
+    private static mips.Log log1;
     private static javax.swing.JPanel mainPanel;
     private static javax.swing.JButton memoryButton;
     private static javax.swing.JMenuBar menuBar;
     private static javax.swing.JMenuItem newMenuButton;
     private static javax.swing.JMenuItem openMenuButton;
     private static javax.swing.JMenu optionsMenu;
-    private static GUI.Register_GUI registers;
+    private static GUI.Register_GUI register_GUI1;
     private static javax.swing.JButton resetButton;
     private static javax.swing.JMenuItem saveAsMenuButton;
     private static javax.swing.JCheckBoxMenuItem saveCompileInformationButton;
@@ -843,6 +888,5 @@ public class Main_GUI extends javax.swing.JFrame {
     private static javax.swing.JToggleButton startButton;
     private static javax.swing.JButton stopButton;
     private static javax.swing.JButton userIOButton;
-    private static javax.swing.JTextPane virtualConsolLog;
     // End of variables declaration//GEN-END:variables
 }

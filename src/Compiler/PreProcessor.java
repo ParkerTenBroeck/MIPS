@@ -59,6 +59,14 @@ public class PreProcessor {
                 Statement temp = validStatement.generateStatement(file, index, statements);
 
                 if (!temp.IDENTIFIRE.isEmpty()) {
+
+                    for (int i = 0; i < statements.size(); i++) {
+                        if (statements.get(i).IDENTIFIRE.equals(temp.IDENTIFIRE)) {
+                            statements.remove(i);
+                            PreProcessor.logPreProcessorWarning(temp.IDENTIFIRE + " Has already been defined use undef to undefine the value before creating a new value overwritting existing value", currentLine.realLineNumber);
+                        }
+                    }
+
                     statements.add(temp);
                 }
 
@@ -74,18 +82,18 @@ public class PreProcessor {
         ArrayList<UserLine> oldLines = new ArrayList();
         ArrayList<UserLine> newLines = new ArrayList();
         oldLines.add(line);
-        
+
         for (int r = 0; r < 5; r++) {
 
             for (int i = 0; i < oldLines.size(); i++) {
                 ArrayList<UserLine> temp = new ArrayList();
                 temp.add(oldLines.get(i));
-                
+
                 for (Statement statement : statements) {
                     if (statement.canModifyNonStatements()) {
-                        
+
                         UserLine currentLine;
-                        for(int j = 0; j < temp.size(); j ++){
+                        for (int j = 0; j < temp.size(); j++) {
                             currentLine = temp.get(j);
                             temp.remove(j);
                             //ArrayList<UserLine> secondTemp = statement.parseNonStatement(currentLine);

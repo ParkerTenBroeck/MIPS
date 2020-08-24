@@ -28,11 +28,9 @@ public class UNDEF extends Statement {
             PreProcessor.logPreProcessorError("Cannot Have Spaces In Name", line.realLineNumber);
         } else {
             for (int i = 0; i < statements.size(); i++) {
-                if (statements.get(i).STATEMENT_NAME.equals("define")) {
-                    if ((statements.get(i)).IDENTIFIRE.equals(identifire)) {
-                        statements.remove(i);
-                        return;
-                    }
+                if ((statements.get(i)).IDENTIFIRE.equals(identifire)) {
+                    statements.remove(i);
+                    return;
                 }
             }
             PreProcessor.logPreProcessorWarning(this.IDENTIFIRE + " does not exist", line.realLineNumber);
@@ -104,7 +102,5 @@ public class UNDEF extends Statement {
     public int getSizeOfStatement() {
         return 1;
     }
-
-
 
 }

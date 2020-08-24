@@ -36,11 +36,11 @@ abstract class CompileTimeUserLine {
     public final ByteP bytes[];
     int startingByteAddress;
 
-    protected CompileTimeUserLine(UserLine ul, ByteP[] bytes){
+    protected CompileTimeUserLine(UserLine ul, ByteP[] bytes) {
         this.ul = ul;
         this.bytes = bytes;
     }
-    
+
     public final int getByteSize() {
         return this.bytes.length;
     }
@@ -48,10 +48,10 @@ abstract class CompileTimeUserLine {
     public abstract void finalCompilePass();
 };
 
-class dotData extends CompileTimeUserLine {//must have instruction and data preented at the time of creation
+class Directive extends CompileTimeUserLine {//must have instruction and data preented at the time of creation
 
-    public dotData(UserLine ul, byte[] _bytes) {
-        super(ul,  new ByteP[_bytes.length]);
+    public Directive(UserLine ul, byte[] _bytes) {
+        super(ul, new ByteP[_bytes.length]);
         for (int i = 0; i < _bytes.length; i++) {
             this.bytes[i] = new ByteP(_bytes[i]);
         }
@@ -88,8 +88,6 @@ class asmInstruction extends CompileTimeUserLine {
     }
 
 };
-
-
 
 class MemoryChunk {
 
@@ -137,9 +135,9 @@ class Origin {
 
 public class ASMCompiler {
 
-    static private ArrayList<MemoryLable> memoryLables;
-    static private ArrayList<Origin> origins;
-    static private ArrayList<ByteP> memoryByteList;
+    static private ArrayList<MemoryLable> memoryLables = new ArrayList();
+    static private ArrayList<Origin> origins = new ArrayList();
+    static private ArrayList<ByteP> memoryByteList = new ArrayList();
 
     public static void compile() {
 
@@ -391,7 +389,7 @@ public class ASMCompiler {
     private static CompileTimeUserLine userLineToCompileTimeUserLine(UserLine line) {
 
         if (line.line.startsWith(".")) {
-            return new dotData(line, DotCodeDecoder.getDotData(line)); //
+            return new Directive(line, DirectivesDecoder.getDirectivesData(line)); //
         } else {
             return new asmInstruction(line);
         }
@@ -404,14 +402,14 @@ public class ASMCompiler {
         List<String> temp = FileWriteReader.getASMList();
 
         for (String line : temp) {
-            file.add(new UserLine(line, lineNumber));
+            file.add(new UserLine(line, lineNumber + 1));
             lineNumber++;
         }
         return file;
     }
 
-    public static void DotCodeDecoderError(String message, int line) {
-        logCompilerError("[DotCode]: on line " + line + " " + message);
+    public static void DirectivesDecoderError(String message, int line) {
+        logCompilerError("[Directives]: on line " + line + " " + message);
     }
 
     public static void OpCodeError(String message, int line) {
@@ -440,7 +438,11 @@ public class ASMCompiler {
 
     public static int parseInt(String string) { //to add functionality later
 
-        if (string.contains("x")) {
+        if (string.startsWith("0b")) {
+            return Integer.parseInt(string.split("b")[1], 2);
+        } else if (string.startsWith("0x")) {
+            return Integer.parseInt(string.split("x")[1], 16);
+        } else if (string.contains("x")) {
             return Integer.parseInt(string.split("x")[1], Integer.parseInt(string.split("x")[0]));
         }
 
@@ -448,6 +450,10 @@ public class ASMCompiler {
     }
 
     public static ArrayList<MemoryLable> getMemoryLables() {
-        return (ArrayList<MemoryLable>) memoryLables.clone();
+        if (memoryLables == null) {
+            return new ArrayList();
+        } else {
+            return (ArrayList<MemoryLable>) memoryLables.clone();
+        }
     }
 }

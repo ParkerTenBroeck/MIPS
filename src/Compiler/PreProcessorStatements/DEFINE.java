@@ -35,12 +35,6 @@ public class DEFINE extends Statement {
         } else {
             arg = "";
         }
-
-        for (int i = 0; i < statements.size(); i++) {
-            if (statements.get(i).IDENTIFIRE.equals(this.IDENTIFIRE)) {
-                PreProcessor.logPreProcessorWarning(this.IDENTIFIRE + " Has already been defined use undef to undefine the value before creating a new value overwritting existing value", input.realLineNumber);
-            }
-        }
     }
 
     @Override

@@ -27,7 +27,7 @@ public class FileWriteReader {
     private static File currentASMFile;
     private static File currentMXNFile;
 
-    private static boolean isFileSaved;
+    private static boolean isFileSaved = true;
     private static boolean isFileReadOnly = false;
 
     private static void importMXFile(File file) {
@@ -229,7 +229,7 @@ public class FileWriteReader {
         try {
             return Files.readAllLines(Paths.get(currentASMFile.getAbsolutePath()));
         } catch (Exception e) {
-            Log.logError("No File Selected");
+            //Log.logError("No File Selected");
             return new ArrayList();
         }
     }
@@ -253,7 +253,8 @@ public class FileWriteReader {
             extention = file.getPath().split("\\.")[1];
             path = file.getPath().split("\\.")[0];
         } catch (Exception e) {
-            Main_GUI.infoBox("Error", file.getPath() + " is not a valid file");
+            
+            Log.logError(file.getPath() + " is not a valid file");
             return;
         }
 
@@ -284,7 +285,7 @@ public class FileWriteReader {
             extention = file.getPath().split("\\.")[1];
             path = file.getPath().split("\\.")[0];
         } catch (Exception e) {
-            Main_GUI.infoBox("Error", file.getPath() + " is not a valid file");
+            Log.logError(file.getPath() + " is not a valid file");
             return;
         }
 
@@ -301,7 +302,7 @@ public class FileWriteReader {
 
         } else {
 
-            Main_GUI.infoBox("Error", file.getPath() + "/n is not a valid file");
+            Log.logError(file.getPath() + "/n is not a valid file");
         }
         reloadFiles();
 

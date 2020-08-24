@@ -9,6 +9,7 @@ import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,7 +22,7 @@ public class Browser {
     public static boolean openLinkInBrowser(String url) {
         if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
             try {
-                Desktop.getDesktop().browse(new URI(url));
+                Desktop.getDesktop().browse(new URI(url.replaceAll("\\\\", "/")));
                 return true;
             } catch (URISyntaxException ex) {
                 Logger.getLogger(Browser.class.getName()).log(Level.SEVERE, null, ex);
