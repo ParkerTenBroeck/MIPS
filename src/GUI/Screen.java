@@ -74,7 +74,6 @@ public class Screen extends javax.swing.JFrame {
         for (int i = keysPressed.size() - 1; i >= 0; i--) {
             KeyEvent ke = keysPressed.get(i);
             if (ke.getKeyChar() == keyCode) {
-
                 return true;
             }
         }

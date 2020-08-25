@@ -35,18 +35,25 @@ public class INCLUDE extends Statement {
         }
 
         try {
-            if (path.split(".")[1].equals("mxn")) {
+            //System.out.println(path);
+            String fileExtention = path.split("\\.")[1];
+            if (fileExtention.equals("mxn") || fileExtention.equals("bin")) {
                 generatedDataToAdd = new ArrayList();
                 byte[] temp = FileHandler.loadFileAsByteArray(path);
                 String data = ".byte ";
                 for (int i = 0; i < temp.length; i++) {
-                    data = data + temp[i] + ",";
+                    data = data + temp[i];
+                    if(i != temp.length -1){
+                        data = data  + ",";
+                    }
                 }
-                generatedDataToAdd.equals(data);
+                //System.out.println(data);
+                generatedDataToAdd.add(new UserLine(data, line.realLineNumber));
             } else {
                 generatedDataToAdd = loadFile(path, line.realLineNumber);
             }
         } catch (Exception e) {
+            System.out.println(e);
             PreProcessor.logPreProcessorError("Failed to load included File", line.realLineNumber);
         }
 

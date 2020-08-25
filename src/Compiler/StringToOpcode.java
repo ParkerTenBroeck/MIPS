@@ -206,14 +206,14 @@ public class StringToOpcode {
             //constant manipulating instructions
             case "lhi":
                 return immediateEncoding(0B011001,
-                        decodeRegister(parameter[0]),
                         0,
+                        decodeRegister(parameter[0]),
                         decodeImmediateValue(parameter[1]));
 
             case "llo":
-                return immediateEncoding(0B011000,
-                        decodeRegister(parameter[0]),
+                return immediateEncoding(0B011000, 
                         0,
+                        decodeRegister(parameter[0]),
                         decodeImmediateValue(parameter[1]));
 
             //comparison instruction
