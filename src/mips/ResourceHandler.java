@@ -36,6 +36,7 @@ public class ResourceHandler {
     public static final String DEFAULT_PROJECTS_PATH = DEFAULT_PATH + "\\Projects";
     public static final String DOCUMENTATION_PATH = DEFAULT_PATH + "\\Documentation";
     public static final String EXAMPLES_PATH = DEFAULT_PATH + "\\Examples";
+    public static final String CONFIG_PATH = DEFAULT_PATH + "\\Config";
 
     public static boolean extractResources() {
 
@@ -45,7 +46,8 @@ public class ResourceHandler {
         }
 
         boolean temp = true;
-
+        
+        temp &= extractResourceToFolder(DEFAULT_PATH, "Default");
         temp &= extractResourceToFolder(DOCUMENTATION_PATH, "Documentation");
         temp &= extractResourceToFolder(EXAMPLES_PATH, "Examples");
         File file = new File(DEFAULT_PROJECTS_PATH);
@@ -124,7 +126,7 @@ public class ResourceHandler {
 
         } else if (Objects.equals(protocol, "file")) { //run in ide
             //System.out.println(ResourceHandler.class.getResource("/" + jarPath).getFile());
-            File source = new File("C:\\Users\\parke\\OneDrive\\Documents\\GitHub\\MIPS\\res\\" + jarPath);
+            File source = new File("C:\\GitHub\\MIPS\\res\\" + jarPath);
             File dest = new File(destPath);
             copyFolderReplaceOld(source, dest);
             return true;

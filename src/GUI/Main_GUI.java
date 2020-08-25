@@ -30,6 +30,7 @@ import javax.swing.UIManager;
 import mips.FileHandler;
 import mips.Log;
 import mips.ResourceHandler;
+import mips.UpdateHandler;
 import mips.processor.Processor;
 
 /**
@@ -657,7 +658,7 @@ public class Main_GUI extends javax.swing.JFrame {
 
         optionsMenu.setText("Options");
 
-        checkForUpdates.setText("Check for updates");
+        checkForUpdates.setText("Update");
         checkForUpdates.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 checkForUpdatesActionPerformed(evt);
@@ -804,7 +805,8 @@ public class Main_GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_linkedButtonActionPerformed
 
     private void checkForUpdatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkForUpdatesActionPerformed
-        Browser.openLinkInBrowser("https://github.com/ParkerTenBroeck/MIPS");
+        UpdateHandler.update();
+//Browser.openLinkInBrowser("https://github.com/ParkerTenBroeck/MIPS");
     }//GEN-LAST:event_checkForUpdatesActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed

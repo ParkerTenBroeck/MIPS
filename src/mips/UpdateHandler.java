@@ -26,7 +26,6 @@ public class UpdateHandler {
     private static String latestVersionLink = "";
     private static boolean isUpToDate = false;
 
-
     public static String checkForUpdates() {
         try {
             URL url = new URL(LATEST_JSON_LINK);
@@ -75,10 +74,24 @@ public class UpdateHandler {
             Log.logError("Cannot Update from IDE? can only update from JAR");
             return;
         }
+        if (isUpToDate) {
+            Log.logMessage("Already Up to Date");
+            return;
+        }
 
         if (!FileHandler.isASMFileSaved()) {
             int confirm = JOptionPane.showOptionDialog(
-                    null, "you have unsaved work are you sure you want to exit?",
+                    null, "you have unsaved work are you sure you want to continue?",
+                    "Exit Confirmation", JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE, null, null, null);
+            if (confirm == 0) {
+            } else {
+                Log.logMessage("Update Cancelled");
+                return;
+            }
+        } else {
+            int confirm = JOptionPane.showOptionDialog(
+                    null, "are you sure you want to continue?",
                     "Exit Confirmation", JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE, null, null, null);
             if (confirm == 0) {
@@ -87,7 +100,8 @@ public class UpdateHandler {
                 return;
             }
         }
-        String[] run = {"java", "-jar", "updater/update.jar", MIPS.JAR_PATH, latestVersionLink};
+
+        String[] run = {"java", "-jar", ResourceHandler.DEFAULT_PATH + "\\updater.jar", MIPS.JAR_PATH, latestVersionLink};
         try {
             Runtime.getRuntime().exec(run);
         } catch (Exception ex) {
@@ -97,7 +111,6 @@ public class UpdateHandler {
 
         //return false;
     }
-
 
     public static String getValueOfJSONTag(String tag, String JSON) {
 
