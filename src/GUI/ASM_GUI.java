@@ -11,7 +11,7 @@ import java.awt.Color;
 import java.util.List;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.text.DefaultStyledDocument;
-import mips.FileWriteReader;
+import mips.FileHandler;
 
 /**
  *
@@ -28,7 +28,7 @@ public class ASM_GUI extends javax.swing.JPanel {
     }
 
     static void setTextAreaFromASMFile() {
-        setTextAreaFromList(FileWriteReader.getASMList());
+        setTextAreaFromList(FileHandler.getASMList());
     }
 
     static void setEnable(boolean enabled) {
@@ -94,7 +94,7 @@ public class ASM_GUI extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void asmTextPaneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_asmTextPaneKeyTyped
-        FileWriteReader.fileChange();
+        FileHandler.fileChange();
         colorText();
     }//GEN-LAST:event_asmTextPaneKeyTyped
 

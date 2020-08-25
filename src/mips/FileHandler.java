@@ -22,7 +22,7 @@ import mips.processor.Processor;
  *
  * @author parke
  */
-public class FileWriteReader {
+public class FileHandler {
 
     private static File currentASMFile;
     private static File currentMXNFile;
@@ -68,9 +68,11 @@ public class FileWriteReader {
     }
 
     public static void reloadMXNFile() {
-        
-        if(isFileReadOnly)return;
-        
+
+        if (isFileReadOnly) {
+            return;
+        }
+
         if (currentMXNFile == null) {
             Memory.setMemory(null);
             return;
@@ -244,7 +246,7 @@ public class FileWriteReader {
     }
 
     public static void loadExampleFile(File file) {
-        FileWriteReader.setFileReadOnly(true);
+        FileHandler.setFileReadOnly(true);
 
         String extention = null;
         String path = null;
@@ -253,7 +255,7 @@ public class FileWriteReader {
             extention = file.getPath().split("\\.")[1];
             path = file.getPath().split("\\.")[0];
         } catch (Exception e) {
-            
+
             Log.logError(file.getPath() + " is not a valid file");
             return;
         }
@@ -271,9 +273,9 @@ public class FileWriteReader {
 
     public static void loadFile(File file) {
         if (file.canWrite()) {
-            FileWriteReader.setFileReadOnly(false);
+            FileHandler.setFileReadOnly(false);
         } else {
-            FileWriteReader.setFileReadOnly(true);
+            FileHandler.setFileReadOnly(true);
         }
         if (file == null || !file.exists()) {
             return;
@@ -347,5 +349,9 @@ public class FileWriteReader {
                     break;
             }
         }
+    }
+
+    public static byte[] loadFileAsByteArray(String path) throws IOException {
+        return Files.readAllBytes(new File(path).toPath());
     }
 }

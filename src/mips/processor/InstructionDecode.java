@@ -67,7 +67,7 @@ public class InstructionDecode {
                 break;
 
             case 0B100001: //addu
-                setRegister(d, getRegister(s) + getRegister(t));
+                setRegister(d, (int)(0xFFFFFFFF & ((long)getRegister(s)) + 0xFFFFFFFF & (long)getRegister(t)));
                 break;
 
             case 0B100100: //and
@@ -131,7 +131,7 @@ public class InstructionDecode {
                 break;
 
             case 0B100011: //subu
-                setRegister(d, getRegister(s) - getRegister(t));
+                setRegister(d, (int)(0xFFFFFFFF & ((long)getRegister(s)) + 0xFFFFFFFF & (long)getRegister(t)));
                 break;
 
             case 0B100110: //xor
@@ -143,8 +143,8 @@ public class InstructionDecode {
                 setRegister(d, getRegister(t) - getRegister(s));
                 break;
 
-            case 0B101001: //sltu
-                setRegister(d, getRegister(t) - getRegister(s));
+            case 0B101001: //sltu 
+                setRegister(d, (int)(0xFFFFFFFF & ((long)getRegister(t)) - 0xFFFFFFFF & (long)getRegister(s)));
                 break;
 
             //jump
@@ -197,7 +197,7 @@ public class InstructionDecode {
                 break;
 
             case 0B001001: //addiu
-                setRegister(t, getRegister(s) + ZEi);
+                setRegister(t, (int)(0xFFFFFFFF & ((long)getRegister(s)) + 0xFFFFFFFF & (long)SEi));
                 break;
 
             case 0B001100: //andi

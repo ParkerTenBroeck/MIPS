@@ -18,7 +18,7 @@ import java.io.File;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import mips.FileWriteReader;
+import mips.FileHandler;
 
 /**
  *
@@ -57,7 +57,7 @@ public class dragAndDrop {
                             java.util.List list = (java.util.List) tr.getTransferData(flavors[i]);
                             for (int j = 0; j < list.size(); j++) {
                                 //filePathLable.setText(((File) list.get(j)).getPath());
-                                FileWriteReader.loadFile((File) list.get(j));
+                                FileHandler.loadFile((File) list.get(j));
                                 //list.get(j); is the file
                             }
                             // If we made it this far, everything worked.

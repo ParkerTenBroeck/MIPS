@@ -39,7 +39,7 @@ import javax.swing.JSlider;
 import javax.swing.JToggleButton;
 import javax.swing.UIManager;
 import javax.swing.border.AbstractBorder;
-import mips.FileWriteReader;
+import mips.FileHandler;
 import mips.Log;
 import mips.ResourceHandler;
 import mips.processor.Processor;
@@ -126,7 +126,7 @@ public class Main_GUI extends javax.swing.JFrame {
             @Override
             public void windowClosing(WindowEvent e) {
 
-                if (!FileWriteReader.isASMFileSaved()) {
+                if (!FileHandler.isASMFileSaved()) {
                     int confirm = JOptionPane.showOptionDialog(
                             null, "you have unsaved work are you sure you want to exit?",
                             "Exit Confirmation", JOptionPane.YES_NO_OPTION,
@@ -146,10 +146,10 @@ public class Main_GUI extends javax.swing.JFrame {
 
             ActionListener al = new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    FileWriteReader.saveASMFile();
+                    FileHandler.saveASMFile();
                     Processor.stop();
                     Processor.reset();
-                    FileWriteReader.loadExampleFile(new File(((JMenuItem) evt.getSource()).getName()));
+                    FileHandler.loadExampleFile(new File(((JMenuItem) evt.getSource()).getName()));
                     ASMCompiler.compile();
                 }
             };
@@ -160,7 +160,7 @@ public class Main_GUI extends javax.swing.JFrame {
 
         } catch (Exception ex) {
             //appendMessageToVirtualConsoleLog(ex.toString(), null);
-            Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         new dragAndDrop(mainPanel);
@@ -188,7 +188,7 @@ public class Main_GUI extends javax.swing.JFrame {
                 if (f2.isDirectory()) {
                     jMenu.add(generateJMenuFromFile(f2, al));
                 } else {
-                    if (f2.getName().split("\\.")[0].equals("mx")) {
+                    if (f2.getName().split("\\.")[1].equals("mxn")) {
                         continue;
                     }
                     String namef2 = f2.getName().split("\\.")[0];
@@ -507,6 +507,7 @@ public class Main_GUI extends javax.swing.JFrame {
 
         linkedButton.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         linkedButton.setForeground(new java.awt.Color(204, 204, 204));
+        linkedButton.setSelected(true);
         linkedButton.setText("Linked File");
         linkedButton.setOpaque(false);
         linkedButton.addActionListener(new java.awt.event.ActionListener() {
@@ -769,7 +770,7 @@ public class Main_GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_userIOButtonActionPerformed
 
     private void openMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuButtonActionPerformed
-        FileWriteReader.openFilePopup();
+        FileHandler.openFilePopup();
     }//GEN-LAST:event_openMenuButtonActionPerformed
 
     private void compileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compileButtonActionPerformed
@@ -790,15 +791,15 @@ public class Main_GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_resetButtonActionPerformed
 
     private void saveMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuButtonActionPerformed
-        FileWriteReader.saveASMFile();
+        FileHandler.saveASMFile();
     }//GEN-LAST:event_saveMenuButtonActionPerformed
 
     private void saveAsMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsMenuButtonActionPerformed
-        FileWriteReader.saveAsASMFile();
+        FileHandler.saveAsASMFile();
     }//GEN-LAST:event_saveAsMenuButtonActionPerformed
 
     private void newMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newMenuButtonActionPerformed
-        FileWriteReader.newFile();
+        FileHandler.newFile();
     }//GEN-LAST:event_newMenuButtonActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed

@@ -6,9 +6,10 @@
 package Compiler.PreProcessorStatements;
 
 import Compiler.DataClasses.UserLine;
+import Compiler.PreProcessor;
 import static Compiler.PreProcessor.loadFile;
 import java.util.ArrayList;
-import mips.FileWriteReader;
+import mips.FileHandler;
 
 /**
  *
@@ -17,11 +18,11 @@ import mips.FileWriteReader;
 public class INCLUDE extends Statement {
 
     ArrayList<UserLine> generatedDataToAdd;
-    
-    public INCLUDE(){
-        
+
+    public INCLUDE() {
+
     }
-    
+
     public INCLUDE(UserLine line) {
         super(line);
 
@@ -30,10 +31,25 @@ public class INCLUDE extends Statement {
         if (path.contains(":")) {
 
         } else {
-            path = FileWriteReader.getASMFilePath().substring(0, FileWriteReader.getASMFilePath().lastIndexOf("\\") + 1) + path;
+            path = FileHandler.getASMFilePath().substring(0, FileHandler.getASMFilePath().lastIndexOf("\\") + 1) + path;
         }
 
-        generatedDataToAdd =  loadFile(path, line.realLineNumber);
+        try {
+            if (path.split(".")[1].equals("mxn")) {
+                generatedDataToAdd = new ArrayList();
+                byte[] temp = FileHandler.loadFileAsByteArray(path);
+                String data = ".byte ";
+                for (int i = 0; i < temp.length; i++) {
+                    data = data + temp[i] + ",";
+                }
+                generatedDataToAdd.equals(data);
+            } else {
+                generatedDataToAdd = loadFile(path, line.realLineNumber);
+            }
+        } catch (Exception e) {
+            PreProcessor.logPreProcessorError("Failed to load included File", line.realLineNumber);
+        }
+
     }
 
     @Override
@@ -45,7 +61,6 @@ public class INCLUDE extends Statement {
     public boolean canModifyNonStatements() {
         return false;
     }
-
 
     @Override
     protected String createIdentifire(UserLine ul) {

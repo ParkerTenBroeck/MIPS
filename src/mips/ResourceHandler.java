@@ -7,24 +7,21 @@ package mips;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
+import java.io.Reader;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.Enumeration;
 import java.util.Objects;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.filechooser.FileSystemView;
 
 /**
@@ -40,20 +37,17 @@ public class ResourceHandler {
     public static final String DOCUMENTATION_PATH = DEFAULT_PATH + "\\Documentation";
     public static final String EXAMPLES_PATH = DEFAULT_PATH + "\\Examples";
 
-    private static void checkPath() {
-        File file = new File(DEFAULT_PATH);
-        if (!file.exists()) {
-            file.mkdir();
-        }
-
-    }
-
     public static boolean extractResources() {
+
+        File dfp = new File(DEFAULT_PATH);
+        if (!dfp.exists()) {
+            dfp.mkdir();
+        }
 
         boolean temp = true;
 
-        temp &= extractResourceToFolder(DOCUMENTATION_PATH, "documentation");
-        temp &= extractResourceToFolder(EXAMPLES_PATH, "examples");
+        temp &= extractResourceToFolder(DOCUMENTATION_PATH, "Documentation");
+        temp &= extractResourceToFolder(EXAMPLES_PATH, "Examples");
         File file = new File(DEFAULT_PROJECTS_PATH);
         if (!file.exists()) {
             temp &= file.mkdir();
@@ -119,13 +113,13 @@ public class ResourceHandler {
                 }
             } catch (IOException ex) {
                 System.out.println(ex);
-                //Log.logWarning(ex.toString());
+                Log.logWarning(ex.toString());
 //Logger.getLogger(Methods.class.getName()).log(Level.SEVERE, null, ex);
                 //Log.logMessage("no");
                 return false;
 
             }
-            Log.logMessage("yes");
+            //Log.logMessage("yes");
             return true;
 
         } else if (Objects.equals(protocol, "file")) { //run in ide
@@ -190,4 +184,8 @@ public class ResourceHandler {
             }
         }
     }
+    
+    
 }
+
+

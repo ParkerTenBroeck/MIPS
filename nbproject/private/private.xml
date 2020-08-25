@@ -11,6 +11,7 @@
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/GUI/imageFrame.java</file>
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/res/images/info.png</file>
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/GUI/Main_GUI.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/GUI/lookandfeel/ModernJMenuIten.java</file>
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/Compiler/PreProcessorStatements/DEFINLINE.java</file>
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/GUI/ASM_GUI.java</file>
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/GUI/lookandfeel/ModernSliderUI.java</file>
@@ -21,6 +22,7 @@
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/Compiler/PreProcessorStatements/INCLUDE.java</file>
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/GUI/lookandfeel/ModernScrollBarUI.java</file>
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/mips/processor/InstructionDecode.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/mips/FileHandler.java</file>
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/Compiler/PreProcessorStatements/Statement.java</file>
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/GUI/InstructionToString.java</file>
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/GUI/UserIO.java</file>
@@ -32,14 +34,13 @@
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/GUI/ComboBoxSearchable.java</file>
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/Compiler/DataClasses/UserLine.java</file>
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/GUI/lookandfeel/RoundedBorder.java</file>
-            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/GUI/lookandfeel/ModernJMenuItem.java</file>
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/GUI/lookandfeel/ModernJMenuBar.java</file>
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/mips/processor/SystemCall.java</file>
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/GUI/lookandfeel/ModernButtonUI.java</file>
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/mips/processor/Memory.java</file>
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/Compiler/DataClasses/AbstractArgumentList.java</file>
-            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/mips/FileWriteReader.java</file>
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/GUI/Screen.java</file>
+            <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/mips/Info.yml</file>
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/Compiler/PreProcessorStatements/UNDEF.java</file>
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/mips/ResourceHandler.java</file>
             <file>file:/C:/Users/parke/OneDrive/Documents/GitHub/MIPS/src/GUI/Register_GUI.java</file>

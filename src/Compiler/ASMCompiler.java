@@ -12,7 +12,7 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import mips.FileWriteReader;
+import mips.FileHandler;
 import mips.Log;
 import mips.processor.Memory;
 
@@ -145,10 +145,10 @@ public class ASMCompiler {
         memoryByteList = new ArrayList();
         origins = new ArrayList();
 
-        FileWriteReader.saveASMFile();
+        FileHandler.saveASMFile();
 
         Log.clearDisplay();
-        ASMCompiler.logCompilerMessage("Started Compilation of file: " + FileWriteReader.getASMFilePath());
+        ASMCompiler.logCompilerMessage("Started Compilation of file: " + FileHandler.getASMFilePath());
 
         ArrayList<UserLine> temp = getInstructions();
 
@@ -166,7 +166,7 @@ public class ASMCompiler {
             saveOriginsToFile();
         }
 
-        FileWriteReader.saveMXNFile();
+        FileHandler.saveMXNFile();
         Main_GUI.refreshAll();
 
         temp.clear();
@@ -202,7 +202,7 @@ public class ASMCompiler {
 
         try (PrintWriter out = new PrintWriter(file)) {
 
-            out.println("Compilation Info of File: " + FileWriteReader.getASMFilePath());
+            out.println("Compilation Info of File: " + FileHandler.getASMFilePath());
             out.println();
 
             for (Origin org : origins) {
@@ -399,7 +399,7 @@ public class ASMCompiler {
         int lineNumber = 0;
 
         ArrayList<UserLine> file = new ArrayList();
-        List<String> temp = FileWriteReader.getASMList();
+        List<String> temp = FileHandler.getASMList();
 
         for (String line : temp) {
             file.add(new UserLine(line, lineNumber + 1));

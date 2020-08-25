@@ -9,7 +9,7 @@ import GUI.lookandfeel.RoundedBorder;
 import static GUI.InstructionToString.instructionToString;
 import java.awt.Color;
 import javax.swing.DefaultListModel;
-import mips.FileWriteReader;
+import mips.FileHandler;
 import mips.processor.Memory;
 import static mips.processor.Memory.superGetWord;
 import static mips.processor.Registers.getPc;
@@ -35,7 +35,7 @@ public class InstructionMemory_GUI extends javax.swing.JPanel {
     
     public static void refreshValues() {
         
-        FileWriteReader.reloadMXNFile();        
+        FileHandler.reloadMXNFile();        
         
         DefaultListModel listModel = new DefaultListModel();
         

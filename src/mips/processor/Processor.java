@@ -6,7 +6,7 @@
 package mips.processor;
 
 import GUI.Main_GUI;
-import mips.FileWriteReader;
+import mips.FileHandler;
 import mips.Log;
 import static mips.processor.InstructionDecode.runInstruction;
 import static mips.processor.Memory.getWord;
@@ -35,7 +35,7 @@ public class Processor implements Runnable {
         stop();
         instructionsRan = 0;
         Registers.reset();
-        FileWriteReader.reloadMXNFile();
+        FileHandler.reloadMXNFile();
         Main_GUI.refresh();
     }
 
