@@ -8,8 +8,6 @@ package mips;
 import GUI.Main_GUI;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import static mips.UpdateHandler.checkForUpdates;
 
 /**
@@ -33,7 +31,6 @@ public class MIPS {
     }
 
     public static void main(String[] args) {
-
         Log.initLogger();
         ResourceHandler.extractResources();
         Main_GUI gui = new Main_GUI();

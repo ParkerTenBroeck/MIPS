@@ -8,6 +8,7 @@ package mips;
 import GUI.ASM_GUI;
 import GUI.Main_GUI;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,6 +16,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import mips.processor.Memory;
 import mips.processor.Processor;
 
@@ -175,39 +177,61 @@ public class FileHandler {
             return false;
         }
         try {
-            final JFileChooser fc = new JFileChooser();
+            File pd = new File(ResourceHandler.DEFAULT_PROJECTS_PATH);
+            JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
+            fc.setSelectedFile(new File("project_" +pd.listFiles().length+".asm"));
             int returnVal = fc.showOpenDialog(Main_GUI.getFrame());
 
-            if (fc.getSelectedFile() == null) {
-                currentASMFile = File.createTempFile("temp", ".asm");
+            File chosenFile = fc.getSelectedFile();
+
+            if (chosenFile == null) {
+                currentASMFile = File.createTempFile("temp", "asm");
                 writeToASMFile();
                 return false;
             }
 
-            File temp;
-            try {
-                temp = new File(fc.getSelectedFile().getPath().split("\\.")[0] + ".asm");
-            } catch (Exception e) {
-                temp = new File(fc.getSelectedFile().getPath() + ".asm");
+            if (!chosenFile.getName().contains(".")) {
+                chosenFile = new File(chosenFile.getAbsolutePath() + ".asm");
+            } else if (chosenFile.getName().endsWith(".asm")) {
+                chosenFile = new File(chosenFile.getAbsolutePath().split("\\.")[0] + ".asm");
             }
 
-            if (temp.exists()) {
+            if (chosenFile.exists()) {
                 int i = Main_GUI.confirmBox("Warning", "This File Already Exists are you sure you want to overwrite it");
 
                 if (i == 0) {
-                    currentASMFile = temp;
+                    currentASMFile = chosenFile;
                     writeToASMFile();
                     isFileSaved = true;
                     return true;
                 }
             } else {
-                currentASMFile = temp;
+                System.out.println(chosenFile.getParent());
+                if (chosenFile.getParent().equals(ResourceHandler.DEFAULT_PROJECTS_PATH)) {
+                    File pf = new File(chosenFile.getAbsolutePath().split("\\.")[0]);
+                    if (!pf.exists()) {
+                        pf.mkdir();
+                    }
+                    chosenFile = new File(pf.getAbsolutePath() + "\\" + chosenFile.getName());
+                    if (chosenFile.exists()) {
+                        int i = Main_GUI.confirmBox("Warning", "This File Already Exists are you sure you want to overwrite it");
+
+                        if (i == 0) {
+                            currentASMFile = chosenFile;
+                            writeToASMFile();
+                            isFileSaved = true;
+                            return true;
+                        }
+                    }
+
+                }
+                currentASMFile = chosenFile;
                 writeToASMFile();
                 isFileSaved = true;
                 return true;
             }
         } catch (Exception e) {
-
+            System.out.println(e);
         }
         return false;
     }
@@ -312,7 +336,7 @@ public class FileHandler {
     }
 
     public static void openFilePopup() {
-        final JFileChooser fc = new JFileChooser();
+        final JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
         int returnVal = fc.showOpenDialog(Main_GUI.getFrame());
 
         if (fc.getSelectedFile() == null || !fc.getSelectedFile().exists()) {
