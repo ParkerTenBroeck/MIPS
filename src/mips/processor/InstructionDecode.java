@@ -67,7 +67,7 @@ public class InstructionDecode {
                 break;
 
             case 0B100001: //addu
-                setRegister(d, (int)(0xFFFFFFFF & ((long)getRegister(s)) + 0xFFFFFFFF & (long)getRegister(t)));
+                setRegister(d, (int) (getUnsignedInt(getRegister(s)) + getUnsignedInt(getRegister(t))));
                 break;
 
             case 0B100100: //and
@@ -80,8 +80,8 @@ public class InstructionDecode {
                 break;
 
             case 0B011011: //divu
-                setLow(getRegister(s) / getRegister(t));
-                setHigh(getRegister(s) % getRegister(t));
+                setLow((int)(getUnsignedInt(getRegister(s)) / getUnsignedInt(getRegister(t))));
+                setHigh((int)(getUnsignedInt(getRegister(s)) % getUnsignedInt(getRegister(t))));
                 break;
 
             case 0B011000: //mult
@@ -90,9 +90,13 @@ public class InstructionDecode {
                 break;
 
             case 0B011001: //multu
-                setLow(getRegister(s) * getRegister(t));
-                setHigh((int) ((long) getRegister(s) * (long) getRegister(t) >> 32));
+            {
+                //System.out.println(getUnsignedInt(getRegister(s)));
+                long result = (getUnsignedInt(getRegister(s)) * getUnsignedInt(getRegister(t)));
+                setLow((int) (result & 0xFFFFFFFF));
+                setHigh((int) (result >> 32));
                 break;
+            }
 
             case 0B100111: //nor
                 setRegister(d, ~(getRegister(s) | getRegister(t)));
@@ -131,7 +135,7 @@ public class InstructionDecode {
                 break;
 
             case 0B100011: //subu
-                setRegister(d, (int)(0xFFFFFFFF & ((long)getRegister(s)) + 0xFFFFFFFF & (long)getRegister(t)));
+                setRegister(d, (int) (getUnsignedInt(getRegister(s)) + getUnsignedInt(getRegister(t))));
                 break;
 
             case 0B100110: //xor
@@ -144,7 +148,7 @@ public class InstructionDecode {
                 break;
 
             case 0B101001: //sltu 
-                setRegister(d, (int)(0xFFFFFFFF & ((long)getRegister(t)) - 0xFFFFFFFF & (long)getRegister(s)));
+                setRegister(d, (int) (getUnsignedInt(getRegister(t)) - getUnsignedInt(getRegister(s))));
                 break;
 
             //jump
@@ -197,7 +201,7 @@ public class InstructionDecode {
                 break;
 
             case 0B001001: //addiu
-                setRegister(t, (int)(0xFFFFFFFF & ((long)getRegister(s)) + 0xFFFFFFFF & (long)SEi));
+                setRegister(t, (int) (getUnsignedInt(getRegister(s)) + getUnsignedInt(SEi)));
                 break;
 
             case 0B001100: //andi
@@ -313,5 +317,9 @@ public class InstructionDecode {
                 return false;
         }
         return true;
+    }
+    
+    public static long getUnsignedInt(int x){
+        return x & 0x00000000ffffffffL;
     }
 }

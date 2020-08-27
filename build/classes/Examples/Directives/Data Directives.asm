@@ -20,3 +20,7 @@ byteList:
 
 space:
 .space 16 ;allocates N bytes of space in memory 
+
+string
+.ascii "Hello World!" ;places the string Hello World! into memory as an array of chars(bytes)
+.byte 0 ;normally used to terminate a string 

@@ -77,7 +77,8 @@ public class ResourceHandler {
                     JarEntry entry = enums.nextElement();
                     if (entry.getName().startsWith(jarPath)) {
                         File toWrite = new File(destPath + "//" + entry.getName().replaceAll(jarPath, ""));
-
+                        Log.logMessage(toWrite.getAbsolutePath());
+                        //System.out.println(toWrite.getAbsoluteFile());
                         if (entry.isDirectory()) {
                             if (!toWrite.exists()) {
                                 toWrite.mkdirs();
@@ -116,7 +117,7 @@ public class ResourceHandler {
             } catch (IOException ex) {
                 System.out.println(ex);
                 Log.logWarning(ex.toString());
-//Logger.getLogger(Methods.class.getName()).log(Level.SEVERE, null, ex);
+                //Logger.getLogger(Methods.class.getName()).log(Level.SEVERE, null, ex);
                 //Log.logMessage("no");
                 return false;
 

@@ -8,813 +8,1398 @@
     <body>
         <div>
             <span id="page1"></span>
-            <p class="p_style0">
-                <span class="style0">MIPS Instructions</span>
+            <p class="p_style1">
+                <span class="style2"><b>MIPS Instructions</b></span>
             </p>
-            <table class="bordered">
+			
+             <table class="bordered">
                 <colgroup>
-                    <col style="width:97px;"/>
-                    <col style="width:157px;"/>
-                    <col style="width:109px;"/>
-                    <col style="width:253px;"/>
+                    <col style="width:73px;"/>
+                    <col style="width:114px;"/>
+                    <col style="width:68px;"/>
+                    <col style="width:361px;"/>
                 </colgroup>
                 <tr>
-                    <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style1">
-                            <span class="style1">Instruction</span>
+                    <td colspan="4" style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style17">
+                            <span class="style7"><b>Arithmetic and Logical Instructions</b></span>
                         </p>
                     </td>
+                </tr>
+                <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style2">
-                            <span class="style1">Description</span>
+                        <p class="p_style3">
+                            <span class="style6"><b>Instruction</b></span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
                         <p class="p_style3">
-                            <span class="style1">Template</span>
+                            <span class="style6"><b>Opcode/Function</b></span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style4">
-                            <span class="style1">Calculation</span>
+                        <p class="p_style18">
+                            <span class="style7"><b>Syntax</b></span>
                         </p>
                     </td>
-                </tr>
-                <tr>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">add</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">Add</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">add $d, $s, $t</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">$d = $s + $t</span>
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">addi</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">Add Immediate</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">addi $d, $s, i</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">$d = $s + i</span>
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">sub</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">Subtract</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">sub $d, $s, $t</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">$d = $s - $t</span>
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">div</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">Divide</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">div $s, $t</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">lo = $s / $t; hi = $s % $t</span>
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">mult</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">Multiply</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">mult $s, $t</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">hi:lo = $s * $t</span>
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">sll</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">Shift Left Immediate</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">sll $d, $t, i</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">$d = $t &lt;&lt;i</span>
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">sllv</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">Shift Left</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">sllv $d, $t, $s</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">$d = $t &lt;&lt;$s</span>
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">sra</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">Shift Right Immediate</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">sra $d, $t, i</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">$d = $t &gt;&gt;i</span>
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">srav</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">Shift Right</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style6">
-                            <span class="style2">srav $d, $t, $s</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">$d = $t &gt;&gt;$s</span>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style19">
+                            <span class="style7"><b>Operation</b></span>
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
+                            <span class="style3">add</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">100000</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">ArithLog</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">$d = $s + $t</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">addu</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">100001</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">ArithLog</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">$d = $s + $t</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">addi</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">001000</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">ArithLogI</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">$t = $s + SE(i)</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">addiu</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">001001</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">ArithLogI</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">$t = $s + SE(i)</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
                             <span class="style3">and</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">And</span>
+                        <p class="p_style3">
+                            <span class="style3">100100</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">and $d, $s, $t</span>
+                        <p class="p_style3">
+                            <span class="style3">ArithLog</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
                             <span class="style3">$d = $s &amp;$t</span>
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
                             <span class="style3">andi</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">And Immediate</span>
+                        <p class="p_style3">
+                            <span class="style3">001100</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">andi $d, $s, i</span>
+                        <p class="p_style3">
+                            <span class="style3">ArithLogI</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">$d = $s &amp;i</span>
+                        <p class="p_style3">
+                            <span class="style3">$t = $s &amp;ZE(i)</span>
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
+                            <span class="style3">div</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">011010</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">DivMult</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">lo = $s / $t; hi = $s % $t</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">divu</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">011011</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">DivMult</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">lo = $s / $t; hi = $s % $t</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">mult</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">011000</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">DivMult</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">hi:lo = $s * $t</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">multu</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">011001</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">DivMult</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">hi:lo = $s * $t</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">nor</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">100111</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">ArithLog</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">$d = ~($s | $t)</span>
+                        </p>
+                    </td>
+                </tr>
+                <span id="page3"></span>
+                <tr>
+                    <td>
+                        <p class="p_style3">
                             <span class="style3">or</span>
                         </p>
                     </td>
-                    <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">Or</span>
+                    <td>
+                        <p class="p_style3">
+                            <span class="style3">100101</span>
                         </p>
                     </td>
-                    <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">or $d, $s, $t</span>
+                    <td>
+                        <p class="p_style3">
+                            <span class="style3">ArithLog</span>
                         </p>
                     </td>
-                    <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                    <td>
+                        <p class="p_style3">
                             <span class="style3">$d = $s | $t</span>
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
                             <span class="style3">ori</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">Or Immediate</span>
+                        <p class="p_style3">
+                            <span class="style3">001101</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">ori $d, $s, i</span>
+                        <p class="p_style3">
+                            <span class="style3">ArithLogI</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">$d = $s | i</span>
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">nor</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">Nor</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">nor $d, $s, $t</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">$d = ~($s | $t)</span>
+                        <p class="p_style3">
+                            <span class="style3">$t = $s | ZE(i)</span>
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
+                            <span class="style3">sll</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">000000</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">Shift</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">$d = $t &lt;&lt;a</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">sllv</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">000100</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">ShiftV</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">$d = $t &lt;&lt;$s</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">sra</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">000011</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">Shift</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">$d = $t &gt;&gt;a</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">srav</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">000111</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">ShiftV</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">$d = $t &gt;&gt;$s</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">srl</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">000010</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">Shift</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">$d = $t &gt;&gt;&gt;a</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">srlv</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">000110</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">ShiftV</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">$d = $t &gt;&gt;&gt;$s</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">sub</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">100010</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">ArithLog</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">$d = $s - $t</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">subu</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">100011</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">ArithLog</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">$d = $s - $t</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
                             <span class="style3">xor</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">Exclusive Or</span>
+                        <p class="p_style3">
+                            <span class="style3">100110</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">xor $d, $s, $t</span>
+                        <p class="p_style3">
+                            <span class="style3">ArithLog</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
                             <span class="style3">$d = $s ^ $t</span>
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
                             <span class="style3">xori</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">Exclusive Or Immediate</span>
+                        <p class="p_style3">
+                            <span class="style3">001110</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">ori $d, $s, i</span>
+                        <p class="p_style3">
+                            <span class="style3">ArithLogI</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">$d = $s ^ i</span>
+                        <p class="p_style3">
+                            <span class="style3">$d = $s ^ ZE(i)</span>
                         </p>
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">slt</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">Strictly Less Than</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">slt $d, $s, $t</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">$d = ($s &lt;$t)</span>
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">slti</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">Strictly Less Than Immediate</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">slti $d, $s, i</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">$d = ($s &lt;i)</span>
+                    <td colspan="4" style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style21">
+                            <span class="style7"><b>Constant-Manipulating Instructions</b></span>
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
+                            <span class="style6"><b>Instruction</b></span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style6"><b>Opcode/Function</b></span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style18">
+                            <span class="style7"><b>Syntax</b></span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style19">
+                            <span class="style7"><b>Operation</b></span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">lhi</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">011001</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">LoadI</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">HH ($t) = i</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">llo</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">011000</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">LoadI</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">LH ($t) = i</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style24">
+                            <span class="style7"><b>Comparison Instructions</b></span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style6"><b>Instruction</b></span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style6"><b>Opcode/Function</b></span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style18">
+                            <span class="style7"><b>Syntax</b></span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style19">
+                            <span class="style7"><b>Operation</b></span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">slt</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">101010</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">ArithLog</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">$d = ($s &lt;$t)</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">sltu</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">101001</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">ArithLog</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">$d = ($s &lt;$t)</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">slti</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">001010</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">ArithLogI</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">$t = ($s &lt;SE(i))</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">sltiu</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">001001</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">ArithLogI</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">$t = ($s &lt;SE(i))</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style25">
+                            <span class="style7"><b>Branch Instructions</b></span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style6"><b>Instruction</b></span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style6"><b>Opcode/Function</b></span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style18">
+                            <span class="style7"><b>Syntax</b></span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style19">
+                            <span class="style7"><b>Operation</b></span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
                             <span class="style3">beq</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">Branch if Equal</span>
+                        <p class="p_style3">
+                            <span class="style3">000100</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">beq $s, $t, label</span>
+                        <p class="p_style3">
+                            <span class="style3">Branch</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
                             <span class="style3">if ($s == $t) pc += i &lt;&lt;2</span>
                         </p>
                     </td>
                 </tr>
-                <span id="page2"></span>
                 <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
                             <span class="style3">bgtz</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">Branch if Greater Than Zero</span>
+                        <p class="p_style3">
+                            <span class="style3">000111</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">bgtz $s, label</span>
+                        <p class="p_style3">
+                            <span class="style3">BranchZ</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
                             <span class="style3">if ($s &gt;0) pc += i &lt;&lt;2</span>
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
                             <span class="style3">blez</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">Branch if Less Than or Equal to Zero</span>
+                        <p class="p_style3">
+                            <span class="style3">000110</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">blez $s, label</span>
+                        <p class="p_style3">
+                            <span class="style3">BranchZ</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
                             <span class="style3">if ($s &lt;= 0) pc += i &lt;&lt;2</span>
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
                             <span class="style3">bne</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">Branch if Not Equal</span>
+                        <p class="p_style3">
+                            <span class="style3">000101</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">bne $s, $t, label</span>
+                        <p class="p_style3">
+                            <span class="style3">Branch</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
                             <span class="style3">if ($s != $t) pc += i &lt;&lt;2</span>
                         </p>
                     </td>
                 </tr>
                 <tr>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">llo</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">Load Low Half of Word</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">llo $d, i</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">LOWHALF($d) = i</span>
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">lhi</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">Load High Half of Word</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">lhi $d, i</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">HIGHHALF($d) = i</span>
+                    <td colspan="4" style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style26">
+                            <span class="style7"><b>Jump Instructions</b></span>
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">lw</span>
+                        <p class="p_style3">
+                            <span class="style6"><b>Instruction</b></span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">Load Word</span>
+                        <p class="p_style3">
+                            <span class="style6"><b>Opcode/Function</b></span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">lw $t, i($s)</span>
+                        <p class="p_style18">
+                            <span class="style7"><b>Syntax</b></span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">$d = MEM[$s + i]</span>
+                        <p class="p_style19">
+                            <span class="style7"><b>Operation</b></span>
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">sw</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">Save Word</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">sw $t, i($s)</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">MEM[$s + i] = $t</span>
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">mfhi</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">Move From High Reg</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">mfhi $d</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">$d = hi</span>
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">mflo</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">Move From Low Reg</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">mflo $d</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">$d = lo</span>
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">mthi</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">Move To High Reg</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">mthi $s</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">hi = $s</span>
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">mtlo</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">Move To Low Reg</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">mtlo $s</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(204,204,204,1.00)">
-                        <p class="p_style5">
-                            <span class="style2">lo = $s</span>
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
                             <span class="style3">j</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
+                            <span class="style3">000010</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
                             <span class="style3">Jump</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">j label</span>
-                        </p>
-                    </td>
-                    <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
                             <span class="style3">pc += i &lt;&lt;2</span>
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
                             <span class="style3">jal</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">Jump and Link</span>
+                        <p class="p_style3">
+                            <span class="style3">000011</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">jal label</span>
+                        <p class="p_style3">
+                            <span class="style3">Jump</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
                             <span class="style3">$31 = pc; pc += i &lt;&lt;2</span>
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
                             <span class="style3">jalr</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">Jump and Link Register</span>
+                        <p class="p_style3">
+                            <span class="style3">001001</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">jalr $s</span>
+                        <p class="p_style3">
+                            <span class="style3">JumpR</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
                             <span class="style3">$31 = pc; pc = $s</span>
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
                             <span class="style3">jr</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">Jump Register</span>
+                        <p class="p_style3">
+                            <span class="style3">001000</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">jr $s</span>
+                        <p class="p_style3">
+                            <span class="style3">JumpR</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
                             <span class="style3">pc = $s</span>
                         </p>
                     </td>
                 </tr>
                 <tr>
+                    <td colspan="4" style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style27">
+                            <span class="style7"><b>Load Instructions</b></span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
+                            <span class="style6"><b>Instruction</b></span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style6"><b>Opcode/Function</b></span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style18">
+                            <span class="style7"><b>Syntax</b></span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style19">
+                            <span class="style7"><b>Operation</b></span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">lb</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">100000</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">LoadStore</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">$t = SE (MEM [$s + i]:1)</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">lbu</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">100100</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">LoadStore</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">$t = ZE (MEM [$s + i]:1)</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">lh</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">100001</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">LoadStore</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">$t = SE (MEM [$s + i]:2)</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">lhu</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">100101</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">LoadStore</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style10">$t = ZE (MEM [$s + i]:2)</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">lw</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">100011</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">LoadStore</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">$t = MEM [$s + i]:4</span>
+                        </p>
+                </tr>
+                <tr>
+                    <td colspan="4" style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style31">
+                            <span class="style7"><b>Store Instructions</b></span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style6"><b>Instruction</b></span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style6"><b>Opcode/Function</b></span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style18">
+                            <span class="style7"><b>Syntax</b></span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style19">
+                            <span class="style7"><b>Operation</b></span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">sb</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">101000</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">LoadStore</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">MEM [$s + i]:1 = LB ($t)</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">sh</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">101001</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">LoadStore</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3"> MEM [$s + i]:2 = LH ($t)</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">sw</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">101011</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">LoadStore</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">MEM [$s + i]:4 = $t</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style35">
+                            <span class="style7"><b>Data Movement Instructions</b></span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style6"><b>Instruction</b></span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style6"><b>Opcode/Function</b></span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style18">
+                            <span class="style7"><b>Syntax</b></span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style19">
+                            <span class="style7"><b>Operation</b></span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">mfhi</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">010000</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">MoveFrom</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">$d = hi</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">mflo</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">010010</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">MoveFrom</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">$d = lo</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">mthi</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">010001</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">MoveTo</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">hi = $s</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">mtlo</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">010011</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">MoveTo</span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style3">lo = $s</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style35">
+                            <span class="style7"><b>Exception and Interrupt Instructions</b></span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style6"><b>Instruction</b></span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
+                            <span class="style6"><b>Opcode/Function</b></span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style18">
+                            <span class="style7"><b>Syntax</b></span>
+                        </p>
+                    </td>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style19">
+                            <span class="style7"><b>Operation</b></span>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color:rgba(255,255,255,1.00)">
+                        <p class="p_style3">
                             <span class="style3">trap</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">System Call</span>
+                        <p class="p_style3">
+                            <span class="style3">011010</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">trap i</span>
+                        <p class="p_style3">
+                            <span class="style3">Trap</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
-                            <span class="style3">See trap list below</span>
+                        <p class="p_style37">
+                            <span class="style3">Dependent on operating system; different values for</span>
+                            <span class="style3">
+                                <a href="https://www.student.cs.uwaterloo.ca/~isg/res/mips/traps">immed26 specify different operations. See the</a>
+                            </span>
+                            <span class="style3"></span>
+                            <span class="style15">
+                                <a href="https://www.student.cs.uwaterloo.ca/~isg/res/mips/traps">list of</a>
+                            </span>
+                            <span class="style16"></span>
+                            <span class="style16">
+                                <a href="https://www.student.cs.uwaterloo.ca/~isg/res/mips/traps">traps</a>
+                            </span>
+                            <span class="style16"></span>
+                            <span class="style3">
+                                <a href="https://www.student.cs.uwaterloo.ca/~isg/res/mips/traps">for information on what the different trap code</a>
+                            </span>
+                            <span class="style3">s do.</span>
                         </p>
                     </td>
                 </tr>
             </table>
-            <span id="page3"></span>
-            <p class="p_style0">
-                <span class="style0">Traps</span>
+			<span id="page3"></span>
+            <p class="p_style1">
+                <span class="style2"><b>Traps</b></span>
             </p>
             <table class="bordered">
                 <colgroup>
@@ -1207,8 +1792,8 @@
                 </tr>
             </table>
             <span id="page5"></span>
-            <p class="p_style0">
-                <span class="style0">Directives</span>
+            <p class="p_style1">
+                <span class="style2"><b>Directives</b></span>
             </p>
             <table class="bordered">
                 <colgroup>
@@ -1217,92 +1802,92 @@
                 </colgroup>
                 <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style11">
-                            <span class="style1">Directive</span>
+                        <p class="p_style5">
+                            <span class="style6"><b>Directive</b></span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style12">
-                            <span class="style1">Description</span>
+                        <p class="p_style5">
+                            <span class="style6"><b>Description</b></span>
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style2">
+                        <p class="p_style3">
                             <span class="style3">.word</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
                             <span class="style3">Allows for the storage of 32 bit integers separated by commas</span>
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style13">
+                        <p class="p_style3">
                             <span class="style3">.hword</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
                             <span class="style3">Allows for the storage of 16 bit integers separated by commas</span>
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style14">
+                        <p class="p_style3">
                             <span class="style3">.byte</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
                             <span class="style3">Allows for the storage of 8 bit integers separated by commas</span>
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style15">
+                        <p class="p_style3">
                             <span class="style3">.ascii</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
                             <span class="style3">Allows for the encoding of ascii characters defined between commas to be stored as a string of bytes in memory</span>
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style16">
+                        <p class="p_style3">
                             <span class="style3">.space N</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
                             <span class="style3">Allocate N bytes of space</span>
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style17">
+                        <p class="p_style3">
                             <span class="style3">.org</span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style5">
+                        <p class="p_style3">
                             <span class="style3">Sets the origin in memory of the code below</span>
                         </p>
                     </td>
                 </tr>
             </table>
             <span id="page6"></span>
-            <p class="p_style0">
-                <span class="style0">Register Use</span>
+            <p class="p_style1">
+                <span class="style2"><b>Register Use</b></span>
             </p>
             <table class="bordered">
                 <colgroup>
@@ -1312,21 +1897,21 @@
                 </colgroup>
                 <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style18">
-                            <span class="style1">Registers</span>
+                        <p class="p_style5">
+                            <span class="style6"><b>Registers</b></span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style12">
-                            <span class="style1">Description</span>
+                        <p class="p_style5">
+                            <span class="style6"><b>Description</b></span>
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style19">
-                            <span class="style1">Preserved During</span>
+                        <p class="p_style5">
+                            <span class="style6"><b>Preserved During</b></span>
                         </p>
-                        <p class="p_style20">
-                            <span class="style1">Function Call?</span>
+                        <p class="p_style5">
+                            <span class="style6"><b>Function Call?</b></span>
                         </p>
                     </td>
                 </tr>
@@ -1342,7 +1927,7 @@
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style4">
+                        <p class="p_style3">
                             <span class="style3">N/A</span>
                         </p>
                     </td>
@@ -1368,7 +1953,7 @@
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style23">
+                        <p class="p_style3">
                             <span class="style3">No</span>
                         </p>
                     </td>
@@ -1385,7 +1970,7 @@
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style4">
+                        <p class="p_style3">
                             <span class="style3">Yes</span>
                         </p>
                     </td>
@@ -1402,7 +1987,7 @@
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style23">
+                        <p class="p_style3">
                             <span class="style3">No</span>
                         </p>
                     </td>
@@ -1419,7 +2004,7 @@
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style4">
+                        <p class="p_style3">
                             <span class="style3">Yes</span>
                         </p>
                     </td>
@@ -1436,14 +2021,14 @@
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style23">
+                        <p class="p_style3">
                             <span class="style3">No</span>
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style2">
+                        <p class="p_style24">
                             <span class="style3">$28</span>
                         </p>
                     </td>
@@ -1453,14 +2038,14 @@
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style4">
+                        <p class="p_style3">
                             <span class="style3">Yes</span>
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style2">
+                        <p class="p_style24">
                             <span class="style3">$29</span>
                         </p>
                     </td>
@@ -1470,14 +2055,14 @@
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style4">
+                        <p class="p_style3">
                             <span class="style3">Yes</span>
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style2">
+                        <p class="p_style24">
                             <span class="style3">$30</span>
                         </p>
                     </td>
@@ -1487,14 +2072,14 @@
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style4">
+                        <p class="p_style3">
                             <span class="style3">Yes</span>
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style2">
+                        <p class="p_style24">
                             <span class="style3">$31</span>
                         </p>
                     </td>
@@ -1504,7 +2089,7 @@
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style4">
+                        <p class="p_style3">
                             <span class="style3">Yes</span>
                         </p>
                     </td>
@@ -1521,7 +2106,7 @@
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style4">
+                        <p class="p_style3">
                             <span class="style3">N/A</span>
                         </p>
                     </td>
@@ -1538,7 +2123,7 @@
                         </p>
                     </td>
                     <td style="background-color:rgba(255,255,255,1.00)">
-                        <p class="p_style4">
+                        <p class="p_style3">
                             <span class="style3">N/A</span>
                         </p>
                     </td>
