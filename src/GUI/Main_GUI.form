@@ -77,7 +77,7 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu1">
+        <Menu class="javax.swing.JMenu" name="compilerMenu">
           <Properties>
             <Property name="text" type="java.lang.String" value="Compiler"/>
           </Properties>
@@ -113,10 +113,22 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveCompileInformationButtonActionPerformed"/>
               </Events>
             </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="runTimeMenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Run Time Options"/>
+          </Properties>
+          <SubComponents>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="breakProgramOnRTEButton">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Break Program On RunTime Error"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem3">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Adaptive Memory"/>
               </Properties>
             </MenuItem>
           </SubComponents>

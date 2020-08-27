@@ -297,12 +297,14 @@ public class Main_GUI extends javax.swing.JFrame {
         editMenu = new javax.swing.JMenu();
         optionsMenu = new javax.swing.JMenu();
         checkForUpdates = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
+        compilerMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         savePreProcessedFileButton = new javax.swing.JCheckBoxMenuItem();
         saveCompileInformationButton = new javax.swing.JCheckBoxMenuItem();
+        runTimeMenu = new javax.swing.JMenu();
         breakProgramOnRTEButton = new javax.swing.JCheckBoxMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("MIPS");
@@ -668,7 +670,7 @@ public class Main_GUI extends javax.swing.JFrame {
 
         menuBar.add(optionsMenu);
 
-        jMenu1.setText("Compiler");
+        compilerMenu.setText("Compiler");
 
         jMenuItem1.setText("Ascii chart");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
@@ -676,7 +678,7 @@ public class Main_GUI extends javax.swing.JFrame {
                 jMenuItem1ActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        compilerMenu.add(jMenuItem1);
 
         jMenuItem2.setText("Documentation");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
@@ -684,11 +686,11 @@ public class Main_GUI extends javax.swing.JFrame {
                 jMenuItem2ActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
+        compilerMenu.add(jMenuItem2);
 
         savePreProcessedFileButton.setSelected(true);
         savePreProcessedFileButton.setText("Save PreProcessed File");
-        jMenu1.add(savePreProcessedFileButton);
+        compilerMenu.add(savePreProcessedFileButton);
 
         saveCompileInformationButton.setSelected(true);
         saveCompileInformationButton.setText("Save CompileInformation");
@@ -697,13 +699,20 @@ public class Main_GUI extends javax.swing.JFrame {
                 saveCompileInformationButtonActionPerformed(evt);
             }
         });
-        jMenu1.add(saveCompileInformationButton);
+        compilerMenu.add(saveCompileInformationButton);
+
+        menuBar.add(compilerMenu);
+
+        runTimeMenu.setText("Run Time Options");
 
         breakProgramOnRTEButton.setSelected(true);
         breakProgramOnRTEButton.setText("Break Program On RunTime Error");
-        jMenu1.add(breakProgramOnRTEButton);
+        runTimeMenu.add(breakProgramOnRTEButton);
 
-        menuBar.add(jMenu1);
+        jMenuItem3.setText("Adaptive Memory");
+        runTimeMenu.add(jMenuItem3);
+
+        menuBar.add(runTimeMenu);
 
         setJMenuBar(menuBar);
 
@@ -846,6 +855,7 @@ public class Main_GUI extends javax.swing.JFrame {
     private static javax.swing.JPanel buttonBarPanel;
     private static javax.swing.JMenuItem checkForUpdates;
     private static javax.swing.JButton compileButton;
+    private static javax.swing.JMenu compilerMenu;
     private static javax.swing.JLabel delayLable;
     private static javax.swing.JSlider delaySlider;
     private static javax.swing.JMenu editMenu;
@@ -853,9 +863,9 @@ public class Main_GUI extends javax.swing.JFrame {
     private static javax.swing.JMenu exampleMenu;
     private static javax.swing.JMenu fileMenu;
     private static GUI.InstructionMemory_GUI instructionMemory_GUI1;
-    private static javax.swing.JMenu jMenu1;
     private static javax.swing.JMenuItem jMenuItem1;
     private static javax.swing.JMenuItem jMenuItem2;
+    private static javax.swing.JMenuItem jMenuItem3;
     private static javax.swing.JPanel jPanel1;
     private static javax.swing.JPanel jPanel2;
     private static javax.swing.JPanel jPanel3;
@@ -870,6 +880,7 @@ public class Main_GUI extends javax.swing.JFrame {
     private static javax.swing.JMenu optionsMenu;
     private static GUI.Register_GUI register_GUI1;
     private static javax.swing.JButton resetButton;
+    private static javax.swing.JMenu runTimeMenu;
     private static javax.swing.JMenuItem saveAsMenuButton;
     private static javax.swing.JCheckBoxMenuItem saveCompileInformationButton;
     private static javax.swing.JMenuItem saveMenuButton;

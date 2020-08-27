@@ -29,6 +29,9 @@ public class Memory {
     }
 
     public static int getWord(int index) {
+        if ((index & 3) != 0) {
+            logRunTimeError("getWord must be alligned to 4 error at index:" + index);
+        }
         if (index + 3 > Memory.memory.length) {
             logRunTimeError("getWord Memory out of bounds " + index);
             return -1;
@@ -39,6 +42,9 @@ public class Memory {
     }
 
     public static int getHalfWord(int index) {
+        if ((index & 1) != 0) {
+            logRunTimeError("getHalfWord must be alligned to 2 error at index:" + index);
+        }
         if (index + 1 > memory.length) {
             logRunTimeError("getHalfWord Memory out of bounds " + index);
             return -1;
@@ -80,8 +86,8 @@ public class Memory {
         int mem1 = 0xCD;
         int mem2 = 0xCD;
         try {
-            mem2 = Memory.memory[index] & 0xFF;
-            mem1 = Memory.memory[index + 1] & 0xFF;
+            mem2 = ((int)Memory.memory[index]);
+            mem1 = ((int)Memory.memory[index + 1]) & 0xFF;
         } catch (Exception e) {
 
         }
@@ -91,16 +97,19 @@ public class Memory {
     public static int superGetByte(int index) {
 
         int mem1 = 0xCD;
-        try{
-            mem1 = Memory.memory[index] & 0xFF;
-        }catch(Exception e){
-            
+        try {
+            mem1 = Memory.memory[index];
+        } catch (Exception e) {
+
         }
         return mem1;
-        
+
     }
 
     public static boolean setWord(int index, int val) {
+        if ((index & 3) != 0) {
+            logRunTimeError("setWord must be alligned to 4 error at index:" + index);
+        }
         if (index + 3 > Memory.memory.length) {
             logRunTimeError("setWord Memory out of bounds " + index);
             return false;
@@ -121,6 +130,9 @@ public class Memory {
     }
 
     public static boolean setHalfWord(int index, int val) {
+        if ((index & 1) != 0) {
+            logRunTimeError("setHalfWord must be alligned to 2 error at index:" + index);
+        }
         if (index + 1 > Memory.memory.length) {
             Main_GUI.stop();
             logRunTimeError("setHalfWord Memory out of bounds " + index);

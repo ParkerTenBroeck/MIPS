@@ -50,7 +50,7 @@ public class UpdateHandler {
                 Log.logWarning("There is an update avalible goto Options>Update to update");
                 latestVersionLink = getValueOfJSONTag("browser_download_url", JSON);
             } else if (compare < 0) {
-                Log.logWarning("You are using a Beta Version that has not been relesed yet there may be un");
+                Log.logWarning("You are using a Beta Version there may be bugs and unexpected behavior goto Options>Update to get the latest stable relese");
                 latestVersionLink = getValueOfJSONTag("browser_download_url", JSON);
             } else {
 

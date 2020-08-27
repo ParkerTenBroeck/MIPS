@@ -826,9 +826,6 @@ jr $31;return
 
 data: ;data section
 
-snakeRainbow:
-.byte 0
-
 screenSizeX:  ;screen size x
 .word 62
 
@@ -857,3 +854,6 @@ snake: ;snake data
 .space 5000 
 
 .space 3
+
+snakeRainbow:
+.byte 0

@@ -55,8 +55,17 @@ mflo $6
 drawLoop:
 
 add $4, $9, $7;places the index offset + index in register 4
-lw $5, 0($4); places RGB valie into 5
-srl $5, $5, 8 ;shifts value over
+
+lbu $11, 2($4)
+add $5, $0, $11
+lbu $11, 1($4)
+sll $11, $11, 8
+or $5, $11, $5
+lbu $11, 0($4)
+sll $11, $11, 16
+or $5, $11, $5
+;places the color value into register 5
+
 add $4, $10, $0;places index in register 4
 trap 152;places pixel
 

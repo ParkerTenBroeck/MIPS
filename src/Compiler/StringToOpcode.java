@@ -351,12 +351,12 @@ public class StringToOpcode {
             case "mthi":
                 return registerEncoding(0,
                         decodeRegister(parameter[0]),
-                        0, 0, 0, 0B001001);
+                        0, 0, 0, 0B010001);
 
             case "mtlo":
                 return registerEncoding(0,
                         decodeRegister(parameter[0]),
-                        0, 0, 0, 0B001011);
+                        0, 0, 0, 0B010011);
 
             //system calls
             case "trap":

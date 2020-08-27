@@ -63,9 +63,8 @@ addi $4, $0, 4072 ;sets the screen to 4072x4072
 addi $5, $0, 4072
 trap 150
 
-addiu $8, $0, 16xFFFF
-sll $8, $8, 8
-addiu $8, $8, 16xFF ;stores the number 0xFFFFFF in register 8 (white)
+llo $8, 16xFFFF
+lhi $8, 16xFF ;stores the number 0xFFFFFF in register 8 (white)
 
 addi $4, $0, 0 
 addi $5, $0, 0

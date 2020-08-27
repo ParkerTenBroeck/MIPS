@@ -210,6 +210,7 @@ public class ASMCompiler {
                 if (org.byteOrigin == 0 && org.memoryChunks.isEmpty()) {//skips pre made origin if it is not in ise
                     continue;
                 }
+                
 
                 out.println("Origin at: " + String.format("%08X", org.byteOrigin));
                 out.println();
@@ -219,11 +220,12 @@ public class ASMCompiler {
                     if (mc.startLable.name.equals("") && mc.chunkData.isEmpty()) { //skips pre made lable if it is empty
                         continue;
                     }
-
+                    if(!mc.startLable.name.isEmpty()){
                     out.println("   " + "Memory Lable: "
                             + String.format("%-" + maxSizeMemoryLable + "s", mc.startLable.name + ",")
                             + " Memory Adress: " + String.format("%08X", mc.startLable.getByteAddress()));
                     out.println();
+                    }
 
                     for (CompileTimeUserLine ctul : mc.chunkData) {
 
@@ -343,12 +345,25 @@ public class ASMCompiler {
 
     private static void findMemoryPointersAndChunkifyMemory(ArrayList<UserLine> file) { //finds all memory pointers and splits the file into memory chunks
 
+        int startingIndex = 0; //if theres an origin at the begining skip first line
+        
+        Origin org;
+        try{
+            if(file.get(0).line.startsWith(".org")){
+                org = new Origin(file.get(0));
+                startingIndex = 1;
+            }else{
+                org = new Origin(0);
+            }
+        }catch(Exception e){
+            org = new Origin(0);
+        }
+        
         int memoryLableIndex = 0;
         MemoryLable ml;
         MemoryChunk mc = new MemoryChunk(new MemoryLable(new UserLine("", -1), -1));
-        Origin org = new Origin(0);
 
-        for (int i = 0; i < file.size(); i++) {
+        for (int i = startingIndex; i < file.size(); i++) {
 
             UserLine currentLine = file.get(i);
 
@@ -439,11 +454,11 @@ public class ASMCompiler {
     public static int parseInt(String string) { //to add functionality later
 
         if (string.startsWith("0b")) {
-            return Integer.parseInt(string.split("b")[1], 2);
+            return (int)Long.parseLong(string.split("b")[1], 2);
         } else if (string.startsWith("0x")) {
-            return Integer.parseInt(string.split("x")[1], 16);
+            return (int)Long.parseLong(string.split("x")[1], 16);
         } else if (string.contains("x")) {
-            return Integer.parseInt(string.split("x")[1], Integer.parseInt(string.split("x")[0]));
+            return (int)Long.parseLong(string.split("x")[1], Integer.parseInt(string.split("x")[0]));
         }
 
         return Integer.parseInt(string.trim());
