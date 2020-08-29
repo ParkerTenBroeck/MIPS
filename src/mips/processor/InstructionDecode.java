@@ -80,8 +80,8 @@ public class InstructionDecode {
                 break;
 
             case 0B011011: //divu
-                setLow((int)(getUnsignedInt(getRegister(s)) / getUnsignedInt(getRegister(t))));
-                setHigh((int)(getUnsignedInt(getRegister(s)) % getUnsignedInt(getRegister(t))));
+                setLow((int) (getUnsignedInt(getRegister(s)) / getUnsignedInt(getRegister(t))));
+                setHigh((int) (getUnsignedInt(getRegister(s)) % getUnsignedInt(getRegister(t))));
                 break;
 
             case 0B011000: //mult
@@ -229,6 +229,10 @@ public class InstructionDecode {
             case 0B001010: //slti
                 setRegister(t, SEi - getRegister(s));
                 break;
+                
+            case -0B001001: //sltiu
+                setRegister(t, (int)(getUnsignedInt(SEi) - getUnsignedInt(getRegister(s))));
+                break;
 
             //branch instructions 
             case 0B000100: //beq
@@ -318,8 +322,8 @@ public class InstructionDecode {
         }
         return true;
     }
-    
-    public static long getUnsignedInt(int x){
+
+    public static long getUnsignedInt(int x) {
         return x & 0x00000000ffffffffL;
     }
 }

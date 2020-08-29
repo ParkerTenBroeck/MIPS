@@ -210,7 +210,6 @@ public class ASMCompiler {
                 if (org.byteOrigin == 0 && org.memoryChunks.isEmpty()) {//skips pre made origin if it is not in ise
                     continue;
                 }
-                
 
                 out.println("Origin at: " + String.format("%08X", org.byteOrigin));
                 out.println();
@@ -220,11 +219,11 @@ public class ASMCompiler {
                     if (mc.startLable.name.equals("") && mc.chunkData.isEmpty()) { //skips pre made lable if it is empty
                         continue;
                     }
-                    if(!mc.startLable.name.isEmpty()){
-                    out.println("   " + "Memory Lable: "
-                            + String.format("%-" + maxSizeMemoryLable + "s", mc.startLable.name + ",")
-                            + " Memory Adress: " + String.format("%08X", mc.startLable.getByteAddress()));
-                    out.println();
+                    if (!mc.startLable.name.isEmpty()) {
+                        out.println("   " + "Memory Lable: "
+                                + String.format("%-" + maxSizeMemoryLable + "s", mc.startLable.name + ",")
+                                + " Memory Adress: " + String.format("%08X", mc.startLable.getByteAddress()));
+                        out.println();
                     }
 
                     for (CompileTimeUserLine ctul : mc.chunkData) {
@@ -267,9 +266,22 @@ public class ASMCompiler {
     }
 
     public static int getByteIndexOfMemoryLable(String memoryLable, int realLineNumberOfOpCode) {
+
+        String sig = "";
+        if (memoryLable.contains(":")) {
+            String temp[] = memoryLable.split(":");
+            memoryLable = temp[0];
+            sig = temp[1];
+        }
+
         for (int i = 0; i < memoryLables.size(); i++) {
             if (memoryLables.get(i).name.equals(memoryLable)) {
-                return memoryLables.get(i).getByteAddress();
+                int val = memoryLables.get(i).getByteAddress();
+                if (!sig.isEmpty()) {
+                    return ASMCompiler.handleUserGeneratedSignificants(val, sig);
+                } else {
+                    return val;
+                }
             }
         }
         ASMCompiler.MemoryLableError("Memory Lable does not exist", realLineNumberOfOpCode);
@@ -346,19 +358,19 @@ public class ASMCompiler {
     private static void findMemoryPointersAndChunkifyMemory(ArrayList<UserLine> file) { //finds all memory pointers and splits the file into memory chunks
 
         int startingIndex = 0; //if theres an origin at the begining skip first line
-        
+
         Origin org;
-        try{
-            if(file.get(0).line.startsWith(".org")){
+        try {
+            if (file.get(0).line.startsWith(".org")) {
                 org = new Origin(file.get(0));
                 startingIndex = 1;
-            }else{
+            } else {
                 org = new Origin(0);
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             org = new Origin(0);
         }
-        
+
         int memoryLableIndex = 0;
         MemoryLable ml;
         MemoryChunk mc = new MemoryChunk(new MemoryLable(new UserLine("", -1), -1));
@@ -367,7 +379,7 @@ public class ASMCompiler {
 
             UserLine currentLine = file.get(i);
 
-            if (currentLine.line.contains(":")) { //if theres a new memoryLable add last memory chunk to memoryChunks and create a new current memoryChunk and add the new memory lable to memoryLables
+            if (currentLine.line.endsWith(":")) { //if theres a new memoryLable add last memory chunk to memoryChunks and create a new current memoryChunk and add the new memory lable to memoryLables
                 org.addMemoryChunk(mc);
                 ml = new MemoryLable(currentLine, memoryLableIndex);
                 mc = new MemoryChunk(ml);
@@ -453,15 +465,34 @@ public class ASMCompiler {
 
     public static int parseInt(String string) { //to add functionality later
 
+        int temp;
+
         if (string.startsWith("0b")) {
-            return (int)Long.parseLong(string.split("b")[1], 2);
+            temp = (int) Long.parseLong(string.split("b")[1], 2);
         } else if (string.startsWith("0x")) {
-            return (int)Long.parseLong(string.split("x")[1], 16);
+            temp = (int) Long.parseLong(string.split("x")[1], 16);
         } else if (string.contains("x")) {
-            return (int)Long.parseLong(string.split("x")[1], Integer.parseInt(string.split("x")[0]));
+            temp = (int) Long.parseLong(string.split("x")[1], Integer.parseInt(string.split("x")[0]));
+        } else {
+            temp = (int) Long.parseLong(string.trim());
         }
 
-        return Integer.parseInt(string.trim());
+        if (string.contains(":")) {
+            temp = handleUserGeneratedSignificants(temp, string.split(":")[1]);
+        }
+        return temp;
+    }
+
+    public static int handleUserGeneratedSignificants(int val, String ugSig) {
+        ugSig = ugSig.trim();
+        if (ugSig.equals("LH")) {
+            val = val & 0xFFFF;
+        } else if (ugSig.equals("HH")) {
+            val = (val >> 16) & 0xFFFF;
+        } else if (ugSig.equals("LB")) {
+            val = val & 0xFF;
+        }
+        return val;
     }
 
     public static ArrayList<MemoryLable> getMemoryLables() {

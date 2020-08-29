@@ -5,14 +5,12 @@
  */
 package mips;
 
-import GUI.Main_GUI;
 import GUI.lookandfeel.ModernScrollPane;
 import java.awt.Color;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import javax.swing.BoundedRangeModel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
 import javax.swing.UIManager;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.Document;
@@ -27,7 +25,8 @@ public class Log extends javax.swing.JPanel {
 
     public static void clearDisplay() {
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n");
-        Log.appendMessageToVirtualConsoleLog("\n\n\n\n\n\n\n\n\n\n\n\n\n", null);
+        //Log.appendMessageToVirtualConsoleLog("\n\n\n\n\n\n\n\n\n\n\n\n\n", null);
+        Log.jTextPane1.setText("");
     }
 
     public static void logError(String message) {

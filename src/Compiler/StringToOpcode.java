@@ -17,6 +17,9 @@ public class StringToOpcode {
 
     private static int currentOpCodeLine;
     private static int currentByteIndex;
+    
+    
+    public static final String[] INSTRUCTIONS = new String[]{"add", "addu", "addi", "addiu", "and", "andi", "div", "divu", "mult", "multu", "nor", "or", "ori", "sll", "sllv", "sra", "srav", "srl", "srlv", "sub", "subu", "xor", "xori", "lhi", "llo", "slt", "sltu", "slti", "sltiu", "beq", "bgtz", "ble", "bne", "j", "jal", "jalr", "jr", "lb", "lbu", "lh", "lhu", "lw", "sb", "sh", "sw", "mfhi", "mflo", "mthi", "mtlo", "trap"};
 
     public static byte[] stringToOpcode(CompileTimeUserLine ctul) {
 

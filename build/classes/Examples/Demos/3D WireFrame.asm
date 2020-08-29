@@ -1,168 +1,262 @@
-addi $4,$0,400
-addi $5,$0,400
+
+#define width 400
+#define height 400
+
+#define hwidth 200
+#define hheight 200
+
+addi $4, $0, width
+addi $5, $0, height
 trap 150
+
+
+#definline sinMult $angle, $val
+
+andi $1, $angle, 0x3FF
+sll $1, $1, 2
+lw $1, sinTable($1)
+multu $1, $val
+mfhi $2
+addi $2, $2, 1
+sra $1, $val, 1
+sub $2, $2, $1
+
+#endinline
+
+#definline cosMult $angle, $val
+
+addi $1, $angle, 256 
+andi $1, $1, 0x3FF
+sll $1, $1, 2
+lw $1, sinTable($1)
+multu $1, $val
+mfhi $2
+addi $2, $2, 1
+sra $1, $val, 1
+sub $2, $2, $1
+
+#endinline
+
 main:
-addi $4,$0,10
+
+addi $4, $0, 10 ;delay
 trap 106
-addi $30,$30,1
+
+addi $30, $30, 1 ;adds to angle
+
 trap 111
-addi $23,$0,16
-addi $4,$0,0
+
+addi $23, $0, 16 ;rotates and saves all the points
+addi $4, $0, 0
 rotateLoop:
-add $5,$0,$30
+add $5, $0, $30
 jal rotateAndSavePoint
 trap 111
-addi $4,$4,4
-bne $4,$23,rotateLoop
+addi $4, $4, 4
+bne $4, $23, rotateLoop
+
+
+
 drawLoop:
-addi $4,$0,0
-addi $4,$4,2
-lh $5,rotatedObjectPoints($4)
-addi $4,$4,-2
-lh $4,rotatedObjectPoints($4)
-addi $6,$0,200
-addi $7,$0,200
+addi $4, $0, 0
+addi $4, $4, 2
+lh $5, rotatedObjectPoints($4)
+addi $4, $4, -2
+lh $4, rotatedObjectPoints($4)
+
+
+addi $6, $0, hwidth
+addi $7, $0, hheight
+
 jal drawLine
+
+
 trap 153
-add $4,$0,$0
+; 
+add $4, $0, $0
 trap 156
+
 j main
+
 trap 0
+
+;$4 point array index, $5 angle
 rotateAndSavePoint:
-lh $8,objectPoints($4)
-addi $4,$4,2
-lh $9,objectPoints($4)
-addi $4,$4,-2
-addi $1,$5,256
-andi $1,$1,0x3FF
-sll $1,$1,2
-lw $1,sinTable($1)
-multu $1,$8
-mfhi $2
-addi $2,$2,1
-sra $1,$8,1
-sub $2,$2,$1
-add $10,$0,$2
-andi $1,$5,0x3FF
-sll $1,$1,2
-lw $1,sinTable($1)
-multu $1,$9
-mfhi $2
-addi $2,$2,1
-sra $1,$9,1
-sub $2,$2,$1
-add $11,$0,$2
-andi $1,$5,0x3FF
-sll $1,$1,2
-lw $1,sinTable($1)
-multu $1,$8
-mfhi $2
-addi $2,$2,1
-sra $1,$8,1
-sub $2,$2,$1
-add $6,$0,$2
-addi $1,$5,256
-andi $1,$1,0x3FF
-sll $1,$1,2
-lw $1,sinTable($1)
-multu $1,$9
-mfhi $2
-addi $2,$2,1
-sra $1,$9,1
-sub $2,$2,$1
-add $7,$0,$2
-sub $10,$10,$11
-add $11,$6,$7
-addi $10,$10,200
-addi $11,$11,200
-sh $10,rotatedObjectPoints($4)
-addi $4,$4,2
-sh $11,rotatedObjectPoints($4)
-addi $4,$4,-2
-jr $31
+
+lh $8, objectPoints($4)
+addi $4, $4, 2
+lh $9, objectPoints($4)
+addi $4, $4, -2
+
+ 
+cosMult $5, $8
+ 
+add $10, $0, $2
+sinMult $5, $9
+add $11, $0, $2
+
+ 
+
+sinMult $5, $8
+add $6, $0, $2
+cosMult $5, $9
+add $7, $0, $2
+
+sub $10, $10, $11
+add $11, $6, $7
+
+addi $10, $10, hwidth
+addi $11, $11, hheight
+
+ 
+sh $10, rotatedObjectPoints($4)
+addi $4, $4, 2
+sh $11, rotatedObjectPoints($4)
+addi $4, $4, -2
+
+jr $31;return
+
+
+;line drawing section
+
+#define x1 $4
+#define y1 $5
+
+#define x2 $6
+#define y2 $7
+
+
+#define dx $8
+#define dy $9
+
+#define dx2 $10
+#define dy2 $11
+
+#define ix $12
+#define iy $13
+
+#define x $14
+#define y $15
+
+#define d $24
+
+;register 4,5 p1 x,y 6,7 p2 x,y
 drawLine:
-add $24,$0,$0
-add $16,$0,$4
-add $17,$0,$5
-add $18,$0,$6
-add $19,$0,$7
-sub $8,$6,$4
-bgtz $8,dxABSEnd
-nor $8,$8,$0
-addi $8,$8,1
+
+; 
+
+add d, $0, $0 ;d = 0
+
+add $16, $0, x1 ;saves x1,y1 ,x2,y2
+add $17, $0, y1
+add $18, $0, x2
+add $19, $0, y2
+
+sub dx, x2, x1; dx = abs(x2 - x1)
+bgtz dx, dxABSEnd
+nor dx, dx, $0
+addi dx, dx, 1
 dxABSEnd:
-sub $9,$7,$5
-bgtz $9,dyABSEnd
-nor $9,$9,$0
-addi $9,$9,1
+
+sub dy, y2, y1; dy = abs(y2 - y1)
+bgtz dy, dyABSEnd
+nor dy, dy, $0
+addi dy, dy, 1
 dyABSEnd:
-add $10,$8,$8
-add $11,$9,$9
-slt $1,$4,$6
-bgtz $1,2
-addi $12,$0,-1
+
+add dx2, dx, dx ;dx2 = 2 * dx
+add dy2, dy, dy	;dy2 = 2 * dy
+
+slt $1, x1, x2 ; ix = x1 < x2 ? 1 : -1;
+bgtz $1, 2
+addi ix, $0, -1
 j 1
-addi $12,$0,1
-slt $1,$5,$7
-bgtz $1,2
-addi $13,$0,-1
+addi ix, $0, 1
+
+slt $1, y1, y2 ;iy = y1 < y2 ? 1 : -1;
+bgtz $1, 2
+addi iy, $0, -1
 j 1
-addi $13,$0,1
-add $14,$0,$4
-add $15,$0,$5
-slt $1,$8,$9
-bgtz $1,lineDrawSegIf
-drawLineLoop1:
-add $4,$0,$14
-add $5,$0,$15
-lw $6,color($0)
+addi iy, $0, 1
+
+add x, $0, x1 ; x = x1
+add y, $0, y1 ; y = y1
+
+; 
+
+slt $1, dx, dy 		;if(dx >= dy){}else{lineDrawSegIf}
+;nor $1, $1, $0
+bgtz $1, lineDrawSegIf 
+
+drawLineLoop1:;while(true)
+
+add $4, $0, x      ;plot x,y with color and save register 4,5,6
+add $5, $0, y
+lw $6, color($0)
 trap 151
-add $4,$0,$16
-add $5,$0,$17
-add $6,$0,$18
-beq $14,$6,endDrawLine
-add $14,$14,$12
-add $24,$24,$11
-slt $1,$8,$24
-nor $1,$1,$0
-bgtz $1,2
-add $15,$15,$13
-sub $24,$24,$10
+add $4, $0, $16
+add $5, $0, $17
+add $6, $0, $18
+
+beq x, x2, endDrawLine; if(x == x2)break;
+
+add x, x, ix; x += ix;
+add d, d, dy2;d += dy2;
+
+slt $1, dx, d ;if(d > dx)
+nor $1, $1, $0
+bgtz $1, 2
+add y, y, iy ;y += iy;
+sub d, d, dx2;d -= dx2;
+
 j drawLineLoop1
+
 lineDrawSegIf:
-drawLineLoop2:
-add $4,$0,$14
-add $5,$0,$15
-lw $6,color($0)
+
+drawLineLoop2: ;while(true)
+
+add $4, $0, x      ;plot x,y with color and save register 4,5,6
+add $5, $0, y
+lw $6, color($0)
 trap 151
-add $4,$0,$16
-add $5,$0,$17
-add $6,$0,$18
-beq $15,$7,endDrawLine
-add $15,$15,$13
-add $24,$24,$10
-slt $1,$9,$24
-nor $1,$1,$0
-bgtz $1,2
-add $14,$14,$12
-sub $24,$24,$11
+add $4, $0, $16
+add $5, $0, $17
+add $6, $0, $18
+
+beq y, y2, endDrawLine; if(y == y2)break;
+
+add y, y, iy; y += iy;
+add d, d, dx2;d += dx2;
+
+slt $1, dy, d ;if(d > dy)
+nor $1, $1, $0
+bgtz $1, 2
+add x, x, ix ;x += ix;
+sub d, d, dy2;d -= dy2;
+
 j drawLineLoop2
+
 endDrawLine:
-jr $31
+jr $31;return
+
 objectPoints:
-.hword 0,300
-.hword 300,300
-.hword 300,0
-.hword 0,0
+.hword 0, 300
+.hword 300, 300
+.hword 300, 0
+.hword 0, 0
+
 rotatedObjectPoints:
 .space 4
+
 objectLines:
 .hword 0,1
 .hword 1,2
 .hword 2,3
 .hword 3,0
+
 color:
-.word 0xFF0000
+.word 0xFF0000;
+
 sinTable:
 .word 0x80000000,0x80c941d8,0x819281be,0x825bbdc2,0x8324f3f1,0x83ee225a,0x84b7470c,0x85806015,0x86496b84,0x87126768,0x87db51d1,0x88a428cd,0x896cea6c,0x8a3594be,0x8afe25d3,0x8bc69bba,0x8c8ef485,0x8d572e43,0x8e1f4707,0x8ee73ce1,0x8faf0de2,0x9076b81e,0x913e39a6,0x9205908d,0x92ccbae6,0x9393b6c5,0x945a823e,0x95211b65,0x95e78050,0x96adaf14,0x9773a5c7,0x98396280,0x98fee356,0x99c42660,0x9a8929b7,0x9b4deb73,0x9c1269b0,0x9cd6a285,0x9d9a9410,0x9e5e3c6a,0x9f2199b1,0x9fe4aa01,0xa0a76b78,0xa169dc35,0xa22bfa57,0xa2edc3fe,0xa3af374b,0xa4705260,0xa531135f,0xa5f1786c,0xa6b17fab,0xa7712741,0xa8306d56,0xa8ef500e,0xa9adcd94,0xaa6be410,0xab2991ab,0xabe6d492,0xaca3aaf0,0xad6012f2,0xae1c0ac6,0xaed7909d,0xaf92a2a5,0xb04d3f12,0xb1076415,0xb1c10fe2,0xb27a40ae,0xb332f4af,0xb3eb2a1d,0xb4a2df31,0xb55a1224,0xb610c131,0xb6c6ea94,0xb77c8c8c,0xb831a557,0xb8e63336,0xb99a346a,0xba4da735,0xbb0089de,0xbbb2daa9,0xbc6497dd,0xbd15bfc3,0xbdc650a5,0xbe7648cf,0xbf25a68d,0xbfd4682e,0xc0828c02,0xc130105b,0xc1dcf38b,0xc28933e7,0xc334cfc5,0xc3dfc57d,0xc48a1369,0xc533b7e2,0xc5dcb147,0xc684fdf4,0xc72c9c4b,0xc7d38aac,0xc879c77c,0xc91f511e,0xc9c425fa,0xca684478,0xcb0bab03,0xcbae5806,0xcc5049f0,0xccf17f2f,0xcd91f636,0xce31ad78,0xced0a36a,0xcf6ed683,0xd00c453b,0xd0a8ee0e,0xd144cf79,0xd1dfe7f9,0xd27a3610,0xd313b840,0xd3ac6d0d,0xd44452ff,0xd4db689d,0xd571ac72,0xd6071d0a,0xd69bb8f4,0xd72f7ec1,0xd7c26d04,0xd8548250,0xd8e5bd3d,0xd9761c65,0xda059e61
 .word 0xda9441cf,0xdb22054f,0xdbaee782,0xdc3ae70c,0xdcc60292,0xdd5038bd,0xddd98837,0xde61efad,0xdee96dcd,0xdf700149,0xdff5a8d3,0xe07a6322,0xe0fe2eed,0xe1810aee,0xe202f5e2,0xe283ee87,0xe303f3a0,0xe38303ee,0xe4011e39,0xe47e4148,0xe4fa6be7,0xe5759ce1,0xe5efd307,0xe6690d2a,0xe6e14a1f,0xe75888bd,0xe7cec7dc,0xe8440658,0xe8b84310,0xe92b7ce4,0xe99db2b7,0xea0ee36f,0xea7f0df4,0xeaee3131,0xeb5c4c13,0xebc95d89,0xec356487,0xeca06001,0xed0a4eee,0xed73304a,0xeddb030f,0xee41c63e,0xeea778d9,0xef0c19e4,0xef6fa867,0xefd2236b,0xf03389fd,0xf093db2c,0xf0f3160a,0xf15139ac,0xf1ae4529,0xf20a379a,0xf265101d,0xf2becdd0,0xf3176fd7,0xf36ef555,0xf3c55d74,0xf41aa75c,0xf46ed23b,0xf4c1dd41,0xf513c7a1,0xf5649090,0xf5b43746,0xf602baff,0xf6501af9,0xf69c5673,0xf6e76cb3,0xf7315cfd,0xf77a269c,0xf7c1c8db,0xf8084309,0xf84d9478,0xf891bc7d,0xf8d4ba6f,0xf9168da8,0xf9573586,0xf996b169,0xf9d500b4,0xfa1222cd,0xfa4e171d,0xfa88dd10,0xfac27413,0xfafadb9a,0xfb321318,0xfb681a05,0xfb9cefdb,0xfbd09419,0xfc03063d,0xfc3445cc,0xfc64524b,0xfc932b44,0xfcc0d043,0xfced40d8,0xfd187c93,0xfd42830b,0xfd6b53d8,0xfd92ee94,0xfdb952de,0xfdde8057,0xfe0276a3,0xfe253569,0xfe46bc53,0xfe670b0e,0xfe86214a,0xfea3febb,0xfec0a316,0xfedc0e16,0xfef63f75,0xff0f36f4,0xff26f454,0xff3d775c,0xff52bfd2,0xff66cd83,0xff79a03d,0xff8b37d2,0xff9b9416,0xffaab4e0,0xffb89a0b,0xffc54376,0xffd0b0ff,0xffdae28c,0xffe3d804,0xffeb914f,0xfff20e5a,0xfff74f17,0xfffb5377,0xfffe1b72,0xffffa6ff
