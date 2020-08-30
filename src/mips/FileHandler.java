@@ -8,7 +8,6 @@ package mips;
 import GUI.ASM_GUI;
 import GUI.Main_GUI;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,7 +15,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import mips.processor.Memory;
 import mips.processor.Processor;
 
@@ -100,6 +98,10 @@ public class FileHandler {
 
     private static void reloadASMFile() {
 
+        if(isFileReadOnly){
+            return;
+        }
+        
         if (currentASMFile == null) {
             ASM_GUI.setTextAreaFromList(null);
             return;
@@ -147,15 +149,13 @@ public class FileHandler {
     }
 
     public static boolean saveASMFile() {
-        if (isFileReadOnly) {
-            return false;
-        }
+
         if (Main_GUI.isLinked()) {
             reloadASMFile();
             return true;
         }
         try {
-            if (currentASMFile != null && currentASMFile.exists()) {
+            if (currentASMFile != null && currentASMFile.exists() && !isFileReadOnly) {
                 writeToASMFile();
                 isFileSaved = true;
                 return true;
@@ -169,22 +169,22 @@ public class FileHandler {
     }
 
     public static boolean isASMFileSaved() {
-        return isFileSaved || Main_GUI.isLinked() || isFileReadOnly;
+        return isFileSaved || Main_GUI.isLinked();
     }
 
     public static boolean saveAsASMFile() {
-        if (isFileReadOnly) {
-            return false;
-        }
         try {
             File pd = new File(ResourceHandler.DEFAULT_PROJECTS_PATH);
             JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
-            fc.setSelectedFile(new File("project_" +pd.listFiles().length+".asm"));
+            fc.setSelectedFile(new File("project_" +(pd.listFiles().length)+".asm"));
             int returnVal = fc.showOpenDialog(Main_GUI.getFrame());
-
+            System.out.println(returnVal);
             File chosenFile = fc.getSelectedFile();
 
-            if (chosenFile == null) {
+            if (chosenFile == null || returnVal != 0) {
+                if(isFileReadOnly){
+                    return false;
+                }
                 currentASMFile = File.createTempFile("temp", "asm");
                 writeToASMFile();
                 return false;
@@ -201,6 +201,7 @@ public class FileHandler {
 
                 if (i == 0) {
                     currentASMFile = chosenFile;
+                    isFileReadOnly = false;
                     writeToASMFile();
                     isFileSaved = true;
                     return true;
@@ -218,6 +219,7 @@ public class FileHandler {
 
                         if (i == 0) {
                             currentASMFile = chosenFile;
+                            isFileReadOnly = false;
                             writeToASMFile();
                             isFileSaved = true;
                             return true;
@@ -226,8 +228,10 @@ public class FileHandler {
 
                 }
                 currentASMFile = chosenFile;
+                isFileReadOnly = false;
                 writeToASMFile();
                 isFileSaved = true;
+                
                 return true;
             }
         } catch (Exception e) {
@@ -348,6 +352,7 @@ public class FileHandler {
 
     public static void setFileReadOnly(boolean state) {
         isFileReadOnly = state;
+        isFileSaved = true;
     }
 
     public static void newFile() {

@@ -31,11 +31,11 @@ public class ModernScrollBarUI extends BasicScrollBarUI {
     private static final int SB_SIZE = 10;
     private static Color thumbColor = Color.LIGHT_GRAY;
 
-    public ModernScrollBarUI(ModernScrollPane sp) {
+    public ModernScrollBarUI(JScrollPane sp) {
         this.sp = sp;
     }
 
-    public ModernScrollBarUI(ModernScrollPane sp, Color color) {
+    public ModernScrollBarUI(JScrollPane sp, Color color) {
         this.sp = sp;
         if (color != null) {
             thumbColor = color;

@@ -498,7 +498,6 @@ public class Main_GUI extends javax.swing.JFrame {
 
         linkedButton.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         linkedButton.setForeground(new java.awt.Color(204, 204, 204));
-        linkedButton.setSelected(true);
         linkedButton.setText("Linked File");
         linkedButton.setOpaque(false);
         linkedButton.addActionListener(new java.awt.event.ActionListener() {

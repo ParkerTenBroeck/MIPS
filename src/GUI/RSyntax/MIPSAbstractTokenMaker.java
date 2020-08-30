@@ -31,11 +31,13 @@ public class MIPSAbstractTokenMaker extends AbstractTokenMaker {
             tokenMap.put("#" + s.STATEMENT_NAME, Token.MARKUP_PROCESSING_INSTRUCTION);
         }
 
-        tokenMap.put("\\.byte", Token.DATA_TYPE);
-        tokenMap.put("\\.hword", Token.DATA_TYPE);
-        tokenMap.put("\\.word", Token.DATA_TYPE);
-        tokenMap.put("\\.ascii", Token.DATA_TYPE);
-        tokenMap.put("\\.space", Token.DATA_TYPE);
+        tokenMap.put(".byte", Token.DATA_TYPE);
+        tokenMap.put(".hword", Token.DATA_TYPE);
+        tokenMap.put(".word", Token.DATA_TYPE);
+        tokenMap.put(".ascii", Token.DATA_TYPE);
+        tokenMap.put(".space", Token.DATA_TYPE);
+
+        tokenMap.put(".org", Token.RESERVED_WORD_2);
 
         tokenMap.put("$", Token.VARIABLE);
 
@@ -125,7 +127,13 @@ public class MIPSAbstractTokenMaker extends AbstractTokenMaker {
                                 currentTokenType = Token.LITERAL_NUMBER_DECIMAL_INT;
                                 break;
                             } else if (RSyntaxUtilities.isLetter(c) || c == '/' || c == '_') {
-                                currentTokenType = Token.IDENTIFIER;
+                                if (previousToken == null) {
+                                    currentTokenType = Token.IDENTIFIER;
+                                } else {
+                                    currentTokenType = Token.IDENTIFIER;
+                                }
+
+                                //currentTokenType = Token.MARKUP_PROCESSING_INSTRUCTION;
                                 break;
                             }
 
@@ -176,7 +184,7 @@ public class MIPSAbstractTokenMaker extends AbstractTokenMaker {
                                 currentTokenType = Token.LITERAL_NUMBER_DECIMAL_INT;
                                 break;
                             } else if (RSyntaxUtilities.isLetter(c) || c == '/' || c == '_') {
-                                currentTokenType = Token.IDENTIFIER;
+                                currentTokenType = Token.MARKUP_TAG_ATTRIBUTE;
                                 break;
                             }
 
@@ -185,6 +193,36 @@ public class MIPSAbstractTokenMaker extends AbstractTokenMaker {
 
                     } // End of switch (c).
 
+                    break;
+
+                case Token.MARKUP_TAG_ATTRIBUTE:
+                    switch (c) {
+                        case ' ':
+                        case '\t':
+                            addToken(text, currentTokenStart, i - 1, Token.MARKUP_TAG_ATTRIBUTE, newStartOffset + currentTokenStart);
+                            currentTokenStart = i;
+                            currentTokenType = Token.WHITESPACE;
+                            break;
+                        case '"':
+                            addToken(text, currentTokenStart, i - 1, Token.MARKUP_TAG_ATTRIBUTE, newStartOffset + currentTokenStart);
+                            currentTokenStart = i;
+                            currentTokenType = Token.LITERAL_STRING_DOUBLE_QUOTE;
+                            break;
+
+                        case ',':
+                        case '(':
+                        case ')':
+                            addToken(text, currentTokenStart, i - 1, Token.MARKUP_TAG_ATTRIBUTE, newStartOffset + currentTokenStart);
+                            currentTokenStart = i;
+                            currentTokenType = Token.SEPARATOR;
+                            break;
+
+                        case ';':
+                            addToken(text, currentTokenStart, i - 1, Token.MARKUP_TAG_ATTRIBUTE, newStartOffset + currentTokenStart);
+                            currentTokenStart = i;
+                            currentTokenType = Token.COMMENT_EOL;
+                            break;
+                    }
                     break;
 
                 default: // Should never happen
@@ -220,23 +258,7 @@ public class MIPSAbstractTokenMaker extends AbstractTokenMaker {
                             break;
 
                         case ':':
-
-                            if (previousToken == null) {
-                                addToken(text, currentTokenStart, i - 1, Token.ANNOTATION, newStartOffset + currentTokenStart);
-                                i--;
-                                currentTokenType = Token.NULL;
-                                break;
-                            }
-                            if (previousToken.getType() == Token.NULL) {
-                                previousToken.setType(Token.ANNOTATION);
-                                addToken(text, currentTokenStart, i - 1, Token.ANNOTATION, newStartOffset + currentTokenStart);
-                                i--;
-                                currentTokenType = Token.NULL;
-                                break;
-                            }
-                            addToken(text, currentTokenStart, i - 1, Token.ANNOTATION, newStartOffset + currentTokenStart);
-                            i--;
-                            currentTokenType = Token.NULL;
+                            currentTokenType = Token.ANNOTATION;
                             break;
 
                         default:
@@ -284,6 +306,7 @@ public class MIPSAbstractTokenMaker extends AbstractTokenMaker {
                         case 'x':
                             addToken(text, currentTokenStart, i - 1, Token.LITERAL_NUMBER_HEXADECIMAL, newStartOffset + currentTokenStart);
                             currentTokenStart = i;
+                            currentTokenType = Token.LITERAL_NUMBER_HEXADECIMAL;
                             break;
 
                         default:
@@ -367,6 +390,52 @@ public class MIPSAbstractTokenMaker extends AbstractTokenMaker {
                             }
                     }
 
+                    break;
+
+                case Token.ANNOTATION:
+                    switch (c) {
+
+                        case ' ':
+                        case '\t':
+                            addToken(text, currentTokenStart, i - 1, Token.ANNOTATION, newStartOffset + currentTokenStart);
+                            currentTokenStart = i;
+                            currentTokenType = Token.WHITESPACE;
+                            break;
+
+                        case ';':
+                            addToken(text, currentTokenStart, i - 1, Token.ANNOTATION, newStartOffset + currentTokenStart);
+                            currentTokenStart = i;
+                            currentTokenType = Token.COMMENT_EOL;
+                            break;
+
+                        case ':':
+                            if (previousToken == null) {
+                                addToken(text, currentTokenStart, i - 1, Token.ANNOTATION, newStartOffset + currentTokenStart);
+                                i--;
+                                currentTokenType = Token.NULL;
+                                break;
+                            } else if (previousToken.getType() == Token.NULL) {
+                                previousToken.setType(Token.ANNOTATION);
+                                addToken(text, currentTokenStart, i - 1, Token.ANNOTATION, newStartOffset + currentTokenStart);
+                                i--;
+                                currentTokenType = Token.NULL;
+                                break;
+                            }
+                            //addToken(text, currentTokenStart, i - 1, Token.ANNOTATION, newStartOffset + currentTokenStart);
+                            //i--;
+                            //currentTokenType = Token.NULL;
+                            break;
+
+                        default:
+                            //addToken(text, currentTokenStart, i - 1, Token.IDENTIFIER, newStartOffset + currentTokenStart);
+                            //i--;
+                            //currentTokenType = Token.NULL;
+                            if (RSyntaxUtilities.isLetter(c)) {
+                                currentTokenType = Token.IDENTIFIER;
+                                break;
+                            }
+
+                    }
                     break;
 
                 case Token.SEPARATOR:

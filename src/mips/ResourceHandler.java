@@ -22,6 +22,8 @@ import java.util.Enumeration;
 import java.util.Objects;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.filechooser.FileSystemView;
 
 /**
@@ -74,10 +76,15 @@ public class ResourceHandler {
                 JarFile jarFile = new JarFile(ResourceHandler.class.getProtectionDomain().getCodeSource().getLocation().getPath());
                 Enumeration<JarEntry> enums = jarFile.entries();
                 while (enums.hasMoreElements()) {
-                    JarEntry entry = enums.nextElement();
+                    JarEntry entry = null;
+                    try{
+                    entry = enums.nextElement();
+                    }catch(Exception e){
+                        continue;
+                    }
                     if (entry.getName().startsWith(jarPath)) {
                         File toWrite = new File(destPath + "//" + entry.getName().replaceAll(jarPath, ""));
-                        Log.logMessage(toWrite.getAbsolutePath());
+                        //Log.logMessage(toWrite.getAbsolutePath());
                         //System.out.println(toWrite.getAbsoluteFile());
                         if (entry.isDirectory()) {
                             if (!toWrite.exists()) {
@@ -92,7 +99,8 @@ public class ResourceHandler {
                                 continue;
                             }
                         }
-                        //Log.logError(toWrite.getAbsolutePath());
+                        //System.out.println("bruh");
+                        Log.logError(toWrite.getAbsolutePath());
 
                         InputStream in = new BufferedInputStream(jarFile.getInputStream(entry));
                         OutputStream out = new BufferedOutputStream(new FileOutputStream(toWrite));
@@ -114,10 +122,10 @@ public class ResourceHandler {
                     //Log.logWarning(entry.getName());
 
                 }
-            } catch (IOException ex) {
-                System.out.println(ex);
+            } catch (Exception ex) {
+                //System.out.println(ex);
                 Log.logWarning(ex.toString());
-                //Logger.getLogger(Methods.class.getName()).log(Level.SEVERE, null, ex);
+                //Logger.getLogger(ResourceHandler.class.getName()).log(Level.SEVERE, null, ex);
                 //Log.logMessage("no");
                 return false;
 
