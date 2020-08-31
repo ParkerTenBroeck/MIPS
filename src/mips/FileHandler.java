@@ -130,7 +130,7 @@ public class FileHandler {
     }
 
     public static void saveMXNFile() {
-        if (isFileReadOnly) {
+        if (isFileReadOnly && isFileSaved) {
             return;
         }
         try {
@@ -160,7 +160,14 @@ public class FileHandler {
                 isFileSaved = true;
                 return true;
             } else {
-                return saveAsASMFile();
+                if(currentASMFile == null && isFileSaved){
+                    return true;
+                }else if(isFileReadOnly){
+                     return true;
+                }else {
+                    return saveAsASMFile();
+                }
+               
             }
         } catch (Exception e) {
 

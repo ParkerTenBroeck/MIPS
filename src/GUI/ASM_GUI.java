@@ -7,12 +7,7 @@ package GUI;
 
 import GUI.lookandfeel.RoundedBorder;
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.util.List;
-import javax.swing.JTextPane;
 import mips.FileHandler;
 
 /**
@@ -61,7 +56,11 @@ public class ASM_GUI extends javax.swing.JPanel {
                 }
                 aSMFormattedTextArea1.setAllFontSize(newFontSize);
             } else {
-                //sourceCodeArea.getParent().dispatchEvent(mouseWheelEvent);
+                int unit = aSMFormattedTextArea1.getVerticalScrollBar().getUnitIncrement();
+                int scrolled = mouseWheelEvent.getUnitsToScroll();
+                int currentPos = aSMFormattedTextArea1.getVerticalScrollBar().getValue();
+                
+                aSMFormattedTextArea1.getVerticalScrollBar().setValue(unit*scrolled + currentPos);
             }
         });
 
