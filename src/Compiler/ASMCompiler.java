@@ -145,7 +145,7 @@ public class ASMCompiler {
         memoryByteList = new ArrayList();
         origins = new ArrayList();
 
-        FileHandler.saveASMFile();
+        FileHandler.saveASMFileFromUserTextArea();
 
         Log.clearDisplay();
         ASMCompiler.logCompilerMessage("Started Compilation of file: " + FileHandler.getASMFilePath());
@@ -160,13 +160,15 @@ public class ASMCompiler {
 
         runFinalCompilePass(); //compiles code once memory lable locations are known
 
-        Memory.setMemory(createByteArrayFromByteList());
+        byte[] memByteArray = createByteArrayFromByteList();
+        
+        Memory.setMemory(memByteArray);
+        FileHandler.saveByteArrayToMXNFile(memByteArray);
 
         if (Main_GUI.saveCompilationInfo()) {
             saveOriginsToFile();
         }
-
-        FileHandler.saveMXNFile();
+        
         Main_GUI.refreshAll();
 
         temp.clear();
@@ -426,7 +428,7 @@ public class ASMCompiler {
         int lineNumber = 0;
 
         ArrayList<UserLine> file = new ArrayList();
-        List<String> temp = FileHandler.getASMList();
+        List<String> temp = FileHandler.getLoadedASMFile();
 
         for (String line : temp) {
             file.add(new UserLine(line, lineNumber + 1));

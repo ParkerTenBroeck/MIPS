@@ -135,7 +135,6 @@ public class Main_GUI extends javax.swing.JFrame {
 
             ActionListener al = new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    FileHandler.saveASMFile();
                     Processor.stop();
                     Processor.reset();
                     FileHandler.loadExampleFile(new File(((JMenuItem) evt.getSource()).getName()));
@@ -767,7 +766,8 @@ public class Main_GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_userIOButtonActionPerformed
 
     private void openMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuButtonActionPerformed
-        FileHandler.openFilePopup();
+        FileHandler.openUserSelectedFile();
+        refreshAll();
     }//GEN-LAST:event_openMenuButtonActionPerformed
 
     private void compileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compileButtonActionPerformed
@@ -788,15 +788,17 @@ public class Main_GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_resetButtonActionPerformed
 
     private void saveMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuButtonActionPerformed
-        FileHandler.saveASMFile();
+        FileHandler.saveASMFileFromUserTextArea();
     }//GEN-LAST:event_saveMenuButtonActionPerformed
 
     private void saveAsMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsMenuButtonActionPerformed
-        FileHandler.saveAsASMFile();
+        FileHandler.saveAsASMFileFromUserTextArea();
     }//GEN-LAST:event_saveAsMenuButtonActionPerformed
 
     private void newMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newMenuButtonActionPerformed
         FileHandler.newFile();
+        refreshAll();
+
     }//GEN-LAST:event_newMenuButtonActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed

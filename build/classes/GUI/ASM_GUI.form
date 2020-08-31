@@ -33,6 +33,9 @@
   </Layout>
   <SubComponents>
     <Container class="GUI.RSyntax.ASMFormattedTextArea" name="aSMFormattedTextArea1">
+      <Events>
+        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="aSMFormattedTextArea1KeyTyped"/>
+      </Events>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
     </Container>

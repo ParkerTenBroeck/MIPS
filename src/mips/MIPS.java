@@ -6,6 +6,7 @@
 package mips;
 
 import GUI.Main_GUI;
+import java.awt.Color;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Arrays;
@@ -36,7 +37,6 @@ public class MIPS {
         ResourceHandler.extractResources();
         Main_GUI gui = new Main_GUI();
         //static int temp = 0;
-
         
         checkForUpdates();
     }

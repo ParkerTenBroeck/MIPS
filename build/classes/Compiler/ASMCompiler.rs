@@ -1,7 +1,0 @@
-Compiler.Directive
-Compiler.MemoryChunk
-Compiler.ASMCompiler
-Compiler.asmInstruction
-Compiler.Origin
-Compiler.CompileTimeUserLine
-Compiler.ByteP

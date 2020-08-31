@@ -9,14 +9,10 @@ import GUI.ASM_GUI;
 import GUI.Main_GUI;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFileChooser;
-import mips.processor.Memory;
-import mips.processor.Processor;
 
 /**
  *
@@ -24,294 +20,27 @@ import mips.processor.Processor;
  */
 public class FileHandler {
 
+    private static String currentLoadedASMFileAbsolutePath;
     private static File currentASMFile;
     private static File currentMXNFile;
 
-    private static boolean isFileSaved = true;
-    private static boolean isFileReadOnly = false;
+    private static boolean isASMFileSaved = true;
 
-    private static void importMXFile(File file) {
-
-        currentASMFile = null;
-        currentMXNFile = null;
-
-        try {
-            List<String> allLines = Files.readAllLines(file.toPath());
-            byte[] tempBytes = new byte[allLines.size() * 4];
-            for (int i = 0; i < allLines.size(); i++) {
-
-                int num = Integer.parseUnsignedInt(allLines.get(i), 2);
-
-                tempBytes[(i * 4)] = (byte) (num >> 24);
-                tempBytes[(i * 4) + 1] = (byte) (num >> 16);
-                tempBytes[(i * 4) + 2] = (byte) (num >> 8);
-                tempBytes[(i * 4) + 3] = (byte) num;
-
-            }
-
-            Memory.setMemory(tempBytes);
-            saveMXNFile();
-
-        } catch (Exception e) {
-            System.err.println(e);
-        }
-    }
-
-    public static void fileChange() {
-        isFileSaved = false;
-    }
-
-    public static void reloadFiles() {
-        reloadMXNFile();
-        reloadASMFile();
-        Main_GUI.refreshAll();
-    }
-
-    public static void reloadMXNFile() {
-
-        if (isFileReadOnly) {
-            return;
-        }
-
-        if (currentMXNFile == null) {
-            Memory.setMemory(null);
-            return;
-        }
-        try {
-            if (!currentMXNFile.getName().equals("temp.asm")) {
-                File temp = new File(currentMXNFile.getPath().split("\\.")[0] + ".asm");
-                if (temp.exists()) {
-                    currentASMFile = temp;
-                }
-            } else {
-                currentASMFile = null;
-            }
-        } catch (Exception e) {
-            System.err.println(e);
-        }
-        try {
-            Memory.setMemory(Files.readAllBytes(currentMXNFile.toPath()));
-        } catch (Exception e) {
-            Memory.setMemory(new byte[0]);
-        }
-    }
-
-    private static void reloadASMFile() {
-
-        if(isFileReadOnly){
-            return;
-        }
-        
-        if (currentASMFile == null) {
-            ASM_GUI.setTextAreaFromList(null);
-            return;
-        }
-
-        try {
-            if (!currentASMFile.getName().equals("temp.mxn")) {
-                File temp = new File(currentASMFile.getPath().split("\\.")[0] + ".mxn");
-
-                if (temp.exists()) {
-                    currentMXNFile = temp;
-                }
-            } else {
-                currentMXNFile = null;
-            }
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        try {
-            List<String> lines = Files.readAllLines(Paths.get(currentASMFile.getAbsolutePath()));
-            ASM_GUI.setTextAreaFromList(lines);
-        } catch (Exception e) {
-            return;
-        }
-        Main_GUI.refreshAll();
-    }
-
-    public static void saveMXNFile() {
-        if (isFileReadOnly && isFileSaved) {
-            return;
-        }
-        try {
-            if (currentASMFile != null && currentASMFile.exists()) {
-                currentMXNFile = new File(currentASMFile.getPath().split("\\.")[0] + ".mxn");
-
-                Files.write(currentMXNFile.toPath(), Memory.getMemory());
-            } else {
-                currentMXNFile = File.createTempFile("temp", ".mxn");
-
-                Files.write(currentMXNFile.toPath(), Memory.getMemory());
-            }
-        } catch (Exception e) {
-
-        }
-    }
-
-    public static boolean saveASMFile() {
-
-        if (Main_GUI.isLinked()) {
-            reloadASMFile();
-            return true;
-        }
-        try {
-            if (currentASMFile != null && currentASMFile.exists() && !isFileReadOnly) {
-                writeToASMFile();
-                isFileSaved = true;
-                return true;
-            } else {
-                if(currentASMFile == null && isFileSaved){
-                    return true;
-                }else if(isFileReadOnly){
-                     return true;
-                }else {
-                    return saveAsASMFile();
-                }
-               
-            }
-        } catch (Exception e) {
-
-        }
-        return false;
-    }
+    private static ArrayList<String> loadedASMFile;
+    private static byte[] loadedMXNFile;
 
     public static boolean isASMFileSaved() {
-        return isFileSaved || Main_GUI.isLinked();
-    }
-
-    public static boolean saveAsASMFile() {
-        try {
-            File pd = new File(ResourceHandler.DEFAULT_PROJECTS_PATH);
-            JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
-            fc.setSelectedFile(new File("project_" +(pd.listFiles().length)+".asm"));
-            int returnVal = fc.showOpenDialog(Main_GUI.getFrame());
-            System.out.println(returnVal);
-            File chosenFile = fc.getSelectedFile();
-
-            if (chosenFile == null || returnVal != 0) {
-                if(isFileReadOnly){
-                    return false;
-                }
-                currentASMFile = File.createTempFile("temp", "asm");
-                writeToASMFile();
-                return false;
-            }
-
-            if (!chosenFile.getName().contains(".")) {
-                chosenFile = new File(chosenFile.getAbsolutePath() + ".asm");
-            } else if (chosenFile.getName().endsWith(".asm")) {
-                chosenFile = new File(chosenFile.getAbsolutePath().split("\\.")[0] + ".asm");
-            }
-
-            if (chosenFile.exists()) {
-                int i = Main_GUI.confirmBox("Warning", "This File Already Exists are you sure you want to overwrite it");
-
-                if (i == 0) {
-                    currentASMFile = chosenFile;
-                    isFileReadOnly = false;
-                    writeToASMFile();
-                    isFileSaved = true;
-                    return true;
-                }
-            } else {
-                System.out.println(chosenFile.getParent());
-                if (chosenFile.getParent().equals(ResourceHandler.DEFAULT_PROJECTS_PATH)) {
-                    File pf = new File(chosenFile.getAbsolutePath().split("\\.")[0]);
-                    if (!pf.exists()) {
-                        pf.mkdir();
-                    }
-                    chosenFile = new File(pf.getAbsolutePath() + "\\" + chosenFile.getName());
-                    if (chosenFile.exists()) {
-                        int i = Main_GUI.confirmBox("Warning", "This File Already Exists are you sure you want to overwrite it");
-
-                        if (i == 0) {
-                            currentASMFile = chosenFile;
-                            isFileReadOnly = false;
-                            writeToASMFile();
-                            isFileSaved = true;
-                            return true;
-                        }
-                    }
-
-                }
-                currentASMFile = chosenFile;
-                isFileReadOnly = false;
-                writeToASMFile();
-                isFileSaved = true;
-                
-                return true;
-            }
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        return false;
-    }
-
-    public static void writeToASMFile() {
-        if (isFileReadOnly) {
-            return;
-        }
-        currentASMFile.delete();
-
-        try {
-            FileWriter f2 = new FileWriter(currentASMFile, false);
-            f2.write(ASM_GUI.getAllText());
-            f2.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static List getASMList() {
-        try {
-            return Files.readAllLines(Paths.get(currentASMFile.getAbsolutePath()));
-        } catch (Exception e) {
-            //Log.logError("No File Selected");
-            return new ArrayList();
-        }
-    }
-
-    public static String getASMFilePath() {
-        try {
-            return currentASMFile.getPath();
-        } catch (Exception e) {
-            //Log.logError("No File Selected");
-            return "";
-        }
+        return isASMFileSaved;
     }
 
     public static void loadExampleFile(File file) {
-        FileHandler.setFileReadOnly(true);
-
-        String extention = null;
-        String path = null;
-
-        try {
-            extention = file.getPath().split("\\.")[1];
-            path = file.getPath().split("\\.")[0];
-        } catch (Exception e) {
-
-            Log.logError(file.getPath() + " is not a valid file");
-            return;
-        }
-
-        if (extention.equals("asm")) {
-            currentMXNFile = null;
-            currentASMFile = file;
-
-        } else if (extention.equals("mxn")) {
-            currentASMFile = null;
-            currentMXNFile = file;
-
-        }
+        loadFile(file);
+        currentASMFile = null;
+        currentMXNFile = null;
     }
 
     public static void loadFile(File file) {
-        if (file.canWrite()) {
-            FileHandler.setFileReadOnly(false);
-        } else {
-            FileHandler.setFileReadOnly(true);
-        }
+        if(!newFile())return;
         if (file == null || !file.exists()) {
             return;
         }
@@ -327,26 +56,261 @@ public class FileHandler {
         }
 
         if (extention.equals("asm")) {
-            currentMXNFile = null;
+            currentMXNFile = new File(file.getPath().replace(".asm", ".mxn"));
             currentASMFile = file;
 
         } else if (extention.equals("mxn")) {
-            currentASMFile = null;
+            currentASMFile = new File(file.getPath().replace(".mxn", ".asm"));
             currentMXNFile = file;
 
         } else if (extention.equals("mx")) {
             importMXFile(file);
 
         } else {
-
-            Log.logError(file.getPath() + "/n is not a valid file");
+            logFileHandlerError(file.getPath() + "/n is not a valid file");
         }
-        reloadFiles();
-
-        Processor.reset();
+        reloadAllFiles();
     }
 
-    public static void openFilePopup() {
+    public static void asmTextAreaChange() {
+        isASMFileSaved = false;
+    }
+
+    public static boolean saveASMFileFromUserTextArea() {
+        if (isASMFileSaved) {
+            return true;
+        }
+        if (currentASMFile != null && currentASMFile.exists()) {
+            boolean temp = writeUserTextAreaToASMFile();
+            isASMFileSaved = temp;
+            return temp;
+        } else {
+            return saveAsASMFileFromUserTextArea();
+        }
+    }
+
+    public static boolean saveAsASMFileFromUserTextArea() {
+        try {
+            File pd = new File(ResourceHandler.DEFAULT_PROJECTS_PATH);
+            JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
+            fc.setSelectedFile(new File("project_" + pd.listFiles().length + ".asm"));
+            int returnVal = fc.showOpenDialog(Main_GUI.getFrame());
+
+            File chosenFile = fc.getSelectedFile();
+
+            if (chosenFile == null) {
+                //currentASMFile = File.createTempFile("temp", "asm");
+                //return writeUserTextAreaToASMFile();
+                logFileHandlerError("The file you selected does not exist? cannot save");
+                return false;
+            }
+
+            if (!chosenFile.getName().contains(".")) {
+                chosenFile = new File(chosenFile.getAbsolutePath() + ".asm");
+            } else if (chosenFile.getName().endsWith(".asm")) {
+                chosenFile = new File(chosenFile.getAbsolutePath().split("\\.")[0] + ".asm");
+            }
+
+            if (chosenFile.exists()) {
+                int i = Main_GUI.confirmBox("Warning", "This File Already Exists are you sure you want to overwrite it");
+
+                if (i == 0) {
+                    currentASMFile = chosenFile;
+                    return writeUserTextAreaToASMFile();
+                }
+            } else {
+                //System.out.println(chosenFile.getParent());
+                if (chosenFile.getParent().equals(ResourceHandler.DEFAULT_PROJECTS_PATH)) {
+                    File pf = new File(chosenFile.getAbsolutePath().split("\\.")[0]);
+                    if (!pf.exists()) {
+                        pf.mkdir();
+                    }
+                    chosenFile = new File(pf.getAbsolutePath() + "\\" + chosenFile.getName());
+                    if (chosenFile.exists()) {
+                        int i = Main_GUI.confirmBox("Warning", "This File Already Exists are you sure you want to overwrite it");
+
+                        if (i == 0) {
+                            currentASMFile = chosenFile;
+                            return saveASMFileFromUserTextArea();
+                            //isASMFileSaved = true;
+                            //return true;
+                        }
+                    }
+
+                }
+                currentASMFile = chosenFile;
+                return writeUserTextAreaToASMFile();
+
+            }
+        } catch (Exception e) {
+            logFileHandlerError("There was an error while saving your file:" + e.getMessage());
+            return false;
+        }
+        return false;
+    }
+
+    public static boolean newFile() {
+        if (isASMFileSaved) {
+            isASMFileSaved = true;
+            currentASMFile = null;
+            currentMXNFile = null;
+            loadedMXNFile = null;
+            loadedASMFile = null;
+            reloadAllFiles();
+            return true;
+        } else {
+            int choice = Main_GUI.confirmBox("Warning", "The File is not saved would you like to save");
+            switch (choice) {
+                case 0:
+                    if (saveASMFileFromUserTextArea()) {
+                        currentASMFile = null;
+                        currentMXNFile = null;
+                        reloadAllFiles();
+                        return true;
+                    }else{
+                        return false;
+                    }
+                case 1:
+                    currentASMFile = null;
+                    currentMXNFile = null;
+                    reloadAllFiles();
+                    return false;
+
+                default:
+                    break;
+            }
+        }
+        return false;
+    }
+
+    private static void reloadAllFiles() {
+        if (currentMXNFile != null) {
+            loadedMXNFile = loadFileAsByteArray(currentMXNFile);
+        } else {
+            loadedMXNFile = new byte[]{};
+        }
+        if (currentASMFile != null) {
+            loadedASMFile = loadFileAsStringList(currentASMFile);
+            currentLoadedASMFileAbsolutePath = currentASMFile.getAbsolutePath();
+        } else {
+            loadedASMFile = new ArrayList();
+            currentLoadedASMFileAbsolutePath = "";
+        }
+        isASMFileSaved = true;
+    }
+
+    public static boolean writeUserTextAreaToASMFile() {
+        if (currentASMFile == null) {
+            return true;
+        }
+        currentASMFile.delete();
+
+        try {
+            FileWriter f2 = new FileWriter(currentASMFile, false);
+            f2.write(ASM_GUI.getAllText());
+            f2.close();
+            currentLoadedASMFileAbsolutePath = currentASMFile.getAbsolutePath();
+            return true;
+        } catch (Exception e) {
+            logFileHandlerError("unable to write ASM File:" + e.getMessage());
+            return false;
+        }
+    }
+
+    public static ArrayList<String> getLoadedASMFile() {
+        if (loadedASMFile != null) {
+            return (ArrayList<String>) loadedASMFile.clone();
+        } else {
+            return new ArrayList();
+        }
+    }
+
+    public static String getASMFilePath() {
+        if (currentASMFile != null) {
+            return currentASMFile.getAbsolutePath();
+        } else {
+            return currentLoadedASMFileAbsolutePath;
+        }
+    }
+
+    public static byte[] loadFileAsByteArray(String path) {
+        try {
+            return Files.readAllBytes(new File(path).toPath());
+        } catch (Exception e) {
+            Log.logError("Failed to load File:" + path);
+            return new byte[]{};
+        }
+    }
+
+    public static byte[] loadFileAsByteArray(File file) {
+        try {
+            return Files.readAllBytes(file.toPath());
+        } catch (Exception e) {
+            if (file != null) {
+                Log.logError("Failed to load File: " + file.getAbsoluteFile() + " " + e.getMessage());
+            }
+            return new byte[]{};
+        }
+    }
+
+    public static ArrayList<String> loadFileAsStringList(File file) {
+        try {
+            return new ArrayList(Files.readAllLines(file.toPath()));
+        } catch (Exception e) {
+            if (file != null) {
+                Log.logError("Failed to load File: " + file.getAbsoluteFile() + " " + e.getMessage());
+            }
+            return null;
+        }
+    }
+
+    public static byte[] getLoadedMXNFile() {
+        if (loadedMXNFile != null) {
+            return loadedMXNFile.clone();
+        } else {
+            return new byte[]{};
+        }
+    }
+
+    public static void saveByteArrayToMXNFile(byte[] byteArray) {
+        try {
+            Files.write(currentMXNFile.toPath(), byteArray);
+        } catch (Exception e) {
+            logFileHandlerError("Cannot save MXN File" + e.getMessage());
+        }
+    }
+
+    private static void importMXFile(File file) {
+
+        currentASMFile = null;
+        currentMXNFile = null;
+        isASMFileSaved = true;
+        currentLoadedASMFileAbsolutePath = null;
+        loadedASMFile = new ArrayList();
+
+        try {
+            List<String> allLines = Files.readAllLines(file.toPath());
+            byte[] tempBytes = new byte[allLines.size() * 4];
+            for (int i = 0; i < allLines.size(); i++) {
+
+                int num = Integer.parseUnsignedInt(allLines.get(i), 2);
+
+                tempBytes[(i * 4)] = (byte) (num >> 24);
+                tempBytes[(i * 4) + 1] = (byte) (num >> 16);
+                tempBytes[(i * 4) + 2] = (byte) (num >> 8);
+                tempBytes[(i * 4) + 3] = (byte) num;
+
+            }
+
+            loadedMXNFile = tempBytes;
+
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+    }
+
+    public static void openUserSelectedFile() {
+        newFile();
         final JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
         int returnVal = fc.showOpenDialog(Main_GUI.getFrame());
 
@@ -354,40 +318,18 @@ public class FileHandler {
             return;
         }
         loadFile(fc.getSelectedFile());
-
     }
 
-    public static void setFileReadOnly(boolean state) {
-        isFileReadOnly = state;
-        isFileSaved = true;
+    private static void logFileHandlerError(String message) {
+        Log.logError("[FileHandler] " + message);
     }
 
-    public static void newFile() {
-        if (isFileSaved) {
-            currentASMFile = null;
-            currentMXNFile = null;
-            reloadFiles();
-        } else {
-            int choice = Main_GUI.confirmBox("Warning", "The File is not saved would you like to save");
-            switch (choice) {
-                case 0:
-                    if (saveASMFile()) {
-                        currentASMFile = null;
-                        currentMXNFile = null;
-                        reloadFiles();
-                    }
-                case 1:
-                    currentASMFile = null;
-                    currentMXNFile = null;
-                    reloadFiles();
-
-                default:
-                    break;
-            }
-        }
+    private static void logFileHandlerWarning(String message) {
+        Log.logWarning("[FileHandler] " + message);
     }
 
-    public static byte[] loadFileAsByteArray(String path) throws IOException {
-        return Files.readAllBytes(new File(path).toPath());
+    private static void logFileHandlerMessage(String message) {
+        Log.logMessage("[FileHandler] " + message);
     }
+
 }

@@ -7,6 +7,9 @@ package GUI;
 
 import GUI.lookandfeel.RoundedBorder;
 import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.List;
 import mips.FileHandler;
 
@@ -27,11 +30,16 @@ public class ASM_GUI extends javax.swing.JPanel {
     }
 
     static void setTextAreaFromASMFile() {
-        setTextAreaFromList(FileHandler.getASMList());
+        //aSMFormattedTextArea1.textArea.setText(new String(FileHandler.getLoadedASMFile()));
+        setTextAreaFromList(FileHandler.getLoadedASMFile());
     }
 
     static void setEnable(boolean enabled) {
         aSMFormattedTextArea1.textArea.setEditable(enabled);
+    }
+
+    private static void setTextAreaFromList(ArrayList<String> list) {
+        aSMFormattedTextArea1.textArea.setText(String.join("\n", list));
     }
 
     /**
@@ -59,22 +67,28 @@ public class ASM_GUI extends javax.swing.JPanel {
                 int unit = aSMFormattedTextArea1.getVerticalScrollBar().getUnitIncrement();
                 int scrolled = mouseWheelEvent.getUnitsToScroll();
                 int currentPos = aSMFormattedTextArea1.getVerticalScrollBar().getValue();
-                
-                aSMFormattedTextArea1.getVerticalScrollBar().setValue(unit*scrolled + currentPos);
+
+                aSMFormattedTextArea1.getVerticalScrollBar().setValue(unit * scrolled + currentPos);
             }
         });
 
-    }
+        aSMFormattedTextArea1.textArea.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent ke) {
+                FileHandler.asmTextAreaChange();
+            }
 
-    public static void setTextAreaFromList(List<String> list) {
-        clearText();
+            @Override
+            public void keyPressed(KeyEvent ke) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
 
-        if (list == null) {
-            return;
-        }
+            @Override
+            public void keyReleased(KeyEvent ke) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
 
-        //asmTextPane.setText(String.join("\n", list));
-        aSMFormattedTextArea1.textArea.setText(String.join("\n", list));
     }
 
     @SuppressWarnings("unchecked")
@@ -85,6 +99,12 @@ public class ASM_GUI extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(102, 102, 0));
         setOpaque(false);
+
+        aSMFormattedTextArea1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                aSMFormattedTextArea1KeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -98,8 +118,9 @@ public class ASM_GUI extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    public static void colorText() {
-    }
+    private void aSMFormattedTextArea1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_aSMFormattedTextArea1KeyTyped
+
+    }//GEN-LAST:event_aSMFormattedTextArea1KeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

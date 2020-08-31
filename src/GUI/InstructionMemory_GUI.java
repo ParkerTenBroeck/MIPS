@@ -33,9 +33,7 @@ public class InstructionMemory_GUI extends javax.swing.JPanel {
         instructionList.ensureIndexIsVisible((getPc() / 4) + toMiddle); //sets the  
     }
     
-    public static void refreshValues() {
-        
-        FileHandler.reloadMXNFile();        
+    public static void refreshValues() {        
         
         DefaultListModel listModel = new DefaultListModel();
         
