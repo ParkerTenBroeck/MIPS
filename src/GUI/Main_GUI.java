@@ -137,8 +137,9 @@ public class Main_GUI extends javax.swing.JFrame {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     Processor.stop();
                     Processor.reset();
-                    FileHandler.loadExampleFile(new File(((JMenuItem) evt.getSource()).getName()));
-                    ASMCompiler.compile();
+                    if (FileHandler.loadExampleFile(new File(((JMenuItem) evt.getSource()).getName()))) {
+                        ASMCompiler.compile();
+                    }
                 }
             };
 
@@ -766,8 +767,9 @@ public class Main_GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_userIOButtonActionPerformed
 
     private void openMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuButtonActionPerformed
-        FileHandler.openUserSelectedFile();
-        refreshAll();
+        if (FileHandler.openUserSelectedFile()) {
+            refreshAll();
+        }
     }//GEN-LAST:event_openMenuButtonActionPerformed
 
     private void compileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compileButtonActionPerformed
@@ -796,8 +798,9 @@ public class Main_GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_saveAsMenuButtonActionPerformed
 
     private void newMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newMenuButtonActionPerformed
-        FileHandler.newFile();
-        refreshAll();
+        if (FileHandler.newFile(true)) {
+            refreshAll();
+        }
 
     }//GEN-LAST:event_newMenuButtonActionPerformed
 

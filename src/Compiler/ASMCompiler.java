@@ -161,14 +161,14 @@ public class ASMCompiler {
         runFinalCompilePass(); //compiles code once memory lable locations are known
 
         byte[] memByteArray = createByteArrayFromByteList();
-        
+
         Memory.setMemory(memByteArray);
         FileHandler.saveByteArrayToMXNFile(memByteArray);
 
         if (Main_GUI.saveCompilationInfo()) {
             saveOriginsToFile();
         }
-        
+
         Main_GUI.refreshAll();
 
         temp.clear();
@@ -478,11 +478,11 @@ public class ASMCompiler {
         } else {
             temp = (int) Long.parseLong(string.trim());
         }
-
         if (string.contains(":")) {
             temp = handleUserGeneratedSignificants(temp, string.split(":")[1]);
         }
         return temp;
+
     }
 
     public static int handleUserGeneratedSignificants(int val, String ugSig) {

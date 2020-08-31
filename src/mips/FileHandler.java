@@ -33,16 +33,21 @@ public class FileHandler {
         return isASMFileSaved;
     }
 
-    public static void loadExampleFile(File file) {
-        loadFile(file);
+    public static boolean loadExampleFile(File file) {
+        if (!loadFile(file)) {
+            return false;
+        }
         currentASMFile = null;
         currentMXNFile = null;
+        return true;
     }
 
-    public static void loadFile(File file) {
-        if(!newFile())return;
+    public static boolean loadFile(File file) {
+        if (!newFile(false)) {
+            return false;
+        }
         if (file == null || !file.exists()) {
-            return;
+            return false;
         }
 
         String extention = null;
@@ -52,7 +57,7 @@ public class FileHandler {
             path = file.getPath().split("\\.")[0];
         } catch (Exception e) {
             Log.logError(file.getPath() + " is not a valid file");
-            return;
+            return false;
         }
 
         if (extention.equals("asm")) {
@@ -70,6 +75,7 @@ public class FileHandler {
             logFileHandlerError(file.getPath() + "/n is not a valid file");
         }
         reloadAllFiles();
+        return true;
     }
 
     public static void asmTextAreaChange() {
@@ -149,14 +155,14 @@ public class FileHandler {
         return false;
     }
 
-    public static boolean newFile() {
+    public static boolean newFile(boolean reloadFiles) {
         if (isASMFileSaved) {
             isASMFileSaved = true;
             currentASMFile = null;
             currentMXNFile = null;
-            loadedMXNFile = null;
-            loadedASMFile = null;
-            reloadAllFiles();
+            //if (reloadFiles) {
+                reloadAllFiles();
+            //}
             return true;
         } else {
             int choice = Main_GUI.confirmBox("Warning", "The File is not saved would you like to save");
@@ -165,16 +171,20 @@ public class FileHandler {
                     if (saveASMFileFromUserTextArea()) {
                         currentASMFile = null;
                         currentMXNFile = null;
-                        reloadAllFiles();
+                        //if (reloadFiles) {
+                            reloadAllFiles();
+                        //}
                         return true;
-                    }else{
+                    } else {
                         return false;
                     }
                 case 1:
                     currentASMFile = null;
                     currentMXNFile = null;
-                    reloadAllFiles();
-                    return false;
+                    //if (reloadFiles) {
+                        reloadAllFiles();
+                    //}
+                    return true;
 
                 default:
                     break;
@@ -309,15 +319,17 @@ public class FileHandler {
         }
     }
 
-    public static void openUserSelectedFile() {
-        newFile();
+    public static boolean openUserSelectedFile() {
+        if (!newFile(false)) {
+            return false;
+        }
         final JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
         int returnVal = fc.showOpenDialog(Main_GUI.getFrame());
 
         if (fc.getSelectedFile() == null || !fc.getSelectedFile().exists()) {
-            return;
+            return false;
         }
-        loadFile(fc.getSelectedFile());
+        return loadFile(fc.getSelectedFile());
     }
 
     private static void logFileHandlerError(String message) {
