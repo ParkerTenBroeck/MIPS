@@ -1,7 +1,7 @@
-/dist/
-/build/
-/Examples old/
-/nbproject/
-/store/
+/dist
+/build
+/Examples old
+/nbproject
+/store
 /preProcessedFile.asm
 /CompilationInfo.txt
