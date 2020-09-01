@@ -1,1 +1,8 @@
-/dist/
+/*
+!/src/
+!/res/
+!/nbproject/
+!/build.xml
+!/README.md
+!.gitignore
+!.gitattributes
