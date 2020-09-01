@@ -64,9 +64,25 @@ public class FileHandler {
             currentMXNFile = new File(file.getPath().replace(".asm", ".mxn"));
             currentASMFile = file;
 
+            try {
+                if (!currentMXNFile.exists()) {
+                    currentMXNFile.createNewFile();
+                }
+            } catch (Exception e) {
+                logFileHandlerError("Failed to create MXN File while loading ASM File");
+            }
+
         } else if (extention.equals("mxn")) {
             currentASMFile = new File(file.getPath().replace(".mxn", ".asm"));
             currentMXNFile = file;
+
+            try {
+                if (!currentASMFile.exists()) {
+                    currentASMFile.createNewFile();
+                }
+            } catch (Exception e) {
+                logFileHandlerError("Failed to create ASM File while loading ASM File");
+            }
 
         } else if (extention.equals("mx")) {
             importMXFile(file);
@@ -83,6 +99,10 @@ public class FileHandler {
     }
 
     public static boolean saveASMFileFromUserTextArea() {
+        if (Main_GUI.isLinked()) {
+            reloadAllFiles();
+            return true;
+        }
         if (isASMFileSaved) {
             return true;
         }
@@ -161,7 +181,7 @@ public class FileHandler {
             currentASMFile = null;
             currentMXNFile = null;
             //if (reloadFiles) {
-                reloadAllFiles();
+            reloadAllFiles();
             //}
             return true;
         } else {
@@ -172,7 +192,7 @@ public class FileHandler {
                         currentASMFile = null;
                         currentMXNFile = null;
                         //if (reloadFiles) {
-                            reloadAllFiles();
+                        reloadAllFiles();
                         //}
                         return true;
                     } else {
@@ -182,7 +202,7 @@ public class FileHandler {
                     currentASMFile = null;
                     currentMXNFile = null;
                     //if (reloadFiles) {
-                        reloadAllFiles();
+                    reloadAllFiles();
                     //}
                     return true;
 

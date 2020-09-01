@@ -58,6 +58,7 @@ public class dragAndDrop {
                             for (int j = 0; j < list.size(); j++) {
                                 //filePathLable.setText(((File) list.get(j)).getPath());
                                 FileHandler.loadFile((File) list.get(j));
+                                Main_GUI.refreshAll();
                                 //list.get(j); is the file
                             }
                             // If we made it this far, everything worked.

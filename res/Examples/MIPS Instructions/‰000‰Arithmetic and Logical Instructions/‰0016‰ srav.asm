@@ -1,5 +1,5 @@
-;sra $d = $t >> $s
-;sra preforms a bitwise shift to the right on the value in register 4 by register s value and places the result in register d
+;srav $d = $t >> $s
+;srav preforms a bitwise shift to the right on the value in register 4 by register s value and places the result in register d
 ;this keeps the sig bit
 
 addi $4, $0, 304;places the value 304 into register 4
