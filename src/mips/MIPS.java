@@ -6,6 +6,7 @@
 package mips;
 
 import GUI.Main_GUI;
+import GUI.lookandfeel.ThemeHandler;
 import java.awt.Color;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -39,6 +40,13 @@ public class MIPS {
         //static int temp = 0;
         
         checkForUpdates();
+        
+        try{
+            Thread.sleep(1000);
+            ThemeHandler.setThemeFromName(ThemeHandler.BUTTON_DEFAULT_COLOR_PROPERTY_NAME, Color.yellow, true);
+        }catch(Exception e){
+            
+        }
     }
 
 }

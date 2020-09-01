@@ -12,6 +12,8 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import javax.swing.AbstractButton;
 import javax.swing.JComponent;
 import javax.swing.plaf.basic.BasicButtonUI;
@@ -20,7 +22,7 @@ import javax.swing.plaf.basic.BasicButtonUI;
  *
  * @author parke
  */
-public class ModernButtonUI extends BasicButtonUI {
+public class ModernButtonUI extends BasicButtonUI implements PropertyChangeListener{
 
     Color defaultColor = new Color(70, 70, 70);
     Color selectedColor = new Color(1, 176, 117);
@@ -38,12 +40,23 @@ public class ModernButtonUI extends BasicButtonUI {
     public ModernButtonUI(JComponent button) {
         this.button = button;
         button.addMouseListener(new ml());
+        ThemeHandler.addPropertyChangeListenerFromName(ThemeHandler.BUTTON_DEFAULT_COLOR_PROPERTY_NAME, this);
     }
 
     public ModernButtonUI(JComponent button, Rectangle buttonRect) {
         this.button = button;
         this.buttonRect = buttonRect;
         button.addMouseListener(new ml());
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent pce) {
+        switch(pce.getPropertyName()){
+            case ThemeHandler.BUTTON_DEFAULT_COLOR_PROPERTY_NAME:
+                defaultColor = (Color) pce.getNewValue();
+                this.button.repaint();
+                break;
+        }
     }
 
     private class ml implements MouseListener {
@@ -137,7 +150,7 @@ public class ModernButtonUI extends BasicButtonUI {
                 }
             }
 
-            grphcs.fillRect(0, (int)(jc.getHeight()/ 2.0 - buttonRect.height / 2.0), buttonRect.width, buttonRect.height);
+            grphcs.fillRect(0, (int) (jc.getHeight() / 2.0 - buttonRect.height / 2.0), buttonRect.width, buttonRect.height);
 
             grphcs.setColor(textColor);
 
@@ -153,7 +166,7 @@ public class ModernButtonUI extends BasicButtonUI {
 
             FontMetrics metrics = grphcs.getFontMetrics(font);
             // Determine the X coordinate for the text
-            
+
             // Determine the Y coordinate for the text (note we add the ascent, as in java 2d 0 is top of the screen)
             int y = rect.y + ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
             // Set the font
@@ -161,7 +174,7 @@ public class ModernButtonUI extends BasicButtonUI {
             // Draw the String
             //g.drawString(text, x, y);
 
-            grphcs.drawString(text,  buttonRect.width + 5, y);
+            grphcs.drawString(text, buttonRect.width + 5, y);
         }
     }
 
