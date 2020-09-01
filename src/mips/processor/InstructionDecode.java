@@ -135,7 +135,7 @@ public class InstructionDecode {
                 break;
 
             case 0B100011: //subu
-                setRegister(d, (int) (getUnsignedInt(getRegister(s)) + getUnsignedInt(getRegister(t))));
+                setRegister(d, (int) (getUnsignedInt(getRegister(s)) - getUnsignedInt(getRegister(t))));
                 break;
 
             case 0B100110: //xor
