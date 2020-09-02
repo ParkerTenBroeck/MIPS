@@ -11,6 +11,7 @@ import java.awt.Font;
 import org.fife.ui.rsyntaxtextarea.AbstractTokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
+import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.folding.FoldParserManager;
@@ -50,33 +51,45 @@ public class ASMFormattedTextArea extends RTextScrollPane {
         this.setBackground(new Color(0, 0, 51));
         this.setForeground(new Color(40, 40, 100));
 
-        Gutter gutter = this.getGutter();
+//        Gutter gutter = this.getGutter();
+        
+//        gutter.setLineNumberColor(new Color(201, 201, 201));
+//        gutter.setBackground(new Color(20, 20, 60));
 
-        gutter.setLineNumberColor(new Color(201, 201, 201));
-        gutter.setBackground(new Color(20, 20, 60));
+//        textArea.setBackground(new Color(0, 0, 51));
+//        textArea.setForeground(new Color(204, 204, 204));
+//        textArea.setCaretColor(Color.yellow);
+//        textArea.setCurrentLineHighlightColor(new Color(40, 40, 102));
+//        textArea.setSelectionColor(new Color(102, 50, 122));
 
-        textArea.setBackground(new Color(0, 0, 51));
-        textArea.setForeground(new Color(204, 204, 204));
-        textArea.setCaretColor(Color.yellow);
-        textArea.setCurrentLineHighlightColor(new Color(40, 40, 102));
-        textArea.setSelectionColor(new Color(102, 50, 122));
-
-        SyntaxScheme scheme = textArea.getSyntaxScheme();
-        scheme.getStyle(Token.RESERVED_WORD).foreground = Color.white;
-        scheme.getStyle(Token.MARKUP_PROCESSING_INSTRUCTION).foreground = Color.lightGray;
-        scheme.getStyle(Token.DATA_TYPE).foreground = Color.MAGENTA;
-        scheme.getStyle(Token.VARIABLE).foreground = Color.yellow;
-        scheme.getStyle(Token.LITERAL_STRING_DOUBLE_QUOTE).foreground = Color.orange;
-        scheme.getStyle(Token.COMMENT_EOL).foreground = Color.green;
-
-        scheme.getStyle(Token.ANNOTATION).foreground = Color.lightGray;
-        scheme.getStyle(Token.IDENTIFIER).foreground = Color.cyan;
-        scheme.getStyle(Token.LITERAL_NUMBER_DECIMAL_INT).foreground = Color.blue;
-        scheme.getStyle(Token.LITERAL_NUMBER_HEXADECIMAL).foreground = Color.pink;
-        scheme.getStyle(Token.RESERVED_WORD_2).foreground = Color.darkGray;
-        scheme.getStyle(Token.MARKUP_TAG_ATTRIBUTE).foreground = Color.GREEN;
-
+//        SyntaxScheme scheme = textArea.getSyntaxScheme();
+//        scheme.getStyle(Token.RESERVED_WORD).foreground = Color.white;
+//        scheme.getStyle(Token.MARKUP_PROCESSING_INSTRUCTION).foreground = Color.lightGray;
+//        scheme.getStyle(Token.DATA_TYPE).foreground = Color.MAGENTA;
+//        scheme.getStyle(Token.VARIABLE).foreground = Color.yellow;
+//        scheme.getStyle(Token.LITERAL_STRING_DOUBLE_QUOTE).foreground = Color.orange;
+//        scheme.getStyle(Token.COMMENT_EOL).foreground = Color.green;
+//
+//        scheme.getStyle(Token.ANNOTATION).foreground = Color.lightGray;
+//        scheme.getStyle(Token.IDENTIFIER).foreground = Color.cyan;
+//        scheme.getStyle(Token.LITERAL_NUMBER_DECIMAL_INT).foreground = Color.blue;
+//        scheme.getStyle(Token.LITERAL_NUMBER_HEXADECIMAL).foreground = Color.pink;
+//        scheme.getStyle(Token.RESERVED_WORD_2).foreground = Color.darkGray;
+//        scheme.getStyle(Token.MARKUP_TAG_ATTRIBUTE).foreground = Color.GREEN;
+//*/
+       
+        
+        try{
+        Theme theme = Theme.load(getClass().getResourceAsStream("/Themes/RSyntaxArea/default.xml"));
+        theme.apply(textArea);
+        }catch(Exception e){
+            System.out.println("help " + e.getMessage());
+        }
+        //Theme theme = Theme.
+        textArea.repaint();
         textArea.revalidate();
+        
+        
 
     }
 
