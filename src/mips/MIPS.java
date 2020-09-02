@@ -43,7 +43,7 @@ public class MIPS {
         
         try{
             Thread.sleep(1000);
-            ThemeHandler.setThemeFromName(ThemeHandler.BUTTON_DEFAULT_COLOR_PROPERTY_NAME, Color.yellow, true);
+            ThemeHandler.setThemeFromName(ThemeHandler.BUTTON_DEFAULT_COLOR_PROPERTY_NAME, Color.yellow, true, true);
         }catch(Exception e){
             
         }

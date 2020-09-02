@@ -5,6 +5,7 @@
  */
 package GUI.lookandfeel;
 
+import GUI.Main_GUI;
 import java.awt.Color;
 import java.awt.Font;
 import java.beans.PropertyChangeEvent;
@@ -96,12 +97,20 @@ public class ThemeHandler {
         getThemeFromName(propertyName).pcs.addPropertyChangeListener(listener);
     }
 
-    public static void setThemeFromName(String propertyName, Object themeObject, boolean firePropertyChange) {
+    public static Object getThemeObjectFromThemeName(String propertyName) {
+        return getThemeFromName(propertyName).themeVariable;
+    }
+
+    public static void setThemeFromName(String propertyName, Object themeObject, boolean firePropertyChange, boolean repaintFrame) {
         Theme tempTheme = getThemeFromName(propertyName);
         setThemeVariableFromName(propertyName, themeObject);
         if (firePropertyChange) {
             tempTheme.pcs.firePropertyChange(new PropertyChangeEvent(instance, propertyName, tempTheme.themeVariable, themeObject));
         }
+        if (repaintFrame) {
+            Main_GUI.getFrame().repaint();
+        }
+
     }
 
     private static void setThemeVariableFromName(String name, Object themeObject) {

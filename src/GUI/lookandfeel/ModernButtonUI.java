@@ -54,7 +54,6 @@ public class ModernButtonUI extends BasicButtonUI implements PropertyChangeListe
         switch(pce.getPropertyName()){
             case ThemeHandler.BUTTON_DEFAULT_COLOR_PROPERTY_NAME:
                 defaultColor = (Color) pce.getNewValue();
-                this.button.repaint();
                 break;
         }
     }
