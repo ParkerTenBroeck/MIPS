@@ -52,16 +52,13 @@ public class ASMFormattedTextArea extends RTextScrollPane {
         this.setForeground(new Color(40, 40, 100));
 
 //        Gutter gutter = this.getGutter();
-        
 //        gutter.setLineNumberColor(new Color(201, 201, 201));
 //        gutter.setBackground(new Color(20, 20, 60));
-
 //        textArea.setBackground(new Color(0, 0, 51));
 //        textArea.setForeground(new Color(204, 204, 204));
 //        textArea.setCaretColor(Color.yellow);
 //        textArea.setCurrentLineHighlightColor(new Color(40, 40, 102));
 //        textArea.setSelectionColor(new Color(102, 50, 122));
-
 //        SyntaxScheme scheme = textArea.getSyntaxScheme();
 //        scheme.getStyle(Token.RESERVED_WORD).foreground = Color.white;
 //        scheme.getStyle(Token.MARKUP_PROCESSING_INSTRUCTION).foreground = Color.lightGray;
@@ -76,20 +73,16 @@ public class ASMFormattedTextArea extends RTextScrollPane {
 //        scheme.getStyle(Token.LITERAL_NUMBER_HEXADECIMAL).foreground = Color.pink;
 //        scheme.getStyle(Token.RESERVED_WORD_2).foreground = Color.darkGray;
 //        scheme.getStyle(Token.MARKUP_TAG_ATTRIBUTE).foreground = Color.GREEN;
-//*/
-       
-        
-        try{
-        Theme theme = Theme.load(getClass().getResourceAsStream("/Themes/RSyntaxArea/default.xml"));
-        theme.apply(textArea);
-        }catch(Exception e){
+
+        try {
+            Theme theme = Theme.load(getClass().getResourceAsStream("/Themes/RSyntaxArea/default.xml"));
+            theme.apply(textArea);
+        } catch (Exception e) {
             System.out.println("help " + e.getMessage());
         }
         //Theme theme = Theme.
         textArea.repaint();
         textArea.revalidate();
-        
-        
 
     }
 
