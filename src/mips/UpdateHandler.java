@@ -41,7 +41,7 @@ public class UpdateHandler {
             String JSON = sb.toString();
 
             latestVersionLink = getValueOfJSONTag("tag_name", JSON);
-System.out.println(latestVersionLink);
+//System.out.println(latestVersionLink);
             int compare = compareVersions(latestVersionLink, MIPS.VERSION);
 
             if (compare == 0) {
@@ -49,7 +49,7 @@ System.out.println(latestVersionLink);
             } else if (compare > 0) {
                 Log.logWarning("There is an update avalible goto Options>Update to update");
                 latestVersionLink = getValueOfJSONTag("browser_download_url", JSON);
-                System.out.println(latestVersionLink);
+                //System.out.println(latestVersionLink);
             } else if (compare < 0) {
                 Log.logWarning("You are using a Beta Version there may be bugs and unexpected behavior goto Options>Update to get the latest stable relese");
                 latestVersionLink = getValueOfJSONTag("browser_download_url", JSON);

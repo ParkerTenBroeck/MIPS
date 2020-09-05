@@ -122,6 +122,13 @@ public class FileHandler {
             fc.setSelectedFile(new File("project_" + pd.listFiles().length + ".asm"));
             int returnVal = fc.showOpenDialog(Main_GUI.getFrame());
 
+            if (returnVal != 0) {
+                currentASMFile = File.createTempFile("ASMTemp", ".asm");
+                boolean temp = writeUserTextAreaToASMFile();
+                isASMFileSaved = false;
+                return temp;
+            }
+
             File chosenFile = fc.getSelectedFile();
 
             if (chosenFile == null) {
@@ -142,6 +149,7 @@ public class FileHandler {
 
                 if (i == 0) {
                     currentASMFile = chosenFile;
+                    currentMXNFile = new File(currentASMFile.getAbsolutePath().replaceAll("\\.asm", "\\.mxn"));
                     return writeUserTextAreaToASMFile();
                 }
             } else {
@@ -157,6 +165,7 @@ public class FileHandler {
 
                         if (i == 0) {
                             currentASMFile = chosenFile;
+                            currentMXNFile = new File(currentASMFile.getAbsolutePath().replaceAll("\\.asm", "\\.mxn"));
                             return saveASMFileFromUserTextArea();
                             //isASMFileSaved = true;
                             //return true;
@@ -165,6 +174,7 @@ public class FileHandler {
 
                 }
                 currentASMFile = chosenFile;
+                currentMXNFile = new File(currentASMFile.getAbsolutePath().replaceAll("\\.asm", "\\.mxn"));
                 return writeUserTextAreaToASMFile();
 
             }
@@ -240,11 +250,13 @@ public class FileHandler {
             f2.write(ASM_GUI.getAllText());
             f2.close();
             currentLoadedASMFileAbsolutePath = currentASMFile.getAbsolutePath();
+            reloadAllFiles();
             return true;
         } catch (Exception e) {
             logFileHandlerError("unable to write ASM File:" + e.getMessage());
             return false;
         }
+
     }
 
     public static ArrayList<String> getLoadedASMFile() {
@@ -345,6 +357,11 @@ public class FileHandler {
         }
         final JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
         int returnVal = fc.showOpenDialog(Main_GUI.getFrame());
+
+        //System.out.println(returnVal);
+        if (returnVal != 0) {
+            return false;
+        }
 
         if (fc.getSelectedFile() == null || !fc.getSelectedFile().exists()) {
             return false;
