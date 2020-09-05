@@ -304,7 +304,7 @@ public class Main_GUI extends javax.swing.JFrame {
         saveCompileInformationButton = new javax.swing.JCheckBoxMenuItem();
         runTimeMenu = new javax.swing.JMenu();
         breakProgramOnRTEButton = new javax.swing.JCheckBoxMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        adaptiveMemoryMenuButton = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("MIPS");
@@ -708,8 +708,13 @@ public class Main_GUI extends javax.swing.JFrame {
         breakProgramOnRTEButton.setText("Break Program On RunTime Error");
         runTimeMenu.add(breakProgramOnRTEButton);
 
-        jMenuItem3.setText("Adaptive Memory");
-        runTimeMenu.add(jMenuItem3);
+        adaptiveMemoryMenuButton.setText("Adaptive Memory");
+        adaptiveMemoryMenuButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                adaptiveMemoryMenuButtonActionPerformed(evt);
+            }
+        });
+        runTimeMenu.add(adaptiveMemoryMenuButton);
 
         menuBar.add(runTimeMenu);
 
@@ -837,6 +842,14 @@ public class Main_GUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_saveCompileInformationButtonActionPerformed
 
+    private void adaptiveMemoryMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adaptiveMemoryMenuButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_adaptiveMemoryMenuButtonActionPerformed
+
+    public static boolean isMemoryAdaptive(){
+        return Main_GUI.adaptiveMemoryMenuButton.isSelected();
+    }
+    
     public static boolean savePreProcessedFile() {
         return savePreProcessedFileButton.isSelected();
     }
@@ -855,6 +868,7 @@ public class Main_GUI extends javax.swing.JFrame {
     private static GUI.ASM_GUI aSM_GUI1;
     private static javax.swing.JButton aboutButton;
     private static javax.swing.JButton aboutLinkedFile;
+    private static javax.swing.JCheckBoxMenuItem adaptiveMemoryMenuButton;
     private static javax.swing.JCheckBoxMenuItem breakProgramOnRTEButton;
     private static javax.swing.JPanel buttonBarPanel;
     private static javax.swing.JMenuItem checkForUpdates;
@@ -869,7 +883,6 @@ public class Main_GUI extends javax.swing.JFrame {
     private static GUI.InstructionMemory_GUI instructionMemory_GUI1;
     private static javax.swing.JMenuItem jMenuItem1;
     private static javax.swing.JMenuItem jMenuItem2;
-    private static javax.swing.JMenuItem jMenuItem3;
     private static javax.swing.JPanel jPanel1;
     private static javax.swing.JPanel jPanel2;
     private static javax.swing.JPanel jPanel3;

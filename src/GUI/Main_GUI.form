@@ -126,10 +126,13 @@
                 <Property name="text" type="java.lang.String" value="Break Program On RunTime Error"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem3">
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="adaptiveMemoryMenuButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Adaptive Memory"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="adaptiveMemoryMenuButtonActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>

@@ -33,7 +33,7 @@ public class Memory {
             logRunTimeError("getWord must be alligned to 4 error at index:" + index);
         }
         if (index + 3 > Memory.memory.length) {
-            logRunTimeError("getWord Memory out of bounds " + index);
+            memoryOutOfBoundsEvent("getWord Memory out of bounds", index);
             return -1;
         } else {
 
@@ -46,7 +46,7 @@ public class Memory {
             logRunTimeError("getHalfWord must be alligned to 2 error at index:" + index);
         }
         if (index + 1 > memory.length) {
-            logRunTimeError("getHalfWord Memory out of bounds " + index);
+            memoryOutOfBoundsEvent("getHalfWord Memory out of bounds", index);
             return -1;
         } else {
 
@@ -56,7 +56,7 @@ public class Memory {
 
     public static int getByte(int index) {
         if (index > Memory.memory.length - 1) {
-            logRunTimeError("getByte Memory out of bounds " + index);
+            memoryOutOfBoundsEvent("getByte Memory out of bounds", index);
             return -1;
         } else {
             return superGetByte(index);
@@ -86,8 +86,8 @@ public class Memory {
         int mem1 = 0xCD;
         int mem2 = 0xCD;
         try {
-            mem2 = ((int)Memory.memory[index]);
-            mem1 = ((int)Memory.memory[index + 1]) & 0xFF;
+            mem2 = ((int) Memory.memory[index]);
+            mem1 = ((int) Memory.memory[index + 1]) & 0xFF;
         } catch (Exception e) {
 
         }
@@ -111,7 +111,7 @@ public class Memory {
             logRunTimeError("setWord must be alligned to 4 error at index:" + index);
         }
         if (index + 3 > Memory.memory.length) {
-            logRunTimeError("setWord Memory out of bounds " + index);
+            memoryOutOfBoundsEvent("setWord Memory out of bounds", index);
             return false;
         } else {
 
@@ -135,7 +135,7 @@ public class Memory {
         }
         if (index + 1 > Memory.memory.length) {
             Main_GUI.stop();
-            logRunTimeError("setHalfWord Memory out of bounds " + index);
+            memoryOutOfBoundsEvent("setHalfWord Memory out of bounds", index);
             return false;
         } else {
 
@@ -152,11 +152,28 @@ public class Memory {
     public static boolean setByte(int index, int val) {
         if (index > Memory.memory.length - 1) {
             Main_GUI.stop();
-            logRunTimeError("setByte Memory out of bounds " + index);
+            memoryOutOfBoundsEvent("setByte Memory out of bounds", index);
             return false;
         } else {
             memory[index] = (byte) val;
             return true;
+        }
+    }
+
+    private static void memoryOutOfBoundsEvent(String message, int currentIndex) {
+        if (Main_GUI.isMemoryAdaptive()) {
+            byte[] temp;
+            if (currentIndex >= memory.length * 2) {
+                temp = new byte[currentIndex + 16];
+            } else {
+                temp = new byte[message.length() * 2];
+            }
+            for (int i = 0; i < memory.length; i++) {
+                temp[i] = memory[i];
+            }
+            memory = temp;
+        } else {
+            logRunTimeError(message + " " + currentIndex);
         }
     }
 

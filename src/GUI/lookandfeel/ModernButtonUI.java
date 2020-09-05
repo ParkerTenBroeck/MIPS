@@ -12,8 +12,6 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import javax.swing.AbstractButton;
 import javax.swing.JComponent;
 import javax.swing.plaf.basic.BasicButtonUI;
@@ -22,7 +20,7 @@ import javax.swing.plaf.basic.BasicButtonUI;
  *
  * @author parke
  */
-public class ModernButtonUI extends BasicButtonUI implements PropertyChangeListener{
+public class ModernButtonUI extends BasicButtonUI{
 
     Color defaultColor = new Color(70, 70, 70);
     Color selectedColor = new Color(1, 176, 117);
@@ -40,7 +38,6 @@ public class ModernButtonUI extends BasicButtonUI implements PropertyChangeListe
     public ModernButtonUI(JComponent button) {
         this.button = button;
         button.addMouseListener(new ml());
-        ThemeHandler.addPropertyChangeListenerFromName(ThemeHandler.BUTTON_DEFAULT_COLOR_PROPERTY_NAME, this);
     }
 
     public ModernButtonUI(JComponent button, Rectangle buttonRect) {
@@ -49,14 +46,7 @@ public class ModernButtonUI extends BasicButtonUI implements PropertyChangeListe
         button.addMouseListener(new ml());
     }
 
-    @Override
-    public void propertyChange(PropertyChangeEvent pce) {
-        switch(pce.getPropertyName()){
-            case ThemeHandler.BUTTON_DEFAULT_COLOR_PROPERTY_NAME:
-                defaultColor = (Color) pce.getNewValue();
-                break;
-        }
-    }
+
 
     private class ml implements MouseListener {
 

@@ -65,7 +65,8 @@ public class ASM_GUI extends javax.swing.JPanel {
                 aSMFormattedTextArea1.setAllFontSize(newFontSize);
             } else {
                 int unit = aSMFormattedTextArea1.getVerticalScrollBar().getUnitIncrement();
-                int scrolled = mouseWheelEvent.getUnitsToScroll();
+                int scrolled = mouseWheelEvent.getUnitsToScroll() * 5;
+                System.out.println(scrolled);
                 int currentPos = aSMFormattedTextArea1.getVerticalScrollBar().getValue();
 
                 aSMFormattedTextArea1.getVerticalScrollBar().setValue(unit * scrolled + currentPos);
