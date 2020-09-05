@@ -8,9 +8,7 @@ package mips;
 import GUI.Main_GUI;
 import GUI.lookandfeel.ThemeHandler;
 import java.awt.Color;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.Arrays;
+import java.io.File;
 import static mips.UpdateHandler.checkForUpdates;
 
 /**
@@ -26,26 +24,28 @@ public class MIPS {
     static {
         String tmp;
         try {
-            tmp = URLDecoder.decode(MIPS.class.getProtectionDomain().getCodeSource().getLocation().getPath(), "UTF-8");
-        } catch (UnsupportedEncodingException ex) {
+            tmp = new File(MIPS.class.getProtectionDomain().getCodeSource().getLocation()
+                    .toURI()).getAbsolutePath();
+        } catch (Exception ex) {
             tmp = "";
+
         }
+        //Log.logMessage(tmp);
         JAR_PATH = tmp;
     }
 
     public static void main(String[] args) {
-        Log.initLogger();
         ResourceHandler.extractResources();
         Main_GUI gui = new Main_GUI();
         //static int temp = 0;
-        
+
         checkForUpdates();
-        
-        try{
+
+        try {
             Thread.sleep(1000);
             ThemeHandler.setThemeFromName(ThemeHandler.BUTTON_DEFAULT_COLOR_PROPERTY_NAME, Color.yellow, true, true);
-        }catch(Exception e){
-            
+        } catch (Exception e) {
+
         }
     }
 

@@ -23,6 +23,11 @@ import javax.swing.text.StyleConstants;
  */
 public class Log extends javax.swing.JPanel {
 
+    
+    static{
+        Log.initComponents();
+    }
+    
     public static void clearDisplay() {
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n");
         //Log.appendMessageToVirtualConsoleLog("\n\n\n\n\n\n\n\n\n\n\n\n\n", null);
@@ -84,10 +89,6 @@ public class Log extends javax.swing.JPanel {
             exc.printStackTrace();
         }
 
-    }
-
-    public static void initLogger() {
-        initComponents();
     }
 
     public Log() {

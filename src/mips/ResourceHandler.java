@@ -66,7 +66,7 @@ public class ResourceHandler {
                 }
 
                 //Log.logMessage(destPath + " " + jarPath);
-                JarFile jarFile = new JarFile(ResourceHandler.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+                JarFile jarFile = new JarFile(MIPS.JAR_PATH);
                 Enumeration<JarEntry> enums = jarFile.entries();
                 while (enums.hasMoreElements()) {
                     JarEntry entry = null;
