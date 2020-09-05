@@ -41,7 +41,7 @@ public class UpdateHandler {
             String JSON = sb.toString();
 
             latestVersionLink = getValueOfJSONTag("tag_name", JSON);
-
+System.out.println(latestVersionLink);
             int compare = compareVersions(latestVersionLink, MIPS.VERSION);
 
             if (compare == 0) {
@@ -49,6 +49,7 @@ public class UpdateHandler {
             } else if (compare > 0) {
                 Log.logWarning("There is an update avalible goto Options>Update to update");
                 latestVersionLink = getValueOfJSONTag("browser_download_url", JSON);
+                System.out.println(latestVersionLink);
             } else if (compare < 0) {
                 Log.logWarning("You are using a Beta Version there may be bugs and unexpected behavior goto Options>Update to get the latest stable relese");
                 latestVersionLink = getValueOfJSONTag("browser_download_url", JSON);
@@ -119,7 +120,7 @@ public class UpdateHandler {
         int startIndex = JSON.indexOf(tag) + tag.length();
         int endIndex = JSON.indexOf(",", startIndex);
 
-        return JSON.substring(startIndex, endIndex).replaceAll("\"", "").replaceAll("\'", "").trim();
+        return JSON.substring(startIndex, endIndex).replaceAll("\"", "").replaceAll("\'", "").replaceAll("}", " ").replaceAll("]", " ").trim();
     }
 
     public static int compareVersions(String v1, String v2) {
