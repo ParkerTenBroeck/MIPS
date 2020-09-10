@@ -29,6 +29,7 @@ import javax.swing.JToggleButton;
 import javax.swing.UIManager;
 import mips.FileHandler;
 import mips.Log;
+import mips.MIPS;
 import mips.ResourceHandler;
 import mips.UpdateHandler;
 import mips.processor.Processor;
@@ -59,14 +60,39 @@ public class Main_GUI extends javax.swing.JFrame {
     private static synchronized void startAutoUpdate() {
         Main_GUI.autoUpdate = true;
         autoUpdateThread = new Thread() {
+
+//            private int size = 100;
+//            private int index = 0;
+//            private double[] as = new double[size];
+
             public void run() {
                 while (isRunning()) {
+//                    long currentInstructionCount = Processor.getInstructionsRan();
+//                    long currentTime = System.nanoTime();
+
                     Main_GUI.refresh();
                     try {
                         Thread.sleep(100);
                     } catch (Exception e) {
 
                     }
+//
+//                    long instructionsRan = Processor.getInstructionsRan() - currentInstructionCount;
+//                    long deltaTime = System.nanoTime() - currentTime;
+//                    double ips = ((instructionsRan * 1000000000.0) / (double) deltaTime);
+//
+//                    if (index >= size) {
+//                        index = 0;
+//                    }
+//                    as[index] = ips;
+//                    index++;
+//
+//                    double sum = 0;
+//                    for (int i = 0; i < size; i++) {
+//                        sum += as[i];
+//                    }
+//
+//                    System.out.println(sum / size);
 
                 }
             }
@@ -229,7 +255,6 @@ public class Main_GUI extends javax.swing.JFrame {
             userIO.setVisible(true);
             //userIO.requestFocus();
         }
-
     }
 
     public static int confirmBox(String titleBar, String infoMessage) {
@@ -266,6 +291,7 @@ public class Main_GUI extends javax.swing.JFrame {
         aboutButton = new javax.swing.JButton();
         InstructionsRan = new javax.swing.JLabel();
         resetButton =  new JButton() {                 @Override         public void updateUI() {                     setUI(new ModernButtonUI(this));                 }             }; ;
+        jLabel2 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         aSM_GUI1 = new GUI.ASM_GUI();
         register_GUI1 = new GUI.Register_GUI();
@@ -425,6 +451,10 @@ public class Main_GUI extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText(MIPS.VERSION);
+
         javax.swing.GroupLayout buttonBarPanelLayout = new javax.swing.GroupLayout(buttonBarPanel);
         buttonBarPanel.setLayout(buttonBarPanelLayout);
         buttonBarPanelLayout.setHorizontalGroup(
@@ -449,13 +479,16 @@ public class Main_GUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(InstructionsRan)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(aboutButton))
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(aboutButton)
+                .addContainerGap())
         );
         buttonBarPanelLayout.setVerticalGroup(
             buttonBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(buttonBarPanelLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, buttonBarPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(buttonBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(buttonBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(aboutButton)
                     .addGroup(buttonBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(compileButton)
@@ -466,7 +499,9 @@ public class Main_GUI extends javax.swing.JFrame {
                         .addComponent(screenButton)
                         .addComponent(resetButton)
                         .addComponent(InstructionsRan)
-                        .addComponent(startButton))))
+                        .addComponent(startButton)
+                        .addComponent(jLabel2)))
+                .addGap(3, 3, 3))
         );
 
         jPanel4.setOpaque(false);
@@ -846,10 +881,10 @@ public class Main_GUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_adaptiveMemoryMenuButtonActionPerformed
 
-    public static boolean isMemoryAdaptive(){
+    public static boolean isMemoryAdaptive() {
         return Main_GUI.adaptiveMemoryMenuButton.isSelected();
     }
-    
+
     public static boolean savePreProcessedFile() {
         return savePreProcessedFileButton.isSelected();
     }
@@ -881,6 +916,7 @@ public class Main_GUI extends javax.swing.JFrame {
     private static javax.swing.JMenu exampleMenu;
     private static javax.swing.JMenu fileMenu;
     private static GUI.InstructionMemory_GUI instructionMemory_GUI1;
+    private static javax.swing.JLabel jLabel2;
     private static javax.swing.JMenuItem jMenuItem1;
     private static javax.swing.JMenuItem jMenuItem2;
     private static javax.swing.JPanel jPanel1;

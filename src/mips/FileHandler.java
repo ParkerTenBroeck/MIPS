@@ -225,7 +225,15 @@ public class FileHandler {
 
     private static void reloadAllFiles() {
         if (currentMXNFile != null) {
+            if (!currentMXNFile.exists()) {
+                try {
+                    currentMXNFile.createNewFile();
+                } catch (Exception e) {
+                    logFileHandlerError("Failed to create MXN file at: " + currentMXNFile.getAbsolutePath());
+                }
+            }
             loadedMXNFile = loadFileAsByteArray(currentMXNFile);
+
         } else {
             loadedMXNFile = new byte[]{};
         }
@@ -315,10 +323,22 @@ public class FileHandler {
     }
 
     public static void saveByteArrayToMXNFile(byte[] byteArray) {
+        if (currentMXNFile == null) {
+            try {
+                currentMXNFile = File.createTempFile("tempMXN", "mxn");
+            } catch (Exception e) {
+                logFileHandlerError("Cannot create temp MXN File" + e.getMessage());
+            }
+        }
         try {
             Files.write(currentMXNFile.toPath(), byteArray);
         } catch (Exception e) {
             logFileHandlerError("Cannot save MXN File" + e.getMessage());
+        }
+        try {
+            logFileHandlerMessage("Saved MXN file to: " + currentMXNFile.getAbsolutePath());
+        } catch (Exception e) {
+            logFileHandlerError("Cant log save message error: " + e.getMessage());
         }
     }
 
