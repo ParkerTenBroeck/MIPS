@@ -62,7 +62,7 @@ popAll
 .org 0 ;start of program
 
 Main:
-addi $4, $0, 10
+addi $4, $0, 6
 call factorial 
 ;add $4, $2, $0
 ;call factorial 
@@ -88,9 +88,5 @@ factorialEndCase:
 addi $2, $0, 1
 return  
 
-something:
-.byte 5, 6,7,8,9,10
-
 stack:
 .space 100000
-

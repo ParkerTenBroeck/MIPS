@@ -36,6 +36,11 @@ public class DEFINLINE extends Statement {
                 new char[]{','});
 
         args = Arrays.copyOf(aal.args, aal.args.length);
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].trim().contains(" ")) {
+                PreProcessor.logPreProcessorError("Argument Place holders cannot contain spaces", input.realLineNumber);
+            }
+        }
 
         for (int i = index + 1; i < file.size(); i++) {
 
@@ -70,8 +75,15 @@ public class DEFINLINE extends Statement {
         if (input.line.startsWith(this.IDENTIFIRE + " ") || input.line.equals(this.IDENTIFIRE)) {
 
             AbstractArgumentList inputAal = new AbstractArgumentList(input.line.replace(IDENTIFIRE, "").trim(), new char[]{','});
+
+            for (int i = 0; i < args.length; i++) {
+                if (args[i].trim().contains(" ")) {
+                    PreProcessor.logPreProcessorError("Arguments cannot contain spaces", input.realLineNumber);
+                }
+            }
+
             if (inputAal.args.length != this.args.length) {
-                //error
+                PreProcessor.logPreProcessorError("number of arguments do not match", input.realLineNumber);
             }
 
             for (int i = 0; i < inlineUserLines.size(); i++) {
@@ -87,15 +99,21 @@ public class DEFINLINE extends Statement {
                 AbstractArgumentList currentInlineAal = new AbstractArgumentList(inlineUserLines.get(i).line, new char[]{',', ' '});
                 for (int j = 0; j < currentInlineAal.args.length; j++) {
 
-                    for (int s = 0; s < internalMemoryLables.size(); s++) {
+                    for (int s = 0; s < internalMemoryLables.size(); s++) { //for custom memory lables
                         if (currentInlineAal.args[j].equals(internalMemoryLables.get(s))) {
                             currentInlineAal.args[j] = internalMemoryLables.get(s) + this.IDENTIFIRE + this.timesUsed;
                         }
                     }
 
-                    for (int s = 0; s < args.length; s++) {
+                    for (int s = 0; s < args.length; s++) {                 //for regular expressions
                         if (currentInlineAal.args[j].equals(this.args[s])) {
                             currentInlineAal.args[j] = inputAal.args[s];
+                        }
+                        if (currentInlineAal.args[j].contains(":")) { //this is if a value has a byte vlaue thing attached to it :HH, :LH, :LB
+                            String idekWhatThisIsCalled = currentInlineAal.args[j].split(":")[1];
+                            if (currentInlineAal.args[j].split(":")[0].equals(this.args[s])) {
+                                currentInlineAal.args[j] = inputAal.args[s] + ":" + idekWhatThisIsCalled;
+                            }
                         }
                     }
                 }
