@@ -110,7 +110,7 @@ public class Memory {
         if ((index & 3) != 0) {
             logRunTimeError("setWord must be alligned to 4 error at index:" + index);
         }
-        if (index + 3 > Memory.memory.length) {
+        if (index + 3 > Memory.memory.length || index < -1) {
             memoryOutOfBoundsEvent("setWord Memory out of bounds", index);
             return false;
         } else {
@@ -133,7 +133,7 @@ public class Memory {
         if ((index & 1) != 0) {
             logRunTimeError("setHalfWord must be alligned to 2 error at index:" + index);
         }
-        if (index + 1 > Memory.memory.length) {
+        if (index + 1 > Memory.memory.length || index < -1) {
             Main_GUI.stop();
             memoryOutOfBoundsEvent("setHalfWord Memory out of bounds", index);
             return false;
@@ -150,7 +150,7 @@ public class Memory {
     }
 
     public static boolean setByte(int index, int val) {
-        if (index > Memory.memory.length - 1) {
+        if (index > Memory.memory.length - 1 || index < -1) {
             Main_GUI.stop();
             memoryOutOfBoundsEvent("setByte Memory out of bounds", index);
             return false;

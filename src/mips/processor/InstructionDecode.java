@@ -230,9 +230,9 @@ public class InstructionDecode {
                 setRegister(t, SEi - getRegister(s));
                 break;
                 
-            case -0B001001: //sltiu
-                setRegister(t, (int)(getUnsignedInt(SEi) - getUnsignedInt(getRegister(s))));
-                break;
+            //case 0B001001: //sltiu
+                //setRegister(t, (int)(getUnsignedInt(SEi) - getUnsignedInt(getRegister(s))));   //conflict with addiu
+                //break;
 
             //branch instructions 
             case 0B000100: //beq

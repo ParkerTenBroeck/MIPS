@@ -34,6 +34,15 @@ public class StringToOpcode {
             ASMCompiler.OpCodeError("instruction null", ctul.ul.realLineNumber);
         } else {
             opCodeString = instruction.split(" ")[0];
+            
+            if(opCodeString.length() == -1 || instruction.length() == -1){
+                ASMCompiler.OpCodeError("opCode/instruction Length is -1? invalid opCode / character", ctul.ul.realLineNumber);
+                return null;
+            }
+            if(opCodeString.length() == instruction.length()){
+                ASMCompiler.OpCodeError("opCode is same length as instruction? invalid character or no parameters given", ctul.ul.realLineNumber);
+                return null;
+            }
 
             if (instruction.endsWith(")")) {
                 instruction = instruction.substring(0, instruction.length() - 1);

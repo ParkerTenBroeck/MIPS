@@ -34,7 +34,7 @@ public class InstructionMemory_GUI extends javax.swing.JPanel {
     }
     
     public static void refreshValues() {        
-        
+                                    
         DefaultListModel listModel = new DefaultListModel();
         
         for (int i = 0; i < Memory.getSize(); i += 4) {

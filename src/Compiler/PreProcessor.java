@@ -147,6 +147,7 @@ public class PreProcessor {
         if (line.equals("")) {
             return "";
         }
+        line = line.replaceAll("\t", " "); //replaces indents with space
 
         //normalfying instructions
         String start;

@@ -76,6 +76,11 @@ class asmInstruction extends CompileTimeUserLine {
     @Override
     public void finalCompilePass() {
         byte[] temp = StringToOpcode.stringToOpcode(this);
+        
+        if(temp == null){
+            //error
+            return;
+        }
 
         if (bytes.length != temp.length) {
             //error
@@ -169,11 +174,11 @@ public class ASMCompiler {
             saveOriginsToFile();
         }
 
-        Main_GUI.refreshAll();
-
         temp.clear();
         memoryByteList.clear();
         origins.clear();
+        
+        Main_GUI.refreshAll();
     }
 
     public static void saveOriginsToFile() {

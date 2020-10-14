@@ -32,6 +32,7 @@ import mips.Log;
 import mips.MIPS;
 import mips.ResourceHandler;
 import mips.UpdateHandler;
+import mips.processor.Memory;
 import mips.processor.Processor;
 
 /**
@@ -117,6 +118,7 @@ public class Main_GUI extends javax.swing.JFrame {
 
     public static void refreshAll() {
         ASM_GUI.setTextAreaFromASMFile();
+        Memory.setMemory(FileHandler.getLoadedMXNFile());
         InstructionMemory_GUI.refreshValues();
         refresh();
     }

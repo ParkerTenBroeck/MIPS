@@ -332,6 +332,7 @@ public class FileHandler {
         }
         try {
             Files.write(currentMXNFile.toPath(), byteArray);
+            loadedMXNFile = byteArray;
         } catch (Exception e) {
             logFileHandlerError("Cannot save MXN File" + e.getMessage());
         }
