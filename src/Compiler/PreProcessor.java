@@ -138,8 +138,9 @@ public class PreProcessor {
         }
 
         try {
-            if (line.contains(";")) {
+            if (line.contains(";") /*|| line.contains("#")*/) {
                 line = line.split(";")[0];//strips line of any comments
+                //line = line.split("#")[0];
             }
         } catch (Exception e) {
             return "";

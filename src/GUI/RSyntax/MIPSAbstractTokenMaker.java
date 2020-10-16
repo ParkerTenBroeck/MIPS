@@ -115,6 +115,7 @@ public class MIPSAbstractTokenMaker extends AbstractTokenMaker {
                             break;
 
                         case ';':
+                        //case '#':
                             currentTokenType = Token.COMMENT_EOL;
                             break;
 
@@ -160,6 +161,7 @@ public class MIPSAbstractTokenMaker extends AbstractTokenMaker {
                             break;
 
                         case ';':
+                        //case '#':
                             addToken(text, currentTokenStart, i - 1, Token.WHITESPACE, newStartOffset + currentTokenStart);
                             currentTokenStart = i;
                             currentTokenType = Token.COMMENT_EOL;
@@ -218,6 +220,7 @@ public class MIPSAbstractTokenMaker extends AbstractTokenMaker {
                             break;
 
                         case ';':
+                        //case '#':
                             addToken(text, currentTokenStart, i - 1, Token.MARKUP_TAG_ATTRIBUTE, newStartOffset + currentTokenStart);
                             currentTokenStart = i;
                             currentTokenType = Token.COMMENT_EOL;
@@ -244,6 +247,7 @@ public class MIPSAbstractTokenMaker extends AbstractTokenMaker {
                             break;
 
                         case ';':
+                        //case '#':
                             addToken(text, currentTokenStart, i - 1, Token.IDENTIFIER, newStartOffset + currentTokenStart);
                             currentTokenStart = i;
                             currentTokenType = Token.COMMENT_EOL;
@@ -297,6 +301,7 @@ public class MIPSAbstractTokenMaker extends AbstractTokenMaker {
                             break;
 
                         case ';':
+                        //case '#':
                             addToken(text, currentTokenStart, i - 1, Token.LITERAL_NUMBER_DECIMAL_INT, newStartOffset + currentTokenStart);
                             currentTokenStart = i;
                             currentTokenType = Token.COMMENT_EOL;
@@ -341,6 +346,7 @@ public class MIPSAbstractTokenMaker extends AbstractTokenMaker {
                             break;
 
                         case ';':
+                        //case '#':
                             addToken(text, currentTokenStart, i - 1, Token.LITERAL_NUMBER_HEXADECIMAL, newStartOffset + currentTokenStart);
                             currentTokenStart = i;
                             currentTokenType = Token.COMMENT_EOL;
@@ -373,6 +379,7 @@ public class MIPSAbstractTokenMaker extends AbstractTokenMaker {
                     switch (c) {
 
                         case ';':
+                        //case '#':
                             addToken(text, currentTokenStart, i - 1, Token.VARIABLE, newStartOffset + currentTokenStart);
                             currentTokenStart = i;
                             currentTokenType = Token.COMMENT_EOL;
@@ -403,6 +410,7 @@ public class MIPSAbstractTokenMaker extends AbstractTokenMaker {
                             break;
 
                         case ';':
+                        //case '#':
                             addToken(text, currentTokenStart, i - 1, Token.ANNOTATION, newStartOffset + currentTokenStart);
                             currentTokenStart = i;
                             currentTokenType = Token.COMMENT_EOL;

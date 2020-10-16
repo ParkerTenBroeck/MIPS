@@ -3,28 +3,51 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/GitHub/MIPS/src/GUI/Memory_GUI.java</file>
+            <file>file:/C:/GitHub/MIPS/src/Compiler/DataClasses/AbstractArgumentList.java</file>
+            <file>file:/C:/GitHub/MIPS/src/mips/processor/SystemCall.java</file>
             <file>file:/C:/GitHub/MIPS/src/GUI/Main_GUI.java</file>
-            <file>file:/C:/GitHub/MIPS/src/GUI/lookandfeel/ModernButtonUI.java</file>
+            <file>file:/C:/GitHub/MIPS/src/GUI/lookandfeel/RoundedBorder.java</file>
             <file>file:/C:/GitHub/MIPS/src/GUI/RSyntax/ASMFoldParser.java</file>
             <file>file:/C:/GitHub/MIPS/src/GUI/RSyntax/MIPSAbstractTokenMaker.java</file>
-            <file>file:/C:/GitHub/MIPS/src/mips/FileHandler.java</file>
             <file>file:/C:/GitHub/MIPS/src/GUI/ASM_GUI.java</file>
-            <file>file:/C:/GitHub/MIPS/src/GUI/lookandfeel/ModernScrollPane.java</file>
-            <file>file:/C:/GitHub/MIPS/src/GUI/imageFrame.java</file>
+            <file>file:/C:/GitHub/MIPS/src/GUI/Screen.java</file>
+            <file>file:/C:/GitHub/MIPS/src/mips/processor/Registers.java</file>
             <file>file:/C:/GitHub/MIPS/src/GUI/RSyntax/ASMFormattedTextArea.java</file>
             <file>file:/C:/GitHub/MIPS/src/Compiler/PreProcessorStatements/DEFINE.java</file>
-            <file>file:/C:/GitHub/MIPS/src/mips/Log.java</file>
             <file>file:/C:/GitHub/MIPS/src/Compiler/PreProcessorStatements/DEFINLINE.java</file>
             <file>file:/C:/GitHub/MIPS/src/mips/processor/Memory.java</file>
-            <file>file:/C:/GitHub/MIPS/build.xml</file>
-            <file>file:/C:/GitHub/MIPS/src/Compiler/DataClasses/MemoryLable.java</file>
+            <file>file:/C:/GitHub/MIPS/src/GUI/dragAndDrop.java</file>
+            <file>file:/C:/GitHub/MIPS/src/mips/ResourceHandler.java</file>
             <file>file:/C:/GitHub/MIPS/src/GUI/lookandfeel/ModernSliderUI.java</file>
             <file>file:/C:/GitHub/MIPS/src/mips/UpdateHandler.java</file>
-            <file>file:/C:/GitHub/MIPS/src/Compiler/PreProcessorStatements/IF.java</file>
             <file>file:/C:/GitHub/MIPS/src/Compiler/PreProcessorStatements/INCLUDE.java</file>
+            <file>file:/C:/GitHub/MIPS/src/Compiler/DirectivesDecoder.java</file>
+            <file>file:/C:/GitHub/MIPS/src/GUI/lookandfeel/ModernScrollBarUI.java</file>
             <file>file:/C:/GitHub/MIPS/src/mips/MIPS.java</file>
-            <file>file:/C:/GitHub/MIPS/src/GUI/lookandfeel/ThemeHandler.java</file>
+            <file>file:/C:/GitHub/MIPS/src/GUI/UserIO.java</file>
+            <file>file:/C:/GitHub/MIPS/src/mips/processor/InstructionDecode.java</file>
+            <file>file:/C:/GitHub/MIPS/src/GUI/Memory_GUI.java</file>
+            <file>file:/C:/GitHub/MIPS/src/GUI/lookandfeel/ModernButtonUI.java</file>
+            <file>file:/C:/GitHub/MIPS/src/GUI/ComboBoxSearchable.java</file>
+            <file>file:/C:/GitHub/MIPS/src/GUI/InstructionMemory_GUI.java</file>
+            <file>file:/C:/GitHub/MIPS/src/mips/FileHandler.java</file>
+            <file>file:/C:/GitHub/MIPS/src/GUI/InstructionToString.java</file>
+            <file>file:/C:/GitHub/MIPS/src/Compiler/StringToOpcode.java</file>
+            <file>file:/C:/GitHub/MIPS/src/GUI/lookandfeel/ModernScrollPane.java</file>
+            <file>file:/C:/GitHub/MIPS/src/GUI/imageFrame.java</file>
+            <file>file:/C:/GitHub/MIPS/src/mips/Log.java</file>
+            <file>file:/C:/GitHub/MIPS/src/GUI/lookandfeel/StyledTextPane.java</file>
+            <file>file:/C:/GitHub/MIPS/src/Compiler/PreProcessor.java</file>
+            <file>file:/C:/GitHub/MIPS/src/mips/processor/Processor.java</file>
+            <file>file:/C:/GitHub/MIPS/build.xml</file>
+            <file>file:/C:/GitHub/MIPS/src/Compiler/DataClasses/MemoryLable.java</file>
+            <file>file:/C:/GitHub/MIPS/src/Compiler/ASMCompiler.java</file>
+            <file>file:/C:/GitHub/MIPS/src/GUI/Register_GUI.java</file>
+            <file>file:/C:/GitHub/MIPS/src/Compiler/PreProcessorStatements/IF.java</file>
+            <file>file:/C:/GitHub/MIPS/src/GUI/Browser.java</file>
+            <file>file:/C:/GitHub/MIPS/src/GUI/lookandfeel/ModernJMenuIten.java</file>
+            <file>file:/C:/GitHub/MIPS/src/GUI/lookandfeel/ModernJMenuBar.java</file>
+            <file>file:/C:/GitHub/MIPS/src/Compiler/StandardHeader.asm</file>
         </group>
     </open-files>
 </project-private>

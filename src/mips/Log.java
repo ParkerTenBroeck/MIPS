@@ -23,11 +23,14 @@ import javax.swing.text.StyleConstants;
  */
 public class Log extends javax.swing.JPanel {
 
-    
-    static{
+    private static boolean logMessages = true;
+    private static boolean logWarnings = true;
+    private static boolean logErrors = true;
+
+    static {
         Log.initComponents();
     }
-    
+
     public static void clearDisplay() {
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n");
         //Log.appendMessageToVirtualConsoleLog("\n\n\n\n\n\n\n\n\n\n\n\n\n", null);
@@ -35,6 +38,9 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logError(String message) {
+        if (!logErrors) {
+            return;
+        }
         System.err.println("[Error] " + message);
 
         SimpleAttributeSet att = new SimpleAttributeSet();
@@ -44,6 +50,9 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logWarning(String message) {
+        if (!logWarnings) {
+            return;
+        }
         System.out.println("[Warning] " + message);
 
         SimpleAttributeSet att = new SimpleAttributeSet();
@@ -53,6 +62,9 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logMessage(String message) {
+        if (!logMessages) {
+            return;
+        }
         System.out.println("[Message] " + message);
 
         SimpleAttributeSet att = new SimpleAttributeSet();
@@ -62,12 +74,18 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logCustomMessage(String message, SimpleAttributeSet att) {
+        if (!logMessages) {
+            return;
+        }
         System.out.println("[Message] " + message);
 
         Log.appendMessageToVirtualConsoleLog("[Message] " + message, att);
     }
 
     public static void logCustomMessage(String message, boolean bold, boolean italic, boolean underline, Color color, String font) {
+        if (!logMessages) {
+            return;
+        }
         System.out.println("[Message] " + message);
 
         SimpleAttributeSet att = new SimpleAttributeSet();
