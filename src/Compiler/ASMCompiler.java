@@ -76,8 +76,8 @@ class asmInstruction extends CompileTimeUserLine {
     @Override
     public void finalCompilePass() {
         byte[] temp = StringToOpcode.stringToOpcode(this);
-        
-        if(temp == null){
+
+        if (temp == null) {
             //error
             return;
         }
@@ -96,12 +96,28 @@ class asmInstruction extends CompileTimeUserLine {
 
 class MemoryChunk {
 
-    MemoryLable startLable;
-    ArrayList<CompileTimeUserLine> chunkData;
+    final int byteAlignment;
+    final MemoryLable startLable;
+    final ArrayList<CompileTimeUserLine> chunkData;
 
     public MemoryChunk(MemoryLable lable) {
         this.startLable = lable;
         this.chunkData = new ArrayList();
+        this.byteAlignment = 0;
+    }
+
+    public MemoryChunk(UserLine line) {
+        this.startLable = null;
+        this.chunkData = new ArrayList();
+
+        int tempAll = ASMCompiler.parseInt(line.line.split(" ")[1]);
+
+        if (tempAll < 0) {
+            ASMCompiler.DirectivesDecoderError("Alignment cannot be less than zero", line.realLineNumber);
+            this.byteAlignment = 0;
+        } else {
+            this.byteAlignment = (int) Math.pow(2, tempAll);
+        }
     }
 
     public void addData(CompileTimeUserLine ctul) {
@@ -177,7 +193,7 @@ public class ASMCompiler {
         temp.clear();
         memoryByteList.clear();
         origins.clear();
-        
+
         Main_GUI.refreshAll();
     }
 
@@ -223,15 +239,19 @@ public class ASMCompiler {
 
                 for (MemoryChunk mc : org.memoryChunks) {
 
-                    if (mc.startLable.name.equals("") && mc.chunkData.isEmpty()) { //skips pre made lable if it is empty
-                        continue;
+                    if (mc.startLable != null) {
+                        if (mc.startLable.name.equals("") && mc.chunkData.isEmpty()) { //skips pre made lable if it is empty
+                            continue;
+                        }
+                        if (!mc.startLable.name.isEmpty()) {
+                            out.println("   " + "Memory Lable: "
+                                    + String.format("%-" + maxSizeMemoryLable + "s", mc.startLable.name + ",")
+                                    + " Memory Adress: " + String.format("%08X", mc.startLable.getByteAddress()));
+                            out.println();
+                        }
                     }
-                    if (!mc.startLable.name.isEmpty()) {
-                        out.println("   " + "Memory Lable: "
-                                + String.format("%-" + maxSizeMemoryLable + "s", mc.startLable.name + ",")
-                                + " Memory Adress: " + String.format("%08X", mc.startLable.getByteAddress()));
-                        out.println();
-                    }
+                    out.print("   " + "Aligned to: " + mc.byteAlignment);
+                    out.println();
 
                     for (CompileTimeUserLine ctul : mc.chunkData) {
 
@@ -321,7 +341,13 @@ public class ASMCompiler {
                 } catch (Exception e) {
                     //does not matter if it doesnt exist
                 }
-                mc.startLable.setByteAddress(currentByteIndex); //sets the byte address of the chunks memory lable
+                if (mc.byteAlignment != 0) {
+                    currentByteIndex = (currentByteIndex & ~(mc.byteAlignment - 1)) + mc.byteAlignment;
+                }
+
+                if (mc.startLable != null) {
+                    mc.startLable.setByteAddress(currentByteIndex); //sets the byte address of the chunks memory lable
+                }
 
                 for (CompileTimeUserLine ctul : mc.chunkData) {
 
@@ -392,6 +418,9 @@ public class ASMCompiler {
                 mc = new MemoryChunk(ml);
                 addMemoryLable(ml);
                 memoryLableIndex++;
+            } else if (currentLine.line.startsWith(".align")) {
+                org.addMemoryChunk(mc);
+                mc = new MemoryChunk(currentLine);
             } else if (currentLine.line.startsWith(".org")) { //adds origin to list of origins and 
                 org.addMemoryChunk(mc);
                 addOrigin(org);
