@@ -1,9 +1,10 @@
 /*
 !/src/
-!/res/
-!/libs/
-!/nbproject/
-!/build.xml
+!/gradle/
 !/README.md
+!/build.gradle
+!/gradlew
+!/gradlew.bat
+!/settings.gradle
 !.gitignore
 !.gitattributes
