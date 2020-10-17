@@ -12,6 +12,7 @@ import mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginHandler;
 import static Processor.Processor.logRunTimeError;
 import static Processor.Processor.logRunTimeMessage;
 import static Processor.Processor.logRunTimeWarning;
+
 /**
  *
  * @author parke
@@ -72,7 +73,11 @@ public class SystemCallHandler {
     }
 
     public static void SystemCall(int id) {
-        idrkWhat[id].handleSystemCall();
+        try {
+            idrkWhat[id].handleSystemCall();
+        } catch (Exception e) {
+
+        }
     }
 
     /*
