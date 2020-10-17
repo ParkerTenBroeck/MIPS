@@ -10,7 +10,7 @@ import java.awt.Color;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
-import mips.processor.Registers;
+import Processor.Registers;
 
 /**
  *

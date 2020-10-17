@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package GUI;
+package Processor.InternalSystemCalls;
+
+import GUI.Main_GUI;
 
 /**
  *
@@ -12,6 +14,12 @@ package GUI;
 public class UserIO extends javax.swing.JFrame {
 
     private static String enteredText;
+
+    public void openUserIO() {
+        if (!isVisible()) {
+            setVisible(true);
+        }
+    }
 
     public static int getInt() {
         while (!UserIO.hasChar()) {
@@ -260,7 +268,6 @@ public class UserIO extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private static javax.swing.JTextField inputTextFeild;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
     private GUI.lookandfeel.ModernScrollPane modernScrollPane1;
     private static javax.swing.JTextArea outputTextArea;
     // End of variables declaration//GEN-END:variables

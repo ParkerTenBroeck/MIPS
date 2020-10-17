@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import mips.FileHandler;
 import mips.Log;
-import mips.processor.Memory;
+import Processor.Memory;
 
 class ByteP {
 

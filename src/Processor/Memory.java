@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mips.processor;
+package Processor;
 
 import GUI.Main_GUI;
-import static mips.processor.Processor.logRunTimeError;
+import static Processor.Processor.logRunTimeError;
 
 /**
  *

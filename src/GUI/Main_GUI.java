@@ -5,6 +5,8 @@
  */
 package GUI;
 
+import Processor.InternalSystemCalls.Screen;
+import Processor.InternalSystemCalls.UserIO;
 import Compiler.ASMCompiler;
 import GUI.lookandfeel.ModernButtonUI;
 import GUI.lookandfeel.ModernSliderUI;
@@ -32,8 +34,8 @@ import mips.Log;
 import mips.MIPS;
 import mips.ResourceHandler;
 import mips.UpdateHandler;
-import mips.processor.Memory;
-import mips.processor.Processor;
+import Processor.Memory;
+import Processor.Processor;
 
 /**
  *
@@ -43,8 +45,6 @@ public class Main_GUI extends javax.swing.JFrame {
 
     private static Thread autoUpdateThread;
     private static boolean autoUpdate;
-    private static UserIO userIO = new UserIO();
-    private static final Screen screen = new Screen();
 
     public static synchronized boolean isRunning() {
         return autoUpdate;
@@ -124,12 +124,6 @@ public class Main_GUI extends javax.swing.JFrame {
         Memory.setMemory(FileHandler.getLoadedMXNFile());
         InstructionMemory_GUI.refreshValues();
         refresh();
-    }
-
-    public static void showScreen() {
-        if (!screen.isVisible()) {
-            screen.setVisible(true);
-        }
     }
 
     /**
@@ -255,13 +249,6 @@ public class Main_GUI extends javax.swing.JFrame {
         });
     }
 
-    public static void openUserIO() {
-        if (!userIO.isVisible()) {
-            userIO.setVisible(true);
-            //userIO.requestFocus();
-        }
-    }
-
     public static int confirmBox(String titleBar, String infoMessage) {
         return JOptionPane.showConfirmDialog(null, infoMessage, titleBar, JOptionPane.INFORMATION_MESSAGE);
     }
@@ -291,8 +278,6 @@ public class Main_GUI extends javax.swing.JFrame {
         stopButton =  new JButton() {                 @Override         public void updateUI() {                     setUI(new ModernButtonUI(this));                 }             }; ;
         singleStepButton =  new JButton() {                 @Override         public void updateUI() {                     setUI(new ModernButtonUI(this));                 }             }; ;
         memoryButton =  new JButton() {                 @Override         public void updateUI() {                     setUI(new ModernButtonUI(this));                 }             }; ;
-        userIOButton =  new JButton() {                 @Override         public void updateUI() {                     setUI(new ModernButtonUI(this));                 }             }; ;
-        screenButton =  new JButton() {                 @Override         public void updateUI() {                     setUI(new ModernButtonUI(this));                 }             }; ;
         aboutButton = new javax.swing.JButton();
         InstructionsRan = new javax.swing.JLabel();
         resetButton =  new JButton() {                 @Override         public void updateUI() {                     setUI(new ModernButtonUI(this));                 }             }; ;
@@ -412,26 +397,6 @@ public class Main_GUI extends javax.swing.JFrame {
             }
         });
 
-        userIOButton.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        userIOButton.setText("User IO");
-        userIOButton.setFocusable(false);
-        userIOButton.setOpaque(false);
-        userIOButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                userIOButtonActionPerformed(evt);
-            }
-        });
-
-        screenButton.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        screenButton.setText("Screen");
-        screenButton.setFocusable(false);
-        screenButton.setOpaque(false);
-        screenButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                screenButtonActionPerformed(evt);
-            }
-        });
-
         aboutButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/info.png"))); // NOI18N
         aboutButton.setBorderPainted(false);
         aboutButton.setContentAreaFilled(false);
@@ -476,10 +441,6 @@ public class Main_GUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(memoryButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(userIOButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(screenButton, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(resetButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(InstructionsRan)
@@ -500,13 +461,14 @@ public class Main_GUI extends javax.swing.JFrame {
                         .addComponent(stopButton)
                         .addComponent(singleStepButton)
                         .addComponent(memoryButton)
-                        .addComponent(userIOButton)
-                        .addComponent(screenButton)
-                        .addComponent(resetButton)
-                        .addComponent(InstructionsRan)
                         .addComponent(startButton)
                         .addComponent(jLabel2)))
                 .addGap(3, 3, 3))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, buttonBarPanelLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(buttonBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(resetButton)
+                    .addComponent(InstructionsRan)))
         );
 
         jPanel4.setOpaque(false);
@@ -799,17 +761,9 @@ public class Main_GUI extends javax.swing.JFrame {
         Processor.setDelay((int) Math.pow(delaySlider.getValue(), 3));
     }//GEN-LAST:event_delaySliderMouseReleased
 
-    private void screenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_screenButtonActionPerformed
-        screen.setVisible(!screen.isVisible());
-    }//GEN-LAST:event_screenButtonActionPerformed
-
     private void aboutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutButtonActionPerformed
         Browser.openLinkInBrowser("https://github.com/ParkerTenBroeck/MIPS/blob/master/README.md");
     }//GEN-LAST:event_aboutButtonActionPerformed
-
-    private void userIOButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userIOButtonActionPerformed
-        openUserIO();
-    }//GEN-LAST:event_userIOButtonActionPerformed
 
     private void openMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuButtonActionPerformed
         if (FileHandler.openUserSelectedFile()) {
@@ -820,7 +774,7 @@ public class Main_GUI extends javax.swing.JFrame {
     private void compileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compileButtonActionPerformed
         Processor.stop();
         Processor.reset();
-        UserIO.clearOutput();
+        //UserIO.clearOutput();
         ASMCompiler.compile();
     }//GEN-LAST:event_compileButtonActionPerformed
 
@@ -831,7 +785,7 @@ public class Main_GUI extends javax.swing.JFrame {
     private void resetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetButtonActionPerformed
         stop();
         Processor.reset();
-        UserIO.clearOutput();
+        //UserIO.clearOutput();
     }//GEN-LAST:event_resetButtonActionPerformed
 
     private void saveMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuButtonActionPerformed
@@ -943,10 +897,8 @@ public class Main_GUI extends javax.swing.JFrame {
     private static javax.swing.JCheckBoxMenuItem saveCompileInformationButton;
     private static javax.swing.JMenuItem saveMenuButton;
     private static javax.swing.JCheckBoxMenuItem savePreProcessedFileButton;
-    private static javax.swing.JButton screenButton;
     private static javax.swing.JButton singleStepButton;
     private static javax.swing.JToggleButton startButton;
     private static javax.swing.JButton stopButton;
-    private static javax.swing.JButton userIOButton;
     // End of variables declaration//GEN-END:variables
 }

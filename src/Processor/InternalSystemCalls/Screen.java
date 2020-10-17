@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package GUI;
+package Processor.InternalSystemCalls;
 
+import GUI.Main_GUI;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -25,6 +26,12 @@ public class Screen extends javax.swing.JFrame {
     private static BufferedImage imageBuffer = new BufferedImage(25, 16, BufferedImage.TYPE_INT_RGB);
 
     private static final ArrayList<KeyEvent> keysPressed = new ArrayList();
+
+    public void showScreen() {
+        if (!this.isVisible()) {
+            this.setVisible(true);
+        }
+    }
 
     public static void fillScreen(int val) {
         Graphics2D graphics = image.createGraphics();

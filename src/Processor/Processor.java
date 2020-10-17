@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mips.processor;
+package Processor;
 
 import GUI.Main_GUI;
 import mips.FileHandler;
 import mips.Log;
-import static mips.processor.InstructionDecode.runInstruction;
-import static mips.processor.Memory.getWord;
-import static mips.processor.Registers.getPc;
+import static Processor.InstructionDecode.runInstruction;
+import static Processor.Memory.getWord;
+import static Processor.Registers.getPc;
 
 /**
  *

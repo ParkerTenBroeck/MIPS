@@ -3,32 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mips.processor;
+package Processor;
 
-import GUI.Main_GUI;
-import static GUI.Main_GUI.openUserIO;
-import GUI.Screen;
-import GUI.UserIO;
-import static GUI.UserIO.outputNumber;
-import static GUI.UserIO.outputUnicode;
-import java.awt.Color;
 import java.util.ArrayList;
 import mips.PluginHandler.SystemCallPluginHandler.SystemCall;
 import mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin;
 import mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginHandler;
-import static mips.processor.Processor.logRunTimeError;
-import static mips.processor.Processor.logRunTimeMessage;
-import static mips.processor.Processor.logRunTimeWarning;
-import static mips.processor.Registers.getRegister;
-import static mips.processor.Registers.setRegister;
-
+import static Processor.Processor.logRunTimeError;
+import static Processor.Processor.logRunTimeMessage;
+import static Processor.Processor.logRunTimeWarning;
 /**
  *
  * @author parke
  */
 public class SystemCallHandler {
-
-    private static long lastTimeCheck = 0;
 
     private static final ArrayList<SystemCallPlugin> registeredSystemCallPlugins = new ArrayList();
     private static final ArrayList<SystemCall> registeredSystemCalls = new ArrayList();
@@ -50,9 +38,10 @@ public class SystemCallHandler {
         int totalConflicts = 0;
 
         for (SystemCall sc : scl) {
-            if(sc == null){
-                totalConflicts ++;
+            if (sc == null) {
+                totalConflicts++;
                 SystemCallPluginHandler.logPluginHandlerError("System Call in " + scp.PLUGIN_NAME + " is null skipping for now");
+                continue;
             }
             boolean conflict = false;
             for (SystemCall rsc : registeredSystemCalls) {
@@ -75,9 +64,9 @@ public class SystemCallHandler {
         }
         registeredSystemCallPlugins.add(scp);
         if (totalConflicts > 0) {
-            SystemCallPluginHandler.logPluginHandlerWarning(scp.PLUGIN_NAME + " was reigstered with " + totalConflicts + " conflicts");
+            SystemCallPluginHandler.logPluginHandlerWarning("SystemCall plugin: " + scp.PLUGIN_NAME + " was reigstered with " + totalConflicts + " conflicts");
         } else {
-            SystemCallPluginHandler.logPluginHandlerSystemMessage(scp.PLUGIN_NAME + " was reigstered with " + totalConflicts + " conflicts" + "\n");
+            SystemCallPluginHandler.logPluginHandlerSystemMessage("SystemCall plugin: " + scp.PLUGIN_NAME + " was reigstered with " + totalConflicts + " conflicts" + "\n");
         }
 
     }
@@ -86,6 +75,7 @@ public class SystemCallHandler {
         idrkWhat[id].handleSystemCall();
     }
 
+    /*
     public static void SystemCallo(int id) {
 
         try {
@@ -265,15 +255,16 @@ public class SystemCallHandler {
         }
     }
 
-    public static void loadRunTimeSystemCallError(String message) {
+     */
+    public static void logRunTimeSystemCallError(String message) {
         logRunTimeError("[System Call] " + message);
     }
 
-    public static void loadRunTimeSystemCallWarning(String message) {
+    public static void logRunTimeSystemCallWarning(String message) {
         logRunTimeWarning("[System Call] " + message);
     }
 
-    public static void loadRunTimeSystemCallMessage(String message) {
+    public static void logRunTimeSystemCallMessage(String message) {
         logRunTimeMessage("[System Call] " + message);
     }
 

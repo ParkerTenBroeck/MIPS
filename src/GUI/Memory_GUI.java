@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JToggleButton;
 import javax.swing.ScrollPaneConstants;
-import mips.processor.Memory;
+import Processor.Memory;
 
 /**
  *

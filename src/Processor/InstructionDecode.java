@@ -3,20 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mips.processor;
+package Processor;
 
-import static mips.processor.Memory.getByte;
-import static mips.processor.Memory.getHalfWord;
-import static mips.processor.Memory.getWord;
-import static mips.processor.Registers.getHigh;
-import static mips.processor.Registers.getLow;
-import static mips.processor.Registers.getPc;
-import static mips.processor.Registers.getRegister;
-import static mips.processor.Registers.setHigh;
-import static mips.processor.Registers.setLow;
-import static mips.processor.Registers.setPc;
-import static mips.processor.Registers.setRegister;
-import static mips.processor.SystemCallHandler.SystemCall;
+import static Processor.Memory.getByte;
+import static Processor.Memory.getHalfWord;
+import static Processor.Memory.getWord;
+import static Processor.Registers.getHigh;
+import static Processor.Registers.getLow;
+import static Processor.Registers.getPc;
+import static Processor.Registers.getRegister;
+import static Processor.Registers.setHigh;
+import static Processor.Registers.setLow;
+import static Processor.Registers.setPc;
+import static Processor.Registers.setRegister;
+import static Processor.SystemCallHandler.SystemCall;
 
 /**
  *

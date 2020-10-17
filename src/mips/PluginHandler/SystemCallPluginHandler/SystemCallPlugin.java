@@ -5,24 +5,35 @@
  */
 package mips.PluginHandler.SystemCallPluginHandler;
 
-import mips.processor.Memory;
-import mips.processor.Processor;
-import mips.processor.Registers;
-import mips.processor.SystemCallHandler;
+import GUI.Main_GUI;
+import Processor.Memory;
+import Processor.Processor;
+import Processor.Registers;
+import Processor.SystemCallHandler;
+import javax.swing.JFrame;
 
 /**
  *
  * @author parke
  */
 public abstract class SystemCallPlugin {
-
+    
     final protected SystemCall[] systemCalls;
     final public String PLUGIN_NAME;
-
+    
     public SystemCallPlugin(int numOfSystemCalls, String pluginName) {
         this.systemCalls = new SystemCall[numOfSystemCalls];
         this.PLUGIN_NAME = pluginName;
     }
+
+    /**
+     * return null if no frame is needed for the plugin
+     *
+     *
+     *
+     * @return
+     */
+    public abstract JFrame getPluginFrame();
 
     /**
      * This will be call once after class is instantiated use this for anything
@@ -30,7 +41,7 @@ public abstract class SystemCallPlugin {
      *
      */
     public abstract void init();
-
+    
     public final SystemCall[] getSystemCalls() {
         return systemCalls;
     }
@@ -42,7 +53,7 @@ public abstract class SystemCallPlugin {
      * @param message the message that will be logged as a warning
      */
     protected final void logRunTimeSystemCallError(String message) {
-        SystemCallHandler.loadRunTimeSystemCallError(message);
+        SystemCallHandler.logRunTimeSystemCallError(message);
     }
 
     /**
@@ -50,7 +61,7 @@ public abstract class SystemCallPlugin {
      * @param message the message that will be logged as a warning
      */
     protected final void logRunTimeSystemCallWarning(String message) {
-        SystemCallHandler.loadRunTimeSystemCallWarning(message);
+        SystemCallHandler.logRunTimeSystemCallWarning(message);
     }
 
     /**
@@ -58,7 +69,21 @@ public abstract class SystemCallPlugin {
      * @param message the message that will be logged
      */
     protected final void logRunTimeSystemCallMessage(String message) {
-        SystemCallHandler.loadRunTimeSystemCallMessage(message);
+        SystemCallHandler.logRunTimeSystemCallMessage(message);
+    }
+
+    /**
+     *
+     * @return
+     */
+    protected final boolean throwBreakPoint() {
+        
+        if (Main_GUI.canBreak()) {
+            stopProcessor();
+            logRunTimeSystemCallMessage("Program has reached a breakpoint");
+        }
+        
+        return Main_GUI.canBreak();
     }
 
     /**
@@ -101,7 +126,7 @@ public abstract class SystemCallPlugin {
      * @param index the index in bytes where the data being retrieved is held
      * @return returns a full word (4 bytes) at the location in memory of index
      */
-    protected final int getWorld(int index) {
+    protected final int getWord(int index) {
         return Memory.getWord(index);
     }
 
@@ -130,7 +155,7 @@ public abstract class SystemCallPlugin {
      */
     protected final int getRegister(int reg) {
         return Registers.getRegister(reg);
-
+        
     }
 
     /**
@@ -190,9 +215,9 @@ public abstract class SystemCallPlugin {
     protected final void setLow(int val) {
         Registers.setLow(val);
     }
-
+    
     protected final void throwNonInturuptableIntturupt() { //still in the works
 
     }
-
+    
 }

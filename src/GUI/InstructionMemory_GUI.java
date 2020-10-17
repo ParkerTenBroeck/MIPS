@@ -10,9 +10,9 @@ import static GUI.InstructionToString.instructionToString;
 import java.awt.Color;
 import javax.swing.DefaultListModel;
 import mips.FileHandler;
-import mips.processor.Memory;
-import static mips.processor.Memory.superGetWord;
-import static mips.processor.Registers.getPc;
+import Processor.Memory;
+import static Processor.Memory.superGetWord;
+import static Processor.Registers.getPc;
 
 /**
  *

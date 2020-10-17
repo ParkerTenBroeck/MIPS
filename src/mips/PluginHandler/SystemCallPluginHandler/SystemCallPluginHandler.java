@@ -20,7 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import mips.Log;
 import mips.ResourceHandler;
-import mips.processor.SystemCallHandler;
+import Processor.SystemCallHandler;
 
 /**
  *
@@ -109,13 +109,13 @@ public class SystemCallPluginHandler {
     
     public static void loadDefaultPlugins() {
         
-        SystemCallPlugin spc = loadInternalPluginFromClassPath("mips.processor.SystemCalls.DefaultSystemCalls");
+        SystemCallPlugin spc = loadInternalPluginFromClassPath("Processor.InternalSystemCalls.DefaultSystemCalls");
         SystemCallHandler.registerSystemCallPlugin(spc);
         
-        spc = loadInternalPluginFromClassPath("mips.processor.SystemCalls.ConsoleSystemCalls");
+        spc = loadInternalPluginFromClassPath("Processor.InternalSystemCalls.UserIOSystemCalls");
         SystemCallHandler.registerSystemCallPlugin(spc);
         
-        spc = loadInternalPluginFromClassPath("mips.processor.SystemCalls.ScreenSystemCalls");
+        spc = loadInternalPluginFromClassPath("Processor.InternalSystemCalls.ScreenSystemCalls");
         SystemCallHandler.registerSystemCallPlugin(spc);
         
         File file = new File(ResourceHandler.SYS_CALLS_PLUGIN_PATH);
