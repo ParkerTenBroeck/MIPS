@@ -27,18 +27,18 @@ import Processor.SystemCallHandler;
  * @author parke
  */
 public class SystemCallPluginHandler {
-    
+
     static ArrayList<SystemCallPlugin> loadedPlugins;
-    
+
     private static SystemCallPlugin loadInternalPluginFromClassPath(String path) {
-        
+
         Class<?> pluginClass = null;
         try {
             pluginClass = Class.forName(path); // Load the class
         } catch (ClassNotFoundException ex) {
             logPluginHandlerError("internal Class not found for: " + path);
         }
-        
+
         SystemCallPlugin plugin = null;
         try {
             plugin = (SystemCallPlugin) pluginClass.newInstance();
@@ -56,12 +56,12 @@ public class SystemCallPluginHandler {
         }
         return plugin;
     }
-    
+
     private static SystemCallPlugin loadExternalPluginFromJarPath(String path) {
         File jarFile = new File(path);
-        
+
         String className = "";
-        
+
         try (JarInputStream jarStream = new JarInputStream(new FileInputStream(jarFile))) {
             Manifest manifest = jarStream.getManifest();
 
@@ -71,10 +71,12 @@ public class SystemCallPluginHandler {
             logPluginHandlerError("File: " + path + " does not exist");
         } catch (IOException ex) {
             logPluginHandlerError("IO exeption whill reading File: " + path);
+        } catch (Exception e) {
+            logPluginHandlerError("General Exeption while reading manifest" + path);
         }
-        
+
         URLClassLoader classLoader = null;
-        
+
         if (false) {
             try {
                 classLoader = new URLClassLoader(
@@ -84,7 +86,7 @@ public class SystemCallPluginHandler {
                 logPluginHandlerError("Malformed URL whill reading File: " + path);
             }
         }
-        
+
         Class<?> pluginClass = null;
         try {
             pluginClass = classLoader.loadClass(className); // Load the class
@@ -92,7 +94,7 @@ public class SystemCallPluginHandler {
             logPluginHandlerError("Class not found exeption whill reading File: " + path + "\n"
                     + "Not a plugin? plugin not build correctly?");
         }
-        
+
         SystemCallPlugin plugin = null;
         try {
             plugin = (SystemCallPlugin) pluginClass.newInstance();
@@ -101,27 +103,27 @@ public class SystemCallPluginHandler {
         } catch (IllegalAccessException ex) {
             logPluginHandlerError("Illegal Access Exeption when loading File: " + path);
         }
-        
+
         logPluginHandlerSystemMessage(plugin.PLUGIN_NAME + " was loaded");
-        
+
         return plugin;
     }
-    
+
     public static void loadDefaultPlugins() {
-        
+
         SystemCallPlugin spc = loadInternalPluginFromClassPath("Processor.InternalSystemCalls.DefaultSystemCalls");
         SystemCallHandler.registerSystemCallPlugin(spc);
-        
+
         spc = loadInternalPluginFromClassPath("Processor.InternalSystemCalls.UserIOSystemCalls");
         SystemCallHandler.registerSystemCallPlugin(spc);
-        
+
         spc = loadInternalPluginFromClassPath("Processor.InternalSystemCalls.ScreenSystemCalls");
         SystemCallHandler.registerSystemCallPlugin(spc);
-        
+
         File file = new File(ResourceHandler.SYS_CALLS_PLUGIN_PATH);
-        
+
         File files[] = file.listFiles();
-        
+
         for (File f : files) {
             if (f.exists()) {
                 SystemCallPlugin scp = loadExternalPluginFromJarPath(f.getAbsolutePath());
@@ -129,15 +131,15 @@ public class SystemCallPluginHandler {
             }
         }
     }
-    
+
     public static void logPluginHandlerError(String message) {
         Log.logError("[Plugin Handler] " + message);
     }
-    
+
     public static void logPluginHandlerWarning(String message) {
         Log.logWarning("[Plugin Handler] " + message);
     }
-    
+
     public static void logPluginHandlerSystemMessage(String message) {
         Log.logSystemMessage("[Plugin Handler] " + message);
     }
