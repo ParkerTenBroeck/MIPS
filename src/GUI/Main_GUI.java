@@ -65,13 +65,16 @@ public class Main_GUI extends javax.swing.JFrame {
 //            private int size = 100;
 //            private int index = 0;
 //            private double[] as = new double[size];
-
             public void run() {
                 while (isRunning()) {
 //                    long currentInstructionCount = Processor.getInstructionsRan();
 //                    long currentTime = System.nanoTime();
 
                     Main_GUI.refresh();
+                    if (!Processor.isRunning()) {
+                        Main_GUI.stopAutoUpdate();
+                        Main_GUI.refresh();
+                    }
                     try {
                         Thread.sleep(100);
                     } catch (Exception e) {

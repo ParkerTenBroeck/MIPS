@@ -32,6 +32,7 @@ public class ResourceHandler {
     public static final String DOCUMENTATION_PATH = DEFAULT_PATH + "\\Documentation";
     public static final String EXAMPLES_PATH = DEFAULT_PATH + "\\Examples";
     public static final String CONFIG_PATH = DEFAULT_PATH + "\\Config";
+    public static final String SYS_CALLS_PLUGIN_PATH = DEFAULT_PATH + "\\SystemCallPlugins";
 
     public static boolean extractResources() {
 
@@ -40,8 +41,13 @@ public class ResourceHandler {
             dfp.mkdir();
         }
 
+        File scpp = new File(SYS_CALLS_PLUGIN_PATH);
+        if (!scpp.exists()) {
+            scpp.mkdir();
+        }
+
         boolean temp = true;
-        
+
         temp &= extractResourceToFolder(DEFAULT_PATH, "Default");
         temp &= extractResourceToFolder(DOCUMENTATION_PATH, "Documentation");
         temp &= extractResourceToFolder(EXAMPLES_PATH, "Examples");
@@ -70,9 +76,9 @@ public class ResourceHandler {
                 Enumeration<JarEntry> enums = jarFile.entries();
                 while (enums.hasMoreElements()) {
                     JarEntry entry = null;
-                    try{
-                    entry = enums.nextElement();
-                    }catch(Exception e){
+                    try {
+                        entry = enums.nextElement();
+                    } catch (Exception e) {
                         continue;
                     }
                     if (entry.getName().startsWith(jarPath)) {
@@ -188,8 +194,5 @@ public class ResourceHandler {
             }
         }
     }
-    
-    
+
 }
-
-

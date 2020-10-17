@@ -5,13 +5,9 @@
  */
 package mips.processor;
 
-import GUI.Main_GUI;
 import static mips.processor.Memory.getByte;
 import static mips.processor.Memory.getHalfWord;
 import static mips.processor.Memory.getWord;
-import static mips.processor.Memory.setByte;
-import static mips.processor.Memory.setHalfWord;
-import static mips.processor.Memory.setWord;
 import static mips.processor.Registers.getHigh;
 import static mips.processor.Registers.getLow;
 import static mips.processor.Registers.getPc;
@@ -20,7 +16,7 @@ import static mips.processor.Registers.setHigh;
 import static mips.processor.Registers.setLow;
 import static mips.processor.Registers.setPc;
 import static mips.processor.Registers.setRegister;
-import static mips.processor.SystemCall.SystemCall;
+import static mips.processor.SystemCallHandler.SystemCall;
 
 /**
  *

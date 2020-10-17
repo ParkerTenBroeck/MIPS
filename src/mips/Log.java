@@ -24,6 +24,7 @@ import javax.swing.text.StyleConstants;
 public class Log extends javax.swing.JPanel {
 
     private static boolean logMessages = true;
+    private static boolean logSystemMessages = true;
     private static boolean logWarnings = true;
     private static boolean logErrors = true;
 
@@ -59,6 +60,18 @@ public class Log extends javax.swing.JPanel {
         StyleConstants.setForeground(att, Color.YELLOW);
         StyleConstants.setBold(att, true);
         Log.appendMessageToVirtualConsoleLog("[Warning] " + message, att);
+    }
+
+    public static void logSystemMessage(String message) {
+        if (!logSystemMessages) {
+            return;
+        }
+        System.out.println("[System Message] " + message);
+
+        SimpleAttributeSet att = new SimpleAttributeSet();
+        StyleConstants.setForeground(att, Color.BLACK);
+        StyleConstants.setBold(att, true);
+        Log.appendMessageToVirtualConsoleLog("[System Message] " + message, att);
     }
 
     public static void logMessage(String message) {

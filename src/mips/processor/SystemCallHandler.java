@@ -12,8 +12,13 @@ import GUI.UserIO;
 import static GUI.UserIO.outputNumber;
 import static GUI.UserIO.outputUnicode;
 import java.awt.Color;
+import java.util.ArrayList;
+import mips.PluginHandler.SystemCallPluginHandler.SystemCall;
+import mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin;
+import mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginHandler;
 import static mips.processor.Processor.logRunTimeError;
 import static mips.processor.Processor.logRunTimeMessage;
+import static mips.processor.Processor.logRunTimeWarning;
 import static mips.processor.Registers.getRegister;
 import static mips.processor.Registers.setRegister;
 
@@ -21,11 +26,67 @@ import static mips.processor.Registers.setRegister;
  *
  * @author parke
  */
-public class SystemCall {
+public class SystemCallHandler {
 
     private static long lastTimeCheck = 0;
 
+    private static final ArrayList<SystemCallPlugin> registeredSystemCallPlugins = new ArrayList();
+    private static final ArrayList<SystemCall> registeredSystemCalls = new ArrayList();
+
+    private static SystemCall[] idrkWhat = new SystemCall[200];
+
+    public static void registerSystemCallPlugin(SystemCallPlugin scp) {
+
+        if (scp == null) {
+            return;
+        }
+        if (scp.getSystemCalls() == null) {
+            SystemCallPluginHandler.logPluginHandlerError("System Calls is null in" + scp.PLUGIN_NAME + " skipping for now");
+            return;
+        }
+
+        SystemCall[] scl = scp.getSystemCalls();
+
+        int totalConflicts = 0;
+
+        for (SystemCall sc : scl) {
+            if(sc == null){
+                totalConflicts ++;
+                SystemCallPluginHandler.logPluginHandlerError("System Call in " + scp.PLUGIN_NAME + " is null skipping for now");
+            }
+            boolean conflict = false;
+            for (SystemCall rsc : registeredSystemCalls) {
+                if ((sc.SYSTEM_CALL_NAME.equals(rsc.SYSTEM_CALL_NAME)) || sc.SYSTEM_CALL_NUMBER == rsc.SYSTEM_CALL_NUMBER) {
+                    conflict = true;
+                    totalConflicts++;
+                    SystemCallPluginHandler.logPluginHandlerError("System Call Conflict " + sc.SYSTEM_CALL_NAME + ":" + sc.SYSTEM_CALL_NUMBER
+                            + " was not registered because " + rsc.SYSTEM_CALL_NAME + ":" + rsc.SYSTEM_CALL_NUMBER + " was already reigstered");
+                    break;
+                }
+            }
+            if (!conflict) {
+                registeredSystemCalls.add(sc);
+                idrkWhat[sc.SYSTEM_CALL_NUMBER] = sc;
+                SystemCallPluginHandler.logPluginHandlerSystemMessage("System Call " + sc.SYSTEM_CALL_NAME + ":" + sc.SYSTEM_CALL_NUMBER + " was successfully registered");
+            } else {
+                SystemCallPluginHandler.logPluginHandlerWarning("System Call " + sc.SYSTEM_CALL_NAME + ":" + sc.SYSTEM_CALL_NUMBER + "was not registered because of a conflict");
+                //warning system call (name and number) was not registered
+            }
+        }
+        registeredSystemCallPlugins.add(scp);
+        if (totalConflicts > 0) {
+            SystemCallPluginHandler.logPluginHandlerWarning(scp.PLUGIN_NAME + " was reigstered with " + totalConflicts + " conflicts");
+        } else {
+            SystemCallPluginHandler.logPluginHandlerSystemMessage(scp.PLUGIN_NAME + " was reigstered with " + totalConflicts + " conflicts" + "\n");
+        }
+
+    }
+
     public static void SystemCall(int id) {
+        idrkWhat[id].handleSystemCall();
+    }
+
+    public static void SystemCallo(int id) {
 
         try {
 
@@ -50,7 +111,7 @@ public class SystemCall {
                     int i = 0;
                     int index = getRegister(4);
                     int step = getRegister(5);
-                    if(step == 0){
+                    if (step == 0) {
                         step = 1;
                     }
                     if (step == 1) {
@@ -190,7 +251,7 @@ public class SystemCall {
                     int colorInt = Color.HSBtoRGB((float) (getRegister(4) / 255.0), (float) getRegister(5) / (float) 255.0, (float) getRegister(6) / (float) 255.0);
                     setRegister(4, colorInt);
                 }
-                    break;
+                break;
                 case 156:
                     Screen.fillScreen(getRegister(4));
                     break;
@@ -202,6 +263,18 @@ public class SystemCall {
         } catch (Exception e) {
 
         }
+    }
+
+    public static void loadRunTimeSystemCallError(String message) {
+        logRunTimeError("[System Call] " + message);
+    }
+
+    public static void loadRunTimeSystemCallWarning(String message) {
+        logRunTimeWarning("[System Call] " + message);
+    }
+
+    public static void loadRunTimeSystemCallMessage(String message) {
+        logRunTimeMessage("[System Call] " + message);
     }
 
 }

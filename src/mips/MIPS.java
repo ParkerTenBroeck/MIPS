@@ -8,6 +8,7 @@ package mips;
 import GUI.Main_GUI;
 import java.io.File;
 import static mips.UpdateHandler.checkForUpdates;
+import mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginHandler;
 
 /**
  *
@@ -33,6 +34,9 @@ public class MIPS {
 
     public static void main(String[] args) {
         ResourceHandler.extractResources();
+
+        SystemCallPluginHandler.loadDefaultPlugins();
+
         Main_GUI gui = new Main_GUI();
         //static int temp = 0;
 

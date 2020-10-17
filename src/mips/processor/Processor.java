@@ -27,7 +27,6 @@ public class Processor implements Runnable {
     }
 
     public static synchronized void stop() {
-        Main_GUI.refresh();
         isRunning = false;
     }
 
@@ -51,7 +50,7 @@ public class Processor implements Runnable {
         return delay;
     }
 
-    private static synchronized boolean isRunning() {
+    public static synchronized boolean isRunning() {
         return isRunning;
     }
 
