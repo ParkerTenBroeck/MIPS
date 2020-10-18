@@ -14,9 +14,9 @@ import javax.swing.JLabel;
  *
  * @author parke
  */
-public class ThemedJLable extends JLabel implements ThemableComponent {
+public class ThemedJLabel extends JLabel implements ThemableComponent {
 
-    public ThemedJLable(boolean activeText) {
+    public ThemedJLabel(boolean activeText) {
 
         this.setFont((Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.LABLE_TEXT_FONT_PROPERTY_NAME));
         ThemeHandler.addPropertyChangeListenerFromName(ThemeHandler.LABLE_TEXT_FONT_PROPERTY_NAME, this);
@@ -36,7 +36,7 @@ public class ThemedJLable extends JLabel implements ThemableComponent {
         this.setOpaque(false);
     }
 
-    public ThemedJLable() {
+    public ThemedJLabel() {
         this(false);
     }
 

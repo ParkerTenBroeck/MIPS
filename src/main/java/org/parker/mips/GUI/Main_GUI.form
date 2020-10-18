@@ -193,51 +193,46 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JPanel" name="mainPanel">
-      <Properties>
-        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="33" green="33" red="33" type="rgb"/>
-        </Property>
-      </Properties>
+    <Container class="org.parker.mips.GUI.ThemedJFrameComponents.ThemedJPanel1" name="mainPanel">
 
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="jPanel2" pref="1096" max="32767" attributes="0"/>
-              <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
+              <Component id="topPanel" pref="1096" max="32767" attributes="0"/>
+              <Component id="bottomPanel" alignment="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <Component id="jPanel2" min="-2" pref="744" max="-2" attributes="0"/>
+                  <Component id="topPanel" min="-2" pref="750" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jPanel1" max="32767" attributes="0"/>
+                  <Component id="bottomPanel" min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Container class="javax.swing.JPanel" name="jPanel1">
+        <Container class="javax.swing.JPanel" name="bottomPanel">
 
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="log2" alignment="0" max="32767" attributes="0"/>
+                  <Component id="logFrame" alignment="0" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="log2" alignment="0" pref="182" max="32767" attributes="0"/>
+                  <Component id="logFrame" alignment="1" pref="176" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="org.parker.mips.Log" name="log2">
+            <Component class="org.parker.mips.Log" name="logFrame">
             </Component>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JPanel" name="jPanel2">
+        <Container class="javax.swing.JPanel" name="topPanel">
           <Properties>
             <Property name="opaque" type="boolean" value="false"/>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -251,9 +246,9 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jPanel4" max="32767" attributes="0"/>
-                          <Component id="jPanel3" max="32767" attributes="0"/>
-                          <Component id="buttonBarPanel" alignment="0" max="32767" attributes="0"/>
+                          <Component id="lowerContentPanel" max="32767" attributes="0"/>
+                          <Component id="midButtonSliderPanel" max="32767" attributes="0"/>
+                          <Component id="topButtonBarPanel" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -261,18 +256,18 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="buttonBarPanel" min="-2" max="-2" attributes="0"/>
+                      <Component id="topButtonBarPanel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jPanel3" min="-2" pref="56" max="-2" attributes="0"/>
+                      <Component id="midButtonSliderPanel" min="-2" pref="56" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lowerContentPanel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Container class="javax.swing.JPanel" name="buttonBarPanel">
+            <Container class="javax.swing.JPanel" name="topButtonBarPanel">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="66" green="66" red="66" type="rgb"/>
@@ -329,80 +324,38 @@
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JButton" name="compileButton">
+                <Component class="org.parker.mips.GUI.ThemedJFrameComponents.ThemedJButton" name="compileButton">
                   <Properties>
-                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="ff" green="33" red="0" type="rgb"/>
-                    </Property>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Tahoma" size="13" style="1"/>
-                    </Property>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value="Compile"/>
-                    <Property name="borderPainted" type="boolean" value="false"/>
                     <Property name="focusable" type="boolean" value="false"/>
-                    <Property name="opaque" type="boolean" value="false"/>
                   </Properties>
-                  <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value=" new JButton() {&#xd;&#xa;                @Override&#xd;&#xa;        public void updateUI() {&#xd;&#xa;                    setUI(new ModernButtonUI(this));&#xd;&#xa;                }&#xd;&#xa;            };&#xd;&#xa;"/>
-                  </AuxValues>
                 </Component>
-                <Component class="javax.swing.JToggleButton" name="startButton">
+                <Component class="org.parker.mips.GUI.ThemedJFrameComponents.ThemedJToggleButton" name="startButton">
                   <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Tahoma" size="13" style="1"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value="Start"/>
                     <Property name="focusable" type="boolean" value="false"/>
                   </Properties>
-                  <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value=" new JToggleButton() {                  @Override          public void updateUI() {                      setUI(new ModernButtonUI(this));                  }              };  "/>
-                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="10"/>
-                  </AuxValues>
                 </Component>
-                <Component class="javax.swing.JButton" name="stopButton">
+                <Component class="org.parker.mips.GUI.ThemedJFrameComponents.ThemedJButton" name="stopButton">
                   <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Tahoma" size="13" style="1"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value="Stop"/>
                     <Property name="focusable" type="boolean" value="false"/>
-                    <Property name="opaque" type="boolean" value="false"/>
                   </Properties>
-                  <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value=" new JButton() {                 @Override         public void updateUI() {                     setUI(new ModernButtonUI(this));                 }             }; "/>
-                  </AuxValues>
                 </Component>
-                <Component class="javax.swing.JButton" name="singleStepButton">
+                <Component class="org.parker.mips.GUI.ThemedJFrameComponents.ThemedJButton" name="singleStepButton">
                   <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Tahoma" size="13" style="1"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value="Single Step"/>
                     <Property name="focusable" type="boolean" value="false"/>
-                    <Property name="opaque" type="boolean" value="false"/>
                   </Properties>
-                  <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value=" new JButton() {                 @Override         public void updateUI() {                     setUI(new ModernButtonUI(this));                 }             }; "/>
-                  </AuxValues>
                 </Component>
-                <Component class="javax.swing.JButton" name="memoryButton">
+                <Component class="org.parker.mips.GUI.ThemedJFrameComponents.ThemedJButton" name="memoryButton">
                   <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Tahoma" size="13" style="1"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value="Memory"/>
                     <Property name="focusable" type="boolean" value="false"/>
-                    <Property name="opaque" type="boolean" value="false"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="memoryButtonActionPerformed"/>
                   </Events>
-                  <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value=" new JButton() {                 @Override         public void updateUI() {                     setUI(new ModernButtonUI(this));                 }             }; "/>
-                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JButton" name="aboutButton">
                   <Properties>
@@ -420,41 +373,20 @@
                     <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="Main_GUI_aboutButton"/>
                   </AuxValues>
                 </Component>
-                <Component class="javax.swing.JLabel" name="InstructionsRan">
+                <Component class="org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel" name="InstructionsRan">
                   <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Tahoma" size="13" style="1"/>
-                    </Property>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value="InstructionsRan"/>
                   </Properties>
-                  <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="10"/>
-                  </AuxValues>
                 </Component>
-                <Component class="javax.swing.JButton" name="resetButton">
+                <Component class="org.parker.mips.GUI.ThemedJFrameComponents.ThemedJButton" name="resetButton">
                   <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Tahoma" size="13" style="1"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value="Reset"/>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="opaque" type="boolean" value="false"/>
                   </Properties>
-                  <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value=" new JButton() {                 @Override         public void updateUI() {                     setUI(new ModernButtonUI(this));                 }             }; "/>
-                  </AuxValues>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel2">
+                <Component class="org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel" name="jLabel2">
                   <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Tahoma" size="13" style="1"/>
-                    </Property>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="MIPS.VERSION" type="code"/>
                     </Property>
@@ -462,7 +394,7 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Container class="javax.swing.JPanel" name="jPanel4">
+            <Container class="javax.swing.JPanel" name="lowerContentPanel">
               <Properties>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
@@ -485,11 +417,11 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="instructionMemory_GUI1" alignment="0" max="32767" attributes="0"/>
-                              <Component id="register_GUI1" alignment="0" max="32767" attributes="0"/>
                               <Component id="aSM_GUI1" alignment="0" max="32767" attributes="0"/>
+                              <Component id="register_GUI1" alignment="0" min="-2" pref="628" max="-2" attributes="0"/>
+                              <Component id="instructionMemory_GUI1" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -503,7 +435,7 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Container class="javax.swing.JPanel" name="jPanel3">
+            <Container class="javax.swing.JPanel" name="midButtonSliderPanel">
               <Properties>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
@@ -550,23 +482,13 @@
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JCheckBox" name="linkedButton">
+                <Component class="org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox" name="linkedButton">
                   <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Tahoma" size="13" style="1"/>
-                    </Property>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="cc" green="cc" red="cc" type="rgb"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" value="Linked File"/>
-                    <Property name="opaque" type="boolean" value="false"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="linkedButtonActionPerformed"/>
                   </Events>
-                  <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value=" new JCheckBox() {                  &#xd;&#xa; @Override          &#xd;&#xa; public void updateUI() {                      &#xd;&#xa; setUI(new ModernButtonUI(this, new Rectangle(14,14)));                  &#xd;&#xa; }              &#xd;&#xa;};  "/>
-                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JButton" name="aboutLinkedFile">
                   <Properties>
@@ -581,26 +503,13 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="aboutLinkedFileActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JCheckBox" name="enableBreak">
+                <Component class="org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox" name="enableBreak">
                   <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Tahoma" size="13" style="1"/>
-                    </Property>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="cc" green="cc" red="cc" type="rgb"/>
-                    </Property>
                     <Property name="selected" type="boolean" value="true"/>
                     <Property name="text" type="java.lang.String" value="Enable BreakPoints"/>
-                    <Property name="toolTipText" type="java.lang.String" value=""/>
-                    <Property name="focusable" type="boolean" value="false"/>
-                    <Property name="opaque" type="boolean" value="false"/>
                   </Properties>
-                  <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value=" new JCheckBox() {                     @Override             public void updateUI() {                         setUI(new ModernButtonUI(this, new Rectangle(14,14)));                     }                };  "/>
-                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="10"/>
-                  </AuxValues>
                 </Component>
-                <Component class="javax.swing.JSlider" name="delaySlider">
+                <Component class="org.parker.mips.GUI.ThemedJFrameComponents.ThemedJSlider" name="delaySlider">
                   <Properties>
                     <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="99" green="cc" red="0" type="rgb"/>
@@ -608,26 +517,13 @@
                     <Property name="maximum" type="int" value="1000"/>
                     <Property name="value" type="int" value="0"/>
                     <Property name="focusable" type="boolean" value="false"/>
-                    <Property name="opaque" type="boolean" value="false"/>
                   </Properties>
                   <Events>
                     <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="delaySliderMouseReleased"/>
                   </Events>
-                  <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value=" new JSlider() {&#xd;&#xa;                @Override&#xd;&#xa;        public void updateUI() {&#xd;&#xa;                    setUI(new ModernSliderUI(this));&#xd;&#xa;                }&#xd;&#xa;            };&#xd;&#xa;"/>
-                  </AuxValues>
                 </Component>
-                <Component class="javax.swing.JLabel" name="delayLable">
+                <Component class="org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel" name="delayLable">
                   <Properties>
-                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                    </Property>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Tahoma" size="13" style="1"/>
-                    </Property>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                    </Property>
                     <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="text" type="java.lang.String" value="Delay"/>
                   </Properties>

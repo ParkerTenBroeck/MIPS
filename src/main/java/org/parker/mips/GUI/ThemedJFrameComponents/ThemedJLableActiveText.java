@@ -9,7 +9,7 @@ package org.parker.mips.GUI.ThemedJFrameComponents;
  *
  * @author parke
  */
-public class ThemedJLableActiveText extends ThemedJLable{
+public class ThemedJLableActiveText extends ThemedJLabel{
     
     public ThemedJLableActiveText(){
         super(true);

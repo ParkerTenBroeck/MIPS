@@ -8,7 +8,11 @@ package org.parker.mips.GUI;
 import org.parker.mips.GUI.lookandfeel.RoundedBorder;
 import static org.parker.mips.GUI.InstructionToString.instructionToString;
 import java.awt.Color;
+import java.awt.Font;
+import java.beans.PropertyChangeEvent;
 import javax.swing.DefaultListModel;
+import org.parker.mips.GUI.ThemedJFrameComponents.ThemableComponent;
+import org.parker.mips.GUI.ThemedJFrameComponents.ThemeHandler;
 import org.parker.mips.Processor.Memory;
 import static org.parker.mips.Processor.Memory.superGetWord;
 import static org.parker.mips.Processor.Registers.getPc;
@@ -17,34 +21,74 @@ import static org.parker.mips.Processor.Registers.getPc;
  *
  * @author parke
  */
-public class InstructionMemory_GUI extends javax.swing.JPanel {
-    
+public class InstructionMemory_GUI extends javax.swing.JPanel implements ThemableComponent {
+
     private static int toMiddle = 0;
-    
+
+    private static RoundedBorder roundedBorder = new RoundedBorder(new Color(0, 0, 51), 0, 15);
+
+    @Override
+    public void propertyChange(PropertyChangeEvent pce) {
+        switch (pce.getPropertyName()) {
+            case ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME:
+                this.instructionList.setFont((Font) pce.getNewValue());
+                break;
+            case ThemeHandler.TEXT_COLOR_1_PROPERTY_NAME:
+                this.instructionList.setForeground((Color) pce.getNewValue());
+                break;
+            case ThemeHandler.TEXT_AREA_BACKGROUND_1_PROPERTY_NAME:
+                this.roundedBorder.setColor((Color) pce.getNewValue());
+                this.instructionList.setBackground((Color) pce.getNewValue());
+                break;
+        }
+    }
+
     public InstructionMemory_GUI() {
         initComponents();
-        this.setBorder(new RoundedBorder(new Color(0, 0, 51), 0, 15));
+
+        //this.setFont((Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.BUTTON_TEXT_FONT_PROPERTY_NAME));
+        ThemeHandler.addPropertyChangeListenerFromName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME, this);
+
+        ThemeHandler.addPropertyChangeListenerFromName(ThemeHandler.TEXT_COLOR_1_PROPERTY_NAME, this);
+
+        ThemeHandler.addPropertyChangeListenerFromName(ThemeHandler.TEXT_AREA_BACKGROUND_1_PROPERTY_NAME, this);
+
+        this.setBorder(roundedBorder);
+
+        Color backgroundColor = (Color) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.TEXT_AREA_BACKGROUND_1_PROPERTY_NAME);
+
+        this.roundedBorder.setColor(backgroundColor);
+        this.instructionList.setBackground(backgroundColor);
+
+        Color textColor = (Color) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.TEXT_COLOR_1_PROPERTY_NAME);
+
+        this.instructionList.setForeground(textColor);
+
+        Font generalFont = (Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME);
+
+        this.instructionList.setFont(generalFont);
+
     }
-    
+
     public static synchronized void refresh() {
         instructionList.setSelectedIndex(getPc() / 4);
         instructionList.ensureIndexIsVisible((getPc() / 4) - toMiddle);
         instructionList.ensureIndexIsVisible((getPc() / 4) + toMiddle); //sets the  
     }
-    
-    public static void refreshValues() {        
-                                    
+
+    public static void refreshValues() {
+
         DefaultListModel listModel = new DefaultListModel();
-        
+
         for (int i = 0; i < Memory.getSize(); i += 4) {
             listModel.addElement(instructionToString(superGetWord(i)));
         }
         instructionList.setModel(listModel);
-        
+
         if (instructionList.getModel().getSize() > 0) {
             toMiddle = (instructionList.getVisibleRect().height / instructionList.getCellBounds(0, 0).height) / 2;
         }
-        
+
         refresh();
     }
 

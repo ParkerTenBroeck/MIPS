@@ -33,7 +33,15 @@ public class RoundedBorder extends AbstractBorder {
     RenderingHints hints;
 
     public RoundedBorder(Color color) {
-        new RoundedBorder(color, 4, 8);
+        this(color, 4, 8);
+    }
+
+    public RoundedBorder(int thickness, int radii) {
+        this(Color.BLACK, thickness, radii);
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     public RoundedBorder(
@@ -82,7 +90,6 @@ public class RoundedBorder extends AbstractBorder {
                 bottomLineY,
                 radii,
                 radii);
-
 
         Area area = new Area(bubble);
 

@@ -27,7 +27,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="registers" alignment="1" pref="320" max="32767" attributes="0"/>
+          <Component id="registers" alignment="1" pref="474" max="32767" attributes="0"/>
           <Component id="lowHigh" alignment="0" max="32767" attributes="0"/>
           <Component id="pc1" alignment="0" max="32767" attributes="0"/>
           <Component id="pc" alignment="0" max="32767" attributes="0"/>
@@ -43,6 +43,7 @@
               <Component id="lowHigh" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="registers" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="26" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

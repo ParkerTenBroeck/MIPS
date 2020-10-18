@@ -22,14 +22,15 @@ public class ThemeHandler {
 
     //start of theme variables declaration
     private static Font buttonTextFont = new Font("Tahoma", Font.BOLD, 13);
-    private static Font lableTextFont = new Font("Tahoma", Font.BOLD, 13);;
+    private static Font lableTextFont = new Font("Tahoma", Font.BOLD, 13);
+    private static Font generalTextFont = new Font("Tahoma", Font.BOLD, 13);
 
     private static Color textColor1 = new Color(204, 204, 204);
     private static Color textColor2 = new Color(204, 204, 204);
     private static Color textColorActive = new Color(1, 176, 117);
 
-    private static Color textAreaBackground1;
-    private static Color textAreaBackground2;
+    private static Color textAreaBackground1 = new Color(0,0,51);
+    private static Color textAreaBackground2 = new Color(1,1,1);
     private static Color textAreaBackground3;
 
     private static Color backgroundColor1 = new Color(51, 51, 51);
@@ -46,6 +47,7 @@ public class ThemeHandler {
     //start of propery change support declaration 
     private static final PropertyChangeSupport BUTTON_TEXT_FONT_PROP = new PropertyChangeSupport(instance);
     private static final PropertyChangeSupport LABLE_TEXT_FONT_PROP = new PropertyChangeSupport(instance);
+    private static final PropertyChangeSupport GENERAL_TEXT_FONT_PROP = new PropertyChangeSupport(instance);
 
     private static final PropertyChangeSupport TEXT_COLOR_1_PROP = new PropertyChangeSupport(instance);
     private static final PropertyChangeSupport TEXT_COLOR_2_PROP = new PropertyChangeSupport(instance);
@@ -69,6 +71,7 @@ public class ThemeHandler {
     //start of property name declaration
     public static final String BUTTON_TEXT_FONT_PROPERTY_NAME = "buttonTextFont";
     public static final String LABLE_TEXT_FONT_PROPERTY_NAME = "lableTextFont";
+    public static final String GENERAL_TEXT_FONT_PROPERTY_NAME = "generalTextFont";
 
     public static final String TEXT_COLOR_1_PROPERTY_NAME = "textColor1";
     public static final String TEXT_COLOR_2_PROPERTY_NAME = "textColor2";
@@ -96,7 +99,8 @@ public class ThemeHandler {
     public static void addPropertyChangeListenerFromName(String propertyName, PropertyChangeListener listener) {
         getThemeFromName(propertyName).pcs.addPropertyChangeListener(listener);
     }
-    public static void removePropertyChangeListenerFromName(String propertyName, PropertyChangeListener listener){
+
+    public static void removePropertyChangeListenerFromName(String propertyName, PropertyChangeListener listener) {
         getThemeFromName(propertyName).pcs.removePropertyChangeListener(listener);
     }
 
@@ -124,6 +128,9 @@ public class ThemeHandler {
                 return;
             case LABLE_TEXT_FONT_PROPERTY_NAME:
                 lableTextFont = (Font) themeObject;
+                return;
+            case GENERAL_TEXT_FONT_PROPERTY_NAME:
+                generalTextFont = (Font) themeObject;
                 return;
 
             case TEXT_COLOR_1_PROPERTY_NAME:
@@ -184,6 +191,8 @@ public class ThemeHandler {
                 return new Theme(buttonTextFont, BUTTON_TEXT_FONT_PROP, BUTTON_TEXT_FONT_PROPERTY_NAME);
             case LABLE_TEXT_FONT_PROPERTY_NAME:
                 return new Theme(lableTextFont, LABLE_TEXT_FONT_PROP, LABLE_TEXT_FONT_PROPERTY_NAME);
+            case GENERAL_TEXT_FONT_PROPERTY_NAME:
+                return new Theme(generalTextFont, GENERAL_TEXT_FONT_PROP, GENERAL_TEXT_FONT_PROPERTY_NAME);
 
             case TEXT_COLOR_1_PROPERTY_NAME:
                 return new Theme(textColor1, TEXT_COLOR_1_PROP, TEXT_COLOR_1_PROPERTY_NAME);
