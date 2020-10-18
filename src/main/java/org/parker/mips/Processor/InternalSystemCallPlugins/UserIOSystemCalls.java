@@ -5,9 +5,10 @@
  */
 package org.parker.mips.Processor.InternalSystemCallPlugins;
 
-import javax.swing.JFrame;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCall;
+import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallData;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin;
+import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginFrame;
 
 /**
  *
@@ -15,19 +16,21 @@ import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin;
  */
 public class UserIOSystemCalls extends SystemCallPlugin {
 
-    private static UserIO userIO = new UserIO();
+    private final UserIO userIO = new UserIO();
 
     public UserIOSystemCalls() {
         super(7, "UserIO_System_Calls");
 
-        this.systemCalls[0] = new SystemCall(1, "USERIO_PRINT_INT", "prints integer to the user output console") {
+        SystemCallData[] scd = this.getSystemCallDataFromClass(this.getClass());
+
+        this.systemCalls[0] = new SystemCall(scd[0], "USERIO_PRINT_INT") {
             @Override
             public void handleSystemCall() {
                 userIO.openUserIO();
                 userIO.outputNumber(getRegister(4));
             }
         };
-        this.systemCalls[1] = new SystemCall(4, "USERIO_PRINT_ASCIIZ_STRING", "prints integer to the user output console") {
+        this.systemCalls[1] = new SystemCall(scd[1], "USERIO_PRINT_ASCIIZ_STRING") {
             @Override
             public void handleSystemCall() {
                 userIO.openUserIO();
@@ -63,14 +66,14 @@ public class UserIOSystemCalls extends SystemCallPlugin {
                 }
             }
         };
-        this.systemCalls[2] = new SystemCall(5, "USERIO_READ_USER_INTEGER", "prints integer to the user output console") {
+        this.systemCalls[2] = new SystemCall(scd[2], "USERIO_READ_USER_INTEGER") {
             @Override
             public void handleSystemCall() {
                 userIO.openUserIO();
                 setRegister(2, UserIO.getInt());
             }
         };
-        this.systemCalls[3] = new SystemCall(8, "USERIO_READ_USER_STRING", "prints integer to the user output console") {
+        this.systemCalls[3] = new SystemCall(scd[3], "USERIO_READ_USER_STRING") {
             @Override
             public void handleSystemCall() {
                 int bufferSize = getRegister(5);
@@ -86,21 +89,21 @@ public class UserIOSystemCalls extends SystemCallPlugin {
                 setWord(memoryOffset + (i + 1) * 4, 0); //terminating zero
             }
         };
-        this.systemCalls[4] = new SystemCall(101, "USERIO_PRINT_CHAR", "prints integer to the user output console") {
+        this.systemCalls[4] = new SystemCall(scd[4], "USERIO_PRINT_CHAR") {
             @Override
             public void handleSystemCall() {
                 userIO.openUserIO();
                 userIO.outputUnicode(getRegister(4));
             }
         };
-        this.systemCalls[5] = new SystemCall(102, "USERIO_READ_USER_CHAR", "prints integer to the user output console") {
+        this.systemCalls[5] = new SystemCall(scd[5], "USERIO_READ_USER_CHAR") {
             @Override
             public void handleSystemCall() {
                 userIO.openUserIO();
                 setRegister(2, userIO.getNextChar());
             }
         };
-        this.systemCalls[6] = new SystemCall(103, "USERIO_LAST_USER_CHAR", "prints integer to the user output console") {
+        this.systemCalls[6] = new SystemCall(scd[6], "USERIO_LAST_USER_CHAR") {
             @Override
             public void handleSystemCall() {
                 userIO.openUserIO();
@@ -115,7 +118,7 @@ public class UserIOSystemCalls extends SystemCallPlugin {
     }
 
     @Override
-    public JFrame getPluginFrame() {
+    public SystemCallPluginFrame getPluginFrame() {
         return userIO;
     }
 

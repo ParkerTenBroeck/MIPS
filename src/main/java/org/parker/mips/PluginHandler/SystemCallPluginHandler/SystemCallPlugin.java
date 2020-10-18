@@ -5,6 +5,10 @@
  */
 package org.parker.mips.PluginHandler.SystemCallPluginHandler;
 
+import com.google.gson.Gson;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import org.parker.mips.GUI.Main_GUI;
 import org.parker.mips.Processor.Memory;
 import org.parker.mips.Processor.Processor;
@@ -17,10 +21,10 @@ import javax.swing.JFrame;
  * @author parke
  */
 public abstract class SystemCallPlugin {
-    
+
     final protected SystemCall[] systemCalls;
     final public String PLUGIN_NAME;
-    
+
     public SystemCallPlugin(int numOfSystemCalls, String pluginName) {
         this.systemCalls = new SystemCall[numOfSystemCalls];
         this.PLUGIN_NAME = pluginName;
@@ -33,7 +37,7 @@ public abstract class SystemCallPlugin {
      *
      * @return
      */
-    public abstract JFrame getPluginFrame();
+    public abstract SystemCallPluginFrame getPluginFrame();
 
     /**
      * This will be call once after class is instantiated use this for anything
@@ -41,7 +45,7 @@ public abstract class SystemCallPlugin {
      *
      */
     public abstract void init();
-    
+
     public final SystemCall[] getSystemCalls() {
         return systemCalls;
     }
@@ -54,6 +58,42 @@ public abstract class SystemCallPlugin {
      */
     protected final void logRunTimeSystemCallError(String message) {
         SystemCallHandler.logRunTimeSystemCallError(message);
+    }
+
+    /**This returns an array of SystemCallData objects that are defined in a json file
+     * 
+     * The json file must be in the same package as the class and have the same name
+     *
+     * @param classType 
+     * @return
+     */
+    protected final SystemCallData[] getSystemCallDataFromClass(Class classType) {
+        SystemCallData[] data = null;
+
+        String path = "/" + classType.getCanonicalName().replaceAll("\\.", "/") + ".json";
+
+        try {
+            Gson gson = new Gson();
+            InputStream is = getClass().getResourceAsStream(path);
+            InputStreamReader ir = new InputStreamReader(is);
+            BufferedReader br = new BufferedReader(ir);
+            String response = new String();
+            try {
+                for (String line; (line = br.readLine()) != null; response += line);
+            } catch (Exception e) {
+
+            }
+
+            try {
+                data = gson.fromJson(response, SystemCallData[].class);
+            } catch (Exception e) {
+                SystemCallPluginHandler.logPluginHandlerError("There was an error while parcing the SystemCallData: " + e);
+            }
+
+        } catch (Exception e) {
+            SystemCallPluginHandler.logPluginHandlerError("There was an error while loading the SystemCallData json file");
+        }
+        return data;
     }
 
     /**
@@ -77,12 +117,12 @@ public abstract class SystemCallPlugin {
      * @return
      */
     protected final boolean throwBreakPoint() {
-        
+
         if (Main_GUI.canBreak()) {
             stopProcessor();
             logRunTimeSystemCallMessage("Program has reached a breakpoint");
         }
-        
+
         return Main_GUI.canBreak();
     }
 
@@ -155,7 +195,7 @@ public abstract class SystemCallPlugin {
      */
     protected final int getRegister(int reg) {
         return Registers.getRegister(reg);
-        
+
     }
 
     /**
@@ -215,9 +255,9 @@ public abstract class SystemCallPlugin {
     protected final void setLow(int val) {
         Registers.setLow(val);
     }
-    
+
     protected final void throwNonInturuptableIntturupt() { //still in the works
 
     }
-    
+
 }

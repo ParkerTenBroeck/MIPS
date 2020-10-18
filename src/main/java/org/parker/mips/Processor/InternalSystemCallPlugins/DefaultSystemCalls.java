@@ -5,9 +5,10 @@
  */
 package org.parker.mips.Processor.InternalSystemCallPlugins;
 
-import javax.swing.JFrame;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCall;
+import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallData;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin;
+import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginFrame;
 
 /**
  *
@@ -19,20 +20,22 @@ public class DefaultSystemCalls extends SystemCallPlugin {
 
         super(6, "Default_System_Calls");
 
-        this.systemCalls[0] = new SystemCall(0, "SYSTEM_HALT_PROGRAM", "Stops the program") {
+        SystemCallData[] scd = this.getSystemCallDataFromClass(this.getClass());
+
+        this.systemCalls[0] = new SystemCall(scd[0], "SYSTEM_HALT_PROGRAM") {
             @Override
             public void handleSystemCall() {
                 stopProcessor();
                 logRunTimeSystemCallMessage("Halted Processor");
             }
         };
-        this.systemCalls[1] = new SystemCall(99, "SYSTEM_RANDOM_NUM", "Stops the program") {
+        this.systemCalls[1] = new SystemCall(scd[1], "SYSTEM_RANDOM_NUM") {
             @Override
             public void handleSystemCall() {
                 setRegister(2, (int) (Math.random() * (getRegister(5) + 1 - getRegister(4))) + getRegister(4));
             }
         };
-        this.systemCalls[2] = new SystemCall(105, "SYSTEM_SLEEP_MILLS", "Stops the program") {
+        this.systemCalls[2] = new SystemCall(scd[2], "SYSTEM_SLEEP_MILLS") {
             @Override
             public void handleSystemCall() {
                 try {
@@ -42,7 +45,7 @@ public class DefaultSystemCalls extends SystemCallPlugin {
                 }
             }
         };
-        this.systemCalls[3] = new SystemCall(106, "SYSTEM_SLEEP_DELTA_MILLS", "Stops the program") {
+        this.systemCalls[3] = new SystemCall(scd[3], "SYSTEM_SLEEP_DELTA_MILLS") {
 
             long lastTimeCheck = 0;
 
@@ -59,18 +62,19 @@ public class DefaultSystemCalls extends SystemCallPlugin {
 
             }
         };
-        this.systemCalls[4] = new SystemCall(111, "SYSTEM_BREAK_POINT", "Stops the program") {
+        this.systemCalls[4] = new SystemCall(scd[4], "SYSTEM_BREAK_POINT") {
             @Override
             public void handleSystemCall() {
                 throwBreakPoint();
             }
         };
-        this.systemCalls[5] = new SystemCall(130, "SYSTEM_GET_MILLIS", "Stops the program") {
+        this.systemCalls[5] = new SystemCall(scd[5], "SYSTEM_GET_MILLIS") {
             @Override
             public void handleSystemCall() {
                 setRegister(2, (int) System.currentTimeMillis());
             }
         };
+
     }
 
     @Override
@@ -79,7 +83,7 @@ public class DefaultSystemCalls extends SystemCallPlugin {
     }
 
     @Override
-    public JFrame getPluginFrame() {
+    public SystemCallPluginFrame getPluginFrame() {
         return null;
     }
 

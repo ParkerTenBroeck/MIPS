@@ -16,8 +16,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
@@ -30,6 +28,8 @@ import javax.swing.UIManager;
 import org.parker.mips.FileHandler;
 import org.parker.mips.Log;
 import org.parker.mips.MIPS;
+import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin;
+import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginFrame;
 import org.parker.mips.Processor.Memory;
 import org.parker.mips.Processor.Processor;
 import org.parker.mips.ResourceHandler;
@@ -181,6 +181,20 @@ public class Main_GUI extends javax.swing.JFrame {
         refresh();
     }
 
+    public static void addSysCallFrameToList(SystemCallPlugin plugin) {
+        if (plugin == null || plugin.getPluginFrame() == null) {
+            return;
+        }
+        JMenuItem temp = new JMenuItem();
+
+        temp.setText(plugin.PLUGIN_NAME);
+        temp.addActionListener((ae) -> {
+            plugin.getPluginFrame().setVisible(true);
+        });
+        
+        systemCallFrameJMenu.add(temp);
+    }
+
     private static JMenu generateJMenuFromFile(File file, ActionListener al) {
         if (file.isDirectory()) {
             JMenu jMenu = new JMenu();
@@ -262,7 +276,7 @@ public class Main_GUI extends javax.swing.JFrame {
 
         mainPanel = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        log1 = new org.parker.mips.Log();
+        log2 = new org.parker.mips.Log();
         jPanel2 = new javax.swing.JPanel();
         buttonBarPanel = new javax.swing.JPanel();
         compileButton =  new JButton() {
@@ -311,6 +325,7 @@ public class Main_GUI extends javax.swing.JFrame {
         editMenu = new javax.swing.JMenu();
         optionsMenu = new javax.swing.JMenu();
         checkForUpdates = new javax.swing.JMenuItem();
+        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         compilerMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -319,6 +334,9 @@ public class Main_GUI extends javax.swing.JFrame {
         runTimeMenu = new javax.swing.JMenu();
         breakProgramOnRTEButton = new javax.swing.JCheckBoxMenuItem();
         adaptiveMemoryMenuButton = new javax.swing.JCheckBoxMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        systemCallFrameJMenu = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("MIPS");
@@ -330,11 +348,11 @@ public class Main_GUI extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(log1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(log2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(log1, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
+            .addComponent(log2, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
         );
 
         jPanel2.setOpaque(false);
@@ -460,13 +478,10 @@ public class Main_GUI extends javax.swing.JFrame {
                         .addComponent(singleStepButton)
                         .addComponent(memoryButton)
                         .addComponent(startButton)
-                        .addComponent(jLabel2)))
+                        .addComponent(jLabel2)
+                        .addComponent(resetButton)
+                        .addComponent(InstructionsRan)))
                 .addGap(3, 3, 3))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, buttonBarPanelLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(buttonBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(resetButton)
-                    .addComponent(InstructionsRan)))
         );
 
         jPanel4.setOpaque(false);
@@ -667,6 +682,10 @@ public class Main_GUI extends javax.swing.JFrame {
         });
         optionsMenu.add(checkForUpdates);
 
+        jCheckBoxMenuItem1.setSelected(true);
+        jCheckBoxMenuItem1.setText("Show System Messages");
+        optionsMenu.add(jCheckBoxMenuItem1);
+
         menuBar.add(optionsMenu);
 
         compilerMenu.setText("Compiler");
@@ -717,6 +736,16 @@ public class Main_GUI extends javax.swing.JFrame {
         runTimeMenu.add(adaptiveMemoryMenuButton);
 
         menuBar.add(runTimeMenu);
+
+        jMenu1.setText("SystemCall Plugins");
+
+        systemCallFrameJMenu.setText("SystemCall Frames");
+        jMenu1.add(systemCallFrameJMenu);
+
+        jMenuItem4.setText("Registered SystemCall Plugins");
+        jMenu1.add(jMenuItem4);
+
+        menuBar.add(jMenu1);
 
         setJMenuBar(menuBar);
 
@@ -798,7 +827,6 @@ public class Main_GUI extends javax.swing.JFrame {
         if (FileHandler.newFile(true)) {
             refreshAll();
         }
-
     }//GEN-LAST:event_newMenuButtonActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -825,7 +853,7 @@ public class Main_GUI extends javax.swing.JFrame {
         try {
             DesktopBrowser.openLinkInBrowser(ResourceHandler.DOCUMENTATION_PATH + "\\index.html");
         } catch (Exception ex) {
-            Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         //Browser.openLinkInBrowser("https://github.com/ParkerTenBroeck/MIPS/blob/master/MIPS%20documentation/MIPS%20Instructions-Traps-Registers.pdf");
     }//GEN-LAST:event_jMenuItem2ActionPerformed
@@ -873,15 +901,18 @@ public class Main_GUI extends javax.swing.JFrame {
     private static javax.swing.JMenu exampleMenu;
     private static javax.swing.JMenu fileMenu;
     private static org.parker.mips.GUI.InstructionMemory_GUI instructionMemory_GUI1;
+    private static javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private static javax.swing.JLabel jLabel2;
+    private static javax.swing.JMenu jMenu1;
     private static javax.swing.JMenuItem jMenuItem1;
     private static javax.swing.JMenuItem jMenuItem2;
+    private static javax.swing.JMenuItem jMenuItem4;
     private static javax.swing.JPanel jPanel1;
     private static javax.swing.JPanel jPanel2;
     private static javax.swing.JPanel jPanel3;
     private static javax.swing.JPanel jPanel4;
     private static javax.swing.JCheckBox linkedButton;
-    private static org.parker.mips.Log log1;
+    private static org.parker.mips.Log log2;
     private static javax.swing.JPanel mainPanel;
     private static javax.swing.JButton memoryButton;
     private static javax.swing.JMenuBar menuBar;
@@ -898,5 +929,6 @@ public class Main_GUI extends javax.swing.JFrame {
     private static javax.swing.JButton singleStepButton;
     private static javax.swing.JToggleButton startButton;
     private static javax.swing.JButton stopButton;
+    private static javax.swing.JMenu systemCallFrameJMenu;
     // End of variables declaration//GEN-END:variables
 }

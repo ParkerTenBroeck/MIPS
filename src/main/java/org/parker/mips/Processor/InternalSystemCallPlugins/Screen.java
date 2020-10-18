@@ -15,12 +15,13 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import javax.swing.JPanel;
+import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginFrame;
 
 /**
  *
  * @author parke
  */
-public class Screen extends javax.swing.JFrame {
+public class Screen extends SystemCallPluginFrame{
 
     private static BufferedImage image = new BufferedImage(25, 16, BufferedImage.TYPE_INT_RGB);
     private static BufferedImage imageBuffer = new BufferedImage(25, 16, BufferedImage.TYPE_INT_RGB);
@@ -41,6 +42,7 @@ public class Screen extends javax.swing.JFrame {
     }
 
     public Screen() {
+        this.setTitle("Screen");
         initComponents();
         updateScreen();
 

@@ -18,6 +18,12 @@ if (!hasProperty('mainClass')) {
     ext.mainClass = 'org.parker.mips.MIPS'
 }
 
+processResources {
+  from ('src/main/java') {
+    include '**/*.json'
+  }
+}
+
 jar {
     manifest {
         attributes(

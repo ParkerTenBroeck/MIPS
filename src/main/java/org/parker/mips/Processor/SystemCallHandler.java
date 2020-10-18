@@ -6,6 +6,7 @@
 package org.parker.mips.Processor;
 
 import java.util.ArrayList;
+import org.parker.mips.GUI.Main_GUI;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCall;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginHandler;
@@ -46,24 +47,25 @@ public class SystemCallHandler {
             }
             boolean conflict = false;
             for (SystemCall rsc : registeredSystemCalls) {
-                if ((sc.SYSTEM_CALL_NAME.equals(rsc.SYSTEM_CALL_NAME)) || sc.SYSTEM_CALL_NUMBER == rsc.SYSTEM_CALL_NUMBER) {
+                if ((sc.DATA.SYSTEM_CALL_NAME.equals(rsc.DATA.SYSTEM_CALL_NAME)) || sc.DATA.SYSTEM_CALL_NUMBER == rsc.DATA.SYSTEM_CALL_NUMBER) {
                     conflict = true;
                     totalConflicts++;
-                    SystemCallPluginHandler.logPluginHandlerError("System Call Conflict " + sc.SYSTEM_CALL_NAME + ":" + sc.SYSTEM_CALL_NUMBER
-                            + " was not registered because " + rsc.SYSTEM_CALL_NAME + ":" + rsc.SYSTEM_CALL_NUMBER + " was already reigstered");
+                    SystemCallPluginHandler.logPluginHandlerError("System Call Conflict " + sc.DATA.SYSTEM_CALL_NAME + ":" + sc.DATA.SYSTEM_CALL_NUMBER
+                            + " was not registered because " + rsc.DATA.SYSTEM_CALL_NAME + ":" + rsc.DATA.SYSTEM_CALL_NUMBER + " was already reigstered");
                     break;
                 }
             }
             if (!conflict) {
                 registeredSystemCalls.add(sc);
-                idrkWhat[sc.SYSTEM_CALL_NUMBER] = sc;
-                SystemCallPluginHandler.logPluginHandlerSystemMessage("System Call " + sc.SYSTEM_CALL_NAME + ":" + sc.SYSTEM_CALL_NUMBER + " was successfully registered");
+                idrkWhat[sc.DATA.SYSTEM_CALL_NUMBER] = sc;
+                SystemCallPluginHandler.logPluginHandlerSystemMessage("System Call " + sc.DATA.SYSTEM_CALL_NAME + ":" + sc.DATA.SYSTEM_CALL_NUMBER + " was successfully registered");
             } else {
-                SystemCallPluginHandler.logPluginHandlerWarning("System Call " + sc.SYSTEM_CALL_NAME + ":" + sc.SYSTEM_CALL_NUMBER + "was not registered because of a conflict");
+                SystemCallPluginHandler.logPluginHandlerWarning("System Call " + sc.DATA.SYSTEM_CALL_NAME + ":" + sc.DATA.SYSTEM_CALL_NUMBER + "was not registered because of a conflict");
                 //warning system call (name and number) was not registered
             }
         }
         registeredSystemCallPlugins.add(scp);
+        Main_GUI.addSysCallFrameToList(scp);
         if (totalConflicts > 0) {
             SystemCallPluginHandler.logPluginHandlerWarning("SystemCall plugin: " + scp.PLUGIN_NAME + " was reigstered with " + totalConflicts + " conflicts");
         } else {

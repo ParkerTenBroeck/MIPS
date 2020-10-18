@@ -22,16 +22,30 @@ package org.parker.mips.PluginHandler.SystemCallPluginHandler;
  */
 public abstract class SystemCall {
 
-    public final int SYSTEM_CALL_NUMBER;
-    public final String SYSTEM_CALL_NAME;
-    public final String SYSTEM_CALL_DISCRIPTION;
+    public final SystemCallData DATA;
 
-    public SystemCall(int systemCallNum, String systemCallName, String systemCallDis) {
-        this.SYSTEM_CALL_NUMBER = systemCallNum;
-        this.SYSTEM_CALL_NAME = systemCallName;
-        this.SYSTEM_CALL_DISCRIPTION = systemCallDis;
-        if (systemCallName.contains(" ")) {
-            throw new Error("System Call Name Cannot contain any space characters");
+    /**
+     *
+     * @param data the data that is accociated with this system call
+     * @param systemCallName the unique string that represents the system call
+     * (this MUST be the same as defined in system call data this is used for
+     * verification that the right data is being used with the right system
+     * call)
+     */
+    public SystemCall(SystemCallData data, String systemCallName) {
+        this.DATA = data;
+
+        if (DATA.SYSTEM_CALL_NAME.contains(" ")) {
+            SystemCallPluginHandler.logPluginHandlerError("System Call Name: "
+                    + DATA.SYSTEM_CALL_DISCRIPTION + " Cannot contain any space characters");
+            throw new IllegalArgumentException("System Call Name: "
+                    + DATA.SYSTEM_CALL_DISCRIPTION + " Cannot contain any space characters");
+        }
+        if (!this.DATA.SYSTEM_CALL_NAME.equals(systemCallName)) {
+            SystemCallPluginHandler.logPluginHandlerError("Loaded System Call Data Name: "
+                    + this.DATA.SYSTEM_CALL_NAME + " DOES NOT match Entered System Call Name: " + systemCallName);
+            throw new IllegalArgumentException("Loaded System Call Data Name: "
+                    + this.DATA.SYSTEM_CALL_NAME + " DOES NOT match Entered System Call Name: " + systemCallName);
         }
     }
 

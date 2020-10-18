@@ -75,6 +75,12 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="checkForUpdatesActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="jCheckBoxMenuItem1">
+              <Properties>
+                <Property name="selected" type="boolean" value="true"/>
+                <Property name="text" type="java.lang.String" value="Show System Messages"/>
+              </Properties>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="compilerMenu">
@@ -133,6 +139,23 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="adaptiveMemoryMenuButtonActionPerformed"/>
               </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="jMenu1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="SystemCall Plugins"/>
+          </Properties>
+          <SubComponents>
+            <Menu class="javax.swing.JMenu" name="systemCallFrameJMenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="SystemCall Frames"/>
+              </Properties>
+            </Menu>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem4">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Registered SystemCall Plugins"/>
+              </Properties>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -206,17 +229,17 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="log1" alignment="0" max="32767" attributes="0"/>
+                  <Component id="log2" alignment="0" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="log1" alignment="0" pref="207" max="32767" attributes="0"/>
+                  <Component id="log2" alignment="0" pref="182" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="org.parker.mips.PluginHandler.SystemCallPluginHandler.Log" name="log1">
+            <Component class="org.parker.mips.Log" name="log2">
             </Component>
           </SubComponents>
         </Container>
@@ -302,16 +325,11 @@
                                   <Component id="memoryButton" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="startButton" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="resetButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="InstructionsRan" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="resetButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="InstructionsRan" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
                       </Group>
                   </Group>
                 </DimensionLayout>

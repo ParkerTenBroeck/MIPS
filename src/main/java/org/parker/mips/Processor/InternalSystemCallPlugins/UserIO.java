@@ -6,12 +6,13 @@
 package org.parker.mips.Processor.InternalSystemCallPlugins;
 
 import org.parker.mips.GUI.Main_GUI;
+import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginFrame;
 
 /**
  *
  * @author parke
  */
-public class UserIO extends javax.swing.JFrame {
+public class UserIO extends SystemCallPluginFrame {
 
     private static String enteredText;
 
@@ -68,6 +69,7 @@ public class UserIO extends javax.swing.JFrame {
     }
 
     public UserIO() {
+        this.setTitle("UserIO");
         initComponents();
     }
 

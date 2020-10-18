@@ -5,6 +5,7 @@
  */
 package org.parker.mips.PluginHandler.SystemCallPluginHandler;
 
+import com.google.gson.Gson;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -68,7 +69,7 @@ public class SystemCallPluginHandler {
         } catch (FileNotFoundException ex) {
             logPluginHandlerError("File: " + path + " does not exist");
         } catch (IOException ex) {
-            logPluginHandlerError("IO exeption whill reading File: " + path);
+            logPluginHandlerError("IO exeption whill reading Plugin: " + path);
         } catch (Exception e) {
             logPluginHandlerError("General Exeption while reading manifest" + path);
         }
@@ -81,7 +82,7 @@ public class SystemCallPluginHandler {
                         new URL[]{new URL("jar:" + jarFile.toURI().toURL() + "!/")}
                 );
             } catch (MalformedURLException ex) {
-                logPluginHandlerError("Malformed URL whill reading File: " + path);
+                logPluginHandlerError("Malformed URL whill reading Plugin: " + path);
             }
         }
 
@@ -89,7 +90,7 @@ public class SystemCallPluginHandler {
         try {
             pluginClass = classLoader.loadClass(className); // Load the class
         } catch (ClassNotFoundException ex) {
-            logPluginHandlerError("Class not found exeption whill reading File: " + path + "\n"
+            logPluginHandlerError("Class not found exeption whill reading Plugin: " + path + "\n"
                     + "Not a plugin? plugin not build correctly?");
         }
 
@@ -97,9 +98,11 @@ public class SystemCallPluginHandler {
         try {
             plugin = (SystemCallPlugin) pluginClass.newInstance();
         } catch (InstantiationException ex) {
-            logPluginHandlerError("Instantiation Exeption when loading File: " + path);
+            logPluginHandlerError("Instantiation Exeption when loading Plugin: " + path);
         } catch (IllegalAccessException ex) {
-            logPluginHandlerError("Illegal Access Exeption when loading File: " + path);
+            logPluginHandlerError("Illegal Access Exeption when loading Plugin: " + path);
+        } catch (Exception e) {
+            logPluginHandlerError("There was some error while loading Plugin: " + path);
         }
 
         logPluginHandlerSystemMessage(plugin.PLUGIN_NAME + " was loaded");
