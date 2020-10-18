@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package GUI.ThemedJFrameComponents;
+package org.parker.mips.GUI.ThemedJFrameComponents;
 
-import GUI.Main_GUI;
 import java.awt.Color;
 import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import org.parker.mips.GUI.Main_GUI;
 
 /**
  *
