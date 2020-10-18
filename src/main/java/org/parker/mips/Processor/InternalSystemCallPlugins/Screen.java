@@ -21,7 +21,7 @@ import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginFra
  *
  * @author parke
  */
-public class Screen extends SystemCallPluginFrame{
+public class Screen extends SystemCallPluginFrame {
 
     private static BufferedImage image = new BufferedImage(25, 16, BufferedImage.TYPE_INT_RGB);
     private static BufferedImage imageBuffer = new BufferedImage(25, 16, BufferedImage.TYPE_INT_RGB);
@@ -95,17 +95,29 @@ public class Screen extends SystemCallPluginFrame{
     }
 
     public static void setScreenSize(int width, int height) {
-        keysPressed.clear();
-        image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        imageBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        try {
+            keysPressed.clear();
+            image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+            imageBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        } catch (Exception e) {
+
+        }
     }
 
     public static void setPixelColor(int index, int color) {
-        image.setRGB(index % image.getWidth(), index / image.getWidth(), color);
+        try {
+            image.setRGB(index % image.getWidth(), index / image.getWidth(), color);
+        } catch (Exception e) {
+
+        }
     }
 
     public static void setPixelColor(int xPos, int yPos, int color) {
-        image.setRGB(xPos, yPos, color);
+        try {
+            image.setRGB(xPos, yPos, color);
+        } catch (Exception e) {
+
+        }
     }
 
     /**
@@ -153,46 +165,6 @@ public class Screen extends SystemCallPluginFrame{
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Screen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Screen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Screen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Screen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                Screen screen = new Screen();
-                screen.setVisible(true);
-                screen.setPixelColor(0, 0, new Color(255, 0, 0).getRGB());
-                screen.updateScreen();
-
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private static javax.swing.JPanel jPanel1;

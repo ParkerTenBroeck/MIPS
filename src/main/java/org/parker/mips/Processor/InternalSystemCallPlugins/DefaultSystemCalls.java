@@ -22,20 +22,20 @@ public class DefaultSystemCalls extends SystemCallPlugin {
 
         SystemCallData[] scd = this.getSystemCallDataFromClass(this.getClass());
 
-        this.systemCalls[0] = new SystemCall(scd[0], "SYSTEM_HALT_PROGRAM") {
+        this.systemCalls[0] = new SystemCall(scd[0], "SYSTEM_HALT_PROGRAM", this) {
             @Override
             public void handleSystemCall() {
                 stopProcessor();
                 logRunTimeSystemCallMessage("Halted Processor");
             }
         };
-        this.systemCalls[1] = new SystemCall(scd[1], "SYSTEM_RANDOM_NUM") {
+        this.systemCalls[1] = new SystemCall(scd[1], "SYSTEM_RANDOM_NUM", this) {
             @Override
             public void handleSystemCall() {
                 setRegister(2, (int) (Math.random() * (getRegister(5) + 1 - getRegister(4))) + getRegister(4));
             }
         };
-        this.systemCalls[2] = new SystemCall(scd[2], "SYSTEM_SLEEP_MILLS") {
+        this.systemCalls[2] = new SystemCall(scd[2], "SYSTEM_SLEEP_MILLS", this) {
             @Override
             public void handleSystemCall() {
                 try {
@@ -45,7 +45,7 @@ public class DefaultSystemCalls extends SystemCallPlugin {
                 }
             }
         };
-        this.systemCalls[3] = new SystemCall(scd[3], "SYSTEM_SLEEP_DELTA_MILLS") {
+        this.systemCalls[3] = new SystemCall(scd[3], "SYSTEM_SLEEP_DELTA_MILLS", this) {
 
             long lastTimeCheck = 0;
 
@@ -62,13 +62,13 @@ public class DefaultSystemCalls extends SystemCallPlugin {
 
             }
         };
-        this.systemCalls[4] = new SystemCall(scd[4], "SYSTEM_BREAK_POINT") {
+        this.systemCalls[4] = new SystemCall(scd[4], "SYSTEM_BREAK_POINT", this) {
             @Override
             public void handleSystemCall() {
                 throwBreakPoint();
             }
         };
-        this.systemCalls[5] = new SystemCall(scd[5], "SYSTEM_GET_MILLIS") {
+        this.systemCalls[5] = new SystemCall(scd[5], "SYSTEM_GET_MILLIS", this) {
             @Override
             public void handleSystemCall() {
                 setRegister(2, (int) System.currentTimeMillis());
@@ -80,11 +80,6 @@ public class DefaultSystemCalls extends SystemCallPlugin {
     @Override
     public void init() {
 
-    }
-
-    @Override
-    public SystemCallPluginFrame getPluginFrame() {
-        return null;
     }
 
 }

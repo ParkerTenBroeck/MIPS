@@ -14,7 +14,6 @@ import org.parker.mips.Processor.Memory;
 import org.parker.mips.Processor.Processor;
 import org.parker.mips.Processor.Registers;
 import org.parker.mips.Processor.SystemCallHandler;
-import javax.swing.JFrame;
 
 /**
  *
@@ -31,13 +30,19 @@ public abstract class SystemCallPlugin {
     }
 
     /**
-     * return null if no frame is needed for the plugin
      *
-     *
-     *
-     * @return
+     * @param frame add the frame in a list accesiable in the Main_GUI
      */
-    public abstract SystemCallPluginFrame getPluginFrame();
+    protected final void addFrameToGUI(SystemCallPluginFrame frame) {
+        Main_GUI.addSysCallFrameToList(this, frame);
+    }
+    
+    /**NOT YET IMPLEMENTED
+     * 
+     */
+    protected final void addInternalExamples(){
+        
+    }
 
     /**
      * This will be call once after class is instantiated use this for anything
@@ -60,11 +65,14 @@ public abstract class SystemCallPlugin {
         SystemCallHandler.logRunTimeSystemCallError(message);
     }
 
-    /**This returns an array of SystemCallData objects that are defined in a json file
-     * 
-     * The json file must be in the same package as the class and have the same name
+    /**
+     * This returns an array of SystemCallData objects that are defined in a
+     * json file
      *
-     * @param classType 
+     * The json file must be in the same package as the class and have the same
+     * name
+     *
+     * @param classType
      * @return
      */
     protected final SystemCallData[] getSystemCallDataFromClass(Class classType) {

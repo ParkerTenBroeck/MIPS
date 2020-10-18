@@ -50,6 +50,7 @@ public class SystemCallPluginHandler {
         }
         if (plugin != null) {
             logPluginHandlerSystemMessage(plugin.PLUGIN_NAME + " was loaded");
+            plugin.init();
         } else {
             logPluginHandlerWarning("Plugin at: " + path + " could not be loaded");
         }
@@ -61,7 +62,8 @@ public class SystemCallPluginHandler {
 
         String className = "";
 
-        try (JarInputStream jarStream = new JarInputStream(new FileInputStream(jarFile))) {
+        try {
+            JarInputStream jarStream = new JarInputStream(new FileInputStream(jarFile));
             Manifest manifest = jarStream.getManifest();
 
             // Get Main-Class attribute from MANIFEST.MF
@@ -71,19 +73,24 @@ public class SystemCallPluginHandler {
         } catch (IOException ex) {
             logPluginHandlerError("IO exeption whill reading Plugin: " + path);
         } catch (Exception e) {
-            logPluginHandlerError("General Exeption while reading manifest" + path);
+            logPluginHandlerError("General Exeption while reading manifest" + path + " " + e.getMessage());
+        } catch (Error e) {
+            logPluginHandlerError("There was some error while loading Plugin: " + path + " " + e.getMessage());
         }
 
         URLClassLoader classLoader = null;
 
-        if (false) {
-            try {
-                classLoader = new URLClassLoader(
-                        new URL[]{new URL("jar:" + jarFile.toURI().toURL() + "!/")}
-                );
-            } catch (MalformedURLException ex) {
-                logPluginHandlerError("Malformed URL whill reading Plugin: " + path);
-            }
+        try {
+            classLoader = new URLClassLoader(
+                    new URL[]{new URL("jar:" + jarFile.toURI().toURL() + "!/")}
+            );
+        } catch (MalformedURLException ex) {
+            logPluginHandlerError("Malformed URL whill reading Plugin: " + path);
+        } catch (Exception e) {
+            logPluginHandlerError("There was an Exception while loading Plugin: " + path + "\n"
+                    + "Path does not exist? " + e.getMessage());
+        } catch (Error e) {
+            logPluginHandlerError("There was some error while loading Plugin: " + path + " " + e.getMessage());
         }
 
         Class<?> pluginClass = null;
@@ -92,6 +99,11 @@ public class SystemCallPluginHandler {
         } catch (ClassNotFoundException ex) {
             logPluginHandlerError("Class not found exeption whill reading Plugin: " + path + "\n"
                     + "Not a plugin? plugin not build correctly?");
+        } catch (Exception e) {
+            logPluginHandlerError("There was an Exeption while loading Plugin: " + path + "\n"
+                    + "Outdated Plugin? plugin not build correctly? " + e.getMessage());
+        } catch (Error e) {
+            logPluginHandlerError("There was some error while loading Plugin: " + path + " " + e.getMessage());
         }
 
         SystemCallPlugin plugin = null;
@@ -102,11 +114,17 @@ public class SystemCallPluginHandler {
         } catch (IllegalAccessException ex) {
             logPluginHandlerError("Illegal Access Exeption when loading Plugin: " + path);
         } catch (Exception e) {
-            logPluginHandlerError("There was some error while loading Plugin: " + path);
+            logPluginHandlerError("There was some Exeption while loading Plugin: " + path + " " + e.getMessage());
+        } catch (Error e) {
+            logPluginHandlerError("There was some error while loading Plugin: " + path + " " + e.getMessage());
         }
 
-        logPluginHandlerSystemMessage(plugin.PLUGIN_NAME + " was loaded");
-
+        if (plugin != null) {
+            logPluginHandlerSystemMessage(plugin.PLUGIN_NAME + " was loaded");
+            plugin.init();
+        } else {
+            logPluginHandlerWarning("Plugin at: " + path + " could not be loaded");
+        }
         return plugin;
     }
 
@@ -122,13 +140,11 @@ public class SystemCallPluginHandler {
         SystemCallHandler.registerSystemCallPlugin(spc);
 
         File file = new File(ResourceHandler.SYS_CALLS_PLUGIN_PATH);
-
         File files[] = file.listFiles();
-
         for (File f : files) {
             if (f.exists()) {
                 SystemCallPlugin scp = loadExternalPluginFromJarPath(f.getAbsolutePath());
-                scp.init();
+                SystemCallHandler.registerSystemCallPlugin(scp);
             }
         }
     }

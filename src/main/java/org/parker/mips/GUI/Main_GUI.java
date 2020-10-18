@@ -72,6 +72,7 @@ public class Main_GUI extends javax.swing.JFrame {
                     if (!Processor.isRunning()) {
                         Main_GUI.stopAutoUpdate();
                         Main_GUI.refresh();
+                        Main_GUI.startButton.setSelected(false);
                     }
                     try {
                         Thread.sleep(100);
@@ -181,17 +182,17 @@ public class Main_GUI extends javax.swing.JFrame {
         refresh();
     }
 
-    public static void addSysCallFrameToList(SystemCallPlugin plugin) {
-        if (plugin == null || plugin.getPluginFrame() == null) {
+    public static void addSysCallFrameToList(SystemCallPlugin plugin, SystemCallPluginFrame frame) {
+        if (plugin == null || frame == null) {
             return;
         }
         JMenuItem temp = new JMenuItem();
 
         temp.setText(plugin.PLUGIN_NAME);
         temp.addActionListener((ae) -> {
-            plugin.getPluginFrame().setVisible(true);
+            frame.setVisible(true);
         });
-        
+
         systemCallFrameJMenu.add(temp);
     }
 

@@ -23,6 +23,7 @@ package org.parker.mips.PluginHandler.SystemCallPluginHandler;
 public abstract class SystemCall {
 
     public final SystemCallData DATA;
+    public final SystemCallPlugin HOST_PLUGIN;
 
     /**
      *
@@ -31,9 +32,11 @@ public abstract class SystemCall {
      * (this MUST be the same as defined in system call data this is used for
      * verification that the right data is being used with the right system
      * call)
+     * @param hostPlugin this is used to keep track of what system call belongs to what plugin
      */
-    public SystemCall(SystemCallData data, String systemCallName) {
+    public SystemCall(SystemCallData data, String systemCallName, SystemCallPlugin hostPlugin) {
         this.DATA = data;
+        this.HOST_PLUGIN = hostPlugin;
 
         if (DATA.SYSTEM_CALL_NAME.contains(" ")) {
             SystemCallPluginHandler.logPluginHandlerError("System Call Name: "
