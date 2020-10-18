@@ -147,6 +147,8 @@ public class SystemCallPluginHandler {
                 SystemCallHandler.registerSystemCallPlugin(scp);
             }
         }
+        
+        SystemCallHandler.regenerateStandardSysCallHeaderFile();
     }
 
     public static void logPluginHandlerError(String message) {

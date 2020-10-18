@@ -5,14 +5,15 @@
  */
 package org.parker.mips.Processor;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
-import org.parker.mips.GUI.Main_GUI;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCall;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginHandler;
 import static org.parker.mips.Processor.Processor.logRunTimeError;
 import static org.parker.mips.Processor.Processor.logRunTimeMessage;
 import static org.parker.mips.Processor.Processor.logRunTimeWarning;
+import org.parker.mips.ResourceHandler;
 
 /**
  *
@@ -96,6 +97,17 @@ public class SystemCallHandler {
         }
     }
 
+    /**
+     * NOT FINISHED YET
+     *
+     * @param plugin
+     */
+    public static void unRegisterSystemCallPlugin(SystemCallPlugin plugin) {
+        if (plugin != null) {
+            registeredSystemCallPlugins.remove(plugin);
+        }
+    }
+
     public static void logRunTimeSystemCallError(String message) {
         logRunTimeError("[System Call] " + message);
     }
@@ -106,6 +118,55 @@ public class SystemCallHandler {
 
     public static void logRunTimeSystemCallMessage(String message) {
         logRunTimeMessage("[System Call] " + message);
+    }
+
+    public static void regenerateStandardSysCallHeaderFile() {
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter(ResourceHandler.STANDARD_HEADER_PATH + "\\syscalldef.asm", "UTF-8");
+
+            for (SystemCallPlugin plugin : registeredSystemCallPlugins) {
+
+                if (plugin != null) {
+
+                    writer.println(";SystemCalls defined withing Plugin: " + plugin.PLUGIN_NAME);
+                    writer.println("");
+
+                    for (SystemCall call : plugin.getSystemCalls()) {
+                        try {
+                            if (idrkWhat[call.DATA.SYSTEM_CALL_NUMBER] != null) {
+
+                                writer.println("#define " + call.DATA.SYSTEM_CALL_NAME + " " + call.DATA.SYSTEM_CALL_NUMBER);
+                                writer.println(";" + call.DATA.SYSTEM_CALL_DISCRIPTION);
+                                //writer.println(";" + call.DATA.SYSTEM_CALL_DISCRIPTION);
+                            } else {
+                                writer.println(";#define " + call.DATA.SYSTEM_CALL_NAME + " " + call.DATA.SYSTEM_CALL_NUMBER);
+                                writer.println(";" + call.DATA.SYSTEM_CALL_DISCRIPTION);
+                                writer.println(";SystemCall was not registered correctly");
+                                //writer.println(";" + call.DATA.SYSTEM_CALL_DISCRIPTION);
+                            }
+                        } catch (Exception e) {
+                            writer.println(";#define " + call.DATA.SYSTEM_CALL_NAME + " " + call.DATA.SYSTEM_CALL_NUMBER);
+                            writer.println(";" + call.DATA.SYSTEM_CALL_DISCRIPTION);
+                            writer.println(";SystemCall was not registered correctly");
+                            //writer.println(";" + call.DATA.SYSTEM_CALL_DISCRIPTION);
+                        }
+                        writer.println("");
+                    }
+                } else {
+                    writer.println("Plugin NULL");
+                }
+                writer.println();
+                writer.println();
+            }
+        } catch (Exception e) {
+
+        }
+        try {
+            writer.close();
+        } catch (Exception e) {
+
+        }
     }
 
 }

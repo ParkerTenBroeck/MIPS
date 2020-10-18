@@ -36,12 +36,13 @@ public abstract class SystemCallPlugin {
     protected final void addFrameToGUI(SystemCallPluginFrame frame) {
         Main_GUI.addSysCallFrameToList(this, frame);
     }
-    
-    /**NOT YET IMPLEMENTED
-     * 
+
+    /**
+     * NOT YET IMPLEMENTED
+     *
      */
-    protected final void addInternalExamples(){
-        
+    protected final void addInternalExamples() {
+
     }
 
     /**
@@ -63,6 +64,22 @@ public abstract class SystemCallPlugin {
      */
     protected final void logRunTimeSystemCallError(String message) {
         SystemCallHandler.logRunTimeSystemCallError(message);
+    }
+
+    /**
+     *
+     * @param message the message that will be logged as a warning
+     */
+    protected final void logRunTimeSystemCallWarning(String message) {
+        SystemCallHandler.logRunTimeSystemCallWarning(message);
+    }
+
+    /**
+     *
+     * @param message the message that will be logged
+     */
+    protected final void logRunTimeSystemCallMessage(String message) {
+        SystemCallHandler.logRunTimeSystemCallMessage(message);
     }
 
     /**
@@ -102,22 +119,6 @@ public abstract class SystemCallPlugin {
             SystemCallPluginHandler.logPluginHandlerError("There was an error while loading the SystemCallData json file");
         }
         return data;
-    }
-
-    /**
-     *
-     * @param message the message that will be logged as a warning
-     */
-    protected final void logRunTimeSystemCallWarning(String message) {
-        SystemCallHandler.logRunTimeSystemCallWarning(message);
-    }
-
-    /**
-     *
-     * @param message the message that will be logged
-     */
-    protected final void logRunTimeSystemCallMessage(String message) {
-        SystemCallHandler.logRunTimeSystemCallMessage(message);
     }
 
     /**

@@ -5,7 +5,6 @@
  */
 package org.parker.mips.Processor.InternalSystemCallPlugins;
 
-import org.parker.mips.GUI.Main_GUI;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -49,7 +48,7 @@ public class Screen extends SystemCallPluginFrame {
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                Main_GUI.stop();
+                stopProcessor();
             }
         });
 

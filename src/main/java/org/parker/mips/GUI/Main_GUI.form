@@ -88,20 +88,20 @@
             <Property name="text" type="java.lang.String" value="Compiler"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+            <MenuItem class="javax.swing.JMenuItem" name="asciiChartButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Ascii chart"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem1ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="asciiChartButtonActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+            <MenuItem class="javax.swing.JMenuItem" name="documentationButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Documentation"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem2ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="documentationButtonActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="savePreProcessedFileButton">
@@ -115,9 +115,6 @@
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Save CompileInformation"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveCompileInformationButtonActionPerformed"/>
-              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -136,9 +133,6 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Adaptive Memory"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="adaptiveMemoryMenuButtonActionPerformed"/>
-              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -152,7 +146,7 @@
                 <Property name="text" type="java.lang.String" value="SystemCall Frames"/>
               </Properties>
             </Menu>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem4">
+            <MenuItem class="javax.swing.JMenuItem" name="registeredSystemCallPluginsButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Registered SystemCall Plugins"/>
               </Properties>
@@ -351,9 +345,6 @@
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="opaque" type="boolean" value="false"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="compileButtonActionPerformed"/>
-                  </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value=" new JButton() {&#xd;&#xa;                @Override&#xd;&#xa;        public void updateUI() {&#xd;&#xa;                    setUI(new ModernButtonUI(this));&#xd;&#xa;                }&#xd;&#xa;            };&#xd;&#xa;"/>
                   </AuxValues>
@@ -366,9 +357,6 @@
                     <Property name="text" type="java.lang.String" value="Start"/>
                     <Property name="focusable" type="boolean" value="false"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="startButtonActionPerformed"/>
-                  </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value=" new JToggleButton() {                  @Override          public void updateUI() {                      setUI(new ModernButtonUI(this));                  }              };  "/>
                     <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="10"/>
@@ -383,9 +371,6 @@
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="opaque" type="boolean" value="false"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stopButtonActionPerformed"/>
-                  </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value=" new JButton() {                 @Override         public void updateUI() {                     setUI(new ModernButtonUI(this));                 }             }; "/>
                   </AuxValues>
@@ -399,9 +384,6 @@
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="opaque" type="boolean" value="false"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="singleStepButtonActionPerformed"/>
-                  </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value=" new JButton() {                 @Override         public void updateUI() {                     setUI(new ModernButtonUI(this));                 }             }; "/>
                   </AuxValues>
@@ -461,9 +443,6 @@
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="opaque" type="boolean" value="false"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="resetButtonActionPerformed"/>
-                  </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value=" new JButton() {                 @Override         public void updateUI() {                     setUI(new ModernButtonUI(this));                 }             }; "/>
                   </AuxValues>

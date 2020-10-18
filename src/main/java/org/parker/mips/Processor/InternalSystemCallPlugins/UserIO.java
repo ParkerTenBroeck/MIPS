@@ -5,7 +5,6 @@
  */
 package org.parker.mips.Processor.InternalSystemCallPlugins;
 
-import org.parker.mips.GUI.Main_GUI;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginFrame;
 
 /**
@@ -224,7 +223,7 @@ public class UserIO extends SystemCallPluginFrame {
     }//GEN-LAST:event_formFocusGained
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        Main_GUI.stop();
+
     }//GEN-LAST:event_formWindowClosing
 
     private void inputTextFeildActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputTextFeildActionPerformed

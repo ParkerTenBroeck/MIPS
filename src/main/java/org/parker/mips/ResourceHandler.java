@@ -33,30 +33,34 @@ public class ResourceHandler {
     public static final String EXAMPLES_PATH = DEFAULT_PATH + "\\Examples";
     public static final String CONFIG_PATH = DEFAULT_PATH + "\\Config";
     public static final String SYS_CALLS_PLUGIN_PATH = DEFAULT_PATH + "\\SystemCallPlugins";
+    public static final String STANDARD_HEADER_PATH = DEFAULT_PATH + "\\StandardHeaderFiles";
 
     public static boolean extractResources() {
 
-        File dfp = new File(DEFAULT_PATH);
-        if (!dfp.exists()) {
-            dfp.mkdir();
-        }
-
-        File scpp = new File(SYS_CALLS_PLUGIN_PATH);
-        if (!scpp.exists()) {
-            scpp.mkdir();
-        }
-
         boolean temp = true;
+
+        temp &= createDirectory(DEFAULT_PATH);
+        temp &= createDirectory(DEFAULT_PROJECTS_PATH);
+        temp &= createDirectory(DOCUMENTATION_PATH);
+        temp &= createDirectory(EXAMPLES_PATH);
+        temp &= createDirectory(CONFIG_PATH);
+        temp &= createDirectory(SYS_CALLS_PLUGIN_PATH);
+        temp &= createDirectory(STANDARD_HEADER_PATH);
 
         temp &= extractResourceToFolder(DEFAULT_PATH, "Default");
         temp &= extractResourceToFolder(DOCUMENTATION_PATH, "Documentation");
         temp &= extractResourceToFolder(EXAMPLES_PATH, "Examples");
-        File file = new File(DEFAULT_PROJECTS_PATH);
-        if (!file.exists()) {
-            temp &= file.mkdir();
-        }
+        temp &= extractResourceToFolder(STANDARD_HEADER_PATH, "StandardHeaderFiles");
 
         return temp;
+    }
+
+    private static boolean createDirectory(String path) {
+        File dir = new File(path);
+        if (!dir.exists()) {
+            return dir.mkdir();
+        }
+        return true;
     }
 
     private static boolean extractResourceToFolder(String destPath, String jarPath) {
@@ -134,9 +138,15 @@ public class ResourceHandler {
 
         } else if (Objects.equals(protocol, "file")) { //run in ide
             //System.out.println(ResourceHandler.class.getResource("/" + jarPath).getFile());
-            File source = new File("C:\\GitHub\\MIPS\\res\\" + jarPath);
-            File dest = new File(destPath);
-            copyFolderReplaceOld(source, dest);
+
+            try {
+                File source = new File("C:\\GitHub\\MIPS\\src\\main\\resources\\" + jarPath);
+                File dest = new File(destPath);
+                copyFolderReplaceOld(source, dest);
+            } catch (Exception e) {
+                Log.logError("Cannot copy resources to Documents folder. Wrong path defined?");
+                return false;
+            }
             return true;
         }
         return false;
@@ -167,7 +177,7 @@ public class ResourceHandler {
                     return;
                 }
             }
-            System.out.println("ReWritting " + destination.getAbsolutePath());
+            Log.logSystemMessage("ReWritting " + destination.getAbsolutePath());
             try {
                 in = new FileInputStream(source);
                 out = new FileOutputStream(destination);
@@ -183,12 +193,16 @@ public class ResourceHandler {
                     in.close();
                 } catch (IOException e1) {
                     e1.printStackTrace();
+                } catch (Exception ex) {
+
                 }
 
                 try {
                     out.close();
                 } catch (IOException e1) {
                     e1.printStackTrace();
+                } catch (Exception ex) {
+
                 }
                 destination.setLastModified(source.lastModified());
             }
