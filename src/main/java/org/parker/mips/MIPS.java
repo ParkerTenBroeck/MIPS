@@ -5,8 +5,12 @@
  */
 package org.parker.mips;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.awt.Color;
 import java.io.File;
 import org.parker.mips.GUI.Main_GUI;
+import org.parker.mips.GUI.ThemedJFrameComponents.ThemeHandler;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginHandler;
 import static org.parker.mips.UpdateHandler.checkForUpdates;
 
@@ -35,19 +39,34 @@ public class MIPS {
     public static void main(String[] args) {
         ResourceHandler.extractResources();
 
-        
-
         Main_GUI gui = new Main_GUI();
-        
-        SystemCallPluginHandler.loadDefaultPlugins();
-        
-        //static int temp = 0;
 
+        SystemCallPluginHandler.loadDefaultPlugins();
+//
+//        GsonBuilder gsonBuilder = new GsonBuilder();
+//// Allowing the serialization of static fields    
+//
+//        gsonBuilder.excludeFieldsWithModifiers(java.lang.reflect.Modifier.TRANSIENT);
+//        // Creates a Gson instance based on the current configuration
+//        Gson gson = gsonBuilder.create();
+//        String json = gson.toJson(new MIPS());
+//        System.out.println(json);
+//
+//        //static int temp = 0;
         checkForUpdates();
 
 //        try {
-//            Thread.sleep(1000);
-//            ThemeHandler.setThemeFromName(ThemeHandler.BUTTON_DEFAULT_COLOR_PROPERTY_NAME, Color.yellow, true, true);
+//            Thread.sleep(3000);
+//
+//            ThemeHandler.setThemeFromName(ThemeHandler.TEXT_COLOR_1_PROPERTY_NAME, Color.BLACK, true, true);
+//            ThemeHandler.setThemeFromName(ThemeHandler.BUTTON_DEFAULT_COLOR_PROPERTY_NAME, Color.green, true, true);
+//            ThemeHandler.setThemeFromName(ThemeHandler.BACKGROUND_COLOR_1_PROPERTY_NAME, Color.yellow, true, true);
+//            ThemeHandler.setThemeFromName(ThemeHandler.BACKGROUND_COLOR_2_PROPERTY_NAME, Color.yellow.darker(), true, true);
+//            ThemeHandler.setThemeFromName(ThemeHandler.BACKGROUND_COLOR_3_PROPERTY_NAME, Color.yellow.darker().darker(), true, true);
+//            ThemeHandler.setThemeFromName(ThemeHandler.BACKGROUND_COLOR_4_PROPERTY_NAME, Color.blue, true, true);
+//
+//            ThemeHandler.setThemeFromName(ThemeHandler.TEXT_AREA_BACKGROUND_1_PROPERTY_NAME, new Color(255, 110, 199), true, true);
+//            ThemeHandler.setThemeFromName(ThemeHandler.TEXT_AREA_BACKGROUND_2_PROPERTY_NAME, new Color(255, 110, 199).darker(), true, true);
 //        } catch (Exception e) {
 //
 //        }

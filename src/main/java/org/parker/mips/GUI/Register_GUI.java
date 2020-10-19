@@ -40,6 +40,7 @@ public class Register_GUI extends javax.swing.JPanel implements ThemableComponen
                 this.registers.setBackground((Color) pce.getNewValue());
                 break;
             case ThemeHandler.BACKGROUND_COLOR_2_PROPERTY_NAME:
+                roundedBorder.setColor((Color) pce.getNewValue());
                 this.pc1.setGridColor((Color) pce.getNewValue());
                 this.pc.setGridColor((Color) pce.getNewValue());
                 this.lowHigh.setGridColor((Color) pce.getNewValue());

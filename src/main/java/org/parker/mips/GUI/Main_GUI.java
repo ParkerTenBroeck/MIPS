@@ -50,6 +50,9 @@ public class Main_GUI extends javax.swing.JFrame {
     }
 
     private static synchronized void startAutoUpdate() {
+        if (false) {
+            return;
+        }
         Main_GUI.autoUpdate = true;
         autoUpdateThread = new Thread() {
             public void run() {
@@ -61,7 +64,7 @@ public class Main_GUI extends javax.swing.JFrame {
                         Main_GUI.startButton.setSelected(false);
                     }
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(500);
                     } catch (Exception e) {
 
                     }
@@ -327,7 +330,7 @@ public class Main_GUI extends javax.swing.JFrame {
         );
         bottomPanelLayout.setVerticalGroup(
             bottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(logFrame, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+            .addComponent(logFrame, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
         );
 
         topPanel.setOpaque(false);
@@ -544,7 +547,7 @@ public class Main_GUI extends javax.swing.JFrame {
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addComponent(topPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 750, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(bottomPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(bottomPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         menuBar.setBackground(new java.awt.Color(51, 51, 51));

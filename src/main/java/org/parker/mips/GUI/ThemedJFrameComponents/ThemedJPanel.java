@@ -7,7 +7,6 @@ package org.parker.mips.GUI.ThemedJFrameComponents;
 
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyEditorSupport;
 import javax.swing.JPanel;
 
 /**
@@ -26,13 +25,13 @@ public class ThemedJPanel extends JPanel implements ThemableComponent {
     public void propertyChange(PropertyChangeEvent pce) {
         switch (pce.getPropertyName()) {
             case ThemeHandler.BACKGROUND_COLOR_1_PROPERTY_NAME:
-                this.setBackground((Color) pce.getNewValue());
+                super.setBackground((Color) pce.getNewValue());
                 break;
             case ThemeHandler.BACKGROUND_COLOR_2_PROPERTY_NAME:
-                this.setBackground((Color) pce.getNewValue());
+                super.setBackground((Color) pce.getNewValue());
                 break;
             case ThemeHandler.BACKGROUND_COLOR_3_PROPERTY_NAME:
-                this.setBackground((Color) pce.getNewValue());
+                super.setBackground((Color) pce.getNewValue());
                 break;
             default:
         }
@@ -85,10 +84,7 @@ public class ThemedJPanel extends JPanel implements ThemableComponent {
         backgroundColorName = name; 
         ThemeHandler.addPropertyChangeListenerFromName(name, this);
         super.setBackground((Color) ThemeHandler.getThemeObjectFromThemeName(name));
+        //System.out.println(name);
     }
-
-}
-
-class ConnectionInfo extends PropertyEditorSupport {
 
 }
