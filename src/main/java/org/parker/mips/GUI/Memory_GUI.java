@@ -7,11 +7,8 @@ package org.parker.mips.GUI;
 
 import org.parker.mips.Compiler.ASMCompiler;
 import org.parker.mips.Compiler.DataClasses.MemoryLable;
-import org.parker.mips.GUI.lookandfeel.ModernButtonUI;
 import org.parker.mips.GUI.lookandfeel.ModernScrollPane;
 import java.util.ArrayList;
-import javax.swing.JButton;
-import javax.swing.JToggleButton;
 import javax.swing.ScrollPaneConstants;
 import org.parker.mips.Processor.Memory;
 
@@ -132,26 +129,22 @@ public class Memory_GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        StuffHolder1 = new javax.swing.JPanel();
+        StuffHolder1 = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJPanel1();
         memoryPositionScrollPane = new ModernScrollPane();
  ;
         memoryPositionTable = new javax.swing.JTable();
         valsScrollPane = new ModernScrollPane();  ;
         valsTable = new javax.swing.JTable();
-        StuffHolder = new javax.swing.JPanel();
-        startingPosition = new javax.swing.JFormattedTextField();
-        startingPositionLable = new javax.swing.JLabel();
-        lengthLable = new javax.swing.JLabel();
-        length = new javax.swing.JFormattedTextField();
-        updateButton =  new JButton() {                  @Override          public void updateUI() {                      setUI(new ModernButtonUI(this));                  }              };  ;
-        autoUpdateButton =  new JToggleButton() {                  @Override          public void updateUI() {                      setUI(new ModernButtonUI(this));                  }              };  ;
+        StuffHolder = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJPanel1();
+        startingPosition = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJFormattedTextField();
+        startingPositionLable = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel();
+        lengthLable = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel();
+        length = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJFormattedTextField();
+        updateButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJButton();
+        autoUpdateButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJToggleButton();
         memoryLables = new javax.swing.JComboBox<>();
-        memoryPointersLable = new javax.swing.JLabel();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setAlwaysOnTop(true);
-
-        StuffHolder1.setBackground(new java.awt.Color(51, 51, 51));
+        memoryPointersLable = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel();
+        themedJPanel21 = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJPanel2();
 
         memoryPositionScrollPane.setBorder(null);
         memoryPositionScrollPane.setOpaque(false);
@@ -198,31 +191,27 @@ public class Memory_GUI extends javax.swing.JFrame {
         StuffHolder1Layout.setHorizontalGroup(
             StuffHolder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, StuffHolder1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(memoryPositionScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(valsScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 567, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(valsScrollPane)
                 .addContainerGap())
         );
         StuffHolder1Layout.setVerticalGroup(
             StuffHolder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(StuffHolder1Layout.createSequentialGroup()
-                .addGap(102, 102, 102)
+                .addContainerGap()
                 .addGroup(StuffHolder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(valsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
+                    .addComponent(valsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
                     .addComponent(memoryPositionScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
-        StuffHolder.setBackground(new java.awt.Color(51, 51, 51));
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setAlwaysOnTop(true);
 
-        startingPosition.setBackground(new java.awt.Color(102, 102, 102));
-        startingPosition.setBorder(null);
-        startingPosition.setForeground(new java.awt.Color(204, 204, 204));
         startingPosition.setText("0");
 
-        startingPositionLable.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        startingPositionLable.setForeground(new java.awt.Color(204, 204, 204));
         startingPositionLable.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         startingPositionLable.setText("Mem Position");
         startingPositionLable.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -230,18 +219,12 @@ public class Memory_GUI extends javax.swing.JFrame {
         startingPositionLable.setMinimumSize(new java.awt.Dimension(80, 16));
         startingPositionLable.setPreferredSize(new java.awt.Dimension(80, 16));
 
-        lengthLable.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        lengthLable.setForeground(new java.awt.Color(204, 204, 204));
         lengthLable.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lengthLable.setText("Length");
         lengthLable.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        length.setBackground(new java.awt.Color(102, 102, 102));
-        length.setBorder(null);
-        length.setForeground(new java.awt.Color(204, 204, 204));
         length.setText("10");
 
-        updateButton.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         updateButton.setText("Update");
         updateButton.setFocusable(false);
         updateButton.setOpaque(false);
@@ -251,7 +234,6 @@ public class Memory_GUI extends javax.swing.JFrame {
             }
         });
 
-        autoUpdateButton.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         autoUpdateButton.setText("Auto Update");
         autoUpdateButton.setFocusable(false);
         autoUpdateButton.addActionListener(new java.awt.event.ActionListener() {
@@ -270,8 +252,6 @@ public class Memory_GUI extends javax.swing.JFrame {
             }
         });
 
-        memoryPointersLable.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        memoryPointersLable.setForeground(new java.awt.Color(204, 204, 204));
         memoryPointersLable.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         memoryPointersLable.setText("Memory Lables");
         memoryPointersLable.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -283,17 +263,17 @@ public class Memory_GUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, StuffHolderLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(StuffHolderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(startingPosition)
+                    .addComponent(startingPosition, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(startingPositionLable, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(StuffHolderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lengthLable, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
-                    .addComponent(length))
+                    .addComponent(length, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(66, 66, 66)
-                .addComponent(updateButton)
+                .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(autoUpdateButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+                .addComponent(autoUpdateButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
                 .addGroup(StuffHolderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(memoryLables, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(memoryPointersLable, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE))
@@ -307,15 +287,26 @@ public class Memory_GUI extends javax.swing.JFrame {
                     .addGroup(StuffHolderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(startingPositionLable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lengthLable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(memoryPointersLable, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE))
+                    .addComponent(memoryPointersLable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(StuffHolderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(startingPosition, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(length, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(memoryLables, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(updateButton)
-                    .addComponent(autoUpdateButton))
-                .addContainerGap(26, Short.MAX_VALUE))
+                    .addComponent(updateButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(autoUpdateButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout themedJPanel21Layout = new javax.swing.GroupLayout(themedJPanel21);
+        themedJPanel21.setLayout(themedJPanel21Layout);
+        themedJPanel21Layout.setHorizontalGroup(
+            themedJPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        themedJPanel21Layout.setVerticalGroup(
+            themedJPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 433, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -323,16 +314,14 @@ public class Memory_GUI extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(StuffHolder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(StuffHolder1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(themedJPanel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(StuffHolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(400, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(StuffHolder1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(themedJPanel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -399,18 +388,19 @@ public class Memory_GUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel StuffHolder;
-    private javax.swing.JPanel StuffHolder1;
-    private javax.swing.JToggleButton autoUpdateButton;
-    private javax.swing.JFormattedTextField length;
-    private javax.swing.JLabel lengthLable;
+    private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJPanel1 StuffHolder;
+    private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJPanel1 StuffHolder1;
+    private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJToggleButton autoUpdateButton;
+    private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJFormattedTextField length;
+    private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel lengthLable;
     private javax.swing.JComboBox<String> memoryLables;
-    private javax.swing.JLabel memoryPointersLable;
+    private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel memoryPointersLable;
     private javax.swing.JScrollPane memoryPositionScrollPane;
     private javax.swing.JTable memoryPositionTable;
-    private javax.swing.JFormattedTextField startingPosition;
-    private javax.swing.JLabel startingPositionLable;
-    private javax.swing.JButton updateButton;
+    private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJFormattedTextField startingPosition;
+    private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel startingPositionLable;
+    private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJPanel2 themedJPanel21;
+    private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJButton updateButton;
     private javax.swing.JScrollPane valsScrollPane;
     private javax.swing.JTable valsTable;
     // End of variables declaration//GEN-END:variables

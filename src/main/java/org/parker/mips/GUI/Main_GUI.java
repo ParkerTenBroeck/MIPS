@@ -17,7 +17,6 @@ import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
 import org.parker.mips.FileHandler;
 import org.parker.mips.Log;
 import org.parker.mips.MIPS;
@@ -64,7 +63,7 @@ public class Main_GUI extends javax.swing.JFrame {
                         Main_GUI.startButton.setSelected(false);
                     }
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(100);
                     } catch (Exception e) {
 
                     }
@@ -94,7 +93,6 @@ public class Main_GUI extends javax.swing.JFrame {
      * Creates new form Main_GUI
      */
     public Main_GUI() {
-        setLookAndFeel();
         initComponents();
 
         addCompileButtonListener((ae) -> {
@@ -232,20 +230,6 @@ public class Main_GUI extends javax.swing.JFrame {
             return jMenu;
         }
         return null;
-    }
-
-    public static void setLookAndFeel() {
-        try {
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
     }
 
     public static synchronized void refresh() {

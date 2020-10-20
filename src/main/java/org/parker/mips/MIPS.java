@@ -5,12 +5,10 @@
  */
 package org.parker.mips;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import java.awt.Color;
 import java.io.File;
+import java.net.URL;
+import javax.swing.ImageIcon;
 import org.parker.mips.GUI.Main_GUI;
-import org.parker.mips.GUI.ThemedJFrameComponents.ThemeHandler;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginHandler;
 import static org.parker.mips.UpdateHandler.checkForUpdates;
 
@@ -40,6 +38,17 @@ public class MIPS {
         ResourceHandler.extractResources();
 
         Main_GUI gui = new Main_GUI();
+
+        try {
+            System.out.println("rubasd");
+            URL url = ClassLoader.getSystemClassLoader().getResource("images/logo.png");
+            System.out.println(url);
+            ImageIcon icon = new ImageIcon(url);
+            System.out.println(icon);
+            gui.setIconImage(icon.getImage());
+        } catch (Exception e) {
+
+        }
 
         SystemCallPluginHandler.loadDefaultPlugins();
 //
