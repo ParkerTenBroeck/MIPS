@@ -40,11 +40,11 @@ public class MIPS {
         Main_GUI gui = new Main_GUI();
 
         try {
-            System.out.println("rubasd");
+            //System.out.println("rubasd");
             URL url = ClassLoader.getSystemClassLoader().getResource("images/logo.png");
-            System.out.println(url);
+            //System.out.println(url);
             ImageIcon icon = new ImageIcon(url);
-            System.out.println(icon);
+            //System.out.println(icon);
             gui.setIconImage(icon.getImage());
         } catch (Exception e) {
 
