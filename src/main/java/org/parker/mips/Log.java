@@ -23,11 +23,6 @@ import org.parker.mips.GUI.lookandfeel.ModernScrollPane;
  */
 public class Log extends javax.swing.JPanel {
 
-    private static boolean logMessages = true;
-    private static boolean logSystemMessages = true;
-    private static boolean logWarnings = true;
-    private static boolean logErrors = true;
-
     static {
         Log.initComponents();
     }
@@ -39,7 +34,7 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logError(String message) {
-        if (!logErrors) {
+        if (!OptionsHandler.logErrors.value) {
             return;
         }
         System.err.println("[Error] " + message);
@@ -51,7 +46,7 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logWarning(String message) {
-        if (!logWarnings) {
+        if (!OptionsHandler.logWarnings.value) {
             return;
         }
         System.out.println("[Warning] " + message);
@@ -63,7 +58,7 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logSystemMessage(String message) {
-        if (!logSystemMessages) {
+        if (!OptionsHandler.logSystemMessages.value) {
             return;
         }
         System.out.println("[System Message] " + message);
@@ -75,7 +70,7 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logMessage(String message) {
-        if (!logMessages) {
+        if (!OptionsHandler.logMessages.value) {
             return;
         }
         System.out.println("[Message] " + message);
@@ -87,7 +82,7 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logCustomMessage(String message, SimpleAttributeSet att) {
-        if (!logMessages) {
+        if (!OptionsHandler.logMessages.value) {
             return;
         }
         System.out.println("[Message] " + message);
@@ -96,7 +91,7 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logCustomMessage(String message, boolean bold, boolean italic, boolean underline, Color color, String font) {
-        if (!logMessages) {
+        if (!OptionsHandler.logMessages.value) {
             return;
         }
         System.out.println("[Message] " + message);

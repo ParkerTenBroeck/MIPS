@@ -7,7 +7,7 @@ package org.parker.mips.Compiler;
 
 import org.parker.mips.Compiler.DataClasses.MemoryLable;
 import org.parker.mips.Compiler.DataClasses.UserLine;
-import org.parker.mips.GUI.Main_GUI;
+import org.parker.mips.GUI.MainGUI;
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -173,7 +173,7 @@ public class ASMCompiler {
 
         ArrayList<UserLine> temp = getInstructions();
 
-        temp = PreProcessor.preProcess(temp, Main_GUI.savePreProcessedFile());
+        temp = PreProcessor.preProcess(temp, MainGUI.savePreProcessedFile());
 
         findMemoryPointersAndChunkifyMemory(temp);
 
@@ -186,7 +186,7 @@ public class ASMCompiler {
         Memory.setMemory(memByteArray);
         FileHandler.saveByteArrayToMXNFile(memByteArray);
 
-        if (Main_GUI.saveCompilationInfo()) {
+        if (MainGUI.saveCompilationInfo()) {
             saveOriginsToFile();
         }
 
@@ -194,7 +194,7 @@ public class ASMCompiler {
         memoryByteList.clear();
         origins.clear();
 
-        Main_GUI.refreshAll();
+        MainGUI.refreshAll();
     }
 
     public static void saveOriginsToFile() {

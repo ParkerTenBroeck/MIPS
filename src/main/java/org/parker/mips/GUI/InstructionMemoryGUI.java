@@ -21,7 +21,7 @@ import static org.parker.mips.Processor.Registers.getPc;
  *
  * @author parke
  */
-public class InstructionMemory_GUI extends javax.swing.JPanel implements ThemableComponent {
+public class InstructionMemoryGUI extends javax.swing.JPanel implements ThemableComponent {
 
     private static int toMiddle = 0;
 
@@ -43,7 +43,7 @@ public class InstructionMemory_GUI extends javax.swing.JPanel implements Themabl
         }
     }
 
-    public InstructionMemory_GUI() {
+    public InstructionMemoryGUI() {
         initComponents();
 
         //this.setFont((Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.BUTTON_TEXT_FONT_PROPERTY_NAME));
@@ -129,7 +129,6 @@ public class InstructionMemory_GUI extends javax.swing.JPanel implements Themabl
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private static javax.swing.JList<String> instructionList;
-    private static javax.swing.JScrollPane jScrollPane1;
     private static org.parker.mips.GUI.lookandfeel.ModernScrollPane modernScrollPane2;
     // End of variables declaration//GEN-END:variables
 }

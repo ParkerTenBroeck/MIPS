@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFileChooser;
 import org.parker.mips.GUI.ASM_GUI;
-import org.parker.mips.GUI.Main_GUI;
+import org.parker.mips.GUI.MainGUI;
 
 /**
  *
@@ -99,7 +99,7 @@ public class FileHandler {
     }
 
     public static boolean saveASMFileFromUserTextArea() {
-        if (Main_GUI.isLinked()) {
+        if (MainGUI.isLinked()) {
             reloadAllFiles();
             return true;
         }
@@ -120,7 +120,7 @@ public class FileHandler {
             File pd = new File(ResourceHandler.DEFAULT_PROJECTS_PATH);
             JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
             fc.setSelectedFile(new File("project_" + pd.listFiles().length + ".asm"));
-            int returnVal = fc.showOpenDialog(Main_GUI.getFrame());
+            int returnVal = fc.showOpenDialog(MainGUI.getFrame());
 
             if (returnVal != 0) {
                 currentASMFile = File.createTempFile("ASMTemp", ".asm");
@@ -145,7 +145,7 @@ public class FileHandler {
             }
 
             if (chosenFile.exists()) {
-                int i = Main_GUI.confirmBox("Warning", "This File Already Exists are you sure you want to overwrite it");
+                int i = MainGUI.confirmBox("Warning", "This File Already Exists are you sure you want to overwrite it");
 
                 if (i == 0) {
                     currentASMFile = chosenFile;
@@ -161,7 +161,7 @@ public class FileHandler {
                     }
                     chosenFile = new File(pf.getAbsolutePath() + "\\" + chosenFile.getName());
                     if (chosenFile.exists()) {
-                        int i = Main_GUI.confirmBox("Warning", "This File Already Exists are you sure you want to overwrite it");
+                        int i = MainGUI.confirmBox("Warning", "This File Already Exists are you sure you want to overwrite it");
 
                         if (i == 0) {
                             currentASMFile = chosenFile;
@@ -195,7 +195,7 @@ public class FileHandler {
             //}
             return true;
         } else {
-            int choice = Main_GUI.confirmBox("Warning", "The File is not saved would you like to save");
+            int choice = MainGUI.confirmBox("Warning", "The File is not saved would you like to save");
             switch (choice) {
                 case 0:
                     if (saveASMFileFromUserTextArea()) {
@@ -377,7 +377,7 @@ public class FileHandler {
             return false;
         }
         final JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
-        int returnVal = fc.showOpenDialog(Main_GUI.getFrame());
+        int returnVal = fc.showOpenDialog(MainGUI.getFrame());
 
         //System.out.println(returnVal);
         if (returnVal != 0) {

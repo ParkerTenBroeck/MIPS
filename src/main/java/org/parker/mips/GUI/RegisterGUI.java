@@ -20,7 +20,7 @@ import org.parker.mips.Processor.Registers;
  *
  * @author parke
  */
-public class Register_GUI extends javax.swing.JPanel implements ThemableComponent {
+public class RegisterGUI extends javax.swing.JPanel implements ThemableComponent {
 
     RoundedBorder roundedBorder = new RoundedBorder(00, 15);
 
@@ -57,7 +57,7 @@ public class Register_GUI extends javax.swing.JPanel implements ThemableComponen
     /**
      * Creates new form Registers
      */
-    public Register_GUI() {
+    public RegisterGUI() {
         initComponents();
 
         //this.setFont((Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.BUTTON_TEXT_FONT_PROPERTY_NAME));

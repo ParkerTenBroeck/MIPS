@@ -6,7 +6,7 @@
 package org.parker.mips.Processor;
 
 import org.parker.mips.FileHandler;
-import org.parker.mips.GUI.Main_GUI;
+import org.parker.mips.GUI.MainGUI;
 import org.parker.mips.Log;
 import static org.parker.mips.Processor.InstructionDecode.runInstruction;
 import static org.parker.mips.Processor.Memory.getWord;
@@ -35,7 +35,7 @@ public class Processor implements Runnable {
         instructionsRan = 0;
         Registers.reset();
         reloadMemoryFromLoadedMXNFile();
-        Main_GUI.refresh();
+        MainGUI.refresh();
     }
     
     public static void reloadMemoryFromLoadedMXNFile(){
@@ -111,9 +111,9 @@ public class Processor implements Runnable {
     }
 
     public static void logRunTimeError(String message) {
-        if (Main_GUI.breakOnRunTimeError()) {
+        if (MainGUI.breakOnRunTimeError()) {
             Processor.stop();
-            Main_GUI.refreshAll();
+            MainGUI.refreshAll();
         }
         Log.logError("[RunTime] " + message);
     }

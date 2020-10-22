@@ -5,7 +5,7 @@
  */
 package org.parker.mips.Processor;
 
-import org.parker.mips.GUI.Main_GUI;
+import org.parker.mips.GUI.MainGUI;
 import static org.parker.mips.Processor.Processor.logRunTimeError;
 
 /**
@@ -161,7 +161,7 @@ public class Memory {
     }
 
     private static void memoryOutOfBoundsEvent(String message, int currentIndex) {
-        if (Main_GUI.isMemoryAdaptive()) {
+        if (MainGUI.isMemoryAdaptive()) {
             byte[] temp;
             if (currentIndex >= memory.length * 2) {
                 temp = new byte[currentIndex + 16];

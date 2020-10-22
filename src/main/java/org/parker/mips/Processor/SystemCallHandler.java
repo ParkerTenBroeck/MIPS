@@ -7,6 +7,7 @@ package org.parker.mips.Processor;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import org.parker.mips.Log;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCall;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginHandler;
@@ -20,14 +21,14 @@ import org.parker.mips.ResourceHandler;
  * @author parke
  */
 public class SystemCallHandler {
-
+    
     private static final ArrayList<SystemCallPlugin> registeredSystemCallPlugins = new ArrayList();
     private static final ArrayList<SystemCall> registeredSystemCalls = new ArrayList();
-
+    
     private static SystemCall[] idrkWhat = new SystemCall[500];
-
+    
     public static void registerSystemCallPlugin(SystemCallPlugin scp) {
-
+        
         if (scp == null) {
             return;
         }
@@ -35,11 +36,11 @@ public class SystemCallHandler {
             SystemCallPluginHandler.logPluginHandlerError("System Calls is null in" + scp.PLUGIN_NAME + " skipping for now");
             return;
         }
-
+        
         SystemCall[] scl = scp.getSystemCalls();
-
+        
         int totalConflicts = 0;
-
+        
         for (SystemCall sc : scl) {
             if (sc == null) {
                 totalConflicts++;
@@ -71,19 +72,19 @@ public class SystemCallHandler {
         } else {
             SystemCallPluginHandler.logPluginHandlerSystemMessage("SystemCall plugin: " + scp.PLUGIN_NAME + " was reigstered with " + totalConflicts + " conflicts" + "\n");
         }
-
+        
     }
-
+    
     public static void SystemCall(int id) {
-
+        
         SystemCall sc = null;
-
+        
         try {
             sc = idrkWhat[id];
         } catch (IndexOutOfBoundsException e) {
             logRunTimeSystemCallError("Invalid System Call either does not exist or was not registered ID: " + id);
         } catch (Exception e) {
-
+            
         }
         if (sc != null) {
             try {
@@ -107,35 +108,47 @@ public class SystemCallHandler {
             registeredSystemCallPlugins.remove(plugin);
         }
     }
-
+    
     public static void logRunTimeSystemCallError(String message) {
         logRunTimeError("[System Call] " + message);
     }
-
+    
     public static void logRunTimeSystemCallWarning(String message) {
         logRunTimeWarning("[System Call] " + message);
     }
-
+    
     public static void logRunTimeSystemCallMessage(String message) {
         logRunTimeMessage("[System Call] " + message);
     }
-
+    
+    public static void logSystemCallError(String message) {
+        Log.logError("[System Call] " + message);
+    }
+    
+    public static void logSystemCallWarning(String message) {
+        Log.logWarning("[System Call] " + message);
+    }
+    
+    public static void logSystemCallSystemMessage(String message) {
+        Log.logSystemMessage("[System Call] " + message);
+    }
+    
     public static void regenerateStandardSysCallHeaderFile() {
         PrintWriter writer = null;
         try {
             writer = new PrintWriter(ResourceHandler.STANDARD_HEADER_PATH + "\\syscalldef.asm", "UTF-8");
-
+            
             for (SystemCallPlugin plugin : registeredSystemCallPlugins) {
-
+                
                 if (plugin != null) {
-
+                    
                     writer.println(";SystemCalls defined withing Plugin: " + plugin.PLUGIN_NAME);
                     writer.println("");
-
+                    
                     for (SystemCall call : plugin.getSystemCalls()) {
                         try {
                             if (idrkWhat[call.DATA.SYSTEM_CALL_NUMBER] != null) {
-
+                                
                                 writer.println("#define " + call.DATA.SYSTEM_CALL_NAME + " " + call.DATA.SYSTEM_CALL_NUMBER);
                                 writer.println(";" + call.DATA.SYSTEM_CALL_DISCRIPTION);
                                 //writer.println(";" + call.DATA.SYSTEM_CALL_DISCRIPTION);
@@ -154,19 +167,21 @@ public class SystemCallHandler {
                         writer.println("");
                     }
                 } else {
-                    writer.println("Plugin NULL");
+                    writer.println(";Plugin NULL");
                 }
                 writer.println();
                 writer.println();
             }
+            logSystemCallSystemMessage("Successfully wrote Standard System Call Header file to: " + ResourceHandler.STANDARD_HEADER_PATH + "\\syscalldef.asm" + "\n\n");
         } catch (Exception e) {
-
+            logSystemCallError("There was some Exception e:" + e + " While writting the Standard System Call Header File to: " + ResourceHandler.STANDARD_HEADER_PATH + "\\syscalldef.asm" + "\n\n");
         }
         try {
             writer.close();
         } catch (Exception e) {
-
+            
         }
+        
     }
-
+    
 }

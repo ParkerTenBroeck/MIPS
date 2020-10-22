@@ -9,7 +9,7 @@ import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import org.parker.mips.GUI.Main_GUI;
+import org.parker.mips.GUI.MainGUI;
 import org.parker.mips.Processor.Memory;
 import org.parker.mips.Processor.Processor;
 import org.parker.mips.Processor.Registers;
@@ -34,7 +34,7 @@ public abstract class SystemCallPlugin {
      * @param frame add the frame in a list accesiable in the Main_GUI
      */
     protected final void addFrameToGUI(SystemCallPluginFrame frame) {
-        Main_GUI.addSysCallFrameToList(this, frame);
+        MainGUI.addSysCallFrameToList(this, frame);
     }
 
     /**
@@ -127,12 +127,12 @@ public abstract class SystemCallPlugin {
      */
     protected final boolean throwBreakPoint() {
 
-        if (Main_GUI.canBreak()) {
+        if (MainGUI.canBreak()) {
             stopProcessor();
             logRunTimeSystemCallMessage("Program has reached a breakpoint");
         }
 
-        return Main_GUI.canBreak();
+        return MainGUI.canBreak();
     }
 
     /**

@@ -14,8 +14,8 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import javax.swing.JComponent;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
+import org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu;
+import org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem;
 import javax.swing.JOptionPane;
 import org.parker.mips.FileHandler;
 import org.parker.mips.Log;
@@ -26,12 +26,13 @@ import org.parker.mips.Processor.Memory;
 import org.parker.mips.Processor.Processor;
 import org.parker.mips.ResourceHandler;
 import org.parker.mips.UpdateHandler;
+import org.parker.mips.OptionsHandler;
 
 /**
  *
  * @author parke
  */
-public class Main_GUI extends javax.swing.JFrame {
+public class MainGUI extends javax.swing.JFrame {
 
     private static Thread autoUpdateThread;
     private static boolean autoUpdate;
@@ -52,15 +53,15 @@ public class Main_GUI extends javax.swing.JFrame {
         if (false) {
             return;
         }
-        Main_GUI.autoUpdate = true;
+        MainGUI.autoUpdate = true;
         autoUpdateThread = new Thread() {
             public void run() {
                 while (isRunning()) {
-                    Main_GUI.refresh();
+                    MainGUI.refresh();
                     if (!Processor.isRunning()) {
-                        Main_GUI.stopAutoUpdate();
-                        Main_GUI.refresh();
-                        Main_GUI.startButton.setSelected(false);
+                        MainGUI.stopAutoUpdate();
+                        MainGUI.refresh();
+                        MainGUI.startButton.setSelected(false);
                     }
                     try {
                         Thread.sleep(100);
@@ -75,7 +76,7 @@ public class Main_GUI extends javax.swing.JFrame {
     }
 
     private static synchronized void stopAutoUpdate() {
-        Main_GUI.autoUpdate = false;
+        MainGUI.autoUpdate = false;
     }
 
     public static Component getFrame() {
@@ -85,15 +86,30 @@ public class Main_GUI extends javax.swing.JFrame {
     public static void refreshAll() {
         ASM_GUI.setTextAreaFromASMFile();
         Memory.setMemory(FileHandler.getLoadedMXNFile());
-        InstructionMemory_GUI.refreshValues();
+        InstructionMemoryGUI.refreshValues();
         refresh();
     }
 
     /**
      * Creates new form Main_GUI
      */
-    public Main_GUI() {
+    public MainGUI() {
         initComponents();
+
+        enableBreak.setSelected(OptionsHandler.enableBreakPoints);
+        linkedButton.setSelected(OptionsHandler.linkedFile);
+        
+        saveCompileInformationButton.setSelected(OptionsHandler.saveCompilationInfo);
+        savePreProcessedFileButton.setSelected(OptionsHandler.savePreProcessedFile);
+        
+        breakProgramOnRTEButton.setSelected(OptionsHandler.breakOnRunTimeError);
+        adaptiveMemoryMenuButton.setSelected(OptionsHandler.adaptiveMemory);
+        
+        enableGUIUpdatingWhileRunningButton.setSelected(OptionsHandler.enableGUIAutoUpdateWhileRunning);
+        logSystemMessagesButton.setSelected(OptionsHandler.logSystemMessages);
+        logMessagesButton.setSelected(OptionsHandler.logMessages);
+        logWarningsButton.setSelected(OptionsHandler.logWarnings);
+        logErrorsButton.setSelected(OptionsHandler.logErrors);
 
         addCompileButtonListener((ae) -> {
             Processor.stop();
@@ -104,7 +120,7 @@ public class Main_GUI extends javax.swing.JFrame {
         addStartButtonListener((ae) -> {
             if (startButton.isSelected()) {
                 Processor.start();
-                Main_GUI.startAutoUpdate();
+                MainGUI.startAutoUpdate();
             } else {
                 Processor.stop();
             }
@@ -139,9 +155,11 @@ public class Main_GUI extends javax.swing.JFrame {
                             "Exit Confirmation", JOptionPane.YES_NO_OPTION,
                             JOptionPane.QUESTION_MESSAGE, null, null, null);
                     if (confirm == 0) {
+                        OptionsHandler.saveOptionsToFile();
                         System.exit(0);
                     }
                 } else {
+                    OptionsHandler.saveOptionsToFile();
                     System.exit(0);
                 }
 
@@ -155,14 +173,14 @@ public class Main_GUI extends javax.swing.JFrame {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     Processor.stop();
                     Processor.reset();
-                    if (FileHandler.loadExampleFile(new File(((JMenuItem) evt.getSource()).getName()))) {
+                    if (FileHandler.loadExampleFile(new File(((ThemedJMenuItem) evt.getSource()).getName()))) {
                         ASMCompiler.compile();
                     }
                 }
             };
 
             for (Component comp : generateJMenuFromFile(new File(ResourceHandler.EXAMPLES_PATH), al).getMenuComponents()) {
-                Main_GUI.exampleMenu.add((JComponent) comp);
+                MainGUI.exampleMenu.add((JComponent) comp);
             }
 
         } catch (Exception ex) {
@@ -180,7 +198,7 @@ public class Main_GUI extends javax.swing.JFrame {
         if (plugin == null || frame == null) {
             return;
         }
-        JMenuItem temp = new JMenuItem();
+        ThemedJMenuItem temp = new ThemedJMenuItem();
 
         temp.setText(plugin.PLUGIN_NAME);
         temp.addActionListener((ae) -> {
@@ -190,9 +208,9 @@ public class Main_GUI extends javax.swing.JFrame {
         systemCallFrameJMenu.add(temp);
     }
 
-    private static JMenu generateJMenuFromFile(File file, ActionListener al) {
+    private static ThemedJMenu generateJMenuFromFile(File file, ActionListener al) {
         if (file.isDirectory()) {
-            JMenu jMenu = new JMenu();
+            ThemedJMenu jMenu = new ThemedJMenu();
 
             String name = file.getName();
             if (name.contains("‰")) {
@@ -220,7 +238,7 @@ public class Main_GUI extends javax.swing.JFrame {
 
                         }
                     }
-                    JMenuItem jMenuItem = new JMenuItem();
+                    ThemedJMenuItem jMenuItem = new ThemedJMenuItem();
                     jMenuItem.setText(namef2);
                     jMenuItem.setName(f2.getAbsolutePath());
                     jMenuItem.addActionListener(al);
@@ -235,8 +253,8 @@ public class Main_GUI extends javax.swing.JFrame {
     public static synchronized void refresh() {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                Register_GUI.updateVals();
-                InstructionMemory_GUI.refresh();
+                RegisterGUI.updateVals();
+                InstructionMemoryGUI.refresh();
                 InstructionsRan.setText(Long.toString(Processor.getInstructionsRan()));
             }
         });
@@ -271,36 +289,40 @@ public class Main_GUI extends javax.swing.JFrame {
         jLabel2 = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel();
         lowerContentPanel = new javax.swing.JPanel();
         aSM_GUI1 = new org.parker.mips.GUI.ASM_GUI();
-        register_GUI1 = new org.parker.mips.GUI.Register_GUI();
-        instructionMemory_GUI1 = new org.parker.mips.GUI.InstructionMemory_GUI();
+        register_GUI1 = new org.parker.mips.GUI.RegisterGUI();
+        instructionMemory_GUI1 = new org.parker.mips.GUI.InstructionMemoryGUI();
         midButtonSliderPanel = new javax.swing.JPanel();
         linkedButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox();
         aboutLinkedFile = new javax.swing.JButton();
         enableBreak = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox();
         delaySlider = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJSlider();
         delayLable = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel();
-        menuBar = new javax.swing.JMenuBar();
-        fileMenu = new javax.swing.JMenu();
-        openMenuButton = new javax.swing.JMenuItem();
-        exampleMenu = new javax.swing.JMenu();
-        newMenuButton = new javax.swing.JMenuItem();
-        saveMenuButton = new javax.swing.JMenuItem();
-        saveAsMenuButton = new javax.swing.JMenuItem();
-        editMenu = new javax.swing.JMenu();
-        optionsMenu = new javax.swing.JMenu();
-        checkForUpdates = new javax.swing.JMenuItem();
-        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
-        compilerMenu = new javax.swing.JMenu();
-        asciiChartButton = new javax.swing.JMenuItem();
-        documentationButton = new javax.swing.JMenuItem();
-        savePreProcessedFileButton = new javax.swing.JCheckBoxMenuItem();
-        saveCompileInformationButton = new javax.swing.JCheckBoxMenuItem();
-        runTimeMenu = new javax.swing.JMenu();
-        breakProgramOnRTEButton = new javax.swing.JCheckBoxMenuItem();
-        adaptiveMemoryMenuButton = new javax.swing.JCheckBoxMenuItem();
-        jMenu1 = new javax.swing.JMenu();
-        systemCallFrameJMenu = new javax.swing.JMenu();
-        registeredSystemCallPluginsButton = new javax.swing.JMenuItem();
+        menuBar = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuBar();
+        fileMenu = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu();
+        openMenuButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem();
+        exampleMenu = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu();
+        newMenuButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem();
+        saveMenuButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem();
+        saveAsMenuButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem();
+        editMenu = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu();
+        optionsMenu = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu();
+        checkForUpdates = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem();
+        enableGUIUpdatingWhileRunningButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBoxMenuItem();
+        logSystemMessagesButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBoxMenuItem();
+        logMessagesButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBoxMenuItem();
+        logWarningsButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBoxMenuItem();
+        logErrorsButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBoxMenuItem();
+        compilerMenu = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu();
+        asciiChartButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem();
+        documentationButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem();
+        savePreProcessedFileButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBoxMenuItem();
+        saveCompileInformationButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBoxMenuItem();
+        runTimeMenu = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu();
+        breakProgramOnRTEButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBoxMenuItem();
+        adaptiveMemoryMenuButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBoxMenuItem();
+        jMenu1 = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu();
+        systemCallFrameJMenu = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu();
+        registeredSystemCallPluginsButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("MIPS");
@@ -590,9 +612,26 @@ public class Main_GUI extends javax.swing.JFrame {
         });
         optionsMenu.add(checkForUpdates);
 
-        jCheckBoxMenuItem1.setSelected(true);
-        jCheckBoxMenuItem1.setText("Show System Messages");
-        optionsMenu.add(jCheckBoxMenuItem1);
+        enableGUIUpdatingWhileRunningButton.setSelected(true);
+        enableGUIUpdatingWhileRunningButton.setText("Enable GUI Updating While Running");
+        optionsMenu.add(enableGUIUpdatingWhileRunningButton);
+
+        logSystemMessagesButton.setSelected(true);
+        logSystemMessagesButton.setText("Log System Messages");
+        optionsMenu.add(logSystemMessagesButton);
+
+        logMessagesButton.setSelected(true);
+        logMessagesButton.setText("Log Messages");
+        optionsMenu.add(logMessagesButton);
+
+        logWarningsButton.setSelected(true);
+        logWarningsButton.setText("Log Warnings");
+        logWarningsButton.setToolTipText("");
+        optionsMenu.add(logWarningsButton);
+
+        logErrorsButton.setSelected(true);
+        logErrorsButton.setText("Log Errors");
+        optionsMenu.add(logErrorsButton);
 
         menuBar.add(optionsMenu);
 
@@ -676,7 +715,7 @@ public class Main_GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_openMenuButtonActionPerformed
 
     private void memoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_memoryButtonActionPerformed
-        new Memory_GUI();
+        new MemoryGUI();
     }//GEN-LAST:event_memoryButtonActionPerformed
 
     private void saveMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuButtonActionPerformed
@@ -723,27 +762,27 @@ public class Main_GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_documentationButtonActionPerformed
 
     public static void addCompileButtonListener(ActionListener al) {
-        Main_GUI.compileButton.addActionListener(al);
+        MainGUI.compileButton.addActionListener(al);
     }
 
     public static void addStartButtonListener(ActionListener al) {
-        Main_GUI.startButton.addActionListener(al);
+        MainGUI.startButton.addActionListener(al);
     }
 
     public static void addStopButtonListener(ActionListener al) {
-        Main_GUI.stopButton.addActionListener(al);
+        MainGUI.stopButton.addActionListener(al);
     }
 
     public static void addSingleStepButtonListener(ActionListener al) {
-        Main_GUI.singleStepButton.addActionListener(al);
+        MainGUI.singleStepButton.addActionListener(al);
     }
 
     public static void addResetButtonListener(ActionListener al) {
-        Main_GUI.resetButton.addActionListener(al);
+        MainGUI.resetButton.addActionListener(al);
     }
 
     public static boolean isMemoryAdaptive() {
-        return Main_GUI.adaptiveMemoryMenuButton.isSelected();
+        return MainGUI.adaptiveMemoryMenuButton.isSelected();
     }
 
     public static boolean savePreProcessedFile() {
@@ -764,46 +803,50 @@ public class Main_GUI extends javax.swing.JFrame {
     private static org.parker.mips.GUI.ASM_GUI aSM_GUI1;
     private static javax.swing.JButton aboutButton;
     private static javax.swing.JButton aboutLinkedFile;
-    private static javax.swing.JCheckBoxMenuItem adaptiveMemoryMenuButton;
-    private static javax.swing.JMenuItem asciiChartButton;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBoxMenuItem adaptiveMemoryMenuButton;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem asciiChartButton;
     private static javax.swing.JPanel bottomPanel;
-    private static javax.swing.JCheckBoxMenuItem breakProgramOnRTEButton;
-    private static javax.swing.JMenuItem checkForUpdates;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBoxMenuItem breakProgramOnRTEButton;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem checkForUpdates;
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJButton compileButton;
-    private static javax.swing.JMenu compilerMenu;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu compilerMenu;
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel delayLable;
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJSlider delaySlider;
-    private static javax.swing.JMenuItem documentationButton;
-    private static javax.swing.JMenu editMenu;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem documentationButton;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu editMenu;
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox enableBreak;
-    private static javax.swing.JMenu exampleMenu;
-    private static javax.swing.JMenu fileMenu;
-    private static org.parker.mips.GUI.InstructionMemory_GUI instructionMemory_GUI1;
-    private static javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBoxMenuItem enableGUIUpdatingWhileRunningButton;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu exampleMenu;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu fileMenu;
+    private static org.parker.mips.GUI.InstructionMemoryGUI instructionMemory_GUI1;
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel jLabel2;
-    private static javax.swing.JMenu jMenu1;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu jMenu1;
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox linkedButton;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBoxMenuItem logErrorsButton;
     private static org.parker.mips.Log logFrame;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBoxMenuItem logMessagesButton;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBoxMenuItem logSystemMessagesButton;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBoxMenuItem logWarningsButton;
     private static javax.swing.JPanel lowerContentPanel;
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJPanel1 mainPanel;
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJButton memoryButton;
-    private static javax.swing.JMenuBar menuBar;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuBar menuBar;
     private static javax.swing.JPanel midButtonSliderPanel;
-    private static javax.swing.JMenuItem newMenuButton;
-    private static javax.swing.JMenuItem openMenuButton;
-    private static javax.swing.JMenu optionsMenu;
-    private static org.parker.mips.GUI.Register_GUI register_GUI1;
-    private static javax.swing.JMenuItem registeredSystemCallPluginsButton;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem newMenuButton;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem openMenuButton;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu optionsMenu;
+    private static org.parker.mips.GUI.RegisterGUI register_GUI1;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem registeredSystemCallPluginsButton;
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJButton resetButton;
-    private static javax.swing.JMenu runTimeMenu;
-    private static javax.swing.JMenuItem saveAsMenuButton;
-    private static javax.swing.JCheckBoxMenuItem saveCompileInformationButton;
-    private static javax.swing.JMenuItem saveMenuButton;
-    private static javax.swing.JCheckBoxMenuItem savePreProcessedFileButton;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu runTimeMenu;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem saveAsMenuButton;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBoxMenuItem saveCompileInformationButton;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem saveMenuButton;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBoxMenuItem savePreProcessedFileButton;
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJButton singleStepButton;
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJToggleButton startButton;
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJButton stopButton;
-    private static javax.swing.JMenu systemCallFrameJMenu;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu systemCallFrameJMenu;
     private static javax.swing.JPanel topButtonBarPanel;
     private static javax.swing.JPanel topPanel;
     // End of variables declaration//GEN-END:variables

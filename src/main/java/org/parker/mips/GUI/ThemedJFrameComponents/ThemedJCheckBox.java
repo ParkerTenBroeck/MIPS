@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import javax.swing.JCheckBox;
+import org.parker.mips.Holder;
 
 /**
  *
@@ -27,8 +28,10 @@ public class ThemedJCheckBox extends JCheckBox implements ThemableComponent {
     private static Color hoverSelectedColor = (Color) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.BUTTON_HOVERED_CURRENTLY_PRESSED_PROPERTY_NAME);
     private static Color textColor = (Color) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.TEXT_COLOR_1_PROPERTY_NAME);
 
+    private Holder<Boolean> isSelected;
+    private boolean isClicked = false;
+
     boolean mouseHovering = false;
-    boolean isClicked = false;
 
     public ThemedJCheckBox() {
         this.setOpaque(false);
@@ -77,6 +80,7 @@ public class ThemedJCheckBox extends JCheckBox implements ThemableComponent {
 
         @Override
         public void mousePressed(MouseEvent me) {
+            setSelected(!isSelected());
             isClicked = true;
             repaint();
         }
@@ -90,6 +94,7 @@ public class ThemedJCheckBox extends JCheckBox implements ThemableComponent {
         @Override
         public void mouseEntered(MouseEvent me) {
             mouseHovering = true;
+
             repaint();
         }
 
@@ -131,8 +136,8 @@ public class ThemedJCheckBox extends JCheckBox implements ThemableComponent {
 
         grphcs.drawString(text, boxHeight + 3 + offset, y);
 
-        if (isClicked || this.isSelected()) {
-            if (this.isSelected() && mouseHovering) {
+        if (this.isSelected()) {
+            if (this.isSelected() && mouseHovering && !isClicked) {
                 grphcs.setColor(hoverSelectedColor);
             } else {
                 grphcs.setColor(selectedColor);
@@ -146,6 +151,28 @@ public class ThemedJCheckBox extends JCheckBox implements ThemableComponent {
         }
 
         grphcs.fillRect(offset, (int) (this.getHeight() / 2.0 - boxHeight / 2.0), boxHeight, boxHeight);
+    }
+
+    @Override
+    public boolean isSelected() {
+        if (isSelected != null) {
+            return isSelected.value;
+        } else {
+            return super.isSelected();
+        }
+    }
+
+    public void setSelected(Holder<Boolean> value) {
+        this.isSelected = value;
+    }
+
+    @Override
+    public void setSelected(boolean value) {
+        if (this.isSelected != null) {
+            this.isSelected.value = value;
+        } else {
+            super.setSelected(value);
+        }
     }
 
 }

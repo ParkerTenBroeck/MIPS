@@ -52,18 +52,26 @@ public class ResourceHandler {
         temp &= extractResourceToFolder(EXAMPLES_PATH, "Examples");
         temp &= extractResourceToFolder(STANDARD_HEADER_PATH, "StandardHeaderFiles");
 
+        if (temp) {
+            logResourceHandlerSystemMessage("Extracted all resourced with 0 errors" + "\n\n");
+        } else {
+            logResourceHandlerError("Extracted resources with errors" + "\n\n");
+        }
         return temp;
     }
 
     private static boolean createDirectory(String path) {
         File dir = new File(path);
         if (!dir.exists()) {
+            logResourceHandlerSystemMessage("Created Directory: " + path);
             return dir.mkdir();
         }
         return true;
     }
 
     private static boolean extractResourceToFolder(String destPath, String jarPath) {
+
+        logResourceHandlerSystemMessage("Started extraction of Resources: " + jarPath + " to Dest: " + destPath);
 
         String protocol = ResourceHandler.class.getResource("").getProtocol();
         if (Objects.equals(protocol, "jar")) { //run in jar
@@ -127,7 +135,7 @@ public class ResourceHandler {
                 }
             } catch (Exception ex) {
                 //System.out.println(ex);
-                Log.logWarning(ex.toString());
+                logResourceHandlerWarning(ex.toString());
                 //Logger.getLogger(ResourceHandler.class.getName()).log(Level.SEVERE, null, ex);
                 //Log.logMessage("no");
                 return false;
@@ -144,7 +152,7 @@ public class ResourceHandler {
                 File dest = new File(destPath);
                 copyFolderReplaceOld(source, dest);
             } catch (Exception e) {
-                Log.logError("Cannot copy resources to Documents folder. Wrong path defined?");
+                logResourceHandlerError("Cannot copy resources to Documents folder. Wrong path defined?");
                 return false;
             }
             return true;
@@ -177,7 +185,7 @@ public class ResourceHandler {
                     return;
                 }
             }
-            Log.logSystemMessage("ReWritting " + destination.getAbsolutePath());
+            logResourceHandlerSystemMessage("ReWritting " + destination.getAbsolutePath());
             try {
                 in = new FileInputStream(source);
                 out = new FileOutputStream(destination);
@@ -207,6 +215,18 @@ public class ResourceHandler {
                 destination.setLastModified(source.lastModified());
             }
         }
+    }
+
+    private static void logResourceHandlerError(String message) {
+        Log.logError("[Resource Handler] " + message);
+    }
+
+    private static void logResourceHandlerWarning(String message) {
+        Log.logWarning("[Resource Handler] " + message);
+    }
+
+    private static void logResourceHandlerSystemMessage(String message) {
+        Log.logSystemMessage("[Resource Handler] " + message);
     }
 
 }

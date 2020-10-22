@@ -16,12 +16,12 @@ import org.parker.mips.Processor.Memory;
  *
  * @author parke
  */
-public class Memory_GUI extends javax.swing.JFrame {
+public class MemoryGUI extends javax.swing.JFrame {
 
     private static boolean autoUpdate;
     ComboBoxSearchable cbs;
 
-    public Memory_GUI() {
+    public MemoryGUI() {
         initComponents();
         memoryPositionScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         memoryPositionScrollPane.getVerticalScrollBar().setModel(valsScrollPane.getVerticalScrollBar().getModel());
@@ -43,9 +43,9 @@ public class Memory_GUI extends javax.swing.JFrame {
 
     public class autoUpdateMemory implements Runnable {
 
-        Memory_GUI gui;
+        MemoryGUI gui;
 
-        public autoUpdateMemory(Memory_GUI gui) {
+        public autoUpdateMemory(MemoryGUI gui) {
             this.gui = gui;
             Thread.currentThread().setName("Memory GUI autoupdate");
 
@@ -362,27 +362,28 @@ public class Memory_GUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Memory_GUI.class
+            java.util.logging.Logger.getLogger(MemoryGUI.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Memory_GUI.class
+            java.util.logging.Logger.getLogger(MemoryGUI.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Memory_GUI.class
+            java.util.logging.Logger.getLogger(MemoryGUI.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Memory_GUI.class
+            java.util.logging.Logger.getLogger(MemoryGUI.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Memory_GUI().setVisible(true);
+                new MemoryGUI().setVisible(true);
             }
         });
     }

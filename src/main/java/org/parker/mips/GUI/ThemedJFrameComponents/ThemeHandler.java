@@ -10,7 +10,7 @@ import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import org.parker.mips.GUI.Main_GUI;
+import org.parker.mips.GUI.MainGUI;
 
 /**
  *
@@ -18,7 +18,7 @@ import org.parker.mips.GUI.Main_GUI;
  */
 public class ThemeHandler {
 
-    private static final ThemeHandler instance = new ThemeHandler();
+    //private static final ThemeHandler instance = new ThemeHandler();
 
     //start of theme variables declaration
     private static Font buttonTextFont = new Font("Tahoma", Font.BOLD, 13);
@@ -45,27 +45,27 @@ public class ThemeHandler {
     //end of theme variable declaration
 
     //start of propery change support declaration 
-    private static final PropertyChangeSupport BUTTON_TEXT_FONT_PROP = new PropertyChangeSupport(instance);
-    private static final PropertyChangeSupport LABLE_TEXT_FONT_PROP = new PropertyChangeSupport(instance);
-    private static final PropertyChangeSupport GENERAL_TEXT_FONT_PROP = new PropertyChangeSupport(instance);
+    private static final PropertyChangeSupport BUTTON_TEXT_FONT_PROP = new PropertyChangeSupport(ThemeHandler.class);
+    private static final PropertyChangeSupport LABLE_TEXT_FONT_PROP = new PropertyChangeSupport(ThemeHandler.class);
+    private static final PropertyChangeSupport GENERAL_TEXT_FONT_PROP = new PropertyChangeSupport(ThemeHandler.class);
 
-    private static final PropertyChangeSupport TEXT_COLOR_1_PROP = new PropertyChangeSupport(instance);
-    private static final PropertyChangeSupport TEXT_COLOR_2_PROP = new PropertyChangeSupport(instance);
-    private static final PropertyChangeSupport TEXT_COLOR_ACTIVE_PROP = new PropertyChangeSupport(instance);
+    private static final PropertyChangeSupport TEXT_COLOR_1_PROP = new PropertyChangeSupport(ThemeHandler.class);
+    private static final PropertyChangeSupport TEXT_COLOR_2_PROP = new PropertyChangeSupport(ThemeHandler.class);
+    private static final PropertyChangeSupport TEXT_COLOR_ACTIVE_PROP = new PropertyChangeSupport(ThemeHandler.class);
 
-    private static final PropertyChangeSupport TEXT_AREA_BACKGROUND_1_PROP = new PropertyChangeSupport(instance);
-    private static final PropertyChangeSupport TEXT_AREA_BACKGROUND_2_PROP = new PropertyChangeSupport(instance);
-    private static final PropertyChangeSupport TEXT_AREA_BACKGROUND_3_PROP = new PropertyChangeSupport(instance);
+    private static final PropertyChangeSupport TEXT_AREA_BACKGROUND_1_PROP = new PropertyChangeSupport(ThemeHandler.class);
+    private static final PropertyChangeSupport TEXT_AREA_BACKGROUND_2_PROP = new PropertyChangeSupport(ThemeHandler.class);
+    private static final PropertyChangeSupport TEXT_AREA_BACKGROUND_3_PROP = new PropertyChangeSupport(ThemeHandler.class);
 
-    private static final PropertyChangeSupport BACKGROUND_COLOR_1_PROP = new PropertyChangeSupport(instance);
-    private static final PropertyChangeSupport BACKGROUND_COLOR_2_PROP = new PropertyChangeSupport(instance);
-    private static final PropertyChangeSupport BACKGROUND_COLOR_3_PROP = new PropertyChangeSupport(instance);
-    private static final PropertyChangeSupport BACKGROUND_COLOR_4_PROP = new PropertyChangeSupport(instance);
+    private static final PropertyChangeSupport BACKGROUND_COLOR_1_PROP = new PropertyChangeSupport(ThemeHandler.class);
+    private static final PropertyChangeSupport BACKGROUND_COLOR_2_PROP = new PropertyChangeSupport(ThemeHandler.class);
+    private static final PropertyChangeSupport BACKGROUND_COLOR_3_PROP = new PropertyChangeSupport(ThemeHandler.class);
+    private static final PropertyChangeSupport BACKGROUND_COLOR_4_PROP = new PropertyChangeSupport(ThemeHandler.class);
 
-    private static final PropertyChangeSupport BUTTON_DEFAULT_COLOR_PROP = new PropertyChangeSupport(instance);
-    private static final PropertyChangeSupport BUTTON_HOVERED_PROP = new PropertyChangeSupport(instance);
-    private static final PropertyChangeSupport BUTTON_CURRENTLY_PRESSED_PROP = new PropertyChangeSupport(instance);
-    private static final PropertyChangeSupport BUTTON_HOVERED_CURRENTLY_PRESSED_PROP = new PropertyChangeSupport(instance);
+    private static final PropertyChangeSupport BUTTON_DEFAULT_COLOR_PROP = new PropertyChangeSupport(ThemeHandler.class);
+    private static final PropertyChangeSupport BUTTON_HOVERED_PROP = new PropertyChangeSupport(ThemeHandler.class);
+    private static final PropertyChangeSupport BUTTON_CURRENTLY_PRESSED_PROP = new PropertyChangeSupport(ThemeHandler.class);
+    private static final PropertyChangeSupport BUTTON_HOVERED_CURRENTLY_PRESSED_PROP = new PropertyChangeSupport(ThemeHandler.class);
     //end of property change support declaration
 
     //start of property name declaration
@@ -92,9 +92,9 @@ public class ThemeHandler {
     public static final String BUTTON_HOVERED_CURRENTLY_PRESSED_PROPERTY_NAME = "buttonHoveredCurrentlyPressed";
     //end of property name declaration
 
-    public static ThemeHandler getInstance() {
-        return instance;
-    }
+//    public static ThemeHandler getInstance() {
+//        return instance;
+//    }
 
     public static void addPropertyChangeListenerFromName(String propertyName, PropertyChangeListener listener) {
         getThemeFromName(propertyName).pcs.addPropertyChangeListener(listener);
@@ -112,10 +112,10 @@ public class ThemeHandler {
         Theme tempTheme = getThemeFromName(propertyName);
         setThemeVariableFromName(propertyName, themeObject);
         if (firePropertyChange) {
-            tempTheme.pcs.firePropertyChange(new PropertyChangeEvent(instance, propertyName, tempTheme.themeVariable, themeObject));
+            tempTheme.pcs.firePropertyChange(new PropertyChangeEvent(ThemeHandler.class, propertyName, tempTheme.themeVariable, themeObject));
         }
         if (repaintFrame) {
-            Main_GUI.getFrame().repaint();
+            MainGUI.getFrame().repaint();
         }
 
     }
