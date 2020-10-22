@@ -16,6 +16,7 @@ import java.beans.PropertyChangeEvent;
 import javax.swing.JComponent;
 import javax.swing.JSlider;
 import javax.swing.plaf.basic.BasicSliderUI;
+import org.parker.mips.Holder;
 
 /**
  *
@@ -31,6 +32,30 @@ public class ThemedJSlider extends JSlider implements ThemableComponent {
     @Override
     public void propertyChange(PropertyChangeEvent pce) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private Holder<Integer> value;
+
+    @Override
+    public void setValue(int value) {
+        if (this.value != null) {
+            this.value.value = value;
+        } else {
+            super.setValue(value);
+        }
+    }
+
+    public void setValue(Holder<Integer> value) {
+        this.value = value;
+    }
+
+    @Override
+    public int getValue() {
+        if (this.value != null) {
+            return this.value.value;
+        } else {
+            return super.getValue();
+        }
     }
 
 }
@@ -163,4 +188,5 @@ class ThemedSliderUI extends BasicSliderUI implements ThemableComponent {
         g.setColor(thumbColor);
         g.fillOval(thumbRect.x, thumbRect.y, thumbRect.width, thumbRect.height);
     }
+
 }

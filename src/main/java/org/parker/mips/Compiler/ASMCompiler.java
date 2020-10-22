@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import org.parker.mips.FileHandler;
 import org.parker.mips.Log;
+import org.parker.mips.OptionsHandler;
 import org.parker.mips.Processor.Memory;
+import org.parker.mips.ResourceHandler;
 
 class ByteP {
 
@@ -173,7 +175,7 @@ public class ASMCompiler {
 
         ArrayList<UserLine> temp = getInstructions();
 
-        temp = PreProcessor.preProcess(temp, MainGUI.savePreProcessedFile());
+        temp = PreProcessor.preProcess(temp);
 
         findMemoryPointersAndChunkifyMemory(temp);
 
@@ -186,7 +188,7 @@ public class ASMCompiler {
         Memory.setMemory(memByteArray);
         FileHandler.saveByteArrayToMXNFile(memByteArray);
 
-        if (MainGUI.saveCompilationInfo()) {
+        if (OptionsHandler.saveCompilationInfo.value) {
             saveOriginsToFile();
         }
 
@@ -221,7 +223,7 @@ public class ASMCompiler {
         }
         maxSizeInstruction++;
 
-        File file = new File("CompilationInfo.txt");
+        File file = new File(ResourceHandler.COMPILER_PATH + "\\CompilationInfo.txt");
 
         try (PrintWriter out = new PrintWriter(file)) {
 

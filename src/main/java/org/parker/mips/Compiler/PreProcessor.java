@@ -17,6 +17,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import org.parker.mips.OptionsHandler;
+import org.parker.mips.ResourceHandler;
 
 /**
  *
@@ -178,21 +180,29 @@ public class PreProcessor {
         return line.trim();
     }
 
-    public static ArrayList<UserLine> preProcess(ArrayList<UserLine> file, boolean outputFile) {
+    public static ArrayList<UserLine> preProcess(ArrayList<UserLine> file) {
+
+        if (file != null) {
+            if (OptionsHandler.includeRegDef.value) {
+                file.add(0, new UserLine("#include \"" + ResourceHandler.REG_DEF_HEADER_PATH + "\"", -2));
+                logPreProcessorMessage("Included regdef.asm");
+            }
+            if (OptionsHandler.includeSysCallDef.value) {
+                file.add(0, new UserLine("#include \"" + ResourceHandler.SYS_CALL_DEF_HEADER_PATH + "\"", -3));
+                logPreProcessorMessage("Included syscalldef.asm");
+            }
+        }
 
         //file = loadFile("C:\\Users\\parke\\OneDrive\\Documents\\GitHub\\MIPS\\Examples\\snake 2.asm", 1);
         statements = new ArrayList();
 
-        ArrayList<UserLine> preProcessedFile = subPreProcess(file);
+        ArrayList<UserLine> preProcessedFile = subPreProcess(file, true);
 
-        if (outputFile) {
-            writePreProcessedFile(preProcessedFile);
-        }
         statements.clear();
         return preProcessedFile;
     }
 
-    private static ArrayList<UserLine> subPreProcess(ArrayList<UserLine> data) { //pre processes data in included data or nested is statements
+    private static ArrayList<UserLine> subPreProcess(ArrayList<UserLine> data, boolean firstLayer) { //pre processes data in included data or nested is statements
 
         ArrayList<UserLine> cleanedData = new ArrayList();
         ArrayList<UserLine> preProcessedData = new ArrayList();
@@ -214,8 +224,12 @@ public class PreProcessor {
             if (currentLine.line.equals("") || currentLine.line.equals("/n")) { //if line is empty delete it and move on
                 continue;
             }
+
             cleanedData.add(currentLine);
 
+        }
+        if (OptionsHandler.saveCleanedFile.value && firstLayer) {
+            writeCleanedFile(cleanedData);
         }
 
         for (int i = 0; i < cleanedData.size(); i++) {
@@ -226,7 +240,7 @@ public class PreProcessor {
                 Statement statement = generateStatement(cleanedData, i);
 
                 if (statement.canGenerateAddedData()) {
-                    preProcessedData.addAll(subPreProcess(statement.getGeneratedAddedData()));
+                    preProcessedData.addAll(subPreProcess(statement.getGeneratedAddedData(), false));
                 }
                 i += statement.getSizeOfStatement() - 1;
                 continue;
@@ -235,23 +249,51 @@ public class PreProcessor {
             preProcessedData.addAll(preProcessLine(currentLine)); //preprocesses line and adds resulting line / lines to pre processed file
 
         }
+        if (OptionsHandler.savePreProcessedFile.value) {
+            writePreProcessedFile(preProcessedData);
+        }
+
         return preProcessedData;
     }
 
     private static void writePreProcessedFile(ArrayList<UserLine> fileInfo) {
-        File tempFile = new File("preProcessedFile.asm");
-        try (PrintWriter out = new PrintWriter(tempFile)) {
+        File file = new File(ResourceHandler.COMPILER_PATH + "\\PreProcessedFile.asm");
+        writeArrayListOfUserLinesToFile(fileInfo, file);
+    }
 
-            for (int i = 0; i < fileInfo.size(); i++) {
+    private static void writeCleanedFile(ArrayList<UserLine> fileInfo) {
+        File file = new File(ResourceHandler.COMPILER_PATH + "\\CleanedFile.asm");
+        writeArrayListOfUserLinesToFile(fileInfo, file);
+    }
 
-                out.println(fileInfo.get(i).line);
+    private static void writeArrayListOfUserLinesToFile(ArrayList<UserLine> data, File file) {
+
+        PrintWriter out = null;
+
+        try {
+
+            out = new PrintWriter(file);
+            for (int i = 0; i < data.size(); i++) {
+
+                out.println(data.get(i).line);
             }
-            PreProcessor.logPreProcessorMessage("Pre Processed File Wrote to:" + tempFile.getAbsolutePath());
+            PreProcessor.logPreProcessorMessage(file.getName() + " File Wrote to:" + file.getAbsolutePath());
             out.flush();
         } catch (Exception e) {
-            PreProcessor.logPreProcessorError("Unable to write Pre Processed File to:" + tempFile.getAbsolutePath() + " " + e.getMessage());
-        }
+            PreProcessor.logPreProcessorError("Unable to write " + file.getName() + " File to:" + file.getAbsolutePath() + " " + e.getMessage());
+        } finally {
+            try {
 
+            } catch (Exception e) {
+                out.flush();
+
+            }
+            try {
+                out.close();
+            } catch (Exception e) {
+
+            }
+        }
     }
 
     public static void logPreProcessorError(String message, int line) {

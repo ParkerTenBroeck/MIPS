@@ -32,8 +32,12 @@ public class ResourceHandler {
     public static final String DOCUMENTATION_PATH = DEFAULT_PATH + "\\Documentation";
     public static final String EXAMPLES_PATH = DEFAULT_PATH + "\\Examples";
     public static final String CONFIG_PATH = DEFAULT_PATH + "\\Config";
+    public static final String COMPILER_PATH = DEFAULT_PATH + "\\Compiler";
     public static final String SYS_CALLS_PLUGIN_PATH = DEFAULT_PATH + "\\SystemCallPlugins";
     public static final String STANDARD_HEADER_PATH = DEFAULT_PATH + "\\StandardHeaderFiles";
+
+    public static final String SYS_CALL_DEF_HEADER_PATH = ResourceHandler.STANDARD_HEADER_PATH + "\\syscalldef.asm";
+    public static final String REG_DEF_HEADER_PATH = ResourceHandler.STANDARD_HEADER_PATH + "\\regdef.asm";
 
     public static boolean extractResources() {
 
@@ -44,6 +48,7 @@ public class ResourceHandler {
         temp &= createDirectory(DOCUMENTATION_PATH);
         temp &= createDirectory(EXAMPLES_PATH);
         temp &= createDirectory(CONFIG_PATH);
+        temp &= createDirectory(COMPILER_PATH);
         temp &= createDirectory(SYS_CALLS_PLUGIN_PATH);
         temp &= createDirectory(STANDARD_HEADER_PATH);
 

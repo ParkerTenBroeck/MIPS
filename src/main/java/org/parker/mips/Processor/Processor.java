@@ -28,6 +28,7 @@ public class Processor implements Runnable {
 
     public static synchronized void stop() {
         isRunning = false;
+        MainGUI.stopAutoUpdate();
     }
 
     public static void reset() {

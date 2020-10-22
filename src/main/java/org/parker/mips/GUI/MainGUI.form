@@ -106,6 +106,14 @@
                 <Property name="text" type="java.lang.String" value="Log Errors"/>
               </Properties>
             </Menu>
+            <Menu class="org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem" name="optionsButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Options"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="optionsButtonActionPerformed"/>
+              </Events>
+            </Menu>
           </SubComponents>
         </Menu>
         <Menu class="org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu" name="compilerMenu">
@@ -145,7 +153,7 @@
         </Menu>
         <Menu class="org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu" name="runTimeMenu">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Run Time Options"/>
+            <Property name="text" type="java.lang.String" value="RunTime"/>
           </Properties>
           <SubComponents>
             <MenuItem class="org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBoxMenuItem" name="breakProgramOnRTEButton">

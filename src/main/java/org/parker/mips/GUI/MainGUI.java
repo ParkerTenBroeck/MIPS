@@ -50,21 +50,17 @@ public class MainGUI extends javax.swing.JFrame {
     }
 
     private static synchronized void startAutoUpdate() {
-        if (false) {
+        MainGUI.startButton.setSelected(true);
+        MainGUI.autoUpdate = true;
+        if (!OptionsHandler.enableGUIAutoUpdateWhileRunning.value) {
             return;
         }
-        MainGUI.autoUpdate = true;
         autoUpdateThread = new Thread() {
             public void run() {
-                while (isRunning()) {
+                while (autoUpdate && OptionsHandler.enableGUIAutoUpdateWhileRunning.value) {
                     MainGUI.refresh();
-                    if (!Processor.isRunning()) {
-                        MainGUI.stopAutoUpdate();
-                        MainGUI.refresh();
-                        MainGUI.startButton.setSelected(false);
-                    }
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(OptionsHandler.GUIAutoUpdateRefreshTime.value);
                     } catch (Exception e) {
 
                     }
@@ -75,7 +71,10 @@ public class MainGUI extends javax.swing.JFrame {
         autoUpdateThread.start();
     }
 
-    private static synchronized void stopAutoUpdate() {
+    public static synchronized void stopAutoUpdate() {
+        MainGUI.startButton.setSelected(false);
+        //MainGUI.startButton.repaint();
+        //System.out.println(startButton.isSelected());
         MainGUI.autoUpdate = false;
     }
 
@@ -98,13 +97,13 @@ public class MainGUI extends javax.swing.JFrame {
 
         enableBreak.setSelected(OptionsHandler.enableBreakPoints);
         linkedButton.setSelected(OptionsHandler.linkedFile);
-        
+
         saveCompileInformationButton.setSelected(OptionsHandler.saveCompilationInfo);
         savePreProcessedFileButton.setSelected(OptionsHandler.savePreProcessedFile);
-        
+
         breakProgramOnRTEButton.setSelected(OptionsHandler.breakOnRunTimeError);
         adaptiveMemoryMenuButton.setSelected(OptionsHandler.adaptiveMemory);
-        
+
         enableGUIUpdatingWhileRunningButton.setSelected(OptionsHandler.enableGUIAutoUpdateWhileRunning);
         logSystemMessagesButton.setSelected(OptionsHandler.logSystemMessages);
         logMessagesButton.setSelected(OptionsHandler.logMessages);
@@ -312,6 +311,7 @@ public class MainGUI extends javax.swing.JFrame {
         logMessagesButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBoxMenuItem();
         logWarningsButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBoxMenuItem();
         logErrorsButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBoxMenuItem();
+        optionsButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem();
         compilerMenu = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu();
         asciiChartButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem();
         documentationButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem();
@@ -633,6 +633,14 @@ public class MainGUI extends javax.swing.JFrame {
         logErrorsButton.setText("Log Errors");
         optionsMenu.add(logErrorsButton);
 
+        optionsButton.setText("Options");
+        optionsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                optionsButtonActionPerformed(evt);
+            }
+        });
+        optionsMenu.add(optionsButton);
+
         menuBar.add(optionsMenu);
 
         compilerMenu.setText("Compiler");
@@ -663,7 +671,7 @@ public class MainGUI extends javax.swing.JFrame {
 
         menuBar.add(compilerMenu);
 
-        runTimeMenu.setText("Run Time Options");
+        runTimeMenu.setText("RunTime");
 
         breakProgramOnRTEButton.setSelected(true);
         breakProgramOnRTEButton.setText("Break Program On RunTime Error");
@@ -761,6 +769,10 @@ public class MainGUI extends javax.swing.JFrame {
         //Browser.openLinkInBrowser("https://github.com/ParkerTenBroeck/MIPS/blob/master/MIPS%20documentation/MIPS%20Instructions-Traps-Registers.pdf");
     }//GEN-LAST:event_documentationButtonActionPerformed
 
+    private void optionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_optionsButtonActionPerformed
+        new OptionsGUI();
+    }//GEN-LAST:event_optionsButtonActionPerformed
+
     public static void addCompileButtonListener(ActionListener al) {
         MainGUI.compileButton.addActionListener(al);
     }
@@ -834,6 +846,7 @@ public class MainGUI extends javax.swing.JFrame {
     private static javax.swing.JPanel midButtonSliderPanel;
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem newMenuButton;
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem openMenuButton;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem optionsButton;
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu optionsMenu;
     private static org.parker.mips.GUI.RegisterGUI register_GUI1;
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem registeredSystemCallPluginsButton;

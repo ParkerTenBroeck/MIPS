@@ -223,7 +223,7 @@ public class UserIO extends SystemCallPluginFrame {
     }//GEN-LAST:event_formFocusGained
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-
+        stopProcessor();
     }//GEN-LAST:event_formWindowClosing
 
     private void inputTextFeildActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputTextFeildActionPerformed

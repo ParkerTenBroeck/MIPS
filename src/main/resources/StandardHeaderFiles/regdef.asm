@@ -42,4 +42,4 @@
 
 #define fp $30 ;Contains the frame pointer (if needed); otherwise a saved register (like s0-s7).
 
-#define $31 ra ;Contains the return address and is used for expression evaluation.
+#define ra $31 ;Contains the return address and is used for expression evaluation.

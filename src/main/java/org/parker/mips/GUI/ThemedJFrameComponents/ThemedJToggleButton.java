@@ -28,7 +28,7 @@ public class ThemedJToggleButton extends JToggleButton implements ThemableCompon
     private static Color textColor = (Color) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.TEXT_COLOR_1_PROPERTY_NAME);
 
     boolean mouseHovering = false;
-    boolean isClicked = false;
+    //boolean isClicked = false;
 
     public ThemedJToggleButton() {
         this.addMouseListener(new ml());
@@ -71,7 +71,7 @@ public class ThemedJToggleButton extends JToggleButton implements ThemableCompon
 
         @Override
         public void mouseClicked(MouseEvent me) {
-            isClicked = !isClicked;
+            //isClicked = !isClicked;
             repaint();
         }
 
@@ -100,7 +100,7 @@ public class ThemedJToggleButton extends JToggleButton implements ThemableCompon
     @Override
     public void paint(Graphics grphcs) {
 
-        if (isClicked || this.isSelected()) {
+        if ( this.isSelected()) {
             if (this.isSelected() && mouseHovering) {
                 grphcs.setColor(hoverSelectedColor);
             } else {
