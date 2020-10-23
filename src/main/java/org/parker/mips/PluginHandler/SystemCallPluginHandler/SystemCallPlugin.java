@@ -93,9 +93,15 @@ public abstract class SystemCallPlugin {
      * @return
      */
     protected final SystemCallData[] getSystemCallDataFromClass(Class classType) {
-        SystemCallData[] data = null;
 
         String path = "/" + classType.getCanonicalName().replaceAll("\\.", "/") + ".json";
+
+        return getSystemCallData(path, classType);
+    }
+
+    protected final SystemCallData[] getSystemCallData(String path, Class classType) {
+
+        SystemCallData[] data = null;
 
         try {
             Gson gson = new Gson();
@@ -141,6 +147,13 @@ public abstract class SystemCallPlugin {
      */
     protected final void stopProcessor() {
         Processor.stop();
+    }
+    
+    /**
+     * resets the processor setting all registers to 0 and halting also reloads memory if options is set
+     */
+    protected final void resetProcessor(){
+        Processor.reset();
     }
 
     /**

@@ -53,8 +53,12 @@ public class OptionsHandler {
     public static final Holder<Boolean> adaptiveMemory = new Holder(false);
     public static final Holder<Boolean> enableBreakPoints = new Holder(true);
 
+    //Non RunTime
+    public static final Holder<Boolean> reloadMemoryOnReset = new Holder(true);
+
     //System Calls
     public static final Holder<Boolean> logSystemCallMessages = new Holder(true);
+    public static final Holder<Boolean> resetProcessorOnTrap0 = new Holder(false);
 
     public static void readOptionsFromFile() {
 
@@ -79,13 +83,13 @@ public class OptionsHandler {
 
                     if (je.isJsonPrimitive()) {
                         if (je.getAsJsonPrimitive().isBoolean()) {
-                            holder.value = (Boolean)je.getAsBoolean();
+                            holder.value = (Boolean) je.getAsBoolean();
                         }
                         if (je.getAsJsonPrimitive().isString()) {
-                            holder.value = (String)je.getAsString();
+                            holder.value = (String) je.getAsString();
                         }
                         if (je.getAsJsonPrimitive().isNumber()) {
-                            holder.value = (Integer)je.getAsNumber().intValue();
+                            holder.value = (Integer) je.getAsNumber().intValue();
                         }
                     }
 

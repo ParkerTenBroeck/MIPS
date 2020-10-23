@@ -8,6 +8,7 @@ package org.parker.mips.Processor;
 import org.parker.mips.FileHandler;
 import org.parker.mips.GUI.MainGUI;
 import org.parker.mips.Log;
+import org.parker.mips.OptionsHandler;
 import static org.parker.mips.Processor.InstructionDecode.runInstruction;
 import static org.parker.mips.Processor.Memory.getWord;
 import static org.parker.mips.Processor.Registers.getPc;
@@ -35,11 +36,13 @@ public class Processor implements Runnable {
         stop();
         instructionsRan = 0;
         Registers.reset();
-        reloadMemoryFromLoadedMXNFile();
+        if (OptionsHandler.reloadMemoryOnReset.value) {
+            reloadMemoryFromLoadedMXNFile();
+        }
         MainGUI.refresh();
     }
-    
-    public static void reloadMemoryFromLoadedMXNFile(){
+
+    public static void reloadMemoryFromLoadedMXNFile() {
         Memory.setMemory(FileHandler.getLoadedMXNFile());
     }
 
@@ -92,7 +95,7 @@ public class Processor implements Runnable {
         if (isRunning == true) {
             return;
         }
-        
+
         isRunning = true;
         Thread thread = new Thread() {
             public void run() {
@@ -104,6 +107,16 @@ public class Processor implements Runnable {
     }
 
     private static void singleStep() {
+//        if (InterruptHandler.hasInterrupt() && !InterruptHandler.isInInterrupt()) {
+//            int sp = 29;
+//            Memory.setWord(Registers.getRegister(sp), Registers.getPc());
+//            Registers.setRegister(sp, Registers.getRegister(sp) + 1);
+//
+//            Memory.setWord(Registers.getRegister(sp), Registers.getPc());
+//            Registers.setRegister(sp, Registers.getRegister(sp) + 1);
+//            return;
+//        }
+
         if (!runInstruction(getOpCode())) {
 
             logRunTimeError("invalid OpCode at " + Registers.getPc());

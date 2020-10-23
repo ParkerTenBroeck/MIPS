@@ -210,21 +210,38 @@
                           <Component id="adaptiveMemoryButton" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="enableBreakPointsButton" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="440" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="121" max="-2" attributes="0"/>
+                      <Component id="jSeparator3" min="-2" pref="15" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="themedJLabel10" min="-2" max="-2" attributes="0"/>
+                          <Component id="reloadMemoryOnResetButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="108" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
+                  <Component id="jSeparator3" alignment="0" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="themedJLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="breakOnRunTimeErrorButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="adaptiveMemoryButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="enableBreakPointsButton" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="themedJLabel1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="breakOnRunTimeErrorButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="adaptiveMemoryButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="enableBreakPointsButton" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="themedJLabel10" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="reloadMemoryOnResetButton" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                       <EmptySpace pref="255" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -238,7 +255,7 @@
             </Component>
             <Component class="org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel" name="themedJLabel1">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Processor Options"/>
+                <Property name="text" type="java.lang.String" value="RunTime Options"/>
               </Properties>
             </Component>
             <Component class="org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox" name="adaptiveMemoryButton">
@@ -249,6 +266,21 @@
             <Component class="org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox" name="enableBreakPointsButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Enable BreakPoints"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JSeparator" name="jSeparator3">
+              <Properties>
+                <Property name="orientation" type="int" value="1"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel" name="themedJLabel10">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="General Options"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox" name="reloadMemoryOnResetButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Reload Memory on Reset"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -376,13 +408,14 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="resetProcessorOnTrap0Button" min="-2" max="-2" attributes="0"/>
                           <Component id="themedJLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="logSystemCallMessagesButton" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="428" max="32767" attributes="0"/>
+                      <EmptySpace pref="420" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -393,7 +426,9 @@
                       <Component id="themedJLabel7" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="logSystemCallMessagesButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="305" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="resetProcessorOnTrap0Button" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="280" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -407,6 +442,11 @@
             <Component class="org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox" name="logSystemCallMessagesButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Log SystemCall Messages"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox" name="resetProcessorOnTrap0Button">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Reset Processor On Trap 0"/>
               </Properties>
             </Component>
           </SubComponents>

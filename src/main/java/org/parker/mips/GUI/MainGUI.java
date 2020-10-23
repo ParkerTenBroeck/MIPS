@@ -76,6 +76,7 @@ public class MainGUI extends javax.swing.JFrame {
         //MainGUI.startButton.repaint();
         //System.out.println(startButton.isSelected());
         MainGUI.autoUpdate = false;
+        MainGUI.refresh();
     }
 
     public static Component getFrame() {

@@ -20,38 +20,41 @@ public class OptionsGUI extends javax.swing.JFrame {
         initComponents();
         this.setVisible(true);
         this.setTitle("Options");
-        
+
         //linking all of the components to the linked OPTIONS
-        
         //General
         //logging
         this.logSystemMessagesButton.setSelected(OptionsHandler.logSystemMessages);
         this.logMessagesButton.setSelected(OptionsHandler.logMessages);
         this.logWarningsButton.setSelected(OptionsHandler.logWarnings);
         this.logErrorsButton.setSelected(OptionsHandler.logErrors);
-        
+
         //GUI options
         this.enableAutoGUIUpdatesWhileRuning.setSelected(OptionsHandler.enableGUIAutoUpdateWhileRunning);
         this.guiUpdateTimeSlider.setValue(OptionsHandler.GUIAutoUpdateRefreshTime);
-        
+
         //Compiler
         this.saveCleanedFileButton.setSelected(OptionsHandler.saveCleanedFile);
         this.savePreProcessorFileButton.setSelected(OptionsHandler.savePreProcessedFile);
         this.saveCompilerInfoFileButton.setSelected(OptionsHandler.saveCompilationInfo);
         this.linkedFileButton.setSelected(OptionsHandler.linkedFile);
-        
+
         //PreProcessor
         this.includeRegDefButton.setSelected(OptionsHandler.includeRegDef);
         this.includeSysCallDefButton.setSelected(OptionsHandler.includeSysCallDef);
-        
+
         //Processor
         //Run Time
         this.breakOnRunTimeErrorButton.setSelected(OptionsHandler.breakOnRunTimeError);
         this.adaptiveMemoryButton.setSelected(OptionsHandler.adaptiveMemory);
         this.enableBreakPointsButton.setSelected(OptionsHandler.enableBreakPoints);
-        
+
+        //Non RunTime
+        this.reloadMemoryOnResetButton.setSelected(OptionsHandler.reloadMemoryOnReset);
+
         //System Calls
         this.logSystemCallMessagesButton.setSelected(OptionsHandler.logSystemCallMessages);
+        this.resetProcessorOnTrap0Button.setSelected(OptionsHandler.resetProcessorOnTrap0);
         
     }
 
@@ -84,6 +87,9 @@ public class OptionsGUI extends javax.swing.JFrame {
         themedJLabel1 = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel();
         adaptiveMemoryButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox();
         enableBreakPointsButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox();
+        jSeparator3 = new javax.swing.JSeparator();
+        themedJLabel10 = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel();
+        reloadMemoryOnResetButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox();
         themedJPanel13 = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJPanel1();
         themedJLabel6 = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel();
         savePreProcessorFileButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox();
@@ -97,6 +103,7 @@ public class OptionsGUI extends javax.swing.JFrame {
         themedJPanel15 = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJPanel1();
         themedJLabel7 = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel();
         logSystemCallMessagesButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox();
+        resetProcessorOnTrap0Button = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox();
         themedJPanel14 = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJPanel1();
         themedJLabel4 = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel();
         saveCurrentThemeButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJButton();
@@ -198,11 +205,17 @@ public class OptionsGUI extends javax.swing.JFrame {
 
         breakOnRunTimeErrorButton.setText("Break On RunTime Error");
 
-        themedJLabel1.setText("Processor Options");
+        themedJLabel1.setText("RunTime Options");
 
         adaptiveMemoryButton.setText("Adaptive Memory");
 
         enableBreakPointsButton.setText("Enable BreakPoints");
+
+        jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        themedJLabel10.setText("General Options");
+
+        reloadMemoryOnResetButton.setText("Reload Memory on Reset");
 
         javax.swing.GroupLayout themedJPanel12Layout = new javax.swing.GroupLayout(themedJPanel12);
         themedJPanel12.setLayout(themedJPanel12Layout);
@@ -215,19 +228,32 @@ public class OptionsGUI extends javax.swing.JFrame {
                     .addComponent(breakOnRunTimeErrorButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(adaptiveMemoryButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(enableBreakPointsButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(440, Short.MAX_VALUE))
+                .addGap(121, 121, 121)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(themedJPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(themedJLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(reloadMemoryOnResetButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(108, Short.MAX_VALUE))
         );
         themedJPanel12Layout.setVerticalGroup(
             themedJPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSeparator3)
             .addGroup(themedJPanel12Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(themedJLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(breakOnRunTimeErrorButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(adaptiveMemoryButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(enableBreakPointsButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(themedJPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(themedJPanel12Layout.createSequentialGroup()
+                        .addComponent(themedJLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(breakOnRunTimeErrorButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(adaptiveMemoryButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(enableBreakPointsButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(themedJPanel12Layout.createSequentialGroup()
+                        .addComponent(themedJLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(reloadMemoryOnResetButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(255, Short.MAX_VALUE))
         );
 
@@ -303,6 +329,8 @@ public class OptionsGUI extends javax.swing.JFrame {
 
         logSystemCallMessagesButton.setText("Log SystemCall Messages");
 
+        resetProcessorOnTrap0Button.setText("Reset Processor On Trap 0");
+
         javax.swing.GroupLayout themedJPanel15Layout = new javax.swing.GroupLayout(themedJPanel15);
         themedJPanel15.setLayout(themedJPanel15Layout);
         themedJPanel15Layout.setHorizontalGroup(
@@ -310,9 +338,10 @@ public class OptionsGUI extends javax.swing.JFrame {
             .addGroup(themedJPanel15Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(themedJPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(resetProcessorOnTrap0Button, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(themedJLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(logSystemCallMessagesButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(428, Short.MAX_VALUE))
+                .addContainerGap(420, Short.MAX_VALUE))
         );
         themedJPanel15Layout.setVerticalGroup(
             themedJPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -321,7 +350,9 @@ public class OptionsGUI extends javax.swing.JFrame {
                 .addComponent(themedJLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(logSystemCallMessagesButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(305, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(resetProcessorOnTrap0Button, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(280, Short.MAX_VALUE))
         );
 
         themedJTabbedPane1.addTab("SystemCalls", themedJPanel15);
@@ -417,6 +448,7 @@ public class OptionsGUI extends javax.swing.JFrame {
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox includeSysCallDefButton;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox linkedFileButton;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJButton loadOptionsButton;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJButton loadThemeButton;
@@ -425,12 +457,15 @@ public class OptionsGUI extends javax.swing.JFrame {
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox logSystemCallMessagesButton;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox logSystemMessagesButton;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox logWarningsButton;
+    private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox reloadMemoryOnResetButton;
+    private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox resetProcessorOnTrap0Button;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox saveCleanedFileButton;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox saveCompilerInfoFileButton;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJButton saveCurrentOptionsButton;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJButton saveCurrentThemeButton;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox savePreProcessorFileButton;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel themedJLabel1;
+    private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel themedJLabel10;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel themedJLabel2;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel themedJLabel3;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel themedJLabel4;

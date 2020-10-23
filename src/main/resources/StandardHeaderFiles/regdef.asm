@@ -31,7 +31,7 @@
 #define t8 $24 ;Temporary registers used for expression evaluations; their values aren’t preserved across procedure calls.
 #define t9 $25
 
-#define k0 $26 ;Reserved for the operating system kernel.
+#define k0 $26 ;Reserved for the operating system kernel. used for interrupts.
 #define kt0 $26
 #define k1 $27
 #define kt1 $27
