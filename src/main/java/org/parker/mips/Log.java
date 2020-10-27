@@ -34,7 +34,7 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logError(String message) {
-        if (!OptionsHandler.logErrors.value) {
+        if (!SettingsHandler.logErrors.value) {
             return;
         }
         System.err.println("[Error] " + message);
@@ -46,7 +46,7 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logWarning(String message) {
-        if (!OptionsHandler.logWarnings.value) {
+        if (!SettingsHandler.logWarnings.value) {
             return;
         }
         System.out.println("[Warning] " + message);
@@ -58,7 +58,7 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logSystemMessage(String message) {
-        if (!OptionsHandler.logSystemMessages.value) {
+        if (!SettingsHandler.logSystemMessages.value) {
             return;
         }
         System.out.println("[System Message] " + message);
@@ -70,7 +70,7 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logMessage(String message) {
-        if (!OptionsHandler.logMessages.value) {
+        if (!SettingsHandler.logMessages.value) {
             return;
         }
         System.out.println("[Message] " + message);
@@ -82,7 +82,7 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logCustomMessage(String message, SimpleAttributeSet att) {
-        if (!OptionsHandler.logMessages.value) {
+        if (!SettingsHandler.logMessages.value) {
             return;
         }
         System.out.println("[Message] " + message);
@@ -91,7 +91,7 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logCustomMessage(String message, boolean bold, boolean italic, boolean underline, Color color, String font) {
-        if (!OptionsHandler.logMessages.value) {
+        if (!SettingsHandler.logMessages.value) {
             return;
         }
         System.out.println("[Message] " + message);

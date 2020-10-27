@@ -5,18 +5,20 @@
  */
 package org.parker.mips.GUI;
 
-import org.parker.mips.OptionsHandler;
+import javax.swing.JFileChooser;
+import org.parker.mips.SettingsHandler;
+import org.parker.mips.ResourceHandler;
 
 /**
  *
  * @author parke
  */
-public class OptionsGUI extends javax.swing.JFrame {
+public class SettingsGUI extends javax.swing.JFrame {
 
     /**
      * Creates new form OptionsGUI
      */
-    public OptionsGUI() {
+    public SettingsGUI() {
         initComponents();
         this.setVisible(true);
         this.setTitle("Options");
@@ -24,38 +26,58 @@ public class OptionsGUI extends javax.swing.JFrame {
         //linking all of the components to the linked OPTIONS
         //General
         //logging
-        this.logSystemMessagesButton.setSelected(OptionsHandler.logSystemMessages);
-        this.logMessagesButton.setSelected(OptionsHandler.logMessages);
-        this.logWarningsButton.setSelected(OptionsHandler.logWarnings);
-        this.logErrorsButton.setSelected(OptionsHandler.logErrors);
+        this.logSystemMessagesButton.setSelected(SettingsHandler.logSystemMessages);
+        this.logMessagesButton.setSelected(SettingsHandler.logMessages);
+        this.logWarningsButton.setSelected(SettingsHandler.logWarnings);
+        this.logErrorsButton.setSelected(SettingsHandler.logErrors);
 
         //GUI options
-        this.enableAutoGUIUpdatesWhileRuning.setSelected(OptionsHandler.enableGUIAutoUpdateWhileRunning);
-        this.guiUpdateTimeSlider.setValue(OptionsHandler.GUIAutoUpdateRefreshTime);
+        this.enableAutoGUIUpdatesWhileRuning.setSelected(SettingsHandler.enableGUIAutoUpdateWhileRunning);
+        this.guiUpdateTimeSlider.setValue(SettingsHandler.GUIAutoUpdateRefreshTime);
 
         //Compiler
-        this.saveCleanedFileButton.setSelected(OptionsHandler.saveCleanedFile);
-        this.savePreProcessorFileButton.setSelected(OptionsHandler.savePreProcessedFile);
-        this.saveCompilerInfoFileButton.setSelected(OptionsHandler.saveCompilationInfo);
-        this.linkedFileButton.setSelected(OptionsHandler.linkedFile);
+        this.saveCleanedFileButton.setSelected(SettingsHandler.saveCleanedFile);
+        this.savePreProcessorFileButton.setSelected(SettingsHandler.savePreProcessedFile);
+        this.saveCompilerInfoFileButton.setSelected(SettingsHandler.saveCompilationInfo);
+        this.linkedFileButton.setSelected(SettingsHandler.linkedFile);
 
         //PreProcessor
-        this.includeRegDefButton.setSelected(OptionsHandler.includeRegDef);
-        this.includeSysCallDefButton.setSelected(OptionsHandler.includeSysCallDef);
+        this.includeRegDefButton.setSelected(SettingsHandler.includeRegDef);
+        this.includeSysCallDefButton.setSelected(SettingsHandler.includeSysCallDef);
 
         //Processor
         //Run Time
-        this.breakOnRunTimeErrorButton.setSelected(OptionsHandler.breakOnRunTimeError);
-        this.adaptiveMemoryButton.setSelected(OptionsHandler.adaptiveMemory);
-        this.enableBreakPointsButton.setSelected(OptionsHandler.enableBreakPoints);
+        this.breakOnRunTimeErrorButton.setSelected(SettingsHandler.breakOnRunTimeError);
+        this.adaptiveMemoryButton.setSelected(SettingsHandler.adaptiveMemory);
+        this.enableBreakPointsButton.setSelected(SettingsHandler.enableBreakPoints);
 
         //Non RunTime
-        this.reloadMemoryOnResetButton.setSelected(OptionsHandler.reloadMemoryOnReset);
+        this.reloadMemoryOnResetButton.setSelected(SettingsHandler.reloadMemoryOnReset);
 
         //System Calls
-        this.logSystemCallMessagesButton.setSelected(OptionsHandler.logSystemCallMessages);
-        this.resetProcessorOnTrap0Button.setSelected(OptionsHandler.resetProcessorOnTrap0);
-        
+        this.logSystemCallMessagesButton.setSelected(SettingsHandler.logSystemCallMessages);
+        this.resetProcessorOnTrap0Button.setSelected(SettingsHandler.resetProcessorOnTrap0);
+
+        this.loadOptionsButton.addActionListener((ae) -> {
+            JFileChooser fc = ResourceHandler.createFileChooser(ResourceHandler.USER_SAVED_CONFIG_PATH);
+            int val = ResourceHandler.openFileChooser(fc);
+
+            if (JFileChooser.APPROVE_OPTION == val) {
+                SettingsHandler.readOptionsFromCustomFile(fc.getSelectedFile());
+            }
+        });
+
+        this.saveCurrentOptionsButton.addActionListener((ae) -> {
+            JFileChooser fc = ResourceHandler.createFileChooser(ResourceHandler.USER_SAVED_CONFIG_PATH);
+            int val = ResourceHandler.openFileChooser(fc);
+
+            if (JFileChooser.APPROVE_OPTION == val) {
+                SettingsHandler.saveOptionsToCustomFile(fc.getSelectedFile());
+            }
+        });
+
+        this.loadThemeButton.addActionListener((ae) -> {
+        });
     }
 
     /**
@@ -420,20 +442,21 @@ public class OptionsGUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(OptionsGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SettingsGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(OptionsGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SettingsGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(OptionsGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SettingsGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(OptionsGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SettingsGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new OptionsGUI().setVisible(true);
+                new SettingsGUI().setVisible(true);
             }
         });
     }

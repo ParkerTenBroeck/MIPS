@@ -5,12 +5,28 @@
  */
 package org.parker.mips.GUI.ThemedJFrameComponents;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.awt.Color;
 import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.File;
+import java.io.FileReader;
+import java.io.Writer;
+import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.util.Map;
+import java.util.Set;
 import org.parker.mips.GUI.MainGUI;
+import org.parker.mips.Holder;
+import org.parker.mips.Log;
+import org.parker.mips.ResourceHandler;
+import org.parker.mips.SettingsHandler;
 
 /**
  *
@@ -19,7 +35,6 @@ import org.parker.mips.GUI.MainGUI;
 public class ThemeHandler {
 
     //private static final ThemeHandler instance = new ThemeHandler();
-
     //start of theme variables declaration
     private static Font buttonTextFont = new Font("Tahoma", Font.BOLD, 13);
     private static Font lableTextFont = new Font("Tahoma", Font.BOLD, 13);
@@ -29,8 +44,8 @@ public class ThemeHandler {
     private static Color textColor2 = new Color(204, 204, 204);
     private static Color textColorActive = new Color(1, 176, 117);
 
-    private static Color textAreaBackground1 = new Color(0,0,51);
-    private static Color textAreaBackground2 = new Color(1,1,1);
+    private static Color textAreaBackground1 = new Color(0, 0, 51);
+    private static Color textAreaBackground2 = new Color(1, 1, 1);
     private static Color textAreaBackground3;
 
     private static Color backgroundColor1 = new Color(51, 51, 51);
@@ -91,10 +106,6 @@ public class ThemeHandler {
     public static final String BUTTON_CURRENTLY_PRESSED_PROPERTY_NAME = "buttonCurrentlyPressed";
     public static final String BUTTON_HOVERED_CURRENTLY_PRESSED_PROPERTY_NAME = "buttonHoveredCurrentlyPressed";
     //end of property name declaration
-
-//    public static ThemeHandler getInstance() {
-//        return instance;
-//    }
 
     public static void addPropertyChangeListenerFromName(String propertyName, PropertyChangeListener listener) {
         getThemeFromName(propertyName).pcs.addPropertyChangeListener(listener);
@@ -230,6 +241,95 @@ public class ThemeHandler {
                 return null;
         }
     }
+
+    public static void readThemesFromFile(String filePath) {
+
+        File file = new File(filePath);
+        FileReader reader = null;
+
+        try {
+
+            reader = new FileReader(file);
+
+            JsonParser parser = new JsonParser();
+            JsonObject jo = parser.parse(reader).getAsJsonObject();
+
+            Gson gson = new Gson();
+
+            Set<Map.Entry<String, JsonElement>> entries = jo.entrySet();//will return members of your object
+            entries.forEach((entry) -> {
+
+                try {
+                    Field field = ThemeHandler.class.getDeclaredField(entry.getKey()); //gets the field from field name
+
+                    Object object = gson.fromJson(entry.getValue().getAsJsonObject(), field.getType());
+
+                    setThemeFromName(entry.getKey(), object, true, false);
+
+                } catch (Exception e) {
+                    logThemeHandlerError("Failed to read Theme file: " + e);
+                }
+
+            });
+            MainGUI.getFrame().repaint();
+
+            logThemeHandlerSystemMessage("Successfully loaded " + file.getName() + "\n\n");
+        } catch (Exception e) {
+            logThemeHandlerError("Failed to read Theme file: " + e);
+        } finally {
+            try {
+                reader.close();
+            } catch (Exception e) {
+
+            }
+        }
+
+    }
+
+    private static void saveThemesToFile(String filePath) {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        // Allowing the serialization of static fields    
+
+        gsonBuilder.excludeFieldsWithModifiers(java.lang.reflect.Modifier.TRANSIENT);
+        gsonBuilder.excludeFieldsWithModifiers(java.lang.reflect.Modifier.FINAL);
+        //gsonBuilder.excludeFieldsWithModifiers(java.lang.reflect.Modifier.PRIVATE);
+        gsonBuilder.setPrettyPrinting();
+
+        //gsonBuilder.
+        // Creates a Gson instance based on the current configuration
+        Gson gson = gsonBuilder.create();
+        Writer writer = null;
+        File file = new File(filePath);
+        try {
+            //System.out.println("asdasdasd");
+            writer = Files.newBufferedWriter(file.toPath());
+            //System.err.println("asdasd");
+            gson.toJson(new ThemeHandler(), writer);
+
+            logThemeHandlerSystemMessage("Successfully saved " + file.getName() + "\n\n");
+        } catch (Exception e) {
+            logThemeHandlerError("Failed to write Theme file: " + e);
+        } finally {
+            try {
+                writer.close();
+            } catch (Exception e) {
+
+            }
+        }
+    }
+
+    private static void logThemeHandlerError(String message) {
+        Log.logError("[Theme Handler] " + message);
+    }
+
+    private static void logThemeHandlerWarning(String message) {
+        Log.logWarning("[Theme Handler] " + message);
+    }
+
+    private static void logThemeHandlerSystemMessage(String message) {
+        Log.logSystemMessage("[Theme Handler] " + message);
+    }
+
 }
 
 class Theme {

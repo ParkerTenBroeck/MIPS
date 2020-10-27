@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import java.io.File;
 import java.io.FileReader;
 import java.io.Writer;
 import java.lang.reflect.Field;
@@ -22,9 +23,7 @@ import java.util.Set;
  *
  * @author parke
  */
-public class OptionsHandler {
-
-    private static final String OPTIONS_FILE = ResourceHandler.CONFIG_PATH + "\\Options.json";
+public class SettingsHandler {
 
     //General
     //logging
@@ -60,13 +59,53 @@ public class OptionsHandler {
     public static final Holder<Boolean> logSystemCallMessages = new Holder(true);
     public static final Holder<Boolean> resetProcessorOnTrap0 = new Holder(false);
 
-    public static void readOptionsFromFile() {
+    public static void readOptionsFromDefaultFile() {
+        readOptionsFromFile(ResourceHandler.DEFAULT_OPTIONS_FILE);
+    }
 
+    public static void readOptionsFromCustomFile(String name) {
+        if (name != null) {
+            name = name.split("\\.")[0];
+        }
+        readOptionsFromFile(ResourceHandler.USER_SAVED_CONFIG_PATH + "\\" + name + "\\.json");
+    }
+
+    public static void readOptionsFromCustomFile(File file) {
+        if (file != null) {
+            readOptionsFromFile(file.getAbsolutePath());
+        }
+    }
+
+    public static void saveOptionsToDefaultFile() {
+        saveOptionsToFile(ResourceHandler.DEFAULT_OPTIONS_FILE);
+    }
+
+    public static void saveOptionsToCustomFile(String name) {
+        if (name != null) {
+            name = name.split("\\.")[0];
+        }
+        saveOptionsToFile(ResourceHandler.USER_SAVED_CONFIG_PATH + "\\" + name + "\\.json");
+    }
+
+    public static void saveOptionsToCustomFile(File file) {
+        if (file != null) {
+            String path = file.getAbsolutePath();
+            if (!path.contains("\\.")) {
+                saveOptionsToFile(path + ".json");
+            } else {
+                saveOptionsToFile(path);
+            }
+        }
+    }
+
+    private static void readOptionsFromFile(String filePath) {
+
+        File file = new File(filePath);
         FileReader reader = null;
 
         try {
 
-            reader = new FileReader(OPTIONS_FILE);
+            reader = new FileReader(file);
 
             JsonParser parser = new JsonParser();
 
@@ -76,8 +115,8 @@ public class OptionsHandler {
             entries.forEach((entry) -> {
 
                 try {
-                    Field field = OptionsHandler.class.getDeclaredField(entry.getKey()); //gets the field from field name
-                    Holder holder = (Holder) field.get(OptionsHandler.class); //gets the instance of the FINAL holder 
+                    Field field = SettingsHandler.class.getDeclaredField(entry.getKey()); //gets the field from field name
+                    Holder holder = (Holder) field.get(SettingsHandler.class); //gets the instance of the FINAL holder 
 
                     JsonElement je = jo.getAsJsonObject(entry.getKey()).get("value"); //gets the value stored in the Options file
 
@@ -98,7 +137,7 @@ public class OptionsHandler {
                 }
 
             });
-            logOptionsHandlerSystemMessage("Successfully loaded options.json" + "\n\n");
+            logOptionsHandlerSystemMessage("Successfully loaded " + file.getName() + "\n\n");
         } catch (Exception e) {
             logOptionsHandlerError("Failed to read Options file: " + e);
         } finally {
@@ -111,7 +150,7 @@ public class OptionsHandler {
 
     }
 
-    public static void saveOptionsToFile() {
+    private static void saveOptionsToFile(String filePath) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         // Allowing the serialization of static fields    
 
@@ -123,13 +162,14 @@ public class OptionsHandler {
         // Creates a Gson instance based on the current configuration
         Gson gson = gsonBuilder.create();
         Writer writer = null;
+        File file = new File(filePath);
         try {
             //System.out.println("asdasdasd");
-            writer = Files.newBufferedWriter(Paths.get(OPTIONS_FILE));
+            writer = Files.newBufferedWriter(file.toPath());
             //System.err.println("asdasd");
-            gson.toJson(new OptionsHandler(), writer);
+            gson.toJson(new SettingsHandler(), writer);
 
-            logOptionsHandlerSystemMessage("Successfully saved options.json" + "\n\n");
+            logOptionsHandlerSystemMessage("Successfully saved " + file.getName() + "\n\n");
         } catch (Exception e) {
             logOptionsHandlerError("Failed to write Options file: " + e);
         } finally {

@@ -18,9 +18,9 @@ import java.util.Arrays;
 public class DEFINLINE extends Statement {
 
     private int sizeOfStatement;
-    private ArrayList<UserLine> inlineUserLines = new ArrayList();
+    private ArrayList<UserLine> inlineUserLines = new ArrayList<UserLine>();
     private String[] args;
-    private ArrayList<String> internalMemoryLables = new ArrayList();
+    private ArrayList<String> internalMemoryLables = new ArrayList<String>();
 
     private int timesUsed = 0;
 
@@ -70,7 +70,7 @@ public class DEFINLINE extends Statement {
     @Override
     public ArrayList<UserLine> parseNonStatement(UserLine input) {
 
-        ArrayList<UserLine> parsedInlineLines = new ArrayList();
+        ArrayList<UserLine> parsedInlineLines = new ArrayList<UserLine>();
 
         if (input.line.startsWith(this.IDENTIFIRE + " ") || input.line.equals(this.IDENTIFIRE)) {
 

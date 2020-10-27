@@ -241,7 +241,7 @@ public class FileHandler {
             loadedASMFile = loadFileAsStringList(currentASMFile);
             currentLoadedASMFileAbsolutePath = currentASMFile.getAbsolutePath();
         } else {
-            loadedASMFile = new ArrayList();
+            loadedASMFile = new ArrayList<String>();
             currentLoadedASMFileAbsolutePath = "";
         }
         isASMFileSaved = true;
@@ -271,7 +271,7 @@ public class FileHandler {
         if (loadedASMFile != null) {
             return (ArrayList<String>) loadedASMFile.clone();
         } else {
-            return new ArrayList();
+            return new ArrayList<String>();
         }
     }
 
@@ -349,7 +349,7 @@ public class FileHandler {
         currentMXNFile = null;
         isASMFileSaved = true;
         currentLoadedASMFileAbsolutePath = null;
-        loadedASMFile = new ArrayList();
+        loadedASMFile = new ArrayList<String>();
 
         try {
             List<String> allLines = Files.readAllLines(file.toPath());

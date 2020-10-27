@@ -5,7 +5,7 @@
  */
 package org.parker.mips.Processor.InternalSystemCallPlugins;
 
-import org.parker.mips.OptionsHandler;
+import org.parker.mips.SettingsHandler;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCall;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallData;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin;
@@ -25,7 +25,7 @@ public class DefaultSystemCalls extends SystemCallPlugin {
         this.systemCalls[0] = new SystemCall(scd[0], "SYSTEM_HALT_PROGRAM", this) {
             @Override
             public void handleSystemCall() {
-                if (OptionsHandler.resetProcessorOnTrap0.value) {
+                if (SettingsHandler.resetProcessorOnTrap0.value) {
                     resetProcessor();
                 } else {
                     stopProcessor();

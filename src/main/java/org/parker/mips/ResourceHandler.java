@@ -17,7 +17,9 @@ import java.util.Enumeration;
 import java.util.Objects;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
+import org.parker.mips.GUI.MainGUI;
 
 /**
  *
@@ -31,11 +33,16 @@ public class ResourceHandler {
     public static final String DEFAULT_PROJECTS_PATH = DEFAULT_PATH + "\\Projects";
     public static final String DOCUMENTATION_PATH = DEFAULT_PATH + "\\Documentation";
     public static final String EXAMPLES_PATH = DEFAULT_PATH + "\\Examples";
-    public static final String CONFIG_PATH = DEFAULT_PATH + "\\Config";
     public static final String COMPILER_PATH = DEFAULT_PATH + "\\Compiler";
     public static final String SYS_CALLS_PLUGIN_PATH = DEFAULT_PATH + "\\SystemCallPlugins";
-    public static final String STANDARD_HEADER_PATH = DEFAULT_PATH + "\\StandardHeaderFiles";
 
+    //Config and related resources
+    public static final String CONFIG_PATH = DEFAULT_PATH + "\\Config";
+    public static final String USER_SAVED_CONFIG_PATH = CONFIG_PATH + "\\UserSavedConfig";
+    public static final String DEFAULT_OPTIONS_FILE = ResourceHandler.CONFIG_PATH + "\\Options.json";
+
+    //Header and related resources
+    public static final String STANDARD_HEADER_PATH = DEFAULT_PATH + "\\StandardHeaderFiles";
     public static final String SYS_CALL_DEF_HEADER_PATH = ResourceHandler.STANDARD_HEADER_PATH + "\\syscalldef.asm";
     public static final String REG_DEF_HEADER_PATH = ResourceHandler.STANDARD_HEADER_PATH + "\\regdef.asm";
 
@@ -47,7 +54,11 @@ public class ResourceHandler {
         temp &= createDirectory(DEFAULT_PROJECTS_PATH);
         temp &= createDirectory(DOCUMENTATION_PATH);
         temp &= createDirectory(EXAMPLES_PATH);
+
+        //Config
         temp &= createDirectory(CONFIG_PATH);
+        temp &= createDirectory(USER_SAVED_CONFIG_PATH);
+
         temp &= createDirectory(COMPILER_PATH);
         temp &= createDirectory(SYS_CALLS_PLUGIN_PATH);
         temp &= createDirectory(STANDARD_HEADER_PATH);
@@ -63,6 +74,18 @@ public class ResourceHandler {
             logResourceHandlerError("Extracted resources with errors" + "\n\n");
         }
         return temp;
+    }
+
+    public static JFileChooser createFileChooser() {
+        return new JFileChooser();
+    }
+
+    public static JFileChooser createFileChooser(String currentPath) {
+        return new JFileChooser(currentPath);
+    }
+
+    public static int openFileChooser(JFileChooser fc) {
+        return fc.showOpenDialog(MainGUI.getFrame());
     }
 
     private static boolean createDirectory(String path) {

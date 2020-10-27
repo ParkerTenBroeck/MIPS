@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.parker.mips.FileHandler;
 import org.parker.mips.Log;
-import org.parker.mips.OptionsHandler;
+import org.parker.mips.SettingsHandler;
 import org.parker.mips.Processor.Memory;
 import org.parker.mips.ResourceHandler;
 
@@ -104,13 +104,13 @@ class MemoryChunk {
 
     public MemoryChunk(MemoryLable lable) {
         this.startLable = lable;
-        this.chunkData = new ArrayList();
+        this.chunkData = new ArrayList<CompileTimeUserLine>();
         this.byteAlignment = 0;
     }
 
     public MemoryChunk(UserLine line) {
         this.startLable = null;
-        this.chunkData = new ArrayList();
+        this.chunkData = new ArrayList<CompileTimeUserLine>();
 
         int tempAll = ASMCompiler.parseInt(line.line.split(" ")[1]);
 
@@ -143,12 +143,12 @@ class Origin {
 
     public Origin(int byteOrigin) {
         this.byteOrigin = byteOrigin;
-        memoryChunks = new ArrayList();
+        memoryChunks = new ArrayList<MemoryChunk>();
     }
 
     public Origin(UserLine line) {
         this.byteOrigin = ASMCompiler.parseInt(line.line.split(" ")[1]);
-        memoryChunks = new ArrayList();
+        memoryChunks = new ArrayList<MemoryChunk>();
     }
 
     public void addMemoryChunk(MemoryChunk mc) {
@@ -158,15 +158,15 @@ class Origin {
 
 public class ASMCompiler {
 
-    static private ArrayList<MemoryLable> memoryLables = new ArrayList();
-    static private ArrayList<Origin> origins = new ArrayList();
-    static private ArrayList<ByteP> memoryByteList = new ArrayList();
+    static private ArrayList<MemoryLable> memoryLables = new ArrayList<MemoryLable>();
+    static private ArrayList<Origin> origins = new ArrayList<Origin>();
+    static private ArrayList<ByteP> memoryByteList = new ArrayList<ByteP>();
 
     public static void compile() {
 
-        memoryLables = new ArrayList();
-        memoryByteList = new ArrayList();
-        origins = new ArrayList();
+        memoryLables = new ArrayList<MemoryLable>();
+        memoryByteList = new ArrayList<ByteP>();
+        origins = new ArrayList<Origin>();
 
         FileHandler.saveASMFileFromUserTextArea();
 
@@ -188,7 +188,7 @@ public class ASMCompiler {
         Memory.setMemory(memByteArray);
         FileHandler.saveByteArrayToMXNFile(memByteArray);
 
-        if (OptionsHandler.saveCompilationInfo.value) {
+        if (SettingsHandler.saveCompilationInfo.value) {
             saveOriginsToFile();
         }
 
@@ -463,7 +463,7 @@ public class ASMCompiler {
     private static ArrayList<UserLine> getInstructions() {
         int lineNumber = 0;
 
-        ArrayList<UserLine> file = new ArrayList();
+        ArrayList<UserLine> file = new ArrayList<UserLine>();
         List<String> temp = FileHandler.getLoadedASMFile();
 
         for (String line : temp) {
@@ -535,9 +535,13 @@ public class ASMCompiler {
 
     public static ArrayList<MemoryLable> getMemoryLables() {
         if (memoryLables == null) {
-            return new ArrayList();
+            return new ArrayList<MemoryLable>();
         } else {
+            try{
             return (ArrayList<MemoryLable>) memoryLables.clone();
+            }catch(Error e){
+                return new ArrayList<MemoryLable>();
+            }
         }
     }
 }

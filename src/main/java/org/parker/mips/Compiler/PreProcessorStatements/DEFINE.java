@@ -41,7 +41,7 @@ public class DEFINE extends Statement {
     public ArrayList<UserLine> parseNonStatement(UserLine input) {
 
         if (!input.line.contains(IDENTIFIRE)) {
-            ArrayList<UserLine> lines = new ArrayList();
+            ArrayList<UserLine> lines = new ArrayList<UserLine>();
             lines.add(input);
             return lines;
         }
@@ -51,7 +51,7 @@ public class DEFINE extends Statement {
         aal.replaceAllFull(IDENTIFIRE, arg);
         input.line = aal.buildString();
 
-        ArrayList<UserLine> lines = new ArrayList();
+        ArrayList<UserLine> lines = new ArrayList<UserLine>();
         lines.add(input);
 
         return lines;

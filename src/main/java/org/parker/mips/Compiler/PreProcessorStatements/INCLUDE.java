@@ -38,7 +38,7 @@ public class INCLUDE extends Statement {
             //System.out.println(path);
             String fileExtention = path.split("\\.")[1];
             if (fileExtention.equals("mxn") || fileExtention.equals("bin")) {
-                generatedDataToAdd = new ArrayList();
+                generatedDataToAdd = new ArrayList<UserLine>();
                 byte[] temp = FileHandler.loadFileAsByteArray(path);
                 String data = ".byte ";
                 for (int i = 0; i < temp.length; i++) {

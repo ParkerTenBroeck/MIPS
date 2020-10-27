@@ -17,7 +17,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import org.parker.mips.OptionsHandler;
+import org.parker.mips.SettingsHandler;
 import org.parker.mips.ResourceHandler;
 
 /**
@@ -42,7 +42,7 @@ public class PreProcessor {
 
         File tempFile = new File(filePath);
 
-        ArrayList<UserLine> file = new ArrayList();
+        ArrayList<UserLine> file = new ArrayList<UserLine>();
         try {
             reader = new BufferedReader(new FileReader(tempFile));
             String line = reader.readLine();
@@ -86,14 +86,14 @@ public class PreProcessor {
 
     private static ArrayList<UserLine> preProcessLine(UserLine line) {
 
-        ArrayList<UserLine> oldLines = new ArrayList();
-        ArrayList<UserLine> newLines = new ArrayList();
+        ArrayList<UserLine> oldLines = new ArrayList<UserLine>();
+        ArrayList<UserLine> newLines = new ArrayList<UserLine>();
         oldLines.add(line);
 
         for (int r = 0; r < 5; r++) {
 
             for (int i = 0; i < oldLines.size(); i++) {
-                ArrayList<UserLine> temp = new ArrayList();
+                ArrayList<UserLine> temp = new ArrayList<UserLine>();
                 temp.add(oldLines.get(i));
 
                 for (Statement statement : statements) {
@@ -113,7 +113,7 @@ public class PreProcessor {
                 newLines.addAll(temp);
             }
             oldLines = newLines;
-            newLines = new ArrayList();
+            newLines = new ArrayList<UserLine>();
         }
 
 //        ArrayList<UserLine> lines = new ArrayList();
@@ -183,18 +183,18 @@ public class PreProcessor {
     public static ArrayList<UserLine> preProcess(ArrayList<UserLine> file) {
 
         if (file != null) {
-            if (OptionsHandler.includeRegDef.value) {
+            if (SettingsHandler.includeRegDef.value) {
                 file.add(0, new UserLine("#include \"" + ResourceHandler.REG_DEF_HEADER_PATH + "\"", -2));
                 logPreProcessorMessage("Included regdef.asm");
             }
-            if (OptionsHandler.includeSysCallDef.value) {
+            if (SettingsHandler.includeSysCallDef.value) {
                 file.add(0, new UserLine("#include \"" + ResourceHandler.SYS_CALL_DEF_HEADER_PATH + "\"", -3));
                 logPreProcessorMessage("Included syscalldef.asm");
             }
         }
 
         //file = loadFile("C:\\Users\\parke\\OneDrive\\Documents\\GitHub\\MIPS\\Examples\\snake 2.asm", 1);
-        statements = new ArrayList();
+        statements = new ArrayList<Statement>();
 
         ArrayList<UserLine> preProcessedFile = subPreProcess(file, true);
 
@@ -204,8 +204,8 @@ public class PreProcessor {
 
     private static ArrayList<UserLine> subPreProcess(ArrayList<UserLine> data, boolean firstLayer) { //pre processes data in included data or nested is statements
 
-        ArrayList<UserLine> cleanedData = new ArrayList();
-        ArrayList<UserLine> preProcessedData = new ArrayList();
+        ArrayList<UserLine> cleanedData = new ArrayList<UserLine>();
+        ArrayList<UserLine> preProcessedData = new ArrayList<UserLine>();
 
         if (data == null) {
             return preProcessedData;
@@ -228,7 +228,7 @@ public class PreProcessor {
             cleanedData.add(currentLine);
 
         }
-        if (OptionsHandler.saveCleanedFile.value && firstLayer) {
+        if (SettingsHandler.saveCleanedFile.value && firstLayer) {
             writeCleanedFile(cleanedData);
         }
 
@@ -249,7 +249,7 @@ public class PreProcessor {
             preProcessedData.addAll(preProcessLine(currentLine)); //preprocesses line and adds resulting line / lines to pre processed file
 
         }
-        if (OptionsHandler.savePreProcessedFile.value) {
+        if (SettingsHandler.savePreProcessedFile.value) {
             writePreProcessedFile(preProcessedData);
         }
 
