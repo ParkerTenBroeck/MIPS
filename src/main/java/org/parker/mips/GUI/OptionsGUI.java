@@ -5,20 +5,23 @@
  */
 package org.parker.mips.GUI;
 
+import java.io.File;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
-import org.parker.mips.SettingsHandler;
+import org.parker.mips.GUI.ThemedJFrameComponents.ThemeHandler;
+import org.parker.mips.OptionsHandler;
 import org.parker.mips.ResourceHandler;
 
 /**
  *
  * @author parke
  */
-public class SettingsGUI extends javax.swing.JFrame {
+public class OptionsGUI extends javax.swing.JFrame {
 
     /**
      * Creates new form OptionsGUI
      */
-    public SettingsGUI() {
+    public OptionsGUI() {
         initComponents();
         this.setVisible(true);
         this.setTitle("Options");
@@ -26,44 +29,44 @@ public class SettingsGUI extends javax.swing.JFrame {
         //linking all of the components to the linked OPTIONS
         //General
         //logging
-        this.logSystemMessagesButton.setSelected(SettingsHandler.logSystemMessages);
-        this.logMessagesButton.setSelected(SettingsHandler.logMessages);
-        this.logWarningsButton.setSelected(SettingsHandler.logWarnings);
-        this.logErrorsButton.setSelected(SettingsHandler.logErrors);
+        this.logSystemMessagesButton.setSelected(OptionsHandler.logSystemMessages);
+        this.logMessagesButton.setSelected(OptionsHandler.logMessages);
+        this.logWarningsButton.setSelected(OptionsHandler.logWarnings);
+        this.logErrorsButton.setSelected(OptionsHandler.logErrors);
 
         //GUI options
-        this.enableAutoGUIUpdatesWhileRuning.setSelected(SettingsHandler.enableGUIAutoUpdateWhileRunning);
-        this.guiUpdateTimeSlider.setValue(SettingsHandler.GUIAutoUpdateRefreshTime);
+        this.enableAutoGUIUpdatesWhileRuning.setSelected(OptionsHandler.enableGUIAutoUpdateWhileRunning);
+        this.guiUpdateTimeSlider.setValue(OptionsHandler.GUIAutoUpdateRefreshTime);
 
         //Compiler
-        this.saveCleanedFileButton.setSelected(SettingsHandler.saveCleanedFile);
-        this.savePreProcessorFileButton.setSelected(SettingsHandler.savePreProcessedFile);
-        this.saveCompilerInfoFileButton.setSelected(SettingsHandler.saveCompilationInfo);
-        this.linkedFileButton.setSelected(SettingsHandler.linkedFile);
+        this.saveCleanedFileButton.setSelected(OptionsHandler.saveCleanedFile);
+        this.savePreProcessorFileButton.setSelected(OptionsHandler.savePreProcessedFile);
+        this.saveCompilerInfoFileButton.setSelected(OptionsHandler.saveCompilationInfo);
+        this.linkedFileButton.setSelected(OptionsHandler.linkedFile);
 
         //PreProcessor
-        this.includeRegDefButton.setSelected(SettingsHandler.includeRegDef);
-        this.includeSysCallDefButton.setSelected(SettingsHandler.includeSysCallDef);
+        this.includeRegDefButton.setSelected(OptionsHandler.includeRegDef);
+        this.includeSysCallDefButton.setSelected(OptionsHandler.includeSysCallDef);
 
         //Processor
         //Run Time
-        this.breakOnRunTimeErrorButton.setSelected(SettingsHandler.breakOnRunTimeError);
-        this.adaptiveMemoryButton.setSelected(SettingsHandler.adaptiveMemory);
-        this.enableBreakPointsButton.setSelected(SettingsHandler.enableBreakPoints);
+        this.breakOnRunTimeErrorButton.setSelected(OptionsHandler.breakOnRunTimeError);
+        this.adaptiveMemoryButton.setSelected(OptionsHandler.adaptiveMemory);
+        this.enableBreakPointsButton.setSelected(OptionsHandler.enableBreakPoints);
 
         //Non RunTime
-        this.reloadMemoryOnResetButton.setSelected(SettingsHandler.reloadMemoryOnReset);
+        this.reloadMemoryOnResetButton.setSelected(OptionsHandler.reloadMemoryOnReset);
 
         //System Calls
-        this.logSystemCallMessagesButton.setSelected(SettingsHandler.logSystemCallMessages);
-        this.resetProcessorOnTrap0Button.setSelected(SettingsHandler.resetProcessorOnTrap0);
+        this.logSystemCallMessagesButton.setSelected(OptionsHandler.logSystemCallMessages);
+        this.resetProcessorOnTrap0Button.setSelected(OptionsHandler.resetProcessorOnTrap0);
 
         this.loadOptionsButton.addActionListener((ae) -> {
             JFileChooser fc = ResourceHandler.createFileChooser(ResourceHandler.USER_SAVED_CONFIG_PATH);
             int val = ResourceHandler.openFileChooser(fc);
 
             if (JFileChooser.APPROVE_OPTION == val) {
-                SettingsHandler.readOptionsFromCustomFile(fc.getSelectedFile());
+                OptionsHandler.readOptionsFromCustomFile(fc.getSelectedFile());
             }
         });
 
@@ -72,12 +75,53 @@ public class SettingsGUI extends javax.swing.JFrame {
             int val = ResourceHandler.openFileChooser(fc);
 
             if (JFileChooser.APPROVE_OPTION == val) {
-                SettingsHandler.saveOptionsToCustomFile(fc.getSelectedFile());
+                OptionsHandler.saveOptionsToCustomFile(fc.getSelectedFile());
             }
         });
 
-        this.loadThemeButton.addActionListener((ae) -> {
-        });
+        {
+            File file = new File(ResourceHandler.GUI_THEMES);
+            File[] files = file.listFiles();
+            String[] names = new String[files.length];
+            for (int i = 0; i < files.length; i++) {
+                names[i] = files[i].getName().split("\\.")[0];
+            }
+            this.guiThemeComboBox.setModel(new DefaultComboBoxModel(names));
+            this.guiThemeComboBox.setSelectedItem(OptionsHandler.currentGUITheme.value);
+            
+            this.guiThemeComboBox.addActionListener((ae) -> {
+                //System.err.println("asdasdasdasdasda");
+                String name = (String) guiThemeComboBox.getSelectedItem();
+
+                if (!name.equals(OptionsHandler.currentGUITheme.value)) {
+                    OptionsHandler.currentGUITheme.value = name;
+                    ThemeHandler.loadCurrentTheme();
+                }
+                //ThemeHandler.readThemeFromThemeName();
+            });
+        }
+
+        {
+            File file = new File(ResourceHandler.SYNTAX_THEMES);
+            File[] files = file.listFiles();
+            String[] names = new String[files.length];
+            for (int i = 0; i < files.length; i++) {
+                names[i] = files[i].getName().split("\\.")[0];
+            }
+            this.syntaxThemeComboBox.setModel(new DefaultComboBoxModel(names));
+            this.syntaxThemeComboBox.setSelectedItem(OptionsHandler.currentSyntaxTheme.value);
+            
+            this.syntaxThemeComboBox.addActionListener((ae) -> {
+                //System.err.println("asdasdasdasdasda");
+                String name = (String) syntaxThemeComboBox.getSelectedItem();
+
+                if (!name.equals(OptionsHandler.currentSyntaxTheme.value)) {
+                    OptionsHandler.currentSyntaxTheme.value = name;
+                    ASM_GUI.loadCurrentTheme();
+                }
+                //ThemeHandler.readThemeFromThemeName();
+            });
+        }
     }
 
     /**
@@ -128,8 +172,10 @@ public class SettingsGUI extends javax.swing.JFrame {
         resetProcessorOnTrap0Button = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox();
         themedJPanel14 = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJPanel1();
         themedJLabel4 = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel();
-        saveCurrentThemeButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJButton();
-        loadThemeButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJButton();
+        jSeparator4 = new javax.swing.JSeparator();
+        themedJLabel11 = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel();
+        syntaxThemeComboBox = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJComboBox();
+        guiThemeComboBox = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -379,11 +425,11 @@ public class SettingsGUI extends javax.swing.JFrame {
 
         themedJTabbedPane1.addTab("SystemCalls", themedJPanel15);
 
-        themedJLabel4.setText("themedJLabel4");
+        themedJLabel4.setText("GUI Themes");
 
-        saveCurrentThemeButton.setText("Save Current Theme");
+        jSeparator4.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
-        loadThemeButton.setText("Load Theme");
+        themedJLabel11.setText("Syntax Theme");
 
         javax.swing.GroupLayout themedJPanel14Layout = new javax.swing.GroupLayout(themedJPanel14);
         themedJPanel14.setLayout(themedJPanel14Layout);
@@ -392,21 +438,31 @@ public class SettingsGUI extends javax.swing.JFrame {
             .addGroup(themedJPanel14Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(themedJPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(themedJLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(saveCurrentThemeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(loadThemeButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(456, Short.MAX_VALUE))
+                    .addComponent(themedJLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(guiThemeComboBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(224, 224, 224)
+                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(themedJPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(themedJLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(syntaxThemeComboBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(208, Short.MAX_VALUE))
         );
         themedJPanel14Layout.setVerticalGroup(
             themedJPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSeparator4, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(themedJPanel14Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(themedJLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(saveCurrentThemeButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(loadThemeButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(269, Short.MAX_VALUE))
+                .addGroup(themedJPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(themedJPanel14Layout.createSequentialGroup()
+                        .addComponent(themedJLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(guiThemeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(themedJPanel14Layout.createSequentialGroup()
+                        .addComponent(themedJLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(syntaxThemeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(318, Short.MAX_VALUE))
         );
 
         themedJTabbedPane1.addTab("Theme", themedJPanel14);
@@ -442,21 +498,23 @@ public class SettingsGUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SettingsGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OptionsGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SettingsGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OptionsGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SettingsGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OptionsGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SettingsGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OptionsGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SettingsGUI().setVisible(true);
+                new OptionsGUI().setVisible(true);
             }
         });
     }
@@ -466,15 +524,16 @@ public class SettingsGUI extends javax.swing.JFrame {
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox breakOnRunTimeErrorButton;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox enableAutoGUIUpdatesWhileRuning;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox enableBreakPointsButton;
+    private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJComboBox guiThemeComboBox;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJSlider guiUpdateTimeSlider;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox includeRegDefButton;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox includeSysCallDefButton;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox linkedFileButton;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJButton loadOptionsButton;
-    private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJButton loadThemeButton;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox logErrorsButton;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox logMessagesButton;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox logSystemCallMessagesButton;
@@ -485,10 +544,11 @@ public class SettingsGUI extends javax.swing.JFrame {
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox saveCleanedFileButton;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox saveCompilerInfoFileButton;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJButton saveCurrentOptionsButton;
-    private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJButton saveCurrentThemeButton;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox savePreProcessorFileButton;
+    private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJComboBox syntaxThemeComboBox;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel themedJLabel1;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel themedJLabel10;
+    private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel themedJLabel11;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel themedJLabel2;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel themedJLabel3;
     private org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel themedJLabel4;

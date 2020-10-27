@@ -108,7 +108,7 @@
             </Menu>
             <Menu class="org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem" name="optionsButton">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Settings"/>
+                <Property name="text" type="java.lang.String" value="Options"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="optionsButtonActionPerformed"/>
@@ -185,11 +185,6 @@
               </Properties>
             </MenuItem>
           </SubComponents>
-        </Menu>
-        <Menu class="org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu" name="themesJMenu">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Themes"/>
-          </Properties>
         </Menu>
       </SubComponents>
     </Menu>

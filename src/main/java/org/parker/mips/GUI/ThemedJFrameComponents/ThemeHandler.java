@@ -26,7 +26,7 @@ import org.parker.mips.GUI.MainGUI;
 import org.parker.mips.Holder;
 import org.parker.mips.Log;
 import org.parker.mips.ResourceHandler;
-import org.parker.mips.SettingsHandler;
+import org.parker.mips.OptionsHandler;
 
 /**
  *
@@ -36,16 +36,16 @@ public class ThemeHandler {
 
     //private static final ThemeHandler instance = new ThemeHandler();
     //start of theme variables declaration
-    private static Font buttonTextFont = new Font("Tahoma", Font.BOLD, 13);
-    private static Font lableTextFont = new Font("Tahoma", Font.BOLD, 13);
-    private static Font generalTextFont = new Font("Tahoma", Font.BOLD, 13);
+    private static Font buttonTextFont = new Font("Open Sans", Font.BOLD, 13);
+    private static Font lableTextFont = new Font("Open Sans", Font.BOLD, 13);
+    private static Font generalTextFont = new Font("Open Sans", Font.BOLD, 14);
 
     private static Color textColor1 = new Color(204, 204, 204);
-    private static Color textColor2 = new Color(204, 204, 204);
+    private static Color textColor2 = new Color(70, 70, 70);
     private static Color textColorActive = new Color(1, 176, 117);
 
     private static Color textAreaBackground1 = new Color(0, 0, 51);
-    private static Color textAreaBackground2 = new Color(1, 1, 1);
+    private static Color textAreaBackground2 = new Color(153, 153, 153);
     private static Color textAreaBackground3;
 
     private static Color backgroundColor1 = new Color(51, 51, 51);
@@ -242,7 +242,20 @@ public class ThemeHandler {
         }
     }
 
-    public static void readThemesFromFile(String filePath) {
+    public static void loadCurrentTheme() {
+        readThemeFromThemeName(OptionsHandler.currentGUITheme.value);
+    }
+
+    public static void readThemeFromThemeName(String name) {
+        readThemesFromFile(ResourceHandler.GUI_THEMES + "\\" + name + ".json");
+
+    }
+
+    public static void saveThemeAsThemeName(String name) {
+        saveThemesToFile(ResourceHandler.GUI_THEMES + "\\" + name + ".json");
+    }
+
+    private static void readThemesFromFile(String filePath) {
 
         File file = new File(filePath);
         FileReader reader = null;
@@ -271,7 +284,11 @@ public class ThemeHandler {
                 }
 
             });
-            MainGUI.getFrame().repaint();
+            try {
+                MainGUI.getFrame().repaint();
+            } catch (Exception e) {
+
+            }
 
             logThemeHandlerSystemMessage("Successfully loaded " + file.getName() + "\n\n");
         } catch (Exception e) {

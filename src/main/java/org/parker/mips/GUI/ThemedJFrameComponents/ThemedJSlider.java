@@ -64,7 +64,7 @@ class ThemedSliderUI extends BasicSliderUI implements ThemableComponent {
 
     private static Color thumbColor = (Color) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.BUTTON_CURRENTLY_PRESSED_PROPERTY_NAME);
     private static Color backgroundColor = (Color) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.BACKGROUND_COLOR_1_PROPERTY_NAME);
-    private static Color sliderTrackOn = (Color) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.BACKGROUND_COLOR_4_PROPERTY_NAME);
+    private static Color sliderTrackOn = (Color) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.BUTTON_HOVERED_CURRENTLY_PRESSED_PROPERTY_NAME);
     private static Color sliderTrackOff = (Color) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.BACKGROUND_COLOR_3_PROPERTY_NAME);
 
     @Override
@@ -76,7 +76,7 @@ class ThemedSliderUI extends BasicSliderUI implements ThemableComponent {
             case ThemeHandler.BUTTON_CURRENTLY_PRESSED_PROPERTY_NAME:
                 thumbColor = (Color) pce.getNewValue();
                 break;
-            case ThemeHandler.BACKGROUND_COLOR_4_PROPERTY_NAME:
+            case ThemeHandler.BUTTON_HOVERED_CURRENTLY_PRESSED_PROPERTY_NAME:
                 sliderTrackOn = (Color) pce.getNewValue();
                 break;
             case ThemeHandler.BACKGROUND_COLOR_3_PROPERTY_NAME:
@@ -96,7 +96,7 @@ class ThemedSliderUI extends BasicSliderUI implements ThemableComponent {
         ThemeHandler.addPropertyChangeListenerFromName(ThemeHandler.BUTTON_CURRENTLY_PRESSED_PROPERTY_NAME, this);
         ThemeHandler.addPropertyChangeListenerFromName(ThemeHandler.BACKGROUND_COLOR_1_PROPERTY_NAME, this);
         ThemeHandler.addPropertyChangeListenerFromName(ThemeHandler.BACKGROUND_COLOR_3_PROPERTY_NAME, this);
-        ThemeHandler.addPropertyChangeListenerFromName(ThemeHandler.BACKGROUND_COLOR_4_PROPERTY_NAME, this);
+        ThemeHandler.addPropertyChangeListenerFromName(ThemeHandler.BUTTON_HOVERED_CURRENTLY_PRESSED_PROPERTY_NAME, this);
     }
 
     @Override
@@ -149,7 +149,7 @@ class ThemedSliderUI extends BasicSliderUI implements ThemableComponent {
 //        g2.setColor(backGroundColor);
 //        g2.fill(trackShape);
         // Paint track background.
-        g2.setColor(sliderTrackOn);
+        g2.setColor(sliderTrackOff);
         g2.setClip(trackShape);
         trackShape.y += 1;
         g2.fill(trackShape);
@@ -178,7 +178,7 @@ class ThemedSliderUI extends BasicSliderUI implements ThemableComponent {
                 g2.clipRect(0, thumbPos, slider.getWidth(), slider.getHeight() - thumbPos);
             }
         }
-        g2.setColor(sliderTrackOff);
+        g2.setColor(sliderTrackOn);
         g2.fill(trackShape);
         g2.setClip(clip);
     }

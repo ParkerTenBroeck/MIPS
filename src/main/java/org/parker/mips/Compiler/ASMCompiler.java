@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.parker.mips.FileHandler;
 import org.parker.mips.Log;
-import org.parker.mips.SettingsHandler;
+import org.parker.mips.OptionsHandler;
 import org.parker.mips.Processor.Memory;
 import org.parker.mips.ResourceHandler;
 
@@ -188,7 +188,7 @@ public class ASMCompiler {
         Memory.setMemory(memByteArray);
         FileHandler.saveByteArrayToMXNFile(memByteArray);
 
-        if (SettingsHandler.saveCompilationInfo.value) {
+        if (OptionsHandler.saveCompilationInfo.value) {
             saveOriginsToFile();
         }
 

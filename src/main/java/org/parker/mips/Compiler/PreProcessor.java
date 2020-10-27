@@ -17,7 +17,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import org.parker.mips.SettingsHandler;
+import org.parker.mips.OptionsHandler;
 import org.parker.mips.ResourceHandler;
 
 /**
@@ -183,12 +183,12 @@ public class PreProcessor {
     public static ArrayList<UserLine> preProcess(ArrayList<UserLine> file) {
 
         if (file != null) {
-            if (SettingsHandler.includeRegDef.value) {
-                file.add(0, new UserLine("#include \"" + ResourceHandler.REG_DEF_HEADER_PATH + "\"", -2));
+            if (OptionsHandler.includeRegDef.value) {
+                file.add(0, new UserLine("#include \"" + ResourceHandler.REG_DEF_HEADER_FILE + "\"", -2));
                 logPreProcessorMessage("Included regdef.asm");
             }
-            if (SettingsHandler.includeSysCallDef.value) {
-                file.add(0, new UserLine("#include \"" + ResourceHandler.SYS_CALL_DEF_HEADER_PATH + "\"", -3));
+            if (OptionsHandler.includeSysCallDef.value) {
+                file.add(0, new UserLine("#include \"" + ResourceHandler.SYS_CALL_DEF_HEADER_FILE + "\"", -3));
                 logPreProcessorMessage("Included syscalldef.asm");
             }
         }
@@ -228,7 +228,7 @@ public class PreProcessor {
             cleanedData.add(currentLine);
 
         }
-        if (SettingsHandler.saveCleanedFile.value && firstLayer) {
+        if (OptionsHandler.saveCleanedFile.value && firstLayer) {
             writeCleanedFile(cleanedData);
         }
 
@@ -249,7 +249,7 @@ public class PreProcessor {
             preProcessedData.addAll(preProcessLine(currentLine)); //preprocesses line and adds resulting line / lines to pre processed file
 
         }
-        if (SettingsHandler.savePreProcessedFile.value) {
+        if (OptionsHandler.savePreProcessedFile.value) {
             writePreProcessedFile(preProcessedData);
         }
 

@@ -11,12 +11,16 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import org.parker.mips.FileHandler;
+import org.parker.mips.OptionsHandler;
 
 /**
  *
  * @author parke
  */
 public class ASM_GUI extends javax.swing.JPanel {
+
+    private static RoundedBorder border = new RoundedBorder(new Color(0, 0, 51), 0, 15);
+    private final ASM_GUI instance;
 
     public static void clearText() {
         //asmTextPane.setText("");
@@ -40,13 +44,23 @@ public class ASM_GUI extends javax.swing.JPanel {
     private static void setTextAreaFromList(ArrayList<String> list) {
         aSMFormattedTextArea1.textArea.setText(String.join("\n", list));
     }
+    
+    public static void loadCurrentTheme(){
+        setTextAreaThemeFromName(OptionsHandler.currentSyntaxTheme.value);
+    }
+
+    public static void setTextAreaThemeFromName(String name) {
+        aSMFormattedTextArea1.setTheme(name);
+    }
 
     /**
      * Creates new form AMS_GUI
      */
     public ASM_GUI() {
+        instance = this;
         initComponents();
-        this.setBorder(new RoundedBorder(new Color(0, 0, 51), 0, 15));
+        border.setColor(aSMFormattedTextArea1.getBackground());
+        this.setBorder(border);
 
         //asmScrollArea.getVerticalScrollBar().setUI(new ModernScrollBarUI(asmScrollArea));
         //aSMFormattedTextArea1.textArea.setEditable(false);
@@ -95,7 +109,15 @@ public class ASM_GUI extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        aSMFormattedTextArea1 = new org.parker.mips.GUI.RSyntax.ASMFormattedTextArea();
+        aSMFormattedTextArea1 =         new org.parker.mips.GUI.RSyntax.ASMFormattedTextArea(){
+            @Override
+            public void setBackground(Color color){
+                super.setBackground(color);
+                border.setColor(color);
+                instance.setBackground(color);
+                instance.repaint();
+            }
+        };
 
         setBackground(new java.awt.Color(102, 102, 0));
         setOpaque(false);

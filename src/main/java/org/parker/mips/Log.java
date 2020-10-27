@@ -6,8 +6,10 @@
 package org.parker.mips;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.beans.PropertyChangeEvent;
 import javax.swing.BoundedRangeModel;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
@@ -15,16 +17,34 @@ import javax.swing.text.DefaultCaret;
 import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
+import org.parker.mips.GUI.ThemedJFrameComponents.ThemableComponent;
+import org.parker.mips.GUI.ThemedJFrameComponents.ThemeHandler;
 import org.parker.mips.GUI.lookandfeel.ModernScrollPane;
 
 /**
  *
  * @author parke
  */
-public class Log extends javax.swing.JPanel {
+public class Log extends javax.swing.JPanel implements ThemableComponent {
+
+    @Override
+    public void propertyChange(PropertyChangeEvent pce) {
+        switch (pce.getPropertyName()) {
+            case ThemeHandler.TEXT_AREA_BACKGROUND_2_PROPERTY_NAME:
+                jTextPane1.setBackground((Color) pce.getNewValue());
+                break;
+            case ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME:
+                jTextPane1.setFont((Font) pce.getNewValue());
+                break;
+        }
+    }
 
     static {
         Log.initComponents();
+
+        Log log = new Log();
+        ThemeHandler.addPropertyChangeListenerFromName(ThemeHandler.TEXT_AREA_BACKGROUND_2_PROPERTY_NAME, log);
+        ThemeHandler.addPropertyChangeListenerFromName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME, log);
     }
 
     public static void clearDisplay() {
@@ -34,7 +54,7 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logError(String message) {
-        if (!SettingsHandler.logErrors.value) {
+        if (!OptionsHandler.logErrors.value) {
             return;
         }
         System.err.println("[Error] " + message);
@@ -46,7 +66,7 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logWarning(String message) {
-        if (!SettingsHandler.logWarnings.value) {
+        if (!OptionsHandler.logWarnings.value) {
             return;
         }
         System.out.println("[Warning] " + message);
@@ -58,7 +78,7 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logSystemMessage(String message) {
-        if (!SettingsHandler.logSystemMessages.value) {
+        if (!OptionsHandler.logSystemMessages.value) {
             return;
         }
         System.out.println("[System Message] " + message);
@@ -70,7 +90,7 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logMessage(String message) {
-        if (!SettingsHandler.logMessages.value) {
+        if (!OptionsHandler.logMessages.value) {
             return;
         }
         System.out.println("[Message] " + message);
@@ -82,7 +102,7 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logCustomMessage(String message, SimpleAttributeSet att) {
-        if (!SettingsHandler.logMessages.value) {
+        if (!OptionsHandler.logMessages.value) {
             return;
         }
         System.out.println("[Message] " + message);
@@ -91,7 +111,7 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logCustomMessage(String message, boolean bold, boolean italic, boolean underline, Color color, String font) {
-        if (!SettingsHandler.logMessages.value) {
+        if (!OptionsHandler.logMessages.value) {
             return;
         }
         System.out.println("[Message] " + message);
@@ -154,11 +174,10 @@ public class Log extends javax.swing.JPanel {
 
         jScrollPane1 = new ModernScrollPane(Color.LIGHT_GRAY);
         jTextPane1 = new javax.swing.JTextPane();
-
+        jTextPane1.setBackground((Color) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.TEXT_AREA_BACKGROUND_2_PROPERTY_NAME));
+        jTextPane1.setFont((Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME)); // NOI18N
         jTextPane1.setEditable(false);
-        jTextPane1.setBackground(new java.awt.Color(153, 153, 153));
         jTextPane1.setContentType("HTML/plain"); // NOI18N
-        jTextPane1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jScrollPane1.setViewportView(jTextPane1);
 
         // Get the text area's scroll pane:
@@ -202,4 +221,5 @@ public class Log extends javax.swing.JPanel {
     private static javax.swing.JScrollPane jScrollPane1;
     private static javax.swing.JTextPane jTextPane1;
     // End of variables declaration                   
+
 }

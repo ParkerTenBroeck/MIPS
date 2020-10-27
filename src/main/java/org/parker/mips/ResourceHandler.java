@@ -41,10 +41,15 @@ public class ResourceHandler {
     public static final String USER_SAVED_CONFIG_PATH = CONFIG_PATH + "\\UserSavedConfig";
     public static final String DEFAULT_OPTIONS_FILE = ResourceHandler.CONFIG_PATH + "\\Options.json";
 
+    //Themes and realted resources
+    public static final String THEME_PATH = DEFAULT_PATH + "\\Themes";
+    public static final String GUI_THEMES = THEME_PATH + "\\GUI Themes";
+    public static final String SYNTAX_THEMES = THEME_PATH + "\\Syntax Themes";
+
     //Header and related resources
     public static final String STANDARD_HEADER_PATH = DEFAULT_PATH + "\\StandardHeaderFiles";
-    public static final String SYS_CALL_DEF_HEADER_PATH = ResourceHandler.STANDARD_HEADER_PATH + "\\syscalldef.asm";
-    public static final String REG_DEF_HEADER_PATH = ResourceHandler.STANDARD_HEADER_PATH + "\\regdef.asm";
+    public static final String SYS_CALL_DEF_HEADER_FILE = ResourceHandler.STANDARD_HEADER_PATH + "\\syscalldef.asm";
+    public static final String REG_DEF_HEADER_FILE = ResourceHandler.STANDARD_HEADER_PATH + "\\regdef.asm";
 
     public static boolean extractResources() {
 
@@ -59,6 +64,9 @@ public class ResourceHandler {
         temp &= createDirectory(CONFIG_PATH);
         temp &= createDirectory(USER_SAVED_CONFIG_PATH);
 
+        //Theme
+        temp &= createDirectory(THEME_PATH);
+
         temp &= createDirectory(COMPILER_PATH);
         temp &= createDirectory(SYS_CALLS_PLUGIN_PATH);
         temp &= createDirectory(STANDARD_HEADER_PATH);
@@ -67,6 +75,7 @@ public class ResourceHandler {
         temp &= extractResourceToFolder(DOCUMENTATION_PATH, "Documentation");
         temp &= extractResourceToFolder(EXAMPLES_PATH, "Examples");
         temp &= extractResourceToFolder(STANDARD_HEADER_PATH, "StandardHeaderFiles");
+        temp &= extractResourceToFolder(THEME_PATH, "Themes");
 
         if (temp) {
             logResourceHandlerSystemMessage("Extracted all resourced with 0 errors" + "\n\n");

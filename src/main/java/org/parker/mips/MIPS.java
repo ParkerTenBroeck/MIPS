@@ -5,7 +5,6 @@
  */
 package org.parker.mips;
 
-import java.awt.Color;
 import java.io.File;
 import java.net.URL;
 import javax.swing.ImageIcon;
@@ -37,9 +36,18 @@ public class MIPS {
     }
 
     public static void main(String[] args) {
-        SettingsHandler.readOptionsFromDefaultFile(); //loads Options from file 
+
+        if (args.length != 0) {
+            if (args[0].equals("Updated")) {
+                Log.logSystemMessage("Successful Updated to: " + VERSION);
+            }
+        }
+
+        OptionsHandler.readOptionsFromDefaultFile(); //loads Options from file 
 
         ResourceHandler.extractResources(); //loads all resorces into documents folder
+
+        ThemeHandler.loadCurrentTheme(); //loads current theme
 
         MainGUI gui = new MainGUI(); //creates the GUI
 
@@ -57,23 +65,6 @@ public class MIPS {
         SystemCallPluginHandler.loadDefaultPlugins(); //loads all plugins internal and external
 
         checkForUpdates(); //checks for updates
-
-        //ThemeHandler.readThemesFromFile(ResourceHandler.DEFAULT_PATH + "\\bwa.json");
-//        try {
-//            Thread.sleep(8000);
-//
-//            ThemeHandler.setThemeFromName(ThemeHandler.BUTTON_CURRENTLY_PRESSED_PROPERTY_NAME, new Color(47,217,189), true, true);
-//            ThemeHandler.setThemeFromName(ThemeHandler.BUTTON_DEFAULT_COLOR_PROPERTY_NAME, Color.green, true, true);
-//            ThemeHandler.setThemeFromName(ThemeHandler.BACKGROUND_COLOR_1_PROPERTY_NAME, Color.white, true, true);
-//            ThemeHandler.setThemeFromName(ThemeHandler.BACKGROUND_COLOR_2_PROPERTY_NAME, Color.yellow.darker(), true, true);
-//            ThemeHandler.setThemeFromName(ThemeHandler.BACKGROUND_COLOR_3_PROPERTY_NAME, Color.yellow.darker().darker(), true, true);
-//            ThemeHandler.setThemeFromName(ThemeHandler.BACKGROUND_COLOR_4_PROPERTY_NAME, Color.blue, true, true);
-//
-//            ThemeHandler.setThemeFromName(ThemeHandler.TEXT_AREA_BACKGROUND_1_PROPERTY_NAME, new Color(255, 110, 199), true, true);
-//            ThemeHandler.setThemeFromName(ThemeHandler.TEXT_AREA_BACKGROUND_2_PROPERTY_NAME, new Color(255, 110, 199).darker(), true, true);
-//        } catch (Exception e) {
-//
-//        }
     }
 
 }

@@ -5,24 +5,58 @@
  */
 package org.parker.mips.GUI.ThemedJFrameComponents;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.beans.PropertyChangeEvent;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
+import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
+import javax.swing.plaf.basic.BasicMenuItemUI;
 import org.parker.mips.Holder;
 
 /**
  *
  * @author parke
  */
-public class ThemedJCheckBoxMenuItem extends JCheckBoxMenuItem {
-
+public class ThemedJCheckBoxMenuItem extends JCheckBoxMenuItem implements ThemableComponent {
+    
     private Holder<Boolean> isSelected;
     
-    public ThemedJCheckBoxMenuItem(){
+    @Override
+    public void propertyChange(PropertyChangeEvent pce) {
+        switch (pce.getPropertyName()) {
+            case ThemeHandler.BUTTON_TEXT_FONT_PROPERTY_NAME:
+                this.setFont((Font) pce.getNewValue());
+                break;
+            case ThemeHandler.TEXT_COLOR_2_PROPERTY_NAME:
+                this.setForeground((Color) pce.getNewValue());
+                break;
+        }
+    }
+    
+    public ThemedJCheckBoxMenuItem() {
         this.addActionListener((ae) -> {
             setSelected(super.isSelected());
         });
-    }
         
-
+        this.setFont((Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.BUTTON_TEXT_FONT_PROPERTY_NAME));
+        this.setForeground((Color) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.TEXT_COLOR_2_PROPERTY_NAME));
+        
+        ThemeHandler.addPropertyChangeListenerFromName(ThemeHandler.BUTTON_TEXT_FONT_PROPERTY_NAME, this);
+        ThemeHandler.addPropertyChangeListenerFromName(ThemeHandler.TEXT_COLOR_2_PROPERTY_NAME, this);
+        
+        this.setOpaque(false);
+        
+//        this.setUI(new BasicCheckBoxMenuItemUI() {
+//            
+//            @Override
+//            public void paint(Graphics g, JComponent j) {
+//                super.paint(g, j);
+//            }
+//        });
+    }
+    
     @Override
     public boolean isSelected() {
         if (isSelected != null) {
@@ -31,11 +65,11 @@ public class ThemedJCheckBoxMenuItem extends JCheckBoxMenuItem {
             return super.isSelected();
         }
     }
-
+    
     public void setSelected(Holder<Boolean> value) {
         this.isSelected = value;
     }
-
+    
     @Override
     public void setSelected(boolean value) {
         if (this.isSelected != null) {
@@ -44,5 +78,5 @@ public class ThemedJCheckBoxMenuItem extends JCheckBoxMenuItem {
             super.setSelected(value);
         }
     }
-
+    
 }

@@ -136,7 +136,7 @@ public class SystemCallHandler {
     public static void regenerateStandardSysCallHeaderFile() {
         PrintWriter writer = null;
         try {
-            writer = new PrintWriter(ResourceHandler.SYS_CALL_DEF_HEADER_PATH, "UTF-8");
+            writer = new PrintWriter(ResourceHandler.SYS_CALL_DEF_HEADER_FILE, "UTF-8");
             
             for (SystemCallPlugin plugin : registeredSystemCallPlugins) {
                 
@@ -172,9 +172,9 @@ public class SystemCallHandler {
                 writer.println();
                 writer.println();
             }
-            logSystemCallSystemMessage("Successfully wrote Standard System Call Header file to: " + ResourceHandler.SYS_CALL_DEF_HEADER_PATH + "\n\n");
+            logSystemCallSystemMessage("Successfully wrote Standard System Call Header file to: " + ResourceHandler.SYS_CALL_DEF_HEADER_FILE + "\n\n");
         } catch (Exception e) {
-            logSystemCallError("There was some Exception e:" + e + " While writting the Standard System Call Header File to: " + ResourceHandler.SYS_CALL_DEF_HEADER_PATH + "\n\n");
+            logSystemCallError("There was some Exception e:" + e + " While writting the Standard System Call Header File to: " + ResourceHandler.SYS_CALL_DEF_HEADER_FILE + "\n\n");
         }
         try {
             writer.close();

@@ -8,7 +8,7 @@ package org.parker.mips.Processor;
 import org.parker.mips.FileHandler;
 import org.parker.mips.GUI.MainGUI;
 import org.parker.mips.Log;
-import org.parker.mips.SettingsHandler;
+import org.parker.mips.OptionsHandler;
 import static org.parker.mips.Processor.InstructionDecode.runInstruction;
 import static org.parker.mips.Processor.Memory.getWord;
 import static org.parker.mips.Processor.Registers.getPc;
@@ -36,7 +36,7 @@ public class Processor implements Runnable {
         stop();
         instructionsRan = 0;
         Registers.reset();
-        if (SettingsHandler.reloadMemoryOnReset.value) {
+        if (OptionsHandler.reloadMemoryOnReset.value) {
             reloadMemoryFromLoadedMXNFile();
         }
         MainGUI.refresh();
