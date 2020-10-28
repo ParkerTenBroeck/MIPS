@@ -121,8 +121,39 @@ public class Processor implements Runnable {
 
             logRunTimeError("invalid OpCode at " + Registers.getPc());
         }
+//        if (instructionsRan == 100000000) {
+//            endTime = System.nanoTime();
+//            duration = (endTime - startTime);
+//
+//            System.out.println("TotalTime: " + duration + " Av: " + duration / (double)instructionsRan + " ISP: " + (long)(100000000.0 / (double)duration * 1e+9));
+//            instructionsRan = 0;
+//            startTime = System.nanoTime();
+//        }
+
+//        if (index == temp.length) {
+//            index = 0;
+//            double av = 0;
+//            long highest = 0;
+//            long lowest = 999999999;
+//            for (int i = 0; temp.length > i; i++) {
+//                av += temp[i];
+//                if (highest < temp[i]) {
+//                    highest = temp[i];
+//                }
+//                if (lowest > temp[i]) {
+//                    lowest = temp[i];
+//                }
+//            }
+//            av = av / temp.length;
+//            System.out.println("Average: " + av + " Highest: " + highest + " Lowest: " + lowest);
+//        }
         instructionsRan++;
     }
+
+//    static long startTime = System.nanoTime();
+//    static long endTime = System.nanoTime();
+//
+//    static long duration = (endTime - startTime);  //divide by 1000000 to get milliseconds.
 
     public static void logRunTimeError(String message) {
         if (MainGUI.breakOnRunTimeError()) {

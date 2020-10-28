@@ -129,12 +129,6 @@ public class MemoryGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        StuffHolder1 = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJPanel1();
-        memoryPositionScrollPane = new ModernScrollPane();
- ;
-        memoryPositionTable = new javax.swing.JTable();
-        valsScrollPane = new ModernScrollPane();  ;
-        valsTable = new javax.swing.JTable();
         StuffHolder = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJPanel1();
         startingPosition = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJFormattedTextField();
         startingPositionLable = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel();
@@ -145,67 +139,12 @@ public class MemoryGUI extends javax.swing.JFrame {
         memoryLables = new javax.swing.JComboBox<>();
         memoryPointersLable = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel();
         themedJPanel21 = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJPanel2();
-
-        memoryPositionScrollPane.setBorder(null);
-        memoryPositionScrollPane.setOpaque(false);
-
-        memoryPositionTable.setBackground(new java.awt.Color(102, 102, 102));
-        memoryPositionTable.setForeground(new java.awt.Color(204, 204, 204));
-        memoryPositionTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
-            },
-            new String [] {
-                "Memory Position"
-            }
-        ));
-        memoryPositionTable.setEnabled(false);
-        memoryPositionTable.setGridColor(new java.awt.Color(51, 51, 51));
-        memoryPositionTable.setOpaque(false);
-        memoryPositionScrollPane.setViewportView(memoryPositionTable);
-
-        valsScrollPane.setBorder(null);
-
-        valsTable.setBackground(new java.awt.Color(102, 102, 102));
-        valsTable.setForeground(new java.awt.Color(204, 204, 204));
-        valsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Dec", "Bin", "Hex", "ASCII"
-            }
-        ));
-        valsTable.setToolTipText("");
-        valsTable.setGridColor(new java.awt.Color(51, 51, 51));
-        valsScrollPane.setViewportView(valsTable);
-
-        javax.swing.GroupLayout StuffHolder1Layout = new javax.swing.GroupLayout(StuffHolder1);
-        StuffHolder1.setLayout(StuffHolder1Layout);
-        StuffHolder1Layout.setHorizontalGroup(
-            StuffHolder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, StuffHolder1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(memoryPositionScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(valsScrollPane)
-                .addContainerGap())
-        );
-        StuffHolder1Layout.setVerticalGroup(
-            StuffHolder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(StuffHolder1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(StuffHolder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(valsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
-                    .addComponent(memoryPositionScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addContainerGap())
-        );
+        StuffHolder1 = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJPanel1();
+        memoryPositionScrollPane = new ModernScrollPane();
+ ;
+        memoryPositionTable = new javax.swing.JTable();
+        valsScrollPane = new ModernScrollPane();  ;
+        valsTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -302,11 +241,72 @@ public class MemoryGUI extends javax.swing.JFrame {
         themedJPanel21.setLayout(themedJPanel21Layout);
         themedJPanel21Layout.setHorizontalGroup(
             themedJPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 60, Short.MAX_VALUE)
         );
         themedJPanel21Layout.setVerticalGroup(
             themedJPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 433, Short.MAX_VALUE)
+            .addGap(0, 11, Short.MAX_VALUE)
+        );
+
+        memoryPositionScrollPane.setBorder(null);
+        memoryPositionScrollPane.setOpaque(false);
+
+        memoryPositionTable.setBackground(new java.awt.Color(102, 102, 102));
+        memoryPositionTable.setForeground(new java.awt.Color(204, 204, 204));
+        memoryPositionTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null},
+                {null},
+                {null},
+                {null}
+            },
+            new String [] {
+                "Memory Position"
+            }
+        ));
+        memoryPositionTable.setEnabled(false);
+        memoryPositionTable.setGridColor(new java.awt.Color(51, 51, 51));
+        memoryPositionTable.setOpaque(false);
+        memoryPositionScrollPane.setViewportView(memoryPositionTable);
+
+        valsScrollPane.setBorder(null);
+
+        valsTable.setBackground(new java.awt.Color(102, 102, 102));
+        valsTable.setForeground(new java.awt.Color(204, 204, 204));
+        valsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Dec", "Bin", "Hex", "ASCII"
+            }
+        ));
+        valsTable.setToolTipText("");
+        valsTable.setGridColor(new java.awt.Color(51, 51, 51));
+        valsScrollPane.setViewportView(valsTable);
+
+        javax.swing.GroupLayout StuffHolder1Layout = new javax.swing.GroupLayout(StuffHolder1);
+        StuffHolder1.setLayout(StuffHolder1Layout);
+        StuffHolder1Layout.setHorizontalGroup(
+            StuffHolder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, StuffHolder1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(memoryPositionScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(valsScrollPane)
+                .addContainerGap())
+        );
+        StuffHolder1Layout.setVerticalGroup(
+            StuffHolder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(StuffHolder1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(StuffHolder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(valsScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE)
+                    .addComponent(memoryPositionScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -314,12 +314,17 @@ public class MemoryGUI extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(StuffHolder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(themedJPanel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(686, 686, 686)
+                .addComponent(themedJPanel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(StuffHolder1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(StuffHolder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(StuffHolder1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(themedJPanel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
