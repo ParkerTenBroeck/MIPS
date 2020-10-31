@@ -257,12 +257,12 @@ public class PreProcessor {
     }
 
     private static void writePreProcessedFile(ArrayList<UserLine> fileInfo) {
-        File file = new File(ResourceHandler.COMPILER_PATH + "\\PreProcessedFile.asm");
+        File file = new File(ResourceHandler.COMPILER_PATH + ResourceHandler.FILE_SEPERATOR + "PreProcessedFile.asm");
         writeArrayListOfUserLinesToFile(fileInfo, file);
     }
 
     private static void writeCleanedFile(ArrayList<UserLine> fileInfo) {
-        File file = new File(ResourceHandler.COMPILER_PATH + "\\CleanedFile.asm");
+        File file = new File(ResourceHandler.COMPILER_PATH + ResourceHandler.FILE_SEPERATOR + "CleanedFile.asm");
         writeArrayListOfUserLinesToFile(fileInfo, file);
     }
 

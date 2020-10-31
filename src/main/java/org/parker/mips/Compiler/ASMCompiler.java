@@ -223,7 +223,7 @@ public class ASMCompiler {
         }
         maxSizeInstruction++;
 
-        File file = new File(ResourceHandler.COMPILER_PATH + "\\CompilationInfo.txt");
+        File file = new File(ResourceHandler.COMPILER_PATH + ResourceHandler.FILE_SEPERATOR + "CompilationInfo.txt");
 
         try (PrintWriter out = new PrintWriter(file)) {
 
@@ -537,9 +537,9 @@ public class ASMCompiler {
         if (memoryLables == null) {
             return new ArrayList<MemoryLable>();
         } else {
-            try{
-            return (ArrayList<MemoryLable>) memoryLables.clone();
-            }catch(Error e){
+            try {
+                return (ArrayList<MemoryLable>) memoryLables.clone();
+            } catch (Error e) {
                 return new ArrayList<MemoryLable>();
             }
         }
