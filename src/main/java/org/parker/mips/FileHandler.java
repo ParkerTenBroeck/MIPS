@@ -159,7 +159,7 @@ public class FileHandler {
                     if (!pf.exists()) {
                         pf.mkdir();
                     }
-                    chosenFile = new File(pf.getAbsolutePath() + "\\" + chosenFile.getName());
+                    chosenFile = new File(pf.getAbsolutePath() + ResourceHandler.FILE_SEPERATOR + chosenFile.getName());
                     if (chosenFile.exists()) {
                         int i = MainGUI.confirmBox("Warning", "This File Already Exists are you sure you want to overwrite it");
 

@@ -27,29 +27,31 @@ import org.parker.mips.GUI.MainGUI;
  */
 public class ResourceHandler {
 
-    //public static final String documentsPath = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
-    public static final String DEFAULT_PATH = FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + "\\MIPS";
+    public static final String FILE_SEPERATOR = File.separator;
 
-    public static final String DEFAULT_PROJECTS_PATH = DEFAULT_PATH + "\\Projects";
-    public static final String DOCUMENTATION_PATH = DEFAULT_PATH + "\\Documentation";
-    public static final String EXAMPLES_PATH = DEFAULT_PATH + "\\Examples";
-    public static final String COMPILER_PATH = DEFAULT_PATH + "\\Compiler";
-    public static final String SYS_CALLS_PLUGIN_PATH = DEFAULT_PATH + "\\SystemCallPlugins";
+    //public static final String documentsPath = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
+    public static final String DEFAULT_PATH = FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + FILE_SEPERATOR + "MIPS";
+
+    public static final String DEFAULT_PROJECTS_PATH = DEFAULT_PATH + FILE_SEPERATOR + "Projects";
+    public static final String DOCUMENTATION_PATH = DEFAULT_PATH + FILE_SEPERATOR + "Documentation";
+    public static final String EXAMPLES_PATH = DEFAULT_PATH + FILE_SEPERATOR + "Examples";
+    public static final String COMPILER_PATH = DEFAULT_PATH + FILE_SEPERATOR + "Compiler";
+    public static final String SYS_CALLS_PLUGIN_PATH = DEFAULT_PATH + FILE_SEPERATOR + "SystemCallPlugins";
 
     //Config and related resources
-    public static final String CONFIG_PATH = DEFAULT_PATH + "\\Config";
-    public static final String USER_SAVED_CONFIG_PATH = CONFIG_PATH + "\\UserSavedConfig";
-    public static final String DEFAULT_OPTIONS_FILE = ResourceHandler.CONFIG_PATH + "\\Options.json";
+    public static final String CONFIG_PATH = DEFAULT_PATH + FILE_SEPERATOR + "Config";
+    public static final String USER_SAVED_CONFIG_PATH = CONFIG_PATH + FILE_SEPERATOR + "UserSavedConfig";
+    public static final String DEFAULT_OPTIONS_FILE = ResourceHandler.CONFIG_PATH + FILE_SEPERATOR + "Options.json";
 
     //Themes and realted resources
-    public static final String THEME_PATH = DEFAULT_PATH + "\\Themes";
-    public static final String GUI_THEMES = THEME_PATH + "\\GUI Themes";
-    public static final String SYNTAX_THEMES = THEME_PATH + "\\Syntax Themes";
+    public static final String THEME_PATH = DEFAULT_PATH + FILE_SEPERATOR + "Themes";
+    public static final String GUI_THEMES = THEME_PATH + FILE_SEPERATOR + "GUI Themes";
+    public static final String SYNTAX_THEMES = THEME_PATH + FILE_SEPERATOR + "Syntax Themes";
 
     //Header and related resources
-    public static final String STANDARD_HEADER_PATH = DEFAULT_PATH + "\\StandardHeaderFiles";
-    public static final String SYS_CALL_DEF_HEADER_FILE = ResourceHandler.STANDARD_HEADER_PATH + "\\syscalldef.asm";
-    public static final String REG_DEF_HEADER_FILE = ResourceHandler.STANDARD_HEADER_PATH + "\\regdef.asm";
+    public static final String STANDARD_HEADER_PATH = DEFAULT_PATH + FILE_SEPERATOR + "StandardHeaderFiles";
+    public static final String SYS_CALL_DEF_HEADER_FILE = ResourceHandler.STANDARD_HEADER_PATH + FILE_SEPERATOR + "syscalldef.asm";
+    public static final String REG_DEF_HEADER_FILE = ResourceHandler.STANDARD_HEADER_PATH + FILE_SEPERATOR + "regdef.asm";
 
     public static boolean extractResources() {
 

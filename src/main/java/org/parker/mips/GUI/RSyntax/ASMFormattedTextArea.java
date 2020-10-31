@@ -60,7 +60,7 @@ public class ASMFormattedTextArea extends RTextScrollPane {
 
     public final void setTheme(String name) {
         try {
-            InputStream in = new FileInputStream(new File(ResourceHandler.SYNTAX_THEMES + "\\" + name + ".xml"));
+            InputStream in = new FileInputStream(new File(ResourceHandler.SYNTAX_THEMES + ResourceHandler.FILE_SEPERATOR + name + ".xml"));
             Theme theme = Theme.load(in, (Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME));
             theme.apply(textArea);
         } catch (Exception e) {

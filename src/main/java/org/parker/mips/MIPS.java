@@ -19,7 +19,7 @@ import static org.parker.mips.UpdateHandler.checkForUpdates;
  */
 public class MIPS {
 
-    public static final String VERSION = "0.9.7.5";
+    public static final String VERSION = "0.9.7.6";
     public static final String JAR_PATH;
     //public static final String[] INSTRUCTIONS = new String[]{"add", "addu", "addi", "addiu", "and", "andi", "div", "divu", "mult", "multu", "nor", "or", "ori", "sll", "sllv", "sra", "srav", "srl", "srlv", "sub", "subu", "xor", "xori", "lhi", "llo", "slt", "sltu", "slti", "sltiu", "beq", "bgtz", "ble", "bne", "j", "jal", "jalr", "jr", "lb", "lbu", "lh", "lhu", "lw", "sb", "sh", "sw", "mfhi", "mflo", "mthi", "mtlo", "trap"};
 
@@ -31,7 +31,6 @@ public class MIPS {
         } catch (Exception ex) {
             tmp = "";
         }
-        //Log.logMessage(tmp);
         JAR_PATH = tmp;
     }
 

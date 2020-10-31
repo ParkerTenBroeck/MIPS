@@ -247,12 +247,12 @@ public class ThemeHandler {
     }
 
     public static void readThemeFromThemeName(String name) {
-        readThemesFromFile(ResourceHandler.GUI_THEMES + "\\" + name + ".json");
+        readThemesFromFile(ResourceHandler.GUI_THEMES + ResourceHandler.FILE_SEPERATOR + name + ".json");
 
     }
 
     public static void saveThemeAsThemeName(String name) {
-        saveThemesToFile(ResourceHandler.GUI_THEMES + "\\" + name + ".json");
+        saveThemesToFile(ResourceHandler.GUI_THEMES + ResourceHandler.FILE_SEPERATOR + name + ".json");
     }
 
     private static void readThemesFromFile(String filePath) {

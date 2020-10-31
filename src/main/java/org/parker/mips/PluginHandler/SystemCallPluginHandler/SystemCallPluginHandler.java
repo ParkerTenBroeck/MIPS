@@ -5,7 +5,6 @@
  */
 package org.parker.mips.PluginHandler.SystemCallPluginHandler;
 
-import com.google.gson.Gson;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -147,7 +146,7 @@ public class SystemCallPluginHandler {
                 SystemCallHandler.registerSystemCallPlugin(scp);
             }
         }
-        
+
         SystemCallHandler.regenerateStandardSysCallHeaderFile();
     }
 

@@ -71,7 +71,7 @@ public class OptionsHandler {
         if (name != null) {
             name = name.split("\\.")[0];
         }
-        readOptionsFromFile(ResourceHandler.USER_SAVED_CONFIG_PATH + "\\" + name + "\\.json");
+        readOptionsFromFile(ResourceHandler.USER_SAVED_CONFIG_PATH + ResourceHandler.FILE_SEPERATOR + name + "\\.json");
     }
     
     public static void readOptionsFromCustomFile(File file) {
@@ -88,7 +88,7 @@ public class OptionsHandler {
         if (name != null) {
             name = name.split("\\.")[0];
         }
-        saveOptionsToFile(ResourceHandler.USER_SAVED_CONFIG_PATH + "\\" + name + "\\.json");
+        saveOptionsToFile(ResourceHandler.USER_SAVED_CONFIG_PATH + ResourceHandler.FILE_SEPERATOR + name + "\\.json");
     }
     
     public static void saveOptionsToCustomFile(File file) {

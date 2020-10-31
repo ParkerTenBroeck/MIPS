@@ -5,8 +5,12 @@
  */
 package org.parker.mips;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -24,47 +28,41 @@ public class UpdateHandler {
     public static final String LATEST_JSON_LINK = "https://api.github.com/repos/ParkerTenBroeck/MIPS/releases/latest";
     private static String latestVersionLink = "";
     private static boolean isUpToDate = false;
+    private static JsonObject latestJsonRequest = null;
 
-    public static String checkForUpdates() {
+    public static void checkForUpdates() {
         try {
             URL url = new URL(LATEST_JSON_LINK);
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
-
             InputStream inputStream = http.getInputStream();
+            Reader reader = new InputStreamReader(inputStream);
 
-            int ch;
-            StringBuilder sb = new StringBuilder();
-            while ((ch = inputStream.read()) != -1) {
-                sb.append((char) ch);
-            }
-            String JSON = sb.toString();
-
-            latestVersionLink = getValueOfJSONTag("tag_name", JSON);
-//System.out.println(latestVersionLink);
+            JsonParser parser = new JsonParser();
+            
+            latestJsonRequest = parser.parse(reader).getAsJsonObject();
+            latestVersionLink = latestJsonRequest.get("tag_name").getAsString();
             int compare = compareVersions(latestVersionLink, MIPS.VERSION);
 
             if (compare == 0) {
                 isUpToDate = true;
             } else if (compare > 0) {
                 Log.logWarning("There is an update avalible goto Options>Update to update");
-                latestVersionLink = getValueOfJSONTag("browser_download_url", JSON);
+                latestVersionLink = latestJsonRequest.getAsJsonArray("assets").get(0).getAsJsonObject().get("browser_download_url").getAsString();
                 //System.out.println(latestVersionLink);
             } else if (compare < 0) {
                 Log.logWarning("You are using a Beta Version there may be bugs and unexpected behavior goto Options>Update to get the latest stable relese");
-                latestVersionLink = getValueOfJSONTag("browser_download_url", JSON);
+                latestVersionLink = latestJsonRequest.getAsJsonArray("assets").get(0).getAsJsonObject().get("browser_download_url").getAsString();
             } else {
 
             }
 
             //System.out.println(sb.toString());
-            return sb.toString();
-
+            //return sb.toString();
         } catch (MalformedURLException ex) {
             Logger.getLogger(MIPS.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(MIPS.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return "";
     }
 
     public static void update() {
@@ -110,16 +108,6 @@ public class UpdateHandler {
         System.exit(0);
 
         //return false;
-    }
-
-    public static String getValueOfJSONTag(String tag, String JSON) {
-
-        tag = "\"" + tag + "\":";
-
-        int startIndex = JSON.indexOf(tag) + tag.length();
-        int endIndex = JSON.indexOf(",", startIndex);
-
-        return JSON.substring(startIndex, endIndex).replaceAll("\"", "").replaceAll("\'", "").replaceAll("}", " ").replaceAll("]", " ").trim();
     }
 
     public static int compareVersions(String v1, String v2) {

@@ -10,6 +10,7 @@ import org.parker.mips.Compiler.PreProcessor;
 import static org.parker.mips.Compiler.PreProcessor.loadFile;
 import java.util.ArrayList;
 import org.parker.mips.FileHandler;
+import org.parker.mips.ResourceHandler;
 
 /**
  *
@@ -31,7 +32,7 @@ public class INCLUDE extends Statement {
         if (path.contains(":")) {
 
         } else {
-            path = FileHandler.getASMFilePath().substring(0, FileHandler.getASMFilePath().lastIndexOf("\\") + 1) + path;
+            path = FileHandler.getASMFilePath().substring(0, FileHandler.getASMFilePath().lastIndexOf(ResourceHandler.FILE_SEPERATOR) + 1) + path;
         }
 
         try {
