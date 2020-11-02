@@ -7,6 +7,7 @@ package org.parker.mips;
 
 import java.io.File;
 import java.net.URL;
+import java.nio.file.Files;
 import javax.swing.ImageIcon;
 import org.parker.mips.GUI.MainGUI;
 import org.parker.mips.GUI.ThemedJFrameComponents.ThemeHandler;
@@ -19,7 +20,7 @@ import static org.parker.mips.UpdateHandler.checkForUpdates;
  */
 public class MIPS {
 
-    public static final String VERSION = "0.9.7.6.2";
+    public static final String VERSION = "0.9.7.6.3";
     public static final String JAR_PATH;
     //public static final String[] INSTRUCTIONS = new String[]{"add", "addu", "addi", "addiu", "and", "andi", "div", "divu", "mult", "multu", "nor", "or", "ori", "sll", "sllv", "sra", "srav", "srl", "srlv", "sub", "subu", "xor", "xori", "lhi", "llo", "slt", "sltu", "slti", "sltiu", "beq", "bgtz", "ble", "bne", "j", "jal", "jalr", "jr", "lb", "lbu", "lh", "lhu", "lw", "sb", "sh", "sw", "mfhi", "mflo", "mthi", "mtlo", "trap"};
 
@@ -44,7 +45,7 @@ public class MIPS {
                     File file;
                     try {
                         file = new File(ResourceHandler.THEME_PATH + ResourceHandler.FILE_SEPERATOR + "GUI");
-                        file.delete();
+                        Files.deleteIfExists(file.toPath());
                     } catch (Exception e) {
 
                     }

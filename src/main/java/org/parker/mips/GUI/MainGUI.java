@@ -14,6 +14,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu;
 import org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem;
 import javax.swing.JOptionPane;
@@ -95,6 +96,7 @@ public class MainGUI extends javax.swing.JFrame {
      */
     public MainGUI() {
         initComponents();
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         enableBreak.setSelected(OptionsHandler.enableBreakPoints);
         linkedButton.setSelected(OptionsHandler.linkedFile);
@@ -274,8 +276,7 @@ public class MainGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         mainPanel = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJPanel1();
-        bottomPanel = new javax.swing.JPanel();
-        logFrame = new org.parker.mips.Log();
+        jSplitPane1 = new javax.swing.JSplitPane();
         topPanel = new javax.swing.JPanel();
         topButtonBarPanel = new javax.swing.JPanel();
         compileButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJButton();
@@ -288,15 +289,17 @@ public class MainGUI extends javax.swing.JFrame {
         resetButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJButton();
         jLabel2 = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel();
         lowerContentPanel = new javax.swing.JPanel();
-        aSM_GUI1 = new org.parker.mips.GUI.ASM_GUI();
-        register_GUI1 = new org.parker.mips.GUI.RegisterGUI();
         instructionMemory_GUI1 = new org.parker.mips.GUI.InstructionMemoryGUI();
+        register_GUI1 = new org.parker.mips.GUI.RegisterGUI();
+        aSM_GUI1 = new org.parker.mips.GUI.ASM_GUI();
         midButtonSliderPanel = new javax.swing.JPanel();
         linkedButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox();
         aboutLinkedFile = new javax.swing.JButton();
         enableBreak = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox();
         delaySlider = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJSlider();
         delayLable = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel();
+        bottomPanel = new javax.swing.JPanel();
+        logFrame = new org.parker.mips.Log();
         menuBar = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuBar();
         fileMenu = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu();
         openMenuButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem();
@@ -328,20 +331,16 @@ public class MainGUI extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("MIPS");
         setBackground(new java.awt.Color(102, 102, 102));
+        setMinimumSize(new java.awt.Dimension(800, 600));
 
-        javax.swing.GroupLayout bottomPanelLayout = new javax.swing.GroupLayout(bottomPanel);
-        bottomPanel.setLayout(bottomPanelLayout);
-        bottomPanelLayout.setHorizontalGroup(
-            bottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(logFrame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        bottomPanelLayout.setVerticalGroup(
-            bottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(logFrame, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
-        );
+        jSplitPane1.setBorder(null);
+        jSplitPane1.setDividerLocation(745);
+        jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jSplitPane1.setOpaque(false);
 
+        topPanel.setMinimumSize(new java.awt.Dimension(400, 400));
         topPanel.setOpaque(false);
-        topPanel.setPreferredSize(new java.awt.Dimension(500, 762));
+        topPanel.setPreferredSize(new java.awt.Dimension(500, 10000));
 
         topButtonBarPanel.setBackground(new java.awt.Color(102, 102, 102));
         topButtonBarPanel.setOpaque(false);
@@ -403,7 +402,7 @@ public class MainGUI extends javax.swing.JFrame {
                 .addComponent(resetButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(InstructionsRan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 449, Short.MAX_VALUE)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(aboutButton)
@@ -427,29 +426,31 @@ public class MainGUI extends javax.swing.JFrame {
                 .addGap(3, 3, 3))
         );
 
+        lowerContentPanel.setMinimumSize(new java.awt.Dimension(0, 150));
         lowerContentPanel.setOpaque(false);
+
+        register_GUI1.setMaximumSize(new java.awt.Dimension(600, 32797));
+        register_GUI1.setMinimumSize(new java.awt.Dimension(0, 0));
+
+        aSM_GUI1.setMinimumSize(new java.awt.Dimension(500, 56));
 
         javax.swing.GroupLayout lowerContentPanelLayout = new javax.swing.GroupLayout(lowerContentPanel);
         lowerContentPanel.setLayout(lowerContentPanelLayout);
         lowerContentPanelLayout.setHorizontalGroup(
             lowerContentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(lowerContentPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(aSM_GUI1, javax.swing.GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
+                .addComponent(aSM_GUI1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(register_GUI1, javax.swing.GroupLayout.PREFERRED_SIZE, 680, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(register_GUI1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(instructionMemory_GUI1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         lowerContentPanelLayout.setVerticalGroup(
             lowerContentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(lowerContentPanelLayout.createSequentialGroup()
-                .addGroup(lowerContentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(aSM_GUI1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(register_GUI1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 628, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(instructionMemory_GUI1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(27, 27, 27))
+            .addComponent(instructionMemory_GUI1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(register_GUI1, javax.swing.GroupLayout.DEFAULT_SIZE, 631, Short.MAX_VALUE)
+            .addComponent(aSM_GUI1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         midButtonSliderPanel.setOpaque(false);
@@ -499,9 +500,9 @@ public class MainGUI extends javax.swing.JFrame {
                         .addComponent(linkedButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(aboutLinkedFile, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(midButtonSliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(delaySlider, javax.swing.GroupLayout.DEFAULT_SIZE, 677, Short.MAX_VALUE)
+                .addGap(63, 63, 63)
+                .addGroup(midButtonSliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(delaySlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(delayLable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(191, 191, 191))
         );
@@ -524,12 +525,9 @@ public class MainGUI extends javax.swing.JFrame {
         topPanel.setLayout(topPanelLayout);
         topPanelLayout.setHorizontalGroup(
             topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(topPanelLayout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addGroup(topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lowerContentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(midButtonSliderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(topButtonBarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addComponent(lowerContentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(midButtonSliderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(topButtonBarPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         topPanelLayout.setVerticalGroup(
             topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -537,24 +535,41 @@ public class MainGUI extends javax.swing.JFrame {
                 .addComponent(topButtonBarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(midButtonSliderPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lowerContentPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lowerContentPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jSplitPane1.setLeftComponent(topPanel);
+
+        bottomPanel.setMinimumSize(new java.awt.Dimension(200, 50));
+        bottomPanel.setPreferredSize(new java.awt.Dimension(1214, 200));
+
+        javax.swing.GroupLayout bottomPanelLayout = new javax.swing.GroupLayout(bottomPanel);
+        bottomPanel.setLayout(bottomPanelLayout);
+        bottomPanelLayout.setHorizontalGroup(
+            bottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(logFrame, javax.swing.GroupLayout.DEFAULT_SIZE, 1214, Short.MAX_VALUE)
+        );
+        bottomPanelLayout.setVerticalGroup(
+            bottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(logFrame, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
+        );
+
+        jSplitPane1.setRightComponent(bottomPanel);
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(topPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1096, Short.MAX_VALUE)
-            .addComponent(bottomPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGap(0, 1214, Short.MAX_VALUE)
+            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.Alignment.TRAILING))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainPanelLayout.createSequentialGroup()
-                .addComponent(topPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 750, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(bottomPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGap(0, 877, Short.MAX_VALUE)
+            .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 877, Short.MAX_VALUE))
         );
 
         menuBar.setBackground(new java.awt.Color(51, 51, 51));
@@ -833,6 +848,7 @@ public class MainGUI extends javax.swing.JFrame {
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu fileMenu;
     private static org.parker.mips.GUI.InstructionMemoryGUI instructionMemory_GUI1;
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel jLabel2;
+    private static javax.swing.JSplitPane jSplitPane1;
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox linkedButton;
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBoxMenuItem logErrorsButton;
     private static org.parker.mips.Log logFrame;

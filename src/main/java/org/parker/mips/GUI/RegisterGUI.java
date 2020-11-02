@@ -7,13 +7,14 @@ package org.parker.mips.GUI;
 
 import org.parker.mips.GUI.lookandfeel.RoundedBorder;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.beans.PropertyChangeEvent;
 import javax.swing.JTable;
 import javax.swing.table.TableColumnModel;
 import org.parker.mips.GUI.ThemedJFrameComponents.ThemableComponent;
 import org.parker.mips.GUI.ThemedJFrameComponents.ThemeHandler;
-import org.parker.mips.GUI.ThemedJFrameComponents.ThemedJButton;
 import org.parker.mips.Processor.Registers;
 
 /**
@@ -28,10 +29,11 @@ public class RegisterGUI extends javax.swing.JPanel implements ThemableComponent
     public void propertyChange(PropertyChangeEvent pce) {
         switch (pce.getPropertyName()) {
             case ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME:
-                this.pc1.setFont((Font) pce.getNewValue());
-                this.pc.setFont((Font) pce.getNewValue());
-                this.lowHigh.setFont((Font) pce.getNewValue());
-                this.registers.setFont((Font) pce.getNewValue());
+                setAllFonts((Font) pce.getNewValue());
+//                this.pc1.setFont((Font) pce.getNewValue());
+//                this.pc.setFont((Font) pce.getNewValue());
+//                this.lowHigh.setFont((Font) pce.getNewValue());
+//                this.registers.setFont((Font) pce.getNewValue());
                 break;
             case ThemeHandler.BACKGROUND_COLOR_3_PROPERTY_NAME:
                 this.pc1.setBackground((Color) pce.getNewValue());
@@ -59,6 +61,7 @@ public class RegisterGUI extends javax.swing.JPanel implements ThemableComponent
      */
     public RegisterGUI() {
         initComponents();
+        jScrollPane1.getViewport().setOpaque(false);
 
         //this.setFont((Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.BUTTON_TEXT_FONT_PROPERTY_NAME));
         ThemeHandler.addPropertyChangeListenerFromName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME, this);
@@ -72,10 +75,11 @@ public class RegisterGUI extends javax.swing.JPanel implements ThemableComponent
 
         Font textFont = (Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME);
 
-        this.pc1.setFont(textFont);
-        this.pc.setFont(textFont);
-        this.lowHigh.setFont(textFont);
-        this.registers.setFont(textFont);
+        setAllFonts(textFont);
+//        this.pc1.setFont(textFont);
+//        this.pc.setFont(textFont);
+//        this.lowHigh.setFont(textFont);
+//        this.registers.setFont(textFont);
 
         Color backgroundColor = (Color) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.BACKGROUND_COLOR_2_PROPERTY_NAME);
 
@@ -99,11 +103,6 @@ public class RegisterGUI extends javax.swing.JPanel implements ThemableComponent
         this.lowHigh.setBackground(forgroundColor);
         this.registers.setBackground(forgroundColor);
 
-        configTable(this.pc);
-        configTable(this.pc1);
-        configTable(this.lowHigh);
-        configTable(this.registers);
-
         //this.pc.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
         //this.pc1.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
         //this.lowHigh.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
@@ -111,13 +110,49 @@ public class RegisterGUI extends javax.swing.JPanel implements ThemableComponent
         //Register_GUI.pc.setT
     }
 
-    private static void configTable(JTable table) {
+    public void setAllFonts(Font font) {
+
+        pc1.setFont(font);
+        pc.setFont(font);
+        lowHigh.setFont(font);
+        registers.setFont(font);
+
+        configTables(this.getFontMetrics(font));
+    }
+
+    private void configTables(FontMetrics fm) {
+
+        String largestFirst = "Combied";
+        String largestSecond = "0000000000000000000000000000000";
+        String largestThird = "00000000";
+        String largestFourth = "-2147483648";
+
+        int first = fm.stringWidth(largestFirst) + 0;
+        int second = fm.stringWidth(largestSecond) + 0;
+        int third = fm.stringWidth(largestThird) + 0;
+        int fourth = fm.stringWidth(largestFourth) + 0;
+
+        Dimension dim = this.getPreferredSize();
+        dim = new Dimension(first + second + third + fourth +200, dim.height);
+        this.setPreferredSize(dim);
+        this.setSize(dim);
+        //this.setMaximumSize(dim);
+        //this.setMinimumSize(dim);
+
+        configTable(pc, fm, first, second, third, fourth);
+        configTable(pc1, fm, first, second, third, fourth);
+        configTable(lowHigh, fm, first, second, third, fourth);
+        configTable(registers, fm, first, second, third, fourth);
+    }
+
+    private static void configTable(JTable table, FontMetrics fm, int first, int second, int third, int fourth) {
         table.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
         TableColumnModel colModel = table.getColumnModel();
-        colModel.getColumn(0).setPreferredWidth(90);
-        colModel.getColumn(1).setPreferredWidth(250);
-        colModel.getColumn(2).setPreferredWidth(80);
-        colModel.getColumn(3).setPreferredWidth(90);
+
+        colModel.getColumn(0).setPreferredWidth(first);
+        colModel.getColumn(1).setPreferredWidth(second);
+        colModel.getColumn(2).setPreferredWidth(third);
+        colModel.getColumn(3).setPreferredWidth(fourth);
     }
 
     public static synchronized void updateVals() {
@@ -159,43 +194,22 @@ public class RegisterGUI extends javax.swing.JPanel implements ThemableComponent
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pc1 = new javax.swing.JTable();
-        pc = new javax.swing.JTable();
+        jScrollPane1 = new org.parker.mips.GUI.lookandfeel.ModernScrollPane();
+        jPanel2 = new javax.swing.JPanel();
         lowHigh = new javax.swing.JTable();
         registers = new javax.swing.JTable();
+        pc = new javax.swing.JTable();
+        pc1 = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(102, 102, 102));
         setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         setOpaque(false);
 
-        pc1.setBackground(new java.awt.Color(102, 102, 102));
-        pc1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        pc1.setForeground(new java.awt.Color(204, 204, 204));
-        pc1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {"Name", "Bin", "Hex", "Dec"}
-            },
-            new String [] {
-                "Register", "Bin", "Hex", "Dec"
-            }
-        ));
-        pc1.setEnabled(false);
-        pc1.setOpaque(false);
+        jScrollPane1.setBorder(null);
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane1.setOpaque(false);
 
-        pc.setBackground(new java.awt.Color(102, 102, 102));
-        pc.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        pc.setForeground(new java.awt.Color(204, 204, 204));
-        pc.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {"PC", null, null, null}
-            },
-            new String [] {
-                "Register", "Bin", "Hex", "Dec"
-            }
-        ));
-        pc.setEnabled(false);
-        pc.setGridColor(new java.awt.Color(51, 51, 51));
-        pc.setOpaque(false);
+        jPanel2.setOpaque(false);
 
         lowHigh.setBackground(new java.awt.Color(102, 102, 102));
         lowHigh.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -258,34 +272,79 @@ public class RegisterGUI extends javax.swing.JPanel implements ThemableComponent
         registers.setEnabled(false);
         registers.setOpaque(false);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(registers, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
-            .addComponent(lowHigh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(pc1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        pc.setBackground(new java.awt.Color(102, 102, 102));
+        pc.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        pc.setForeground(new java.awt.Color(204, 204, 204));
+        pc.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"PC", null, null, null}
+            },
+            new String [] {
+                "Register", "Bin", "Hex", "Dec"
+            }
+        ));
+        pc.setEnabled(false);
+        pc.setGridColor(new java.awt.Color(51, 51, 51));
+        pc.setOpaque(false);
+
+        pc1.setBackground(new java.awt.Color(102, 102, 102));
+        pc1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        pc1.setForeground(new java.awt.Color(204, 204, 204));
+        pc1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"Name", "Bin", "Hex", "Dec"}
+            },
+            new String [] {
+                "Register", "Bin", "Hex", "Dec"
+            }
+        ));
+        pc1.setEnabled(false);
+        pc1.setOpaque(false);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lowHigh, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(pc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pc1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(registers, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE)
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(pc1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(9, 9, 9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lowHigh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(registers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addComponent(registers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jScrollPane1.setViewportView(jPanel2);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane1))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel jPanel2;
+    private org.parker.mips.GUI.lookandfeel.ModernScrollPane jScrollPane1;
     private static javax.swing.JTable lowHigh;
     private static javax.swing.JTable pc;
-    private javax.swing.JTable pc1;
+    private static javax.swing.JTable pc1;
     private static javax.swing.JTable registers;
     // End of variables declaration//GEN-END:variables
 

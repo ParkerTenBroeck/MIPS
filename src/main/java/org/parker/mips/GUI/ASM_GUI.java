@@ -7,10 +7,12 @@ package org.parker.mips.GUI;
 
 import org.parker.mips.GUI.lookandfeel.RoundedBorder;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import org.parker.mips.FileHandler;
+import org.parker.mips.GUI.ThemedJFrameComponents.ThemeHandler;
 import org.parker.mips.OptionsHandler;
 
 /**
@@ -44,8 +46,8 @@ public class ASM_GUI extends javax.swing.JPanel {
     private static void setTextAreaFromList(ArrayList<String> list) {
         aSMFormattedTextArea1.textArea.setText(String.join("\n", list));
     }
-    
-    public static void loadCurrentTheme(){
+
+    public static void loadCurrentTheme() {
         setTextAreaThemeFromName(OptionsHandler.currentSyntaxTheme.value);
     }
 
@@ -76,12 +78,17 @@ public class ASM_GUI extends javax.swing.JPanel {
                     newFontSize = 1;
                 }
                 aSMFormattedTextArea1.setAllFontSize(newFontSize);
+                Font temp = new Font(((Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME)).getName(), Font.PLAIN, newFontSize);
+                ThemeHandler.setThemeFromName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME, temp, true, true);
+
+                ThemeHandler.setThemeFromName(ThemeHandler.BUTTON_TEXT_FONT_PROPERTY_NAME, temp, true, true);
+
+                ThemeHandler.setThemeFromName(ThemeHandler.LABLE_TEXT_FONT_PROPERTY_NAME, temp, true, true);
             } else {
                 int unit = aSMFormattedTextArea1.getVerticalScrollBar().getUnitIncrement();
                 int scrolled = mouseWheelEvent.getUnitsToScroll() * 5;
                 //System.out.println(scrolled);
                 int currentPos = aSMFormattedTextArea1.getVerticalScrollBar().getValue();
-
                 aSMFormattedTextArea1.getVerticalScrollBar().setValue(unit * scrolled + currentPos);
             }
         });

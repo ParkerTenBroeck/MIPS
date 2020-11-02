@@ -122,7 +122,7 @@ public class ResourceHandler {
                     temp.mkdir();
                 }
 
-                //Log.logMessage(destPath + " " + jarPath);
+                //System.out.println(destPath + " " + jarPath);
                 JarFile jarFile = new JarFile(MIPS.JAR_PATH);
                 Enumeration<JarEntry> enums = jarFile.entries();
                 while (enums.hasMoreElements()) {
@@ -133,9 +133,9 @@ public class ResourceHandler {
                         continue;
                     }
                     if (entry.getName().startsWith(jarPath)) {
-                        File toWrite = new File(destPath + "//" + entry.getName().replaceAll(jarPath, ""));
+                        File toWrite = new File(destPath + ResourceHandler.FILE_SEPERATOR + entry.getName().replaceFirst(jarPath, ""));
                         //Log.logMessage(toWrite.getAbsolutePath());
-                        //System.out.println(toWrite.getAbsoluteFile());
+                        //System.out.println(toWrite.getAbsoluteFile() + " " + entry.getName());
                         if (entry.isDirectory()) {
                             if (!toWrite.exists()) {
                                 toWrite.mkdirs();

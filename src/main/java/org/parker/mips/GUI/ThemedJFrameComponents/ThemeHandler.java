@@ -277,7 +277,10 @@ public class ThemeHandler {
 
                     Object object = gson.fromJson(entry.getValue().getAsJsonObject(), field.getType());
 
-                    setThemeFromName(entry.getKey(), object, true, false);
+
+
+                        setThemeFromName(entry.getKey(), object, true, false);
+                    
 
                 } catch (Exception e) {
                     logThemeHandlerError("Failed to read Theme file: " + e);
