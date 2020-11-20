@@ -41,6 +41,7 @@ public class Screen extends SystemCallPluginFrame {
     }
 
     public Screen() {
+        super("Screen");
         this.setTitle("Screen");
         initComponents();
         updateScreen();

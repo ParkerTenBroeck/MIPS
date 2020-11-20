@@ -15,6 +15,12 @@ import org.parker.mips.Processor.SystemCallHandler;
  */
 public class SystemCallPluginFrame extends JFrame {
 
+    public final String FRAME_NAME;
+
+    public SystemCallPluginFrame(String name) {
+        this.FRAME_NAME = name;
+    }
+
     /**
      * WARNING errors can halt the program if enabled use Warning if program can
      * continue

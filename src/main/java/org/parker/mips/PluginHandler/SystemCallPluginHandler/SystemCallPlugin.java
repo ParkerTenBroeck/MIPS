@@ -6,6 +6,7 @@
 package org.parker.mips.PluginHandler.SystemCallPluginHandler;
 
 import com.google.gson.Gson;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -24,18 +25,33 @@ public abstract class SystemCallPlugin {
     final protected SystemCall[] systemCalls;
     final public String PLUGIN_NAME;
 
+    /**
+     * 
+     * @param numOfSystemCalls The number of system calls that belongs to this plugin
+     * @param pluginName  The name of the plugin MUST not contain any spaces or special characters and also be unique
+     */
     public SystemCallPlugin(int numOfSystemCalls, String pluginName) {
         this.systemCalls = new SystemCall[numOfSystemCalls];
         this.PLUGIN_NAME = pluginName;
     }
 
-    /**
-     *
-     * @param frame add the frame in a list accesiable in the Main_GUI
-     */
-    protected final void addFrameToGUI(SystemCallPluginFrame frame) {
-        MainGUI.addSysCallFrameToList(this, frame);
+    public class NamedFrameOpeningEvent {
+
+        public final String FRAME_NAME;
+        public final ActionListener AL;
+
+        public NamedFrameOpeningEvent(String name, ActionListener al) {
+            this.FRAME_NAME = name;
+            this.AL = al;
+        }
     }
+    /**This method returns all of opening events the plugin contains 
+     * 
+     * This allows for each plugin to have multiple frames accociated with it
+     * 
+     * @return returns null if no opening events are used
+     */
+    public abstract NamedFrameOpeningEvent[] getAllSystemCallFrameOpeningEvents();
 
     /**
      * NOT YET IMPLEMENTED
@@ -99,7 +115,7 @@ public abstract class SystemCallPlugin {
         return getSystemCallData(path, classType);
     }
 
-    protected final SystemCallData[] getSystemCallData(String path, Class classType) {
+    private final SystemCallData[] getSystemCallData(String path, Class classType) {
 
         SystemCallData[] data = null;
 
@@ -118,11 +134,11 @@ public abstract class SystemCallPlugin {
             try {
                 data = gson.fromJson(response, SystemCallData[].class);
             } catch (Exception e) {
-                SystemCallPluginHandler.logPluginHandlerError("There was an error while parcing the SystemCallData: " + e);
+                SystemCallPluginLoader.logPluginHandlerError("There was an error while parcing the SystemCallData: " + e);
             }
 
         } catch (Exception e) {
-            SystemCallPluginHandler.logPluginHandlerError("There was an error while loading the SystemCallData json file");
+            SystemCallPluginLoader.logPluginHandlerError("There was an error while loading the SystemCallData json file");
         }
         return data;
     }
@@ -148,11 +164,12 @@ public abstract class SystemCallPlugin {
     protected final void stopProcessor() {
         Processor.stop();
     }
-    
+
     /**
-     * resets the processor setting all registers to 0 and halting also reloads memory if options is set
+     * resets the processor setting all registers to 0 and halting also reloads
+     * memory if options is set
      */
-    protected final void resetProcessor(){
+    protected final void resetProcessor() {
         Processor.reset();
     }
 

@@ -21,8 +21,6 @@ public class ExampleSystemCallPlugin extends SystemCallPlugin {
 
         super(4, "Example_Plugin"); //initiates the plugin with 4 system calls with the name Example_Plugin
 
-        this.addFrameToGUI(exampleFrame);
-
         SystemCallData[] scd = this.getSystemCallDataFromClass(this.getClass()); //loads the data stored in ExampleSystemCallPlugin
 
         this.systemCalls[0] = new SystemCall(scd[0], "EXAMPLE_SET_HOURS", this) { //make sure that the name entered here and the name in ExampleSystemCallPlugin match this is for verification
@@ -61,4 +59,12 @@ public class ExampleSystemCallPlugin extends SystemCallPlugin {
         //this can be used for any initiation after the constructor if needed
     }
 
+    @Override
+    public NamedFrameOpeningEvent[] getAllSystemCallFrameOpeningEvents() {
+
+        return new NamedFrameOpeningEvent[]{new NamedFrameOpeningEvent("Clock", (ae) -> {
+            this.exampleFrame.setVisible(true);
+            this.exampleFrame.requestFocus();
+        })};
+    }
 }

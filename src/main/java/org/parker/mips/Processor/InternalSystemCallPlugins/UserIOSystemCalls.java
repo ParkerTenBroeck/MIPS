@@ -8,6 +8,7 @@ package org.parker.mips.Processor.InternalSystemCallPlugins;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCall;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallData;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin;
+import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginFrame;
 
 /**
  *
@@ -19,8 +20,6 @@ public class UserIOSystemCalls extends SystemCallPlugin {
 
     public UserIOSystemCalls() {
         super(7, "UserIO_System_Calls");
-        
-        this.addFrameToGUI(userIO);
 
         SystemCallData[] scd = this.getSystemCallDataFromClass(this.getClass());
 
@@ -118,4 +117,11 @@ public class UserIOSystemCalls extends SystemCallPlugin {
         //nothing
     }
 
+    @Override
+    public NamedFrameOpeningEvent[] getAllSystemCallFrameOpeningEvents() {
+        return new NamedFrameOpeningEvent[]{new NamedFrameOpeningEvent("UserIO", (ae) -> {
+            this.userIO.setVisible(true);
+            this.userIO.requestFocus();
+        })};
+    }
 }

@@ -7,10 +7,11 @@ package org.parker.mips.Processor;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import org.parker.mips.GUI.MainGUI;
 import org.parker.mips.Log;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCall;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin;
-import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginHandler;
+import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginLoader;
 import static org.parker.mips.Processor.Processor.logRunTimeError;
 import static org.parker.mips.Processor.Processor.logRunTimeMessage;
 import static org.parker.mips.Processor.Processor.logRunTimeWarning;
@@ -33,7 +34,7 @@ public class SystemCallHandler {
             return;
         }
         if (scp.getSystemCalls() == null) {
-            SystemCallPluginHandler.logPluginHandlerError("System Calls is null in" + scp.PLUGIN_NAME + " skipping for now");
+            SystemCallPluginLoader.logPluginHandlerError("System Calls is null in" + scp.PLUGIN_NAME + " skipping for now");
             return;
         }
 
@@ -44,7 +45,7 @@ public class SystemCallHandler {
         for (SystemCall sc : scl) {
             if (sc == null) {
                 totalConflicts++;
-                SystemCallPluginHandler.logPluginHandlerError("System Call in " + scp.PLUGIN_NAME + " is null skipping for now");
+                SystemCallPluginLoader.logPluginHandlerError("System Call in " + scp.PLUGIN_NAME + " is null skipping for now");
                 continue;
             }
             boolean conflict = false;
@@ -52,7 +53,7 @@ public class SystemCallHandler {
                 if ((sc.DATA.SYSTEM_CALL_NAME.equals(rsc.DATA.SYSTEM_CALL_NAME)) || sc.DATA.SYSTEM_CALL_NUMBER == rsc.DATA.SYSTEM_CALL_NUMBER) {
                     conflict = true;
                     totalConflicts++;
-                    SystemCallPluginHandler.logPluginHandlerError("System Call Conflict " + sc.DATA.SYSTEM_CALL_NAME + ":" + sc.DATA.SYSTEM_CALL_NUMBER
+                    SystemCallPluginLoader.logPluginHandlerError("System Call Conflict " + sc.DATA.SYSTEM_CALL_NAME + ":" + sc.DATA.SYSTEM_CALL_NUMBER
                             + " was not registered because " + rsc.DATA.SYSTEM_CALL_NAME + ":" + rsc.DATA.SYSTEM_CALL_NUMBER + " was already reigstered");
                     break;
                 }
@@ -60,17 +61,18 @@ public class SystemCallHandler {
             if (!conflict) {
                 registeredSystemCalls.add(sc);
                 idrkWhat[sc.DATA.SYSTEM_CALL_NUMBER] = sc;
-                SystemCallPluginHandler.logPluginHandlerSystemMessage("System Call " + sc.DATA.SYSTEM_CALL_NAME + ":" + sc.DATA.SYSTEM_CALL_NUMBER + " was successfully registered");
+                SystemCallPluginLoader.logPluginHandlerSystemMessage("System Call " + sc.DATA.SYSTEM_CALL_NAME + ":" + sc.DATA.SYSTEM_CALL_NUMBER + " was successfully registered");
             } else {
-                SystemCallPluginHandler.logPluginHandlerWarning("System Call " + sc.DATA.SYSTEM_CALL_NAME + ":" + sc.DATA.SYSTEM_CALL_NUMBER + "was not registered because of a conflict");
+                SystemCallPluginLoader.logPluginHandlerWarning("System Call " + sc.DATA.SYSTEM_CALL_NAME + ":" + sc.DATA.SYSTEM_CALL_NUMBER + "was not registered because of a conflict");
                 //warning system call (name and number) was not registered
             }
         }
         registeredSystemCallPlugins.add(scp);
+        MainGUI.reloadSystemCallPluginLists();
         if (totalConflicts > 0) {
-            SystemCallPluginHandler.logPluginHandlerWarning("SystemCall plugin: " + scp.PLUGIN_NAME + " was reigstered with " + totalConflicts + " conflicts");
+            SystemCallPluginLoader.logPluginHandlerWarning("SystemCall plugin: " + scp.PLUGIN_NAME + " was reigstered with " + totalConflicts + " conflicts");
         } else {
-            SystemCallPluginHandler.logPluginHandlerSystemMessage("SystemCall plugin: " + scp.PLUGIN_NAME + " was reigstered with " + totalConflicts + " conflicts" + "\n");
+            SystemCallPluginLoader.logPluginHandlerSystemMessage("SystemCall plugin: " + scp.PLUGIN_NAME + " was reigstered with " + totalConflicts + " conflicts" + "\n");
         }
 
     }
@@ -105,8 +107,13 @@ public class SystemCallHandler {
     public static void unRegisterSystemCallPlugin(SystemCallPlugin plugin) {
         if (plugin != null) {
             registeredSystemCallPlugins.remove(plugin);
+            logSystemCallSystemMessage("Succcessfully unloaded and unregistered: " + plugin.PLUGIN_NAME);
+            MainGUI.reloadSystemCallPluginLists();
+            regenerateStandardSysCallHeaderFile();
         }
     }
+    
+    
 
     public static void logRunTimeSystemCallError(String message) {
         logRunTimeError("[System Call] " + message);
@@ -181,6 +188,14 @@ public class SystemCallHandler {
 
         }
 
+    }
+
+    public static ArrayList<SystemCallPlugin> getRegisteredSystemCalls() {
+        return (ArrayList<SystemCallPlugin>) registeredSystemCallPlugins.clone();
+    }
+
+    public static boolean isSystemCallRegistered(SystemCall sc) {
+       return registeredSystemCalls.contains(sc);
     }
 
 }

@@ -21,9 +21,8 @@ public class ScreenSystemCalls extends SystemCallPlugin {
 
     public ScreenSystemCalls() {
         super(8, "Screen_System_Calls");
-        
-        this.addFrameToGUI(screen);
 
+        //this.addFrameToGUI(screen);
         SystemCallData[] scd = this.getSystemCallDataFromClass(this.getClass());
 
         this.systemCalls[0] = new SystemCall(scd[0], "SCREEN_IS_KEY_PRESSED", this) {
@@ -84,6 +83,14 @@ public class ScreenSystemCalls extends SystemCallPlugin {
     @Override
     public void init() {
         //nothing
+    }
+
+    @Override
+    public NamedFrameOpeningEvent[] getAllSystemCallFrameOpeningEvents() {
+        return new NamedFrameOpeningEvent[]{new NamedFrameOpeningEvent("Screen", (ae) -> {
+            this.screen.setVisible(true);
+            this.screen.requestFocus();
+        })};
     }
 
 }

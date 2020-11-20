@@ -21,6 +21,7 @@ public class ExampleFrame extends SystemCallPluginFrame {
     }
 
     public ExampleFrame() {
+        super("Clock");
         initComponents();
 
         Timer timer;

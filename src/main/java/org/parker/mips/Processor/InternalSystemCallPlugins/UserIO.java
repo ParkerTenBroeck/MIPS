@@ -68,6 +68,7 @@ public class UserIO extends SystemCallPluginFrame {
     }
 
     public UserIO() {
+        super("UserIO");
         this.setTitle("UserIO");
         initComponents();
     }

@@ -9,6 +9,7 @@ import org.parker.mips.OptionsHandler;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCall;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallData;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin;
+import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginFrame;
 
 /**
  *
@@ -84,6 +85,11 @@ public class DefaultSystemCalls extends SystemCallPlugin {
     @Override
     public void init() {
 
+    }
+
+    @Override
+    public NamedFrameOpeningEvent[] getAllSystemCallFrameOpeningEvents() {
+        return null;
     }
 
 }

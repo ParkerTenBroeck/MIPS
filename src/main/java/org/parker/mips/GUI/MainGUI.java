@@ -8,11 +8,13 @@ package org.parker.mips.GUI;
 import org.parker.mips.Compiler.ASMCompiler;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
+import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu;
@@ -28,6 +30,8 @@ import org.parker.mips.Processor.Processor;
 import org.parker.mips.ResourceHandler;
 import org.parker.mips.UpdateHandler;
 import org.parker.mips.OptionsHandler;
+import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin.NamedFrameOpeningEvent;
+import org.parker.mips.Processor.SystemCallHandler;
 
 /**
  *
@@ -196,20 +200,77 @@ public class MainGUI extends javax.swing.JFrame {
         refresh();
     }
 
-    public static void addSysCallFrameToList(SystemCallPlugin plugin, SystemCallPluginFrame frame) {
-        if (plugin == null || frame == null) {
-            return;
+//    public static void addPluginFrameOpeningEventsToMainGUISystemCallPluginLists(SystemCallPlugin plugin, NamedFrameOpeningEvent[] foe) {
+//        if (plugin == null || foe == null) {
+//            return;
+//        }
+//        
+//        ThemedJMenu tempMen = new ThemedJMenu();
+//        
+//        tempMen.setText(plugin.PLUGIN_NAME.replaceAll("_", " "));
+//
+//        for(int i = 0; i < foe.length; i ++){
+//            ThemedJMenuItem tempIte = new ThemedJMenuItem();
+//            tempIte.setText(foe[i].FRAME_NAME);
+//            tempIte.addActionListener(foe[i].AL);
+//            tempMen.add(tempIte);
+//        }
+//
+//        systemCallFrameJMenu.add(tempMen);
+//    }
+    public static void reloadSystemCallPluginLists() {
+        systemCallFrameJMenu.removeAll();
+        registerSystemCallPluginsJMenu.removeAll();
+
+        ArrayList<SystemCallPlugin> plugins = SystemCallHandler.getRegisteredSystemCalls();
+        for (SystemCallPlugin plugin : plugins) {
+
+            {
+                ThemedJMenu tempMenu = new ThemedJMenu();
+                tempMenu.setText(plugin.PLUGIN_NAME);
+                ThemedJMenuItem tempItem = new ThemedJMenuItem();
+                tempItem.setText("Open SystemCall Plugin Info Frame");
+                tempItem.addActionListener((ae) -> {
+                    new SystemCallPluginInfoFrame(plugin);
+                    //generate some plugin info frame from the plugin
+                });
+                tempMenu.add(tempItem);
+                
+                tempItem = new ThemedJMenuItem();
+                tempItem.setText("Unregister SystemCall Plugin");
+                tempItem.addActionListener((ae) -> {
+                    SystemCallHandler.unRegisterSystemCallPlugin(plugin);
+                    //new SystemCallPluginInfoFrame(plugin);
+                    //generate some plugin info frame from the plugin
+                });
+                tempMenu.add(tempItem);
+
+                registerSystemCallPluginsJMenu.add(tempMenu);
+            }
+
+            NamedFrameOpeningEvent[] foe = plugin.getAllSystemCallFrameOpeningEvents();
+            if (plugin == null || foe == null) {
+                continue;
+            }
+
+            ThemedJMenu tempMenu = new ThemedJMenu();
+
+            tempMenu.setText(plugin.PLUGIN_NAME.replaceAll("_", " "));
+
+            for (int i = 0; i < foe.length; i++) {
+                ThemedJMenuItem tempItem = new ThemedJMenuItem();
+                tempItem.setText(foe[i].FRAME_NAME);
+                tempItem.addActionListener(foe[i].AL);
+                tempMenu.add(tempItem);
+            }
+
+            systemCallFrameJMenu.add(tempMenu);
         }
-        ThemedJMenuItem temp = new ThemedJMenuItem();
-
-        temp.setText(plugin.PLUGIN_NAME);
-        temp.addActionListener((ae) -> {
-            frame.setVisible(true);
-        });
-
-        systemCallFrameJMenu.add(temp);
     }
 
+//    public static void addSystemCallPluginToPluginLists(){
+//        
+//    }
     private static ThemedJMenu generateJMenuFromFile(File file, ActionListener al) {
         if (file.isDirectory()) {
             ThemedJMenu jMenu = new ThemedJMenu();
@@ -326,7 +387,7 @@ public class MainGUI extends javax.swing.JFrame {
         adaptiveMemoryMenuButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBoxMenuItem();
         systemCallPluginsJMenu = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu();
         systemCallFrameJMenu = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu();
-        registeredSystemCallPluginsButton = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem();
+        registerSystemCallPluginsJMenu = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("MIPS");
@@ -703,8 +764,8 @@ public class MainGUI extends javax.swing.JFrame {
         systemCallFrameJMenu.setText("SystemCall Frames");
         systemCallPluginsJMenu.add(systemCallFrameJMenu);
 
-        registeredSystemCallPluginsButton.setText("Registered SystemCall Plugins");
-        systemCallPluginsJMenu.add(registeredSystemCallPluginsButton);
+        registerSystemCallPluginsJMenu.setText("Registered SystemCall Plugins");
+        systemCallPluginsJMenu.add(registerSystemCallPluginsJMenu);
 
         menuBar.add(systemCallPluginsJMenu);
 
@@ -864,8 +925,8 @@ public class MainGUI extends javax.swing.JFrame {
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem openMenuButton;
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem optionsButton;
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu optionsMenu;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu registerSystemCallPluginsJMenu;
     private static org.parker.mips.GUI.RegisterGUI register_GUI1;
-    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem registeredSystemCallPluginsButton;
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJButton resetButton;
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu runTimeMenu;
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem saveAsMenuButton;

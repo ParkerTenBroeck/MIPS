@@ -24,7 +24,7 @@ import org.parker.mips.ResourceHandler;
  *
  * @author parke
  */
-public class SystemCallPluginHandler {
+public class SystemCallPluginLoader {
 
     static ArrayList<SystemCallPlugin> loadedPlugins;
 
