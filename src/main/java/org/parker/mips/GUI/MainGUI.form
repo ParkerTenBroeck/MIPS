@@ -184,6 +184,14 @@
                 <Property name="text" type="java.lang.String" value="Registered SystemCall Plugins"/>
               </Properties>
             </Menu>
+            <Menu class="org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem" name="loadPluginJMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Load Plugin"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loadPluginJMenuItemActionPerformed"/>
+              </Events>
+            </Menu>
           </SubComponents>
         </Menu>
       </SubComponents>

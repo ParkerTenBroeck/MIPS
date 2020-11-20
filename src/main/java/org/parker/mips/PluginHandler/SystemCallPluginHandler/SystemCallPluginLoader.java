@@ -161,4 +161,9 @@ public class SystemCallPluginLoader {
     public static void logPluginHandlerSystemMessage(String message) {
         Log.logSystemMessage("[Plugin Handler] " + message);
     }
+
+    public static void loadExternalPlugin(File chosenFile) {
+        SystemCallPlugin scp = loadExternalPluginFromJarPath(chosenFile.getAbsolutePath());
+        SystemCallHandler.registerSystemCallPlugin(scp);
+    }
 }

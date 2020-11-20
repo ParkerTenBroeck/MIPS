@@ -107,13 +107,18 @@ public class SystemCallHandler {
     public static void unRegisterSystemCallPlugin(SystemCallPlugin plugin) {
         if (plugin != null) {
             registeredSystemCallPlugins.remove(plugin);
+            for (SystemCall sc : plugin.getSystemCalls()) {
+                if (isSystemCallRegistered(sc)) {
+                    registeredSystemCalls.remove(sc);
+                    idrkWhat[sc.DATA.SYSTEM_CALL_NUMBER] = null;
+                }
+            }
+
             logSystemCallSystemMessage("Succcessfully unloaded and unregistered: " + plugin.PLUGIN_NAME);
             MainGUI.reloadSystemCallPluginLists();
             regenerateStandardSysCallHeaderFile();
         }
     }
-    
-    
 
     public static void logRunTimeSystemCallError(String message) {
         logRunTimeError("[System Call] " + message);
@@ -195,7 +200,7 @@ public class SystemCallHandler {
     }
 
     public static boolean isSystemCallRegistered(SystemCall sc) {
-       return registeredSystemCalls.contains(sc);
+        return registeredSystemCalls.contains(sc);
     }
 
 }

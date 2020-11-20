@@ -16,11 +16,13 @@ import java.awt.event.WindowListener;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu;
 import org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem;
 import javax.swing.JOptionPane;
 import org.parker.mips.FileHandler;
+import static org.parker.mips.FileHandler.writeUserTextAreaToASMFile;
 import org.parker.mips.Log;
 import org.parker.mips.MIPS;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin;
@@ -31,6 +33,7 @@ import org.parker.mips.ResourceHandler;
 import org.parker.mips.UpdateHandler;
 import org.parker.mips.OptionsHandler;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin.NamedFrameOpeningEvent;
+import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginLoader;
 import org.parker.mips.Processor.SystemCallHandler;
 
 /**
@@ -235,7 +238,7 @@ public class MainGUI extends javax.swing.JFrame {
                     //generate some plugin info frame from the plugin
                 });
                 tempMenu.add(tempItem);
-                
+
                 tempItem = new ThemedJMenuItem();
                 tempItem.setText("Unregister SystemCall Plugin");
                 tempItem.addActionListener((ae) -> {
@@ -388,6 +391,7 @@ public class MainGUI extends javax.swing.JFrame {
         systemCallPluginsJMenu = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu();
         systemCallFrameJMenu = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu();
         registerSystemCallPluginsJMenu = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu();
+        loadPluginJMenuItem = new org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("MIPS");
@@ -767,6 +771,14 @@ public class MainGUI extends javax.swing.JFrame {
         registerSystemCallPluginsJMenu.setText("Registered SystemCall Plugins");
         systemCallPluginsJMenu.add(registerSystemCallPluginsJMenu);
 
+        loadPluginJMenuItem.setText("Load Plugin");
+        loadPluginJMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadPluginJMenuItemActionPerformed(evt);
+            }
+        });
+        systemCallPluginsJMenu.add(loadPluginJMenuItem);
+
         menuBar.add(systemCallPluginsJMenu);
 
         setJMenuBar(menuBar);
@@ -850,6 +862,20 @@ public class MainGUI extends javax.swing.JFrame {
         new OptionsGUI();
     }//GEN-LAST:event_optionsButtonActionPerformed
 
+    private void loadPluginJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadPluginJMenuItemActionPerformed
+        JFileChooser fc = new JFileChooser();
+        int returnVal = fc.showOpenDialog(MainGUI.getFrame());
+
+        if (returnVal != 0) {
+            return;
+        }
+
+        File chosenFile = fc.getSelectedFile();
+        SystemCallPluginLoader.loadExternalPlugin(chosenFile);
+    }//GEN-LAST:event_loadPluginJMenuItemActionPerformed
+
+    
+
     public static void addCompileButtonListener(ActionListener al) {
         MainGUI.compileButton.addActionListener(al);
     }
@@ -911,6 +937,7 @@ public class MainGUI extends javax.swing.JFrame {
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJLabel jLabel2;
     private static javax.swing.JSplitPane jSplitPane1;
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBox linkedButton;
+    private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem loadPluginJMenuItem;
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBoxMenuItem logErrorsButton;
     private static org.parker.mips.Log logFrame;
     private static org.parker.mips.GUI.ThemedJFrameComponents.ThemedJCheckBoxMenuItem logMessagesButton;
