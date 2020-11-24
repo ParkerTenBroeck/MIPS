@@ -7,6 +7,7 @@ package org.parker.mips;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,24 @@ public class FileHandler {
         return true;
     }
 
+    /**
+     * This will treat all resources as a ASM file
+     *
+     * @param url to the resource
+     * @return
+     */
+    public boolean loadExampleFromJarPath(URL url) {
+
+        if (true) {
+            isASMFileSaved = true;
+            currentASMFile = null;
+            currentMXNFile = null;
+        } else {
+
+        }
+        return true;
+    }
+
     public static boolean loadFile(File file) {
         if (!newFile(false)) {
             return false;
@@ -61,7 +80,7 @@ public class FileHandler {
         }
 
         if (extention.equals("asm")) {
-            currentMXNFile = new File(file.getPath().replace(".asm", ".mxn"));
+            currentMXNFile = new File(file.getPath().replace("\\.asm", "\\.mxn"));
             currentASMFile = file;
 
             try {
@@ -73,7 +92,7 @@ public class FileHandler {
             }
 
         } else if (extention.equals("mxn")) {
-            currentASMFile = new File(file.getPath().replace(".mxn", ".asm"));
+            currentASMFile = new File(file.getPath().replace("\\.mxn", "\\.asm"));
             currentMXNFile = file;
 
             try {
@@ -119,11 +138,11 @@ public class FileHandler {
         try {
             File pd = new File(ResourceHandler.DEFAULT_PROJECTS_PATH);
             JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
-            fc.setSelectedFile(new File("project_" + pd.listFiles().length + ".asm"));
+            fc.setSelectedFile(new File("project_" + pd.listFiles().length + "\\.asm"));
             int returnVal = fc.showOpenDialog(MainGUI.getFrame());
 
             if (returnVal != 0) {
-                currentASMFile = File.createTempFile("ASMTemp", ".asm");
+                currentASMFile = File.createTempFile("ASMTemp", "\\.asm");
                 boolean temp = writeUserTextAreaToASMFile();
                 isASMFileSaved = false;
                 return temp;
@@ -139,9 +158,9 @@ public class FileHandler {
             }
 
             if (!chosenFile.getName().contains(".")) {
-                chosenFile = new File(chosenFile.getAbsolutePath() + ".asm");
-            } else if (chosenFile.getName().endsWith(".asm")) {
-                chosenFile = new File(chosenFile.getAbsolutePath().split("\\.")[0] + ".asm");
+                chosenFile = new File(chosenFile.getAbsolutePath() + "\\.asm");
+            } else if (chosenFile.getName().endsWith("\\.asm")) {
+                chosenFile = new File(chosenFile.getAbsolutePath().split("\\.")[0] + "\\.asm");
             }
 
             if (chosenFile.exists()) {

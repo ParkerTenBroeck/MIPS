@@ -6,7 +6,6 @@
 package examplesystemcallplugin;
 
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCall;
-import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallData;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin;
 
 /**
@@ -21,7 +20,7 @@ public class ExampleSystemCallPlugin extends SystemCallPlugin {
 
         super(4, "Example_Plugin"); //initiates the plugin with 4 system calls with the name Example_Plugin
 
-        SystemCallData[] scd = this.getSystemCallDataFromClass(this.getClass()); //loads the data stored in ExampleSystemCallPlugin
+        SystemCall.SystemCallData[] scd = this.getSystemCallDataFromClass(this.getClass()); //loads the data stored in ExampleSystemCallPlugin
 
         this.systemCalls[0] = new SystemCall(scd[0], "EXAMPLE_SET_HOURS", this) { //make sure that the name entered here and the name in ExampleSystemCallPlugin match this is for verification
             @Override
@@ -60,11 +59,17 @@ public class ExampleSystemCallPlugin extends SystemCallPlugin {
     }
 
     @Override
-    public NamedFrameOpeningEvent[] getAllSystemCallFrameOpeningEvents() {
+    public NamedActionListener[] getAllSystemCallFrameNamedActionListeners() {
 
-        return new NamedFrameOpeningEvent[]{new NamedFrameOpeningEvent("Clock", (ae) -> {
+        return new NamedActionListener[]{new NamedActionListener("Clock", (ae) -> {
             this.exampleFrame.setVisible(true);
             this.exampleFrame.requestFocus();
         })};
+    }
+
+    @Override
+    public boolean unload() {
+        //nessisary code to unload the plugin
+        return true; //return false if there was an error
     }
 }

@@ -32,9 +32,9 @@ import org.parker.mips.Processor.Processor;
 import org.parker.mips.ResourceHandler;
 import org.parker.mips.UpdateHandler;
 import org.parker.mips.OptionsHandler;
-import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin.NamedFrameOpeningEvent;
+import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin.NamedActionListener;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginLoader;
-import org.parker.mips.Processor.SystemCallHandler;
+import org.parker.mips.Processor.SystemCallPluginHandler;
 
 /**
  *
@@ -225,7 +225,7 @@ public class MainGUI extends javax.swing.JFrame {
         systemCallFrameJMenu.removeAll();
         registerSystemCallPluginsJMenu.removeAll();
 
-        ArrayList<SystemCallPlugin> plugins = SystemCallHandler.getRegisteredSystemCalls();
+        ArrayList<SystemCallPlugin> plugins = SystemCallPluginHandler.getRegisteredSystemCalls();
         for (SystemCallPlugin plugin : plugins) {
 
             {
@@ -242,7 +242,8 @@ public class MainGUI extends javax.swing.JFrame {
                 tempItem = new ThemedJMenuItem();
                 tempItem.setText("Unregister SystemCall Plugin");
                 tempItem.addActionListener((ae) -> {
-                    SystemCallHandler.unRegisterSystemCallPlugin(plugin);
+                    System.out.println(plugin);
+                    SystemCallPluginHandler.unRegisterSystemCallPlugin(plugin);
                     //new SystemCallPluginInfoFrame(plugin);
                     //generate some plugin info frame from the plugin
                 });
@@ -251,7 +252,14 @@ public class MainGUI extends javax.swing.JFrame {
                 registerSystemCallPluginsJMenu.add(tempMenu);
             }
 
-            NamedFrameOpeningEvent[] foe = plugin.getAllSystemCallFrameOpeningEvents();
+            NamedActionListener[] foe = null;
+            
+            try {
+                foe = plugin.getAllSystemCallFrameNamedActionListeners();
+            } catch (AbstractMethodError e) {
+                SystemCallPluginHandler.logSystemCallPluginHandlerError("System Call Plugin Did NOT implement abstract method: getAllSystemCallFrameNamedActionListeners. Unloading for saftey");
+                SystemCallPluginHandler.unRegisterSystemCallPlugin(plugin);
+            }
             if (plugin == null || foe == null) {
                 continue;
             }
@@ -316,7 +324,7 @@ public class MainGUI extends javax.swing.JFrame {
         return null;
     }
 
-    public static synchronized void refresh() {
+    public static void refresh() {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 RegisterGUI.updateVals();
@@ -873,8 +881,6 @@ public class MainGUI extends javax.swing.JFrame {
         File chosenFile = fc.getSelectedFile();
         SystemCallPluginLoader.loadExternalPlugin(chosenFile);
     }//GEN-LAST:event_loadPluginJMenuItemActionPerformed
-
-    
 
     public static void addCompileButtonListener(ActionListener al) {
         MainGUI.compileButton.addActionListener(al);

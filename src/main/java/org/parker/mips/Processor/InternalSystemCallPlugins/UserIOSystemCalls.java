@@ -6,9 +6,7 @@
 package org.parker.mips.Processor.InternalSystemCallPlugins;
 
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCall;
-import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallData;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin;
-import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginFrame;
 
 /**
  *
@@ -21,7 +19,7 @@ public class UserIOSystemCalls extends SystemCallPlugin {
     public UserIOSystemCalls() {
         super(7, "UserIO_System_Calls");
 
-        SystemCallData[] scd = this.getSystemCallDataFromClass(this.getClass());
+        SystemCall.SystemCallData[] scd = this.getSystemCallDataFromClass(this.getClass());
 
         this.systemCalls[0] = new SystemCall(scd[0], "USERIO_PRINT_INT", this) {
             @Override
@@ -118,10 +116,16 @@ public class UserIOSystemCalls extends SystemCallPlugin {
     }
 
     @Override
-    public NamedFrameOpeningEvent[] getAllSystemCallFrameOpeningEvents() {
-        return new NamedFrameOpeningEvent[]{new NamedFrameOpeningEvent("UserIO", (ae) -> {
+    public NamedActionListener[] getAllSystemCallFrameNamedActionListeners() {
+        return new NamedActionListener[]{new NamedActionListener("UserIO", (ae) -> {
             this.userIO.setVisible(true);
             this.userIO.requestFocus();
         })};
+    }
+
+    @Override
+    public boolean unload() {
+        logSystemCallPluginError("Cannot Unload Plugin as its Internal");
+        return false;
     }
 }

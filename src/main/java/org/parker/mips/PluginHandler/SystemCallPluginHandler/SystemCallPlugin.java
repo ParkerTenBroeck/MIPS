@@ -10,11 +10,13 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import org.parker.mips.GUI.MainGUI;
+import org.parker.mips.Log;
 import org.parker.mips.Processor.Memory;
 import org.parker.mips.Processor.Processor;
 import org.parker.mips.Processor.Registers;
-import org.parker.mips.Processor.SystemCallHandler;
+import org.parker.mips.Processor.SystemCallPluginHandler;
 
 /**
  *
@@ -26,39 +28,44 @@ public abstract class SystemCallPlugin {
     final public String PLUGIN_NAME;
 
     /**
-     * 
-     * @param numOfSystemCalls The number of system calls that belongs to this plugin
-     * @param pluginName  The name of the plugin MUST not contain any spaces or special characters and also be unique
+     *
+     * @param numOfSystemCalls The number of system calls that belongs to this
+     * plugin
+     * @param pluginName The name of the plugin MUST not contain any spaces or
+     * special characters and also be unique
      */
     public SystemCallPlugin(int numOfSystemCalls, String pluginName) {
         this.systemCalls = new SystemCall[numOfSystemCalls];
         this.PLUGIN_NAME = pluginName;
     }
 
-    public class NamedFrameOpeningEvent {
+    public class NamedActionListener {
 
         public final String FRAME_NAME;
         public final ActionListener AL;
 
-        public NamedFrameOpeningEvent(String name, ActionListener al) {
+        public NamedActionListener(String name, ActionListener al) {
             this.FRAME_NAME = name;
             this.AL = al;
         }
     }
-    /**This method returns all of opening events the plugin contains 
-     * 
+
+    /**
+     * This method returns all of opening events the plugin contains
+     *
      * This allows for each plugin to have multiple frames accociated with it
-     * 
+     *
      * @return returns null if no opening events are used
      */
-    public abstract NamedFrameOpeningEvent[] getAllSystemCallFrameOpeningEvents();
+    public abstract NamedActionListener[] getAllSystemCallFrameNamedActionListeners();
 
     /**
      * NOT YET IMPLEMENTED
      *
+     * @return
      */
-    protected final void addInternalExamples() {
-
+    protected URL[] getInternalSystemCallExampleResources() {
+        return null;
     }
 
     /**
@@ -68,34 +75,72 @@ public abstract class SystemCallPlugin {
      */
     public abstract void init();
 
+    /**
+     * The will be called when the plugin is unloaded return true if pluign can
+     * be unloaded or return false if there was an error or the plugin cannot be
+     * unloaded
+     *
+     * @return
+     */
+    public abstract boolean unload();
+
     public final SystemCall[] getSystemCalls() {
         return systemCalls;
     }
 
     /**
+     * Used for when a SystemCall encounters some error during runtime
+     *
      * WARNING errors can halt the program if enabled use Warning if program can
      * continue
      *
      * @param message the message that will be logged as a warning
      */
     protected final void logRunTimeSystemCallError(String message) {
-        SystemCallHandler.logRunTimeSystemCallError(message);
+        SystemCallPluginHandler.logRunTimeSystemCallError(message);
     }
 
     /**
+     * Used for when a SystemCall has some error but can handle it and continue
+     * to run
      *
      * @param message the message that will be logged as a warning
      */
     protected final void logRunTimeSystemCallWarning(String message) {
-        SystemCallHandler.logRunTimeSystemCallWarning(message);
+        SystemCallPluginHandler.logRunTimeSystemCallWarning(message);
     }
 
     /**
+     * Used for when a SystemCall is needed to log a message
      *
      * @param message the message that will be logged
      */
     protected final void logRunTimeSystemCallMessage(String message) {
-        SystemCallHandler.logRunTimeSystemCallMessage(message);
+        SystemCallPluginHandler.logRunTimeSystemCallMessage(message);
+    }
+
+    /**
+     *
+     * @param message message to be loged
+     */
+    protected final void logSystemCallPluginError(String message) {
+        Log.logError("[System Call Plugin] " + message);
+    }
+
+    /**
+     *
+     * @param message message to be loged
+     */
+    protected final void logSystemCallPluginWarning(String message) {
+        Log.logWarning("[System Call Plugin] " + message);
+    }
+
+    /**
+     *
+     * @param message message to be loged
+     */
+    protected final void logSystemCallPluginMessage(String message) {
+        Log.logMessage("[System Call Plugin] " + message);
     }
 
     /**
@@ -108,16 +153,16 @@ public abstract class SystemCallPlugin {
      * @param classType
      * @return
      */
-    protected final SystemCallData[] getSystemCallDataFromClass(Class classType) {
+    protected final SystemCall.SystemCallData[] getSystemCallDataFromClass(Class classType) {
 
         String path = "/" + classType.getCanonicalName().replaceAll("\\.", "/") + ".json";
 
         return getSystemCallData(path, classType);
     }
 
-    private final SystemCallData[] getSystemCallData(String path, Class classType) {
+    private final SystemCall.SystemCallData[] getSystemCallData(String path, Class classType) {
 
-        SystemCallData[] data = null;
+        SystemCall.SystemCallData[] data = null;
 
         try {
             Gson gson = new Gson();
@@ -132,13 +177,13 @@ public abstract class SystemCallPlugin {
             }
 
             try {
-                data = gson.fromJson(response, SystemCallData[].class);
+                data = gson.fromJson(response, SystemCall.SystemCallData[].class);
             } catch (Exception e) {
-                SystemCallPluginLoader.logPluginHandlerError("There was an error while parcing the SystemCallData: " + e);
+                SystemCallPluginLoader.logPluginLoaderError("There was an error while parcing the SystemCallData: " + e);
             }
 
         } catch (Exception e) {
-            SystemCallPluginLoader.logPluginHandlerError("There was an error while loading the SystemCallData json file");
+            SystemCallPluginLoader.logPluginLoaderError("There was an error while loading the SystemCallData json file");
         }
         return data;
     }

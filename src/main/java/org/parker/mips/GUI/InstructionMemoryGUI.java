@@ -70,7 +70,7 @@ public class InstructionMemoryGUI extends javax.swing.JPanel implements Themable
 
     }
 
-    public static synchronized void refresh() {
+    public static void refresh() {
         instructionList.setSelectedIndex(getPc() / 4);
         instructionList.ensureIndexIsVisible((getPc() / 4) - toMiddle);
         instructionList.ensureIndexIsVisible((getPc() / 4) + toMiddle); //sets the  

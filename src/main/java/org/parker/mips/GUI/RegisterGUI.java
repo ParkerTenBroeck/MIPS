@@ -155,7 +155,7 @@ public class RegisterGUI extends javax.swing.JPanel implements ThemableComponent
         colModel.getColumn(3).setPreferredWidth(fourth);
     }
 
-    public static synchronized void updateVals() {
+    public static void updateVals() {
         for (int i = 1; i <= 31; i++) {
             setRegisterRow(registers, i - 1, Registers.getRegister(i));
         }

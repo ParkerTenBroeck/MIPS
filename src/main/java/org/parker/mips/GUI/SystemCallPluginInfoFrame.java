@@ -10,7 +10,8 @@ import java.util.Arrays;
 import org.parker.mips.GUI.lookandfeel.ModernScrollPane;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCall;
 import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin;
-import org.parker.mips.Processor.SystemCallHandler;
+import org.parker.mips.Processor.SystemCallPluginHandler;
+import static org.parker.mips.Processor.SystemCallPluginHandler.getSystemCallNumberFromGeneratedNumber;
 
 /**
  *
@@ -46,11 +47,26 @@ public class SystemCallPluginInfoFrame extends javax.swing.JFrame {
 
             html += "<h1>" + sc.DATA.SYSTEM_CALL_NAME + "</h1>"; // name
 
-            if (!SystemCallHandler.isSystemCallRegistered(sc)) {
+            if (!SystemCallPluginHandler.isSystemCallRegistered(sc)) {
                 html += "<h3>System Call was not registered properly</h3>";
             }
 
-            html += "<h2>System Call ID: " + sc.DATA.SYSTEM_CALL_NUMBER + "</h2>"; //ID
+            int index;
+            boolean generated;
+
+            if (sc.DATA.SYSTEM_CALL_NUMBER >= 0) {
+                index = sc.DATA.SYSTEM_CALL_NUMBER;
+                generated = false;
+            } else {
+                index = getSystemCallNumberFromGeneratedNumber(sc);
+                generated = true;
+            }
+
+            if (!generated) {
+                html += "<h2>System Call ID: " + sc.DATA.SYSTEM_CALL_NUMBER + "</h2>"; //ID
+            } else {
+                html += "<h2>Generated System Call ID: " + index + " Real System Call ID is: " + sc.DATA.SYSTEM_CALL_NUMBER + "</h2>"; //ID
+            }
 
             html += "<div>Registers Read From</div><div>" + Arrays.toString(sc.DATA.REGISTERS_READ_FROM) + "</div>";
 

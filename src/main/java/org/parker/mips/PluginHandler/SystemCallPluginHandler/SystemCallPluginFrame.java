@@ -7,7 +7,7 @@ package org.parker.mips.PluginHandler.SystemCallPluginHandler;
 
 import javax.swing.JFrame;
 import org.parker.mips.Processor.Processor;
-import org.parker.mips.Processor.SystemCallHandler;
+import org.parker.mips.Processor.SystemCallPluginHandler;
 
 /**
  *
@@ -28,7 +28,7 @@ public class SystemCallPluginFrame extends JFrame {
      * @param message the message that will be logged as a warning
      */
     protected final void logRunTimeSystemCallError(String message) {
-        SystemCallHandler.logRunTimeSystemCallError(message);
+        SystemCallPluginHandler.logRunTimeSystemCallError(message);
     }
 
     /**
@@ -36,7 +36,7 @@ public class SystemCallPluginFrame extends JFrame {
      * @param message the message that will be logged as a warning
      */
     protected final void logRunTimeSystemCallWarning(String message) {
-        SystemCallHandler.logRunTimeSystemCallWarning(message);
+        SystemCallPluginHandler.logRunTimeSystemCallWarning(message);
     }
 
     /**
@@ -44,7 +44,7 @@ public class SystemCallPluginFrame extends JFrame {
      * @param message the message that will be logged
      */
     protected final void logRunTimeSystemCallMessage(String message) {
-        SystemCallHandler.logRunTimeSystemCallMessage(message);
+        SystemCallPluginHandler.logRunTimeSystemCallMessage(message);
     }
 
     /**
