@@ -9,8 +9,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import org.parker.mips.GUI.MainGUI;
 import org.parker.mips.Log;
-import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCall;
-import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin;
+import org.parker.mips.plugin.SystemCall.SystemCall;
+import org.parker.mips.plugin.SystemCall.SystemCallPlugin;
 import static org.parker.mips.Processor.Processor.logRunTimeError;
 import static org.parker.mips.Processor.Processor.logRunTimeMessage;
 import static org.parker.mips.Processor.Processor.logRunTimeWarning;
@@ -124,7 +124,7 @@ public class SystemCallPluginHandler {
         boolean wasError = false;
 
         if (plugin != null) {
-            if (plugin.unload()) {
+            if (plugin.onUnload()) {
                 registeredSystemCallPlugins.remove(plugin);
                 for (SystemCall sc : plugin.getSystemCalls()) {
                     try {

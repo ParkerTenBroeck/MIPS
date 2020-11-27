@@ -11,7 +11,7 @@ import java.nio.file.Files;
 import javax.swing.ImageIcon;
 import org.parker.mips.GUI.MainGUI;
 import org.parker.mips.GUI.ThemedJFrameComponents.ThemeHandler;
-import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginLoader;
+import org.parker.mips.plugin.SystemCall.SystemCallPluginLoader;
 import static org.parker.mips.UpdateHandler.checkForUpdates;
 
 /**

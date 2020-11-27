@@ -3,7 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.PluginHandler.SystemCallPluginHandler;
+package org.parker.mips.plugin.SystemCall;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 /**
  * systemCallNum must me a completely unique int between zero and 2^26 this
@@ -60,8 +63,8 @@ public abstract class SystemCall {
         public final int SYSTEM_CALL_NUMBER;
         public final String SYSTEM_CALL_NAME;
         public final String SYSTEM_CALL_DISCRIPTION;
-        public final int[] REGISTERS_READ_FROM;
-        public final int[] REGISTERS_WRITTEN_TO;
+        public final Integer[] REGISTERS_READ_FROM;
+        public final Integer[] REGISTERS_WRITTEN_TO;
         public final boolean PC_REG_READ_FROM;
         public final boolean PC_REG_WRITTEN_TO;
         public final boolean HIGH_REG_READ_FROM;
@@ -71,7 +74,7 @@ public abstract class SystemCall {
         public final boolean MEMORY_READ_FROM;
         public final boolean MEMORY_WRITTEN_TO;
 
-        public SystemCallData(int systemCallNum, String systemCallName, String systemCallDis, int[] registerReadFrom, int[] registersWrittenTo, boolean pcRegReadFrom, boolean pcRegWrittenTo, boolean highRegReadFrom, boolean highRegWrittenTo, boolean lowRegReadFrom, boolean lowRegWrittenTo, boolean memoryReadFrom, boolean memoryWrittenTo) {
+        public SystemCallData(int systemCallNum, String systemCallName, String systemCallDis, Integer[] registerReadFrom, Integer[] registersWrittenTo, boolean pcRegReadFrom, boolean pcRegWrittenTo, boolean highRegReadFrom, boolean highRegWrittenTo, boolean lowRegReadFrom, boolean lowRegWrittenTo, boolean memoryReadFrom, boolean memoryWrittenTo) {
             this.SYSTEM_CALL_NUMBER = systemCallNum;
             this.SYSTEM_CALL_NAME = systemCallName;
             this.SYSTEM_CALL_DISCRIPTION = systemCallDis;
@@ -88,5 +91,4 @@ public abstract class SystemCall {
         }
 
     }
-
 }

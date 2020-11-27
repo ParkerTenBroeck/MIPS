@@ -25,15 +25,15 @@ import org.parker.mips.FileHandler;
 import static org.parker.mips.FileHandler.writeUserTextAreaToASMFile;
 import org.parker.mips.Log;
 import org.parker.mips.MIPS;
-import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin;
-import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginFrame;
+import org.parker.mips.plugin.SystemCall.SystemCallPlugin;
+import org.parker.mips.plugin.SystemCall.SystemCallPluginFrame;
 import org.parker.mips.Processor.Memory;
 import org.parker.mips.Processor.Processor;
 import org.parker.mips.ResourceHandler;
 import org.parker.mips.UpdateHandler;
 import org.parker.mips.OptionsHandler;
-import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin.NamedActionListener;
-import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginLoader;
+import org.parker.mips.plugin.SystemCall.SystemCallPlugin.NamedActionListener;
+import org.parker.mips.plugin.SystemCall.SystemCallPluginLoader;
 import org.parker.mips.Processor.SystemCallPluginHandler;
 
 /**

@@ -5,8 +5,8 @@
  */
 package org.parker.mips.Processor.InternalSystemCallPlugins;
 
-import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCall;
-import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin;
+import org.parker.mips.plugin.SystemCall.SystemCall;
+import org.parker.mips.plugin.SystemCall.SystemCallPlugin;
 
 /**
  *
@@ -17,7 +17,6 @@ public class UserIOSystemCalls extends SystemCallPlugin {
     private final UserIO userIO = new UserIO();
 
     public UserIOSystemCalls() {
-        super(7, "UserIO_System_Calls");
 
         SystemCall.SystemCallData[] scd = this.getSystemCallDataFromClass(this.getClass());
 
@@ -111,7 +110,7 @@ public class UserIOSystemCalls extends SystemCallPlugin {
     }
 
     @Override
-    public void init() {
+    public void onLoad() {
         //nothing
     }
 
@@ -124,7 +123,7 @@ public class UserIOSystemCalls extends SystemCallPlugin {
     }
 
     @Override
-    public boolean unload() {
+    public boolean onUnload() {
         logSystemCallPluginError("Cannot Unload Plugin as its Internal");
         return false;
     }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.PluginHandler.SystemCallPluginHandler;
+package org.parker.mips.plugin.SystemCall;
 
 import javax.swing.JFrame;
 import org.parker.mips.Processor.Processor;

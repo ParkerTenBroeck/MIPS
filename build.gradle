@@ -22,9 +22,10 @@ if (!hasProperty('mainClass')) {
 }
 
 processResources {
-  from ('src/main/java') {
-    include '**/*.json'
-  }
+    from ('src/main/java') {
+        include '**/*.json'
+        include '**/*.yml'
+    }
 }
 
 jar {
@@ -59,6 +60,9 @@ dependencies {
     
     implementation 'com.google.code.gson:gson:2.8.6'
     compile 'com.google.code.gson:gson:2.8.6'
+ 
+    
+    compile group: 'org.yaml', name: 'snakeyaml', version: '1.8'
     
     testCompile group: 'junit', name: 'junit', version: '4.10'
 }

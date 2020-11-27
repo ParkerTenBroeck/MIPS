@@ -3,40 +3,59 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.PluginHandler.SystemCallPluginHandler;
+package org.parker.mips.plugin.SystemCall;
 
 import com.google.gson.Gson;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
 import org.parker.mips.GUI.MainGUI;
 import org.parker.mips.Log;
 import org.parker.mips.Processor.Memory;
 import org.parker.mips.Processor.Processor;
 import org.parker.mips.Processor.Registers;
 import org.parker.mips.Processor.SystemCallPluginHandler;
+import org.parker.mips.plugin.PluginBase;
+import org.parker.mips.plugin.PluginDescription;
 
 /**
  *
  * @author parke
  */
-public abstract class SystemCallPlugin {
+public abstract class SystemCallPlugin extends PluginBase {
 
     final protected SystemCall[] systemCalls;
     final public String PLUGIN_NAME;
 
-    /**
-     *
-     * @param numOfSystemCalls The number of system calls that belongs to this
-     * plugin
-     * @param pluginName The name of the plugin MUST not contain any spaces or
-     * special characters and also be unique
-     */
-    public SystemCallPlugin(int numOfSystemCalls, String pluginName) {
-        this.systemCalls = new SystemCall[numOfSystemCalls];
-        this.PLUGIN_NAME = pluginName;
+    final public File PLUGIN_FILE;
+    final public PluginDescription DESCRIPTION;
+
+    private boolean isEnabled = false;
+    //final public String VERSION;
+    //final public String DISCRIPTION;
+
+    public SystemCallPlugin() {
+
+        System.out.println(this.getClass().getClassLoader());
+        {
+            final ClassLoader classLoader = this.getClass().getClassLoader();
+            if (!(classLoader instanceof SystemCallPluginClassLoader)) {
+                throw new IllegalStateException("JavaPlugin requires " + SystemCallPluginClassLoader.class.getName() + " And not " + classLoader.getClass().getName());
+            }
+        }
+        final SystemCallPluginClassLoader classLoader = ((SystemCallPluginClassLoader) this.getClass().getClassLoader());
+
+        //classLoader.initialize(this);
+
+        this.systemCalls = null;
+        this.PLUGIN_NAME = null;
+        this.DESCRIPTION = classLoader.plugin.DESCRIPTION;
+        this.PLUGIN_FILE = null;
+     //   throw new NoSuchFieldError();
     }
 
     public class NamedActionListener {
@@ -50,6 +69,91 @@ public abstract class SystemCallPlugin {
         }
     }
 
+    public class Node<T> {
+
+        public final String name;
+        private T data = null;
+        private ArrayList<Node<T>> children = null;
+        private Node<T> parent = null;
+
+        public Node(String name, T data) {
+            this.name = name;
+            this.data = data;
+        }
+
+        public Node(String name) {
+            this.name = name;
+            this.data = null;
+        }
+
+        public Node(T data) {
+            this.data = data;
+            this.name = null;
+        }
+
+        public Node<T> addChild(String name, T data) {
+            Node<T> child = new Node(name, data);
+            this.addChild(child);
+            return child;
+        }
+
+        public Node<T> addChild(String name) {
+            Node<T> child = new Node(name);
+            this.addChild(child);
+            return child;
+        }
+
+        public Node<T> addChild(T data) {
+            Node<T> child = new Node(data);
+            this.addChild(child);
+            return child;
+        }
+
+        public Node<T> addChild(Node<T> child) {
+            if (children == null) {
+                children = new ArrayList();
+            }
+
+            child.setParent(this);
+            this.children.add(child);
+            return child;
+        }
+
+        public void addChildren(ArrayList<Node<T>> children) {
+            if (children == null) {
+                children = new ArrayList();
+            }
+
+            children.forEach(each -> each.setParent(this));
+            this.children.addAll(children);
+        }
+
+        public boolean hasChildern() {
+            return children == null;
+        }
+
+        public ArrayList<Node<T>> getChildren() {
+            return children;
+        }
+
+        public T getData() {
+            return data;
+        }
+
+        public void setData(T data) {
+            this.data = data;
+        }
+
+        private void setParent(Node<T> parent) {
+            this.parent = parent;
+        }
+
+        public Node<T> getParent() {
+            return parent;
+        }
+
+    }
+
     /**
      * This method returns all of opening events the plugin contains
      *
@@ -57,14 +161,16 @@ public abstract class SystemCallPlugin {
      *
      * @return returns null if no opening events are used
      */
-    public abstract NamedActionListener[] getAllSystemCallFrameNamedActionListeners();
+    public NamedActionListener[] getAllSystemCallFrameNamedActionListeners() {
+        return null;
+    }
 
     /**
      * NOT YET IMPLEMENTED
      *
      * @return
      */
-    protected URL[] getInternalSystemCallExampleResources() {
+    protected Node<URL> getInternalSystemCallExampleResources() {
         return null;
     }
 
@@ -73,7 +179,7 @@ public abstract class SystemCallPlugin {
      * that can not be done in constructor
      *
      */
-    public abstract void init();
+    public abstract void onLoad();
 
     /**
      * The will be called when the plugin is unloaded return true if pluign can
@@ -82,7 +188,7 @@ public abstract class SystemCallPlugin {
      *
      * @return
      */
-    public abstract boolean unload();
+    public abstract boolean onUnload();
 
     public final SystemCall[] getSystemCalls() {
         return systemCalls;
@@ -185,6 +291,7 @@ public abstract class SystemCallPlugin {
         } catch (Exception e) {
             SystemCallPluginLoader.logPluginLoaderError("There was an error while loading the SystemCallData json file");
         }
+
         return data;
     }
 

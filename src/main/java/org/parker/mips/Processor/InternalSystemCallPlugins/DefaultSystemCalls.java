@@ -6,8 +6,8 @@
 package org.parker.mips.Processor.InternalSystemCallPlugins;
 
 import org.parker.mips.OptionsHandler;
-import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCall;
-import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin;
+import org.parker.mips.plugin.SystemCall.SystemCall;
+import org.parker.mips.plugin.SystemCall.SystemCallPlugin;
 
 /**
  *
@@ -16,9 +16,10 @@ import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin;
 public class DefaultSystemCalls extends SystemCallPlugin {
 
     public DefaultSystemCalls() {
-
-        super(6, "Default_System_Calls");
-
+        System.out.println("thus");
+        if (true) {
+            return;
+        }
         SystemCall.SystemCallData[] scd = this.getSystemCallDataFromClass(this.getClass());
 
         this.systemCalls[0] = new SystemCall(scd[0], "SYSTEM_HALT_PROGRAM", this) {
@@ -77,21 +78,15 @@ public class DefaultSystemCalls extends SystemCallPlugin {
                 setRegister(2, (int) System.currentTimeMillis());
             }
         };
+    }
+
+    @Override
+    public void onLoad() {
 
     }
 
     @Override
-    public void init() {
-
-    }
-
-    @Override
-    public NamedActionListener[] getAllSystemCallFrameNamedActionListeners() {
-        return null;
-    }
-
-    @Override
-    public boolean unload() {
+    public boolean onUnload() {
         logSystemCallPluginError("Cannot Unload Plugin as its Internal");
         return false;
     }

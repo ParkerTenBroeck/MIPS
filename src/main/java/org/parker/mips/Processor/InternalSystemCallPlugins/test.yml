@@ -1,0 +1,5 @@
+## YAML Template.
+name: test
+main: org.parker.mips.Processor.InternalSystemCallPlugins.DefaultSystemCalls
+version: 1.0
+description: hope

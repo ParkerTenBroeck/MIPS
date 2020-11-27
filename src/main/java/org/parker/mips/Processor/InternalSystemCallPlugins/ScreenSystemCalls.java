@@ -6,8 +6,8 @@
 package org.parker.mips.Processor.InternalSystemCallPlugins;
 
 import java.awt.Color;
-import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCall;
-import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin;
+import org.parker.mips.plugin.SystemCall.SystemCall;
+import org.parker.mips.plugin.SystemCall.SystemCallPlugin;
 
 /**
  *
@@ -18,7 +18,6 @@ public class ScreenSystemCalls extends SystemCallPlugin {
     private final Screen screen = new Screen();
 
     public ScreenSystemCalls() {
-        super(8, "Screen_System_Calls");
 
         //this.addFrameToGUI(screen);
         SystemCall.SystemCallData[] scd = this.getSystemCallDataFromClass(this.getClass());
@@ -79,7 +78,7 @@ public class ScreenSystemCalls extends SystemCallPlugin {
     }
 
     @Override
-    public void init() {
+    public void onLoad() {
         //nothing
     }
 
@@ -92,7 +91,7 @@ public class ScreenSystemCalls extends SystemCallPlugin {
     }
 
     @Override
-    public boolean unload() {
+    public boolean onUnload() {
         logSystemCallPluginError("Cannot Unload Plugin as its Internal");
         return false;
     }

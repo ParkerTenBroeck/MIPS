@@ -6,7 +6,7 @@
 package examplesystemcallplugin;
 
 import javax.swing.Timer;
-import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginFrame;
+import org.parker.mips.plugin.SystemCall.SystemCallPluginFrame;
 
 /**
  *

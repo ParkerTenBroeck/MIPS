@@ -5,7 +5,7 @@
  */
 package org.parker.mips.Processor.InternalSystemCallPlugins;
 
-import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginFrame;
+import org.parker.mips.plugin.SystemCall.SystemCallPluginFrame;
 
 /**
  *

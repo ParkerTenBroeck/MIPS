@@ -5,8 +5,9 @@
  */
 package examplesystemcallplugin;
 
-import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCall;
-import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPlugin;
+import java.net.URL;
+import org.parker.mips.plugin.SystemCall.SystemCall;
+import org.parker.mips.plugin.SystemCall.SystemCallPlugin;
 
 /**
  *
@@ -54,10 +55,17 @@ public class ExampleSystemCallPlugin extends SystemCallPlugin {
     }
 
     @Override
-    public void init() {
+    public void onLoad() {
         //this can be used for any initiation after the constructor if needed
     }
 
+    @Override
+    public boolean onUnload() {
+        //nessisary code to unload the plugin
+        return true; //return false if there was an error
+    }
+
+    
     @Override
     public NamedActionListener[] getAllSystemCallFrameNamedActionListeners() {
 
@@ -68,8 +76,15 @@ public class ExampleSystemCallPlugin extends SystemCallPlugin {
     }
 
     @Override
-    public boolean unload() {
-        //nessisary code to unload the plugin
-        return true; //return false if there was an error
+    public Node<URL> getInternalSystemCallExampleResources() {
+
+        Class<?> c = this.getClass();
+
+        Node<URL> root = new Node("Root");
+        Node<URL> temp = root.addChild("Path test 1");
+        temp.addChild("Prog 1", c.getResource("exampleProgram1.asm"));
+        temp.addChild("Prog 2", c.getResource("exampleProgram2.asm"));
+
+        return root;
     }
 }
