@@ -28,6 +28,8 @@ public abstract class SystemCallPlugin extends PluginBase {
     private final SystemCallPlugin instance;
     private final SystemCall[] systemCalls;
     private final SystemCall.SystemCallData[] systemCallData;
+    
+    private Object ad;
 
     public SystemCallPlugin() {
         {
@@ -444,8 +446,11 @@ public abstract class SystemCallPlugin extends PluginBase {
         Registers.setLow(val);
     }
 
+    /**
+     * NOT IMPLEMENTED YET
+     */
     protected final void throwNonInturuptableIntturupt() { //still in the works
-
+        throw new Error("Not implemented yet");
     }
 
 }

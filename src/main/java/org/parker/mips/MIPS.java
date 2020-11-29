@@ -41,51 +41,6 @@ public class MIPS {
             if (args[0].equals("Updated")) {
                 Log.logSystemMessage("Successful Updated to: " + VERSION);
 
-                try {
-                    File file;
-                    try {
-                        file = new File(ResourceHandler.THEME_PATH + ResourceHandler.FILE_SEPERATOR + "GUI");
-                        Files.deleteIfExists(file.toPath());
-                    } catch (Exception e) {
-
-                    }
-
-                    try {
-                        file = new File(ResourceHandler.THEME_PATH + ResourceHandler.FILE_SEPERATOR + "Syntax");
-                        file.delete();
-                    } catch (Exception e) {
-
-                    }
-
-                    try {
-                        file = new File(ResourceHandler.THEME_PATH + ResourceHandler.FILE_SEPERATOR + "GUI_");
-                        file.delete();
-                    } catch (Exception e) {
-
-                    }
-
-                    try {
-                        file = new File(ResourceHandler.THEME_PATH + ResourceHandler.FILE_SEPERATOR + "Syntax_");
-                        file.delete();
-                    } catch (Exception e) {
-
-                    }
-                    try {
-                        file = new File(ResourceHandler.THEME_PATH + ResourceHandler.FILE_SEPERATOR + "GUI_Themes");
-                        file.delete();
-                    } catch (Exception e) {
-
-                    }
-
-                    try {
-                        file = new File(ResourceHandler.THEME_PATH + ResourceHandler.FILE_SEPERATOR + "Syntax_Themes");
-                        file.delete();
-                    } catch (Exception e) {
-
-                    }
-                } catch (Exception e) {
-
-                }
             }
         }
 
