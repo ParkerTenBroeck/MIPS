@@ -3,10 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.Processor.InternalSystemCallPlugins;
+package org.parker.mips.Processor.InternalSystemCallPlugins.DefaultSystemCalls;
 
-import org.parker.mips.OptionsHandler;
-import org.parker.mips.plugin.SystemCall.SystemCall;
 import org.parker.mips.plugin.SystemCall.SystemCallPlugin;
 
 /**
@@ -16,30 +14,25 @@ import org.parker.mips.plugin.SystemCall.SystemCallPlugin;
 public class DefaultSystemCalls extends SystemCallPlugin {
 
     public DefaultSystemCalls() {
-        System.out.println("thus");
-        if (true) {
-            return;
-        }
-        SystemCall.SystemCallData[] scd = this.getSystemCallDataFromClass(this.getClass());
-
-        this.systemCalls[0] = new SystemCall(scd[0], "SYSTEM_HALT_PROGRAM", this) {
+        
+        registerSystemCall(new PRSystemCall("SYSTEM_HALT_PROGRAM") {
             @Override
             public void handleSystemCall() {
-                if (OptionsHandler.resetProcessorOnTrap0.value) {
-                    resetProcessor();
-                } else {
-                    stopProcessor();
-                }
+//                if (OptionsHandler.resetProcessorOnTrap0.value) {
+//                    resetProcessor();
+//                } else {
+//                    stopProcessor();
+//                }
                 logRunTimeSystemCallMessage("Halted Processor");
             }
-        };
-        this.systemCalls[1] = new SystemCall(scd[1], "SYSTEM_RANDOM_NUM", this) {
+        });
+        registerSystemCall(new PRSystemCall("SYSTEM_RANDOM_NUM", this) {
             @Override
             public void handleSystemCall() {
                 setRegister(2, (int) (Math.random() * (getRegister(5) + 1 - getRegister(4))) + getRegister(4));
             }
-        };
-        this.systemCalls[2] = new SystemCall(scd[2], "SYSTEM_SLEEP_MILLS", this) {
+        });
+        registerSystemCall(new PRSystemCall("SYSTEM_SLEEP_MILLS", this) {
             @Override
             public void handleSystemCall() {
                 try {
@@ -48,8 +41,8 @@ public class DefaultSystemCalls extends SystemCallPlugin {
 
                 }
             }
-        };
-        this.systemCalls[3] = new SystemCall(scd[3], "SYSTEM_SLEEP_DELTA_MILLS", this) {
+        });
+        registerSystemCall(new PRSystemCall("SYSTEM_SLEEP_DELTA_MILLS", this) {
 
             long lastTimeCheck = 0;
 
@@ -65,19 +58,19 @@ public class DefaultSystemCalls extends SystemCallPlugin {
                 lastTimeCheck = System.currentTimeMillis();
 
             }
-        };
-        this.systemCalls[4] = new SystemCall(scd[4], "SYSTEM_BREAK_POINT", this) {
+        });
+        registerSystemCall(new PRSystemCall("SYSTEM_BREAK_POINT", this) {
             @Override
             public void handleSystemCall() {
                 throwBreakPoint();
             }
-        };
-        this.systemCalls[5] = new SystemCall(scd[5], "SYSTEM_GET_MILLIS", this) {
+        });
+        registerSystemCall(new PRSystemCall("SYSTEM_GET_MILLIS", this) {
             @Override
             public void handleSystemCall() {
                 setRegister(2, (int) System.currentTimeMillis());
             }
-        };
+        });
     }
 
     @Override

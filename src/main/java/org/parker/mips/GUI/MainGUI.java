@@ -22,19 +22,17 @@ import org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenu;
 import org.parker.mips.GUI.ThemedJFrameComponents.ThemedJMenuItem;
 import javax.swing.JOptionPane;
 import org.parker.mips.FileHandler;
-import static org.parker.mips.FileHandler.writeUserTextAreaToASMFile;
 import org.parker.mips.Log;
 import org.parker.mips.MIPS;
 import org.parker.mips.plugin.SystemCall.SystemCallPlugin;
-import org.parker.mips.plugin.SystemCall.SystemCallPluginFrame;
 import org.parker.mips.Processor.Memory;
 import org.parker.mips.Processor.Processor;
 import org.parker.mips.ResourceHandler;
 import org.parker.mips.UpdateHandler;
 import org.parker.mips.OptionsHandler;
 import org.parker.mips.plugin.SystemCall.SystemCallPlugin.NamedActionListener;
-import org.parker.mips.plugin.SystemCall.SystemCallPluginLoader;
-import org.parker.mips.Processor.SystemCallPluginHandler;
+import org.parker.mips.plugin.SystemCall.SystemCallPluginHandler;
+import org.parker.mips.plugin.PluginLoader;
 
 /**
  *
@@ -230,7 +228,7 @@ public class MainGUI extends javax.swing.JFrame {
 
             {
                 ThemedJMenu tempMenu = new ThemedJMenu();
-                tempMenu.setText(plugin.PLUGIN_NAME);
+                tempMenu.setText(plugin.DESCRIPTION.NAME);
                 ThemedJMenuItem tempItem = new ThemedJMenuItem();
                 tempItem.setText("Open SystemCall Plugin Info Frame");
                 tempItem.addActionListener((ae) -> {
@@ -266,7 +264,7 @@ public class MainGUI extends javax.swing.JFrame {
 
             ThemedJMenu tempMenu = new ThemedJMenu();
 
-            tempMenu.setText(plugin.PLUGIN_NAME.replaceAll("_", " "));
+            tempMenu.setText(plugin.DESCRIPTION.NAME.replaceAll("_", " "));
 
             for (int i = 0; i < foe.length; i++) {
                 ThemedJMenuItem tempItem = new ThemedJMenuItem();
@@ -879,7 +877,7 @@ public class MainGUI extends javax.swing.JFrame {
         }
 
         File chosenFile = fc.getSelectedFile();
-        SystemCallPluginLoader.loadExternalPlugin(chosenFile);
+        PluginLoader.loadPlugin(chosenFile);
     }//GEN-LAST:event_loadPluginJMenuItemActionPerformed
 
     public static void addCompileButtonListener(ActionListener al) {

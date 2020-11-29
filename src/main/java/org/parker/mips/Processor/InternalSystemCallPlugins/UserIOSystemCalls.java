@@ -5,7 +5,6 @@
  */
 package org.parker.mips.Processor.InternalSystemCallPlugins;
 
-import org.parker.mips.plugin.SystemCall.SystemCall;
 import org.parker.mips.plugin.SystemCall.SystemCallPlugin;
 
 /**
@@ -18,16 +17,15 @@ public class UserIOSystemCalls extends SystemCallPlugin {
 
     public UserIOSystemCalls() {
 
-        SystemCall.SystemCallData[] scd = this.getSystemCallDataFromClass(this.getClass());
-
-        this.systemCalls[0] = new SystemCall(scd[0], "USERIO_PRINT_INT", this) {
+        registerSystemCall(new PRSystemCall("USERIO_PRINT_INT", this) {
             @Override
             public void handleSystemCall() {
                 userIO.openUserIO();
                 userIO.outputNumber(getRegister(4));
             }
-        };
-        this.systemCalls[1] = new SystemCall(scd[1], "USERIO_PRINT_ASCIIZ_STRING", this) {
+        });
+
+        registerSystemCall(new PRSystemCall("USERIO_PRINT_ASCIIZ_STRING", this) {
             @Override
             public void handleSystemCall() {
                 userIO.openUserIO();
@@ -62,15 +60,15 @@ public class UserIOSystemCalls extends SystemCallPlugin {
                     logRunTimeSystemCallError("Trap 4 reached limit of " + max + " while printing string possibly non terminated string");
                 }
             }
-        };
-        this.systemCalls[2] = new SystemCall(scd[2], "USERIO_READ_USER_INTEGER", this) {
+        });
+        registerSystemCall(new PRSystemCall("USERIO_READ_USER_INTEGER", this) {
             @Override
             public void handleSystemCall() {
                 userIO.openUserIO();
                 setRegister(2, UserIO.getInt());
             }
-        };
-        this.systemCalls[3] = new SystemCall(scd[3], "USERIO_READ_USER_STRING", this) {
+        });
+        registerSystemCall(new PRSystemCall("USERIO_READ_USER_STRING", this) {
             @Override
             public void handleSystemCall() {
                 int bufferSize = getRegister(5);
@@ -85,28 +83,28 @@ public class UserIOSystemCalls extends SystemCallPlugin {
                 }
                 setWord(memoryOffset + (i + 1) * 4, 0); //terminating zero
             }
-        };
-        this.systemCalls[4] = new SystemCall(scd[4], "USERIO_PRINT_CHAR", this) {
+        });
+        registerSystemCall(new PRSystemCall("USERIO_PRINT_CHAR", this) {
             @Override
             public void handleSystemCall() {
                 userIO.openUserIO();
                 userIO.outputUnicode(getRegister(4));
             }
-        };
-        this.systemCalls[5] = new SystemCall(scd[5], "USERIO_READ_USER_CHAR", this) {
+        });
+        registerSystemCall(new PRSystemCall("USERIO_READ_USER_CHAR", this) {
             @Override
             public void handleSystemCall() {
                 userIO.openUserIO();
                 setRegister(2, userIO.getNextChar());
             }
-        };
-        this.systemCalls[6] = new SystemCall(scd[6], "USERIO_LAST_USER_CHAR", this) {
+        });
+        registerSystemCall(new PRSystemCall("USERIO_LAST_USER_CHAR", this) {
             @Override
             public void handleSystemCall() {
                 userIO.openUserIO();
                 setRegister(2, userIO.lastChar());
             }
-        };
+        });
     }
 
     @Override

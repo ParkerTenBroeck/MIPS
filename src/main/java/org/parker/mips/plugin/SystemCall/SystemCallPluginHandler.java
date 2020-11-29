@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.Processor;
+package org.parker.mips.plugin.SystemCall;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class SystemCallPluginHandler {
             return;
         }
         if (scp.getSystemCalls() == null) {
-            logSystemCallPluginHandlerError("System Calls is null in" + scp.PLUGIN_NAME + " skipping for now");
+            logSystemCallPluginHandlerError("System Calls is null in" + scp.DESCRIPTION.NAME + " skipping for now");
             return;
         }
 
@@ -44,7 +44,7 @@ public class SystemCallPluginHandler {
         for (SystemCall sc : scl) {
             if (sc == null) {
                 totalConflicts++;
-                logSystemCallPluginHandlerError("System Call in " + scp.PLUGIN_NAME + " is null skipping for now");
+                logSystemCallPluginHandlerError("System Call in " + scp.DESCRIPTION.NAME + " is null skipping for now");
                 continue;
             }
             boolean conflict = false;
@@ -65,7 +65,7 @@ public class SystemCallPluginHandler {
                     while (idrkWhat[i] != null) {
                         i++;
                     }
-                    logSystemCallPluginHandlerSystemMessage("SystemCall: " + sc.DATA.SYSTEM_CALL_NAME + " From Plugin: " + scp.PLUGIN_NAME + " was registered with the System_Call_Number: " + i);
+                    logSystemCallPluginHandlerSystemMessage("SystemCall: " + sc.DATA.SYSTEM_CALL_NAME + " From Plugin: " + scp.DESCRIPTION.NAME + " was registered with the System_Call_Number: " + i);
                     idrkWhat[i] = sc;
                 }
                 registeredSystemCalls.add(sc);
@@ -77,9 +77,9 @@ public class SystemCallPluginHandler {
         }
         registeredSystemCallPlugins.add(scp);
         if (totalConflicts > 0) {
-            logSystemCallPluginHandlerWarning("SystemCall plugin: " + scp.PLUGIN_NAME + " was reigstered with " + totalConflicts + " conflicts");
+            logSystemCallPluginHandlerWarning("SystemCall plugin: " + scp.DESCRIPTION.NAME + " was reigstered with " + totalConflicts + " conflicts");
         } else {
-            logSystemCallPluginHandlerSystemMessage("SystemCall plugin: " + scp.PLUGIN_NAME + " was reigstered with " + totalConflicts + " conflicts" + "\n");
+            logSystemCallPluginHandlerSystemMessage("SystemCall plugin: " + scp.DESCRIPTION.NAME + " was reigstered with " + totalConflicts + " conflicts" + "\n");
         }
         
         MainGUI.reloadSystemCallPluginLists();
@@ -112,7 +112,7 @@ public class SystemCallPluginHandler {
                 sc.handleSystemCall();
             } catch (Exception e) {
                 logRunTimeSystemCallError("System Call: " + sc.DATA.SYSTEM_CALL_NAME
-                        + " from plugin: " + sc.HOST_PLUGIN.PLUGIN_NAME + " generated exeption: " + e.getMessage());
+                        + " from plugin: " + sc.HOST_PLUGIN.DESCRIPTION.NAME + " generated exeption: " + e.getMessage());
             }
         } else {
             logRunTimeSystemCallError("Invalid System Call either does not exist or was not registered ID: " + id);
@@ -142,9 +142,9 @@ public class SystemCallPluginHandler {
                     }
                 }
                 if (!wasError) {
-                    logSystemCallPluginHandlerSystemMessage("Succcessfully unloaded and unregistered: " + plugin.PLUGIN_NAME);
+                    logSystemCallPluginHandlerSystemMessage("Succcessfully unloaded and unregistered: " + plugin.DESCRIPTION.NAME);
                 } else {
-                    logSystemCallPluginHandlerWarning("Succcessfully unloaded and unregistered: " + plugin.PLUGIN_NAME + " With some Errors");
+                    logSystemCallPluginHandlerWarning("Succcessfully unloaded and unregistered: " + plugin.DESCRIPTION.NAME + " With some Errors");
                 }
                 MainGUI.reloadSystemCallPluginLists();
                 regenerateStandardSysCallHeaderFile();
@@ -202,7 +202,7 @@ public class SystemCallPluginHandler {
 
                 if (plugin != null) {
 
-                    writer.println(";SystemCalls defined withing Plugin: " + plugin.PLUGIN_NAME);
+                    writer.println(";SystemCalls defined withing Plugin: " + plugin.DESCRIPTION.NAME);
                     writer.println("");
 
                     for (SystemCall call : plugin.getSystemCalls()) {

@@ -8,19 +8,21 @@ package org.parker.mips.plugin.SystemCall;
 import com.google.gson.Gson;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import org.parker.mips.GUI.MainGUI;
 import org.parker.mips.Log;
 import org.parker.mips.Processor.Memory;
 import org.parker.mips.Processor.Processor;
 import org.parker.mips.Processor.Registers;
-import org.parker.mips.Processor.SystemCallPluginHandler;
 import org.parker.mips.plugin.PluginBase;
-import org.parker.mips.plugin.PluginDescription;
+import org.parker.mips.plugin.PluginClassLoader;
+import org.parker.mips.plugin.PluginLoader;
 
 /**
  *
@@ -28,37 +30,50 @@ import org.parker.mips.plugin.PluginDescription;
  */
 public abstract class SystemCallPlugin extends PluginBase {
 
-    final protected SystemCall[] systemCalls;
-    final public String PLUGIN_NAME;
-
-    final public File PLUGIN_FILE;
-    final public PluginDescription DESCRIPTION;
-
-    private boolean isEnabled = false;
+    private final SystemCallPlugin instance;
+    private final SystemCall[] systemCalls;
+    private final SystemCall.SystemCallData[] systemCallData;
     //final public String VERSION;
     //final public String DISCRIPTION;
 
     public SystemCallPlugin() {
-
-        System.out.println(this.getClass().getClassLoader());
         {
             final ClassLoader classLoader = this.getClass().getClassLoader();
-            if (!(classLoader instanceof SystemCallPluginClassLoader)) {
-                throw new IllegalStateException("JavaPlugin requires " + SystemCallPluginClassLoader.class.getName() + " And not " + classLoader.getClass().getName());
+            if (!(classLoader instanceof PluginClassLoader)) {
+                //this.systemCalls = new SystemCall[0];
+                //this.systemCallData = new SystemCall.SystemCallData[0];
+                //this.instance = this;
+                //return;
+                throw new IllegalStateException("JavaPlugin requires " + PluginClassLoader.class.getName() + " And not " + classLoader.getClass().getName());
             }
         }
-        final SystemCallPluginClassLoader classLoader = ((SystemCallPluginClassLoader) this.getClass().getClassLoader());
+        final PluginClassLoader classLoader = ((PluginClassLoader) this.getClass().getClassLoader());
 
-        //classLoader.initialize(this);
+        Set set = ((Map<String, Map<String, Object>>) classLoader.PLUGIN_YAML.get("system_calls")).entrySet();
 
-        this.systemCalls = null;
-        this.PLUGIN_NAME = null;
-        this.DESCRIPTION = classLoader.plugin.DESCRIPTION;
-        this.PLUGIN_FILE = null;
-     //   throw new NoSuchFieldError();
+        final int size = set.size();
+        this.systemCalls = new SystemCall[size];
+        this.systemCallData = new SystemCall.SystemCallData[size];
+
+        Iterator iterator = set.iterator();
+
+        int i = 0;
+        while (iterator.hasNext()) {
+            Map.Entry next = (Map.Entry) iterator.next();
+
+            Map<String, Object> tempMap = (Map<String, Object>) next.getValue();
+            tempMap.put("SYSTEM_CALL_NAME", next.getKey());
+
+            SystemCall.SystemCallData tempData;
+            tempData = new SystemCall.SystemCallData(tempMap);
+            systemCallData[i] = tempData;
+            i++;
+        }
+
+        this.instance = this;
     }
 
-    public class NamedActionListener {
+    public static class NamedActionListener {
 
         public final String FRAME_NAME;
         public final ActionListener AL;
@@ -69,7 +84,7 @@ public abstract class SystemCallPlugin extends PluginBase {
         }
     }
 
-    public class Node<T> {
+    public static class Node<T> {
 
         public final String name;
         private T data = null;
@@ -154,6 +169,26 @@ public abstract class SystemCallPlugin extends PluginBase {
 
     }
 
+    @Override
+    public void onLoad() {
+
+    }
+
+    @Override
+    public boolean onUnload() {
+        return true;
+    }
+
+    @Override
+    public void onEnable() {
+
+    }
+
+    @Override
+    public void onDissable() {
+
+    }
+
     /**
      * This method returns all of opening events the plugin contains
      *
@@ -174,24 +209,43 @@ public abstract class SystemCallPlugin extends PluginBase {
         return null;
     }
 
-    /**
-     * This will be call once after class is instantiated use this for anything
-     * that can not be done in constructor
-     *
-     */
-    public abstract void onLoad();
+    private SystemCall.SystemCallData getSystemCallDataFromName(String name) {
+        for (SystemCall.SystemCallData scd : systemCallData) {
+            if (scd.SYSTEM_CALL_NAME.equals(name)) {
+                return scd;
+            }
+        }
+        return null;
+    }
+
+    protected abstract class PRSystemCall extends SystemCall {
+
+        public PRSystemCall(String systemCallName, Object o) {
+            super(instance.getSystemCallDataFromName(systemCallName), systemCallName, instance);
+        }
+
+        public PRSystemCall(String systemCallName) {
+            super(getSystemCallDataFromName(systemCallName), systemCallName, instance);
+        }
+
+    }
 
     /**
-     * The will be called when the plugin is unloaded return true if pluign can
-     * be unloaded or return false if there was an error or the plugin cannot be
-     * unloaded
      *
-     * @return
+     * @param prsc The system call to be registered
      */
-    public abstract boolean onUnload();
+    protected final void registerSystemCall(PRSystemCall prsc) {
+        for (int i = 0; i < systemCallData.length; i++) {
+            if (systemCallData[i].SYSTEM_CALL_NAME.equals(prsc.DATA.SYSTEM_CALL_NAME)) {
+                systemCalls[i] = prsc;
+                return;
+            }
+        }
+        throw new Error("System Call: " + prsc.DATA.SYSTEM_CALL_NAME + " Was not registered in plugin.yml");
+    }
 
     public final SystemCall[] getSystemCalls() {
-        return systemCalls;
+        return systemCalls.clone();
     }
 
     /**
@@ -285,11 +339,11 @@ public abstract class SystemCallPlugin extends PluginBase {
             try {
                 data = gson.fromJson(response, SystemCall.SystemCallData[].class);
             } catch (Exception e) {
-                SystemCallPluginLoader.logPluginLoaderError("There was an error while parcing the SystemCallData: " + e);
+                PluginLoader.logPluginLoaderError("There was an error while parcing the SystemCallData: " + e);
             }
 
         } catch (Exception e) {
-            SystemCallPluginLoader.logPluginLoaderError("There was an error while loading the SystemCallData json file");
+            PluginLoader.logPluginLoaderError("There was an error while loading the SystemCallData json file");
         }
 
         return data;

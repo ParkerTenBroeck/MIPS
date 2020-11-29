@@ -7,7 +7,6 @@ package org.parker.mips.plugin.SystemCall;
 
 import javax.swing.JFrame;
 import org.parker.mips.Processor.Processor;
-import org.parker.mips.Processor.SystemCallPluginHandler;
 
 /**
  *

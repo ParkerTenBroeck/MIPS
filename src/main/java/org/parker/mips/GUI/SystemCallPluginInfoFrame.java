@@ -10,8 +10,8 @@ import java.util.Arrays;
 import org.parker.mips.GUI.lookandfeel.ModernScrollPane;
 import org.parker.mips.plugin.SystemCall.SystemCall;
 import org.parker.mips.plugin.SystemCall.SystemCallPlugin;
-import org.parker.mips.Processor.SystemCallPluginHandler;
-import static org.parker.mips.Processor.SystemCallPluginHandler.getSystemCallNumberFromGeneratedNumber;
+import org.parker.mips.plugin.SystemCall.SystemCallPluginHandler;
+import static org.parker.mips.plugin.SystemCall.SystemCallPluginHandler.getSystemCallNumberFromGeneratedNumber;
 
 /**
  *

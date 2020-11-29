@@ -5,8 +5,9 @@
  */
 package org.parker.mips.plugin.SystemCall;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Map;
+import org.parker.mips.plugin.PluginLoader;
 
 /**
  * systemCallNum must me a completely unique int between zero and 2^26 this
@@ -43,13 +44,13 @@ public abstract class SystemCall {
         this.HOST_PLUGIN = hostPlugin;
 
         if (DATA.SYSTEM_CALL_NAME.contains(" ")) {
-            SystemCallPluginLoader.logPluginLoaderError("System Call Name: "
+            PluginLoader.logPluginLoaderError("System Call Name: "
                     + DATA.SYSTEM_CALL_DISCRIPTION + " Cannot contain any space characters");
             throw new IllegalArgumentException("System Call Name: "
                     + DATA.SYSTEM_CALL_DISCRIPTION + " Cannot contain any space characters");
         }
         if (!this.DATA.SYSTEM_CALL_NAME.equals(systemCallName)) {
-            SystemCallPluginLoader.logPluginLoaderError("Loaded System Call Data Name: "
+            PluginLoader.logPluginLoaderError("Loaded System Call Data Name: "
                     + this.DATA.SYSTEM_CALL_NAME + " DOES NOT match Entered System Call Name: " + systemCallName);
             throw new IllegalArgumentException("Loaded System Call Data Name: "
                     + this.DATA.SYSTEM_CALL_NAME + " DOES NOT match Entered System Call Name: " + systemCallName);
@@ -58,7 +59,7 @@ public abstract class SystemCall {
 
     public abstract void handleSystemCall();
 
-    public class SystemCallData {
+    public static class SystemCallData {
 
         public final int SYSTEM_CALL_NUMBER;
         public final String SYSTEM_CALL_NAME;
@@ -88,6 +89,23 @@ public abstract class SystemCall {
             this.LOW_REG_WRITTEN_TO = lowRegWrittenTo;
             this.MEMORY_READ_FROM = memoryReadFrom;
             this.MEMORY_WRITTEN_TO = memoryWrittenTo;
+        }
+
+        public SystemCallData(Map<String, Object> data) {
+
+            this.SYSTEM_CALL_NAME = (String) data.get("SYSTEM_CALL_NAME");
+            this.SYSTEM_CALL_NUMBER = (int) data.get("SYSTEM_CALL_NUMBER");
+            this.SYSTEM_CALL_DISCRIPTION = (String) data.get("SYSTEM_CALL_DISCRIPTION");
+            this.REGISTERS_READ_FROM = (Integer[]) ((ArrayList<Integer>) data.get("REGISTERS_READ_FROM")).toArray(new Integer[((ArrayList<Integer>) data.get("REGISTERS_READ_FROM")).size()]);
+            this.REGISTERS_WRITTEN_TO = (Integer[]) ((ArrayList<Integer>) data.get("REGISTERS_WRITTEN_TO")).toArray(new Integer[((ArrayList<Integer>) data.get("REGISTERS_WRITTEN_TO")).size()]);
+            this.PC_REG_READ_FROM = (boolean) data.get("PC_REG_READ_FROM");
+            this.PC_REG_WRITTEN_TO = (boolean) data.get("PC_REG_WRITTEN_TO");
+            this.HIGH_REG_READ_FROM = (boolean) data.get("HIGH_REG_READ_FROM");
+            this.HIGH_REG_WRITTEN_TO = (boolean) data.get("HIGH_REG_WRITTEN_TO");
+            this.LOW_REG_READ_FROM = (boolean) data.get("LOW_REG_READ_FROM");
+            this.LOW_REG_WRITTEN_TO = (boolean) data.get("LOW_REG_WRITTEN_TO");
+            this.MEMORY_READ_FROM = (boolean) data.get("MEMORY_READ_FROM");
+            this.MEMORY_WRITTEN_TO = (boolean) data.get("MEMORY_WRITTEN_TO");
         }
 
     }

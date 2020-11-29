@@ -16,7 +16,7 @@ import static org.parker.mips.Processor.Registers.setHigh;
 import static org.parker.mips.Processor.Registers.setLow;
 import static org.parker.mips.Processor.Registers.setPc;
 import static org.parker.mips.Processor.Registers.setRegister;
-import static org.parker.mips.Processor.SystemCallPluginHandler.SystemCall;
+import static org.parker.mips.plugin.SystemCall.SystemCallPluginHandler.SystemCall;
 
 /**
  *

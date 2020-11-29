@@ -11,8 +11,8 @@ import java.nio.file.Files;
 import javax.swing.ImageIcon;
 import org.parker.mips.GUI.MainGUI;
 import org.parker.mips.GUI.ThemedJFrameComponents.ThemeHandler;
-import org.parker.mips.plugin.SystemCall.SystemCallPluginLoader;
 import static org.parker.mips.UpdateHandler.checkForUpdates;
+import org.parker.mips.plugin.PluginLoader;
 
 /**
  *
@@ -108,7 +108,7 @@ public class MIPS {
 
         }
 
-        SystemCallPluginLoader.loadDefaultPlugins(); //loads all plugins internal and external
+        PluginLoader.loadDefaultPlugins(); //loads all plugins internal and external
 
         checkForUpdates(); //checks for updates
     }
