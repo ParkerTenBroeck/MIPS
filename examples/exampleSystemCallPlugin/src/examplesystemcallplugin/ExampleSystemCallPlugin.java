@@ -78,7 +78,7 @@ public class ExampleSystemCallPlugin extends SystemCallPlugin {
         Node<URL> temp = root.addChild("Path test 1");
         temp.addChild("Prog 1", c.getResource("exampleProgram1.asm"));
         temp.addChild("Prog 2", c.getResource("exampleProgram2.asm"));
-
+        
         return root;
     }
 }

@@ -41,7 +41,7 @@ public class UpdateHandler {
             
             latestJsonRequest = parser.parse(reader).getAsJsonObject();
             latestVersionLink = latestJsonRequest.get("tag_name").getAsString();
-            int compare = compareVersions(latestVersionLink, MIPS.VERSION);
+            int compare = compareVersions(latestVersionLink.replace("pre_", "").replace("_", "."), MIPS.VERSION.replace("pre_", "").replace("_", "."));
 
             if (compare == 0) {
                 isUpToDate = true;

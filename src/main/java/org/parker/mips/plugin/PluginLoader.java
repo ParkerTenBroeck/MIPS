@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.parker.mips.Log;
 import org.parker.mips.MIPS;
+import org.parker.mips.ResourceHandler;
 ;
 import org.parker.mips.plugin.syscall.SystemCallPlugin;
 import org.parker.mips.plugin.syscall.SystemCallPluginHandler;
@@ -30,17 +31,17 @@ import org.yaml.snakeyaml.error.YAMLException;
 
 
 public class PluginLoader {
-
+    
     public static final String DEFAULT_YAML_PATH = "plugin.yml";
-
+    
     private static Plugin loadInternalPlugin(String yamlPath) throws InvalidDescriptionException, InvalidPluginException, MalformedURLException, NoSuchFieldException {
         return PluginLoader.loadPlugin(new File(MIPS.JAR_PATH), yamlPath);
     }
-
+    
     public static Plugin loadPluginWithCustomYAML(File file, String yamlPath) throws InvalidDescriptionException, InvalidPluginException, MalformedURLException, NoSuchFieldException {
         return PluginLoader.loadPlugin(file, yamlPath);
     }
-
+    
     public static Plugin loadPlugin(File file) {
         try {
             return PluginLoader.loadPlugin(file, DEFAULT_YAML_PATH);
@@ -49,37 +50,37 @@ public class PluginLoader {
         }
         return null;
     }
-
+    
     private static Plugin loadPlugin(File file, String yamlPath) throws InvalidDescriptionException, InvalidPluginException, MalformedURLException, NoSuchFieldException {
-
+        
         Map<String, Object> loadedYaml = null;
-
+        
         JarFile jar = null;
         InputStream stream = null;
-
+        
         try {
             if (file.getAbsolutePath().equals(new File(MIPS.JAR_PATH).getAbsolutePath())) {
                 stream = PluginLoader.class.getResourceAsStream(yamlPath);
             } else {
                 jar = new JarFile(file);
                 JarEntry entry = jar.getJarEntry(yamlPath);
-
+                
                 if (entry == null) {
                     throw new InvalidDescriptionException(new FileNotFoundException("Jar does not contain plugin.yml"));
                 }
-
+                
                 stream = jar.getInputStream(entry);
             }
-
+            
             if (stream == null) {
                 throw new InvalidPluginException(yamlPath);
             }
             loadedYaml = (Map<String, Object>) new Yaml().load(stream);
-
+            
             if (loadedYaml == null) {
                 throw new InvalidDescriptionException("loaded YAML null");
             }
-
+            
         } catch (IOException ex) {
             throw new InvalidDescriptionException(ex);
         } catch (YAMLException ex) {
@@ -99,7 +100,7 @@ public class PluginLoader {
                 }
             }
         }
-
+        
         PluginClassLoader current = new PluginClassLoader(file, loadedYaml, PluginLoader.class.getClassLoader());
         if (current != null) {
             if (!(current.plugin instanceof SystemCallPlugin)) {
@@ -112,30 +113,42 @@ public class PluginLoader {
             throw new InvalidPluginException("Plugin null: " + file.getPath());
         }
     }
-
+    
     public static void loadDefaultPlugins() {
         try {
-
-            SystemCallPluginHandler.registerSystemCallPlugin((SystemCallPlugin) loadPlugin(new File("C:\\GitHub\\MIPS\\examples\\exampleSystemCallPlugin\\dist\\exampleSystemCallPlugin.jar")));
-
+            
             SystemCallPluginHandler.registerSystemCallPlugin((SystemCallPlugin) loadInternalPlugin("/org/parker/mips/plugin/internal/syscall/default.yml"));
             SystemCallPluginHandler.registerSystemCallPlugin((SystemCallPlugin) loadInternalPlugin("/org/parker/mips/plugin/internal/syscall/screen.yml"));
             SystemCallPluginHandler.registerSystemCallPlugin((SystemCallPlugin) loadInternalPlugin("/org/parker/mips/plugin/internal/syscall/userio.yml"));
+            
+            File file = new File(ResourceHandler.SYS_CALLS_PLUGIN_PATH);
+            File files[] = file.listFiles();
+            for (File f : files) {
+                if (f.exists()) {
+                    try {
+                        SystemCallPlugin scp = (SystemCallPlugin) loadPlugin(f);
+                        SystemCallPluginHandler.registerSystemCallPlugin(scp);
+                    } catch (Exception e) {
+                        logPluginLoaderError("Failed to load: " + f.getAbsolutePath() + " " + e.toString());
+                    }
+                }
+            }
+            
         } catch (Exception e) {
             logPluginLoaderError(e.toString());
         }
     }
-
+    
     public static void logPluginLoaderError(String message) {
         Log.logError("[Plugin Loader] " + message);
     }
-
+    
     public static void logPluginLoaderWarning(String message) {
         Log.logWarning("[Plugin Loader] " + message);
     }
-
+    
     public static void logPluginLoaderSystemMessage(String message) {
         Log.logSystemMessage("[Plugin Loader] " + message);
     }
-
+    
 }
