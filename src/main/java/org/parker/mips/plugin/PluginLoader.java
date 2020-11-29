@@ -95,8 +95,9 @@ public class PluginLoader {
     }
 
     public static void loadDefaultPlugins() {
-        SystemCallPluginHandler.registerSystemCallPlugin((SystemCallPlugin) loadPlugin(new File("C:\\GitHub\\MIPS\\examples\\exampleSystemCallPlugin\\dist\\exampleSystemCallPlugin.jar")));
-        //loadExternalPlugin(new File(ResourceHandler.SYS_CALLS_PLUGIN_PATH + "/exampleSystemCallPlugin.jar"));
+        //SystemCallPluginHandler.registerSystemCallPlugin((SystemCallPlugin) loadPlugin(new File("C:\\GitHub\\MIPS\\examples\\exampleSystemCallPlugin\\dist\\exampleSystemCallPlugin.jar")));
+        loadPlugin(new File(MIPS.JAR_PATH), "/org/parker/mips/Processor/InternalSystemCallPlugins/DefaultSystemCalls/plugin.yml");
+//loadExternalPlugin(new File(ResourceHandler.SYS_CALLS_PLUGIN_PATH + "/exampleSystemCallPlugin.jar"));
         //loadInternalPlugin("/org/parker/mips/Processor/InternalSystemCallPlugins/test.yml");
     }
 

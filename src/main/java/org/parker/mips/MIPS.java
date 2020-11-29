@@ -6,11 +6,15 @@
 package org.parker.mips;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import org.parker.mips.GUI.MainGUI;
 import org.parker.mips.GUI.ThemedJFrameComponents.ThemeHandler;
+import org.parker.mips.Processor.InternalSystemCallPlugins.DefaultSystemCalls.DefaultSystemCalls;
 import static org.parker.mips.UpdateHandler.checkForUpdates;
 import org.parker.mips.plugin.PluginLoader;
 
@@ -36,6 +40,15 @@ public class MIPS {
     }
 
     public static void main(String[] args) {
+
+        try {
+            //System.out.println(MIPS.class.getClassLoader().getParent());
+
+            Thread.currentThread().setContextClassLoader(new br());
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(MIPS.class.getName()).log(Level.SEVERE, null, ex);
+        }
+//        new DefaultSystemCalls();
 
         if (args.length != 0) {
             if (args[0].equals("Updated")) {
@@ -95,20 +108,26 @@ public class MIPS {
 
         ThemeHandler.loadCurrentTheme(); //loads current theme
 
-        MainGUI gui = new MainGUI(); //creates the GUI
-
-        try {                                   //loads the Icon for the JFrame
-            //System.out.println("rubasd");
-            URL url = ClassLoader.getSystemClassLoader().getResource("images/logo3.png");
-            //System.out.println(url);
-            ImageIcon icon = new ImageIcon(url);
-            //System.out.println(icon);
-            gui.setIconImage(icon.getImage());
-        } catch (Exception e) {
-
-        }
-
         PluginLoader.loadDefaultPlugins(); //loads all plugins internal and external
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                MainGUI gui = new MainGUI(); //creates the GUI
+
+                try {                                   //loads the Icon for the JFrame
+                    //System.out.println("rubasd");
+                    URL url = ClassLoader.getSystemClassLoader().getResource("images/logo3.png");
+                    //System.out.println(url);
+                    ImageIcon icon = new ImageIcon(url);
+                    //System.out.println(icon);
+                    gui.setIconImage(icon.getImage());
+                } catch (Exception e) {
+
+                }
+            }
+        };
+        runnable.run();
 
         checkForUpdates(); //checks for updates
     }

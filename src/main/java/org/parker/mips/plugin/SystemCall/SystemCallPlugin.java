@@ -5,11 +5,7 @@
  */
 package org.parker.mips.plugin.SystemCall;
 
-import com.google.gson.Gson;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,7 +18,6 @@ import org.parker.mips.Processor.Processor;
 import org.parker.mips.Processor.Registers;
 import org.parker.mips.plugin.PluginBase;
 import org.parker.mips.plugin.PluginClassLoader;
-import org.parker.mips.plugin.PluginLoader;
 
 /**
  *
@@ -40,11 +35,11 @@ public abstract class SystemCallPlugin extends PluginBase {
         {
             final ClassLoader classLoader = this.getClass().getClassLoader();
             if (!(classLoader instanceof PluginClassLoader)) {
-                //this.systemCalls = new SystemCall[0];
-                //this.systemCallData = new SystemCall.SystemCallData[0];
-                //this.instance = this;
-                //return;
-                throw new IllegalStateException("JavaPlugin requires " + PluginClassLoader.class.getName() + " And not " + classLoader.getClass().getName());
+                this.systemCalls = new SystemCall[0];
+                this.systemCallData = new SystemCall.SystemCallData[0];
+                this.instance = this;
+                return;
+                //throw new IllegalStateException("JavaPlugin requires " + PluginClassLoader.class.getName() + " And not " + classLoader.getClass().getName());
             }
         }
         final PluginClassLoader classLoader = ((PluginClassLoader) this.getClass().getClassLoader());
@@ -301,52 +296,6 @@ public abstract class SystemCallPlugin extends PluginBase {
      */
     protected final void logSystemCallPluginMessage(String message) {
         Log.logMessage("[System Call Plugin] " + message);
-    }
-
-    /**
-     * This returns an array of SystemCallData objects that are defined in a
-     * json file
-     *
-     * The json file must be in the same package as the class and have the same
-     * name
-     *
-     * @param classType
-     * @return
-     */
-    protected final SystemCall.SystemCallData[] getSystemCallDataFromClass(Class classType) {
-
-        String path = "/" + classType.getCanonicalName().replaceAll("\\.", "/") + ".json";
-
-        return getSystemCallData(path, classType);
-    }
-
-    private final SystemCall.SystemCallData[] getSystemCallData(String path, Class classType) {
-
-        SystemCall.SystemCallData[] data = null;
-
-        try {
-            Gson gson = new Gson();
-            InputStream is = getClass().getResourceAsStream(path);
-            InputStreamReader ir = new InputStreamReader(is);
-            BufferedReader br = new BufferedReader(ir);
-            String response = new String();
-            try {
-                for (String line; (line = br.readLine()) != null; response += line);
-            } catch (Exception e) {
-
-            }
-
-            try {
-                data = gson.fromJson(response, SystemCall.SystemCallData[].class);
-            } catch (Exception e) {
-                PluginLoader.logPluginLoaderError("There was an error while parcing the SystemCallData: " + e);
-            }
-
-        } catch (Exception e) {
-            PluginLoader.logPluginLoaderError("There was an error while loading the SystemCallData json file");
-        }
-
-        return data;
     }
 
     /**

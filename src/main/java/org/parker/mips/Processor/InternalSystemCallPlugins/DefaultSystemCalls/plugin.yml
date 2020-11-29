@@ -1,5 +1,5 @@
 name: Default_System_Calls
-main: org.parker.mips.Processor.InternalSystemCallPlugins.DefaultSystemCalls
+main: org.parker.mips.Processor.InternalSystemCallPlugins.DefaultSystemCalls.DefaultSystemCalls
 version: 1.0
 author: Parker TenBroeck
 description: Default System Calls Included with MIPS ISA

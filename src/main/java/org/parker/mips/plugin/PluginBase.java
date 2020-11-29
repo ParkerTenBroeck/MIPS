@@ -21,7 +21,10 @@ public abstract class PluginBase implements Plugin {
         {
             final ClassLoader classLoader = this.getClass().getClassLoader();
             if (!(classLoader instanceof PluginClassLoader)) {
-                throw new IllegalStateException("JavaPlugin requires " + PluginClassLoader.class.getName() + " And not " + classLoader.getClass().getName());
+                this.DESCRIPTION = null;
+                this.PLUGIN_FILE = null;
+                return;
+//               throw new IllegalStateException("JavaPlugin requires " + PluginClassLoader.class.getName() + " And not " + classLoader.getClass().getName());
             }
         }
         final PluginClassLoader classLoader = ((PluginClassLoader) this.getClass().getClassLoader());
