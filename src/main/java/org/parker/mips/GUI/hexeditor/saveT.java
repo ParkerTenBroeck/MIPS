@@ -1,4 +1,4 @@
-package org.parker.mips.GUI.hexeditor;
+package org.parker.mips.gui.hexeditor;
 
 import java.io.BufferedOutputStream;
 import java.io.File;

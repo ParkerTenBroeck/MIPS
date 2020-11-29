@@ -6,14 +6,11 @@
 package org.parker.mips.plugin;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Map;
 import org.parker.mips.MIPS;
-import org.parker.mips.Processor.InternalSystemCallPlugins.DefaultSystemCalls.DefaultSystemCalls;
 
 /**
  *
@@ -27,22 +24,23 @@ public class PluginClassLoader extends URLClassLoader {
     public final File FILE;
     public final Plugin plugin;
 
-    public PluginClassLoader(final File file, final Map<String, Object> yaml, ClassLoader parent) throws MalformedURLException, InvalidPluginException {
+    public PluginClassLoader(final File file, final Map<String, Object> yaml, ClassLoader parent) throws MalformedURLException, InvalidPluginException, NoSuchFieldException, InvalidDescriptionException {
         super(new URL[]{file.toURI().toURL()}, Thread.currentThread().getContextClassLoader());
 
-        Thread.currentThread().setContextClassLoader(new ParentLastURLClassLoader(new URL[]{file.toURI().toURL()}));
-
         PLUGIN_YAML = yaml;
-        this.DESCRIPTION = new PluginDescription(yaml);
+        try {
+            this.DESCRIPTION = new PluginDescription(yaml);
+        } catch (Exception e) {
+            throw new InvalidDescriptionException("Could not load some part of plugin description from: " + file.getAbsolutePath());
+        }
         this.FILE = file;
 
         //new DefaultSystemCalls();
-
         try {
             Class<?> jarClass = null;
             try {
                 if (file.getAbsolutePath().equals(new File(MIPS.JAR_PATH).getAbsolutePath())) {
-                    jarClass = Thread.currentThread().getContextClassLoader().loadClass(DESCRIPTION.MAIN);//this.findClass(DESCRIPTION.MAIN);
+                    jarClass = this.findClass(DESCRIPTION.MAIN);
                 } else {
                     jarClass = Class.forName(DESCRIPTION.MAIN, true, this);//Class.forName(description.MAIN, true, this);//Class.forName(description.MAIN, true, this);F
                 }
@@ -52,12 +50,12 @@ public class PluginClassLoader extends URLClassLoader {
 
             Class<? extends Plugin> pluginClass = null;
             try {
-                //pluginClass = jarClass.asSubclass(Plugin.class);
+                pluginClass = jarClass.asSubclass(Plugin.class);
             } catch (ClassCastException ex) {
                 throw new InvalidPluginException("main class `" + DESCRIPTION.MAIN + "' does not extend JavaPlugin", ex);
             }
 
-            plugin = (Plugin) jarClass.newInstance();
+            plugin = pluginClass.newInstance();
         } catch (IllegalAccessException ex) {
             throw new InvalidPluginException("No public constructor", ex);
         } catch (InstantiationException ex) {
@@ -65,58 +63,21 @@ public class PluginClassLoader extends URLClassLoader {
         }
     }
 
-//    private boolean needsModifying(String name) {
-//        // TODO
-//        return false;
-//    }
-//
-//    private byte[] modifyClass(InputStream original) throws IOException {
-//        byte[] bruh = new byte[10000];
-//        original.read(bruh);
-//        return bruh;
-//    }
-//
-//    @Override
-//    public Class<?> findClass(String name) throws ClassNotFoundException {
-//        if (needsModifying(name)) {
-//            try {
-//                InputStream classData = getResourceAsStream(name.replace('.', '/') + ".class");
-//                if (classData == null) {
-//                    throw new ClassNotFoundException("class " + name + " is not findable");
-//                }
-//                byte[] array = modifyClass(classData);
-//                return defineClass(name, array, 0, array.length);
-//            } catch (Exception io) {
-//                throw new ClassNotFoundException(io.toString());
-//            }
-//        } else {
-//            return super.findClass(name);
-//        }
-//    }
-//
-//    Set<String> getClasses() {
-//        return classes.keySet();
-//    }
-//
-//    @Override
-//    protected Class<?> findClass(String name) throws ClassNotFoundException {
-//        return findClass(name, true);
-//    }
-//
-//    Class<?> findClass(String name, boolean checkGlobal) throws ClassNotFoundException {
-////        if (name.startsWith("org.bukkit.") || name.startsWith("net.minecraft.")) {
-////            throw new ClassNotFoundException(name);
-////        }
-//        Class<?> result = classes.get(name);
-//
-//        if (result == null) {
-//            if (checkGlobal) {
-//                result = super.findClass(name);
-//            }
-//
-//            classes.put(name, result);
-//        }
-//
-//        return result;
-//    }
+    @Override
+    public Class<?> loadClass(String string) throws ClassNotFoundException {
+        if (string.startsWith(DESCRIPTION.MAIN)) {
+            return this.findClass(string);
+        } else {
+            return super.loadClass(string);
+        }
+    }
+
+    @Override
+    public Class<?> loadClass(String string, boolean bool) throws ClassNotFoundException {
+        if (string.startsWith(DESCRIPTION.MAIN)) {
+            return this.findClass(string);
+        } else {
+            return super.loadClass(string, bool);
+        }
+    }
 }

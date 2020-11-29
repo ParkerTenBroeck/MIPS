@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="2"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Component id="themedJTabbedPane1" alignment="0" max="32767" attributes="0"/>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Component id="themedJTabbedPane1" alignment="0" max="32767" attributes="0"/>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Container class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJTabbedPane" name="themedJTabbedPane1">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="33" green="33" red="33" type="rgb"/>
+        </Property>
+      </Properties>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
+      <SubComponents>
+        <Container class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJPanel1" name="themedJPanel11">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="General">
+                <Property name="tabTitle" type="java.lang.String" value="General"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="themedJLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="logSystemMessagesButton" min="-2" max="-2" attributes="0"/>
+                          <Component id="logErrorsButton" min="-2" max="-2" attributes="0"/>
+                          <Component id="logWarningsButton" min="-2" max="-2" attributes="0"/>
+                          <Component id="logMessagesButton" min="-2" max="-2" attributes="0"/>
+                          <Component id="themedJLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="enableAutoGUIUpdatesWhileRuning" alignment="0" max="32767" attributes="0"/>
+                          <Component id="guiUpdateTimeSlider" alignment="0" max="32767" attributes="0"/>
+                          <Component id="themedJLabel8" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="jSeparator1" min="-2" pref="15" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="themedJLabel5" alignment="0" min="-2" pref="153" max="-2" attributes="0"/>
+                          <Component id="saveCurrentOptionsButton" min="-2" max="-2" attributes="0"/>
+                          <Component id="loadOptionsButton" min="-2" pref="171" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="146" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="themedJLabel2" min="-2" max="-2" attributes="0"/>
+                          <Component id="themedJLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="logSystemMessagesButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="logMessagesButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="logWarningsButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="logErrorsButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="themedJLabel3" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="enableAutoGUIUpdatesWhileRuning" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="loadOptionsButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="saveCurrentOptionsButton" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="themedJLabel8" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="guiUpdateTimeSlider" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="126" max="32767" attributes="0"/>
+                  </Group>
+                  <Component id="jSeparator1" alignment="0" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="themedJLabel2">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Log Options"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="logSystemMessagesButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Log System Messages"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="logMessagesButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Log Messages"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="logWarningsButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Log Warnigs"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="logErrorsButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Log Errors"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="themedJLabel3">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="GUI Options"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="enableAutoGUIUpdatesWhileRuning">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Enable Auto GUI Updates While Runing"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="themedJLabel5">
+              <Properties>
+                <Property name="horizontalAlignment" type="int" value="2"/>
+                <Property name="text" type="java.lang.String" value="Options"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJButton" name="saveCurrentOptionsButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Save Current Options"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JSeparator" name="jSeparator1">
+              <Properties>
+                <Property name="orientation" type="int" value="1"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJButton" name="loadOptionsButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Load Options"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJSlider" name="guiUpdateTimeSlider">
+              <Properties>
+                <Property name="maximum" type="int" value="500"/>
+                <Property name="minimum" type="int" value="1"/>
+                <Property name="value" type="int" value="100"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="themedJLabel8">
+              <Properties>
+                <Property name="horizontalAlignment" type="int" value="0"/>
+                <Property name="text" type="java.lang.String" value="Update Time 1-500"/>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Container class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJPanel1" name="themedJPanel12">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="Processor">
+                <Property name="tabTitle" type="java.lang.String" value="Processor"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="themedJLabel1" min="-2" max="-2" attributes="0"/>
+                          <Component id="breakOnRunTimeErrorButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="adaptiveMemoryButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="enableBreakPointsButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="121" max="-2" attributes="0"/>
+                      <Component id="jSeparator3" min="-2" pref="15" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="themedJLabel10" min="-2" max="-2" attributes="0"/>
+                          <Component id="reloadMemoryOnResetButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="108" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jSeparator3" alignment="0" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="themedJLabel1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="breakOnRunTimeErrorButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="adaptiveMemoryButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="enableBreakPointsButton" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="themedJLabel10" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="reloadMemoryOnResetButton" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace pref="255" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="breakOnRunTimeErrorButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Break On RunTime Error"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="themedJLabel1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="RunTime Options"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="adaptiveMemoryButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Adaptive Memory"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="enableBreakPointsButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Enable BreakPoints"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JSeparator" name="jSeparator3">
+              <Properties>
+                <Property name="orientation" type="int" value="1"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="themedJLabel10">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="General Options"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="reloadMemoryOnResetButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Reload Memory on Reset"/>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Container class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJPanel1" name="themedJPanel13">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="Compiler">
+                <Property name="tabTitle" type="java.lang.String" value="Compiler"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="themedJLabel6" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="saveCleanedFileButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="savePreProcessorFileButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="saveCompilerInfoFileButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="linkedFileButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="137" max="32767" attributes="0"/>
+                      <Component id="jSeparator2" min="-2" pref="15" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="themedJLabel9" min="-2" max="-2" attributes="0"/>
+                          <Component id="includeRegDefButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="includeSysCallDefButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="144" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jSeparator2" alignment="1" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="themedJLabel6" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="saveCleanedFileButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="savePreProcessorFileButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="saveCompilerInfoFileButton" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="themedJLabel9" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="includeRegDefButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="includeSysCallDefButton" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="linkedFileButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="230" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="themedJLabel6">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Compiler Options"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="savePreProcessorFileButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Save PreProcessed File"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="saveCompilerInfoFileButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Save Compiler Info File"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="saveCleanedFileButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Save Cleaned File"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JSeparator" name="jSeparator2">
+              <Properties>
+                <Property name="orientation" type="int" value="1"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="themedJLabel9">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="PreProcessor Option"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="includeRegDefButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Include regdef"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="includeSysCallDefButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Include syscalldef"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="linkedFileButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Use Linked File"/>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Container class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJPanel1" name="themedJPanel15">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="SystemCalls">
+                <Property name="tabTitle" type="java.lang.String" value="SystemCalls"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="resetProcessorOnTrap0Button" min="-2" max="-2" attributes="0"/>
+                          <Component id="themedJLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="logSystemCallMessagesButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="420" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="themedJLabel7" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="logSystemCallMessagesButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="resetProcessorOnTrap0Button" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="280" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="themedJLabel7">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="SystemCall Options"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="logSystemCallMessagesButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Log SystemCall Messages"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="resetProcessorOnTrap0Button">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Reset Processor On Trap 0"/>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Container class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJPanel1" name="themedJPanel14">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="Theme">
+                <Property name="tabTitle" type="java.lang.String" value="Theme"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="themedJLabel4" max="32767" attributes="0"/>
+                          <Component id="guiThemeComboBox" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="224" max="-2" attributes="0"/>
+                      <Component id="jSeparator4" min="-2" pref="15" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="themedJLabel11" max="32767" attributes="0"/>
+                          <Component id="syntaxThemeComboBox" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="208" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jSeparator4" alignment="1" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="themedJLabel4" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="guiThemeComboBox" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="themedJLabel11" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="syntaxThemeComboBox" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace pref="318" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="themedJLabel4">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="GUI Themes"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JSeparator" name="jSeparator4">
+              <Properties>
+                <Property name="orientation" type="int" value="1"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="themedJLabel11">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Syntax Theme"/>
+              </Properties>
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJComboBox" name="syntaxThemeComboBox">
+            </Component>
+            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJComboBox" name="guiThemeComboBox">
+            </Component>
+          </SubComponents>
+        </Container>
+      </SubComponents>
+    </Container>
+  </SubComponents>
+</Form>

@@ -1,4 +1,4 @@
-package org.parker.mips.GUI.hexeditor;
+package org.parker.mips.gui.hexeditor;
 
 import java.awt.GraphicsEnvironment;
 import java.awt.Insets;

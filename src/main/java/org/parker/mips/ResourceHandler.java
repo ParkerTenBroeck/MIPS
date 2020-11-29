@@ -19,7 +19,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
-import org.parker.mips.GUI.MainGUI;
+import org.parker.mips.gui.MainGUI;
 
 /**
  *

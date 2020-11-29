@@ -1,0 +1,103 @@
+name: UserIO
+main: org.parker.mips.plugin.internal.syscall.UserIOSystemCalls
+version: 1.0
+author: Parker TenBroeck
+description: Used to add basic Input and Output functionality to MIPS
+system_calls:  
+    USERIO_PRINT_INT: 
+        SYSTEM_CALL_NUMBER: 1
+        SYSTEM_CALL_DISCRIPTION: Print the integer in $4 to the console
+        REGISTERS_READ_FROM: [4]
+        REGISTERS_WRITTEN_TO: []
+        PC_REG_READ_FROM: false
+        PC_REG_WRITTEN_TO: false
+        HIGH_REG_READ_FROM: false
+        HIGH_REG_WRITTEN_TO: false
+        LOW_REG_READ_FROM: false
+        LOW_REG_WRITTEN_TO: false
+        MEMORY_READ_FROM: false
+        MEMORY_WRITTEN_TO: false
+
+    USERIO_PRINT_ASCIIZ_STRING:
+        SYSTEM_CALL_NUMBER: 4 
+        SYSTEM_CALL_DISCRIPTION: Print the ASCIIZ string to console starting at the address in $4 stepping every n bytes for each character where n is equal to $5
+        REGISTERS_READ_FROM: [4,5]
+        REGISTERS_WRITTEN_TO: []
+        PC_REG_READ_FROM: false
+        PC_REG_WRITTEN_TO: false
+        HIGH_REG_READ_FROM: false
+        HIGH_REG_WRITTEN_TO: false
+        LOW_REG_READ_FROM: false
+        LOW_REG_WRITTEN_TO: false
+        MEMORY_READ_FROM: false
+        MEMORY_WRITTEN_TO: false
+
+    USERIO_READ_USER_INTEGER:
+        SYSTEM_CALL_NUMBER: 5 
+        SYSTEM_CALL_DISCRIPTION: Read an integer from the user console and place value in $2
+        REGISTERS_READ_FROM: []
+        REGISTERS_WRITTEN_TO: [2]
+        PC_REG_READ_FROM: false
+        PC_REG_WRITTEN_TO: false
+        HIGH_REG_READ_FROM: false
+        HIGH_REG_WRITTEN_TO: false
+        LOW_REG_READ_FROM: false
+        LOW_REG_WRITTEN_TO: false
+        MEMORY_READ_FROM: false
+        MEMORY_WRITTEN_TO: false
+
+    USERIO_READ_USER_STRING:
+        SYSTEM_CALL_NUMBER: 8 
+        SYSTEM_CALL_DISCRIPTION: Read a string from the user console and store at the address in $4. Length of buffer in $5 Need to allocate one more word than used (for the terminating 0 in the ASCIIZ string)
+        REGISTERS_READ_FROM: [4,5]
+        REGISTERS_WRITTEN_TO: []
+        PC_REG_READ_FROM: false
+        PC_REG_WRITTEN_TO: false
+        HIGH_REG_READ_FROM: false
+        HIGH_REG_WRITTEN_TO: false
+        LOW_REG_READ_FROM: false
+        LOW_REG_WRITTEN_TO: false
+        MEMORY_READ_FROM: false
+        MEMORY_WRITTEN_TO: true
+
+    USERIO_PRINT_CHAR:
+        SYSTEM_CALL_NUMBER: 101 
+        SYSTEM_CALL_DISCRIPTION: Print character to console in $4
+        REGISTERS_READ_FROM: [4]
+        REGISTERS_WRITTEN_TO: []
+        PC_REG_READ_FROM: false
+        PC_REG_WRITTEN_TO: false
+        HIGH_REG_READ_FROM: false
+        HIGH_REG_WRITTEN_TO: false
+        LOW_REG_READ_FROM: false
+        LOW_REG_WRITTEN_TO: false
+        MEMORY_READ_FROM: false
+        MEMORY_WRITTEN_TO: false
+
+    USERIO_READ_USER_CHAR:
+        SYSTEM_CALL_NUMBER: 102 
+        SYSTEM_CALL_DISCRIPTION: Read character from user console and place value in $2
+        REGISTERS_READ_FROM: []
+        REGISTERS_WRITTEN_TO: [2]
+        PC_REG_READ_FROM: false
+        PC_REG_WRITTEN_TO: false
+        HIGH_REG_READ_FROM: false
+        HIGH_REG_WRITTEN_TO: false
+        LOW_REG_READ_FROM: false
+        LOW_REG_WRITTEN_TO: false
+        MEMORY_READ_FROM: false
+        MEMORY_WRITTEN_TO: false
+
+    USERIO_LAST_USER_CHAR:
+        SYSTEM_CALL_NUMBER: 103 
+        SYSTEM_CALL_DISCRIPTION: Returns into $2 the last character the user entered into the console in $2 if empty returns 0
+        REGISTERS_READ_FROM: []
+        REGISTERS_WRITTEN_TO: [2]
+        PC_REG_READ_FROM: false
+        PC_REG_WRITTEN_TO: false
+        HIGH_REG_READ_FROM: false
+        HIGH_REG_WRITTEN_TO: false
+        LOW_REG_READ_FROM: false
+        LOW_REG_WRITTEN_TO: false
+        MEMORY_READ_FROM: false
+        MEMORY_WRITTEN_TO: false

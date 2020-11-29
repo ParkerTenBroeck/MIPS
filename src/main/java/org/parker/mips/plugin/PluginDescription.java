@@ -20,14 +20,18 @@ public class PluginDescription {
     public final String VERSION;
     public final String DESCRIPTION;
 
-    public PluginDescription(Map<String, Object> map) {
+    public PluginDescription(Map<String, Object> map) throws InvalidDescriptionException {
+        try{
         this.NAME = map.get("name").toString();
         this.MAIN = map.get("main").toString();
         this.VERSION = map.get("version").toString();
         this.DESCRIPTION = map.get("description").toString();
+        }catch(Exception e){
+            throw new InvalidDescriptionException("Cannot load base plugin description");
+        }
     }
 
-    public PluginDescription(InputStream input) {
+    public PluginDescription(InputStream input) throws InvalidDescriptionException {
         this((Map<String, Object>) (new Yaml().load(input)));
     }
 

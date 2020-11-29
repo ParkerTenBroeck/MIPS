@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.GUI.ThemedJFrameComponents;
+package org.parker.mips.gui.ThemedJFrameComponents;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -22,7 +22,7 @@ import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.util.Map;
 import java.util.Set;
-import org.parker.mips.GUI.MainGUI;
+import org.parker.mips.gui.MainGUI;
 import org.parker.mips.Holder;
 import org.parker.mips.Log;
 import org.parker.mips.ResourceHandler;

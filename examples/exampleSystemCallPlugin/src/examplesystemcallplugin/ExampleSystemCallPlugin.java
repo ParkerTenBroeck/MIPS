@@ -6,7 +6,7 @@
 package examplesystemcallplugin;
 
 import java.net.URL;
-import org.parker.mips.plugin.SystemCall.SystemCallPlugin;
+import org.parker.mips.plugin.syscall.SystemCallPlugin;
 
 /**
  *
@@ -18,28 +18,28 @@ public class ExampleSystemCallPlugin extends SystemCallPlugin {
 
     public ExampleSystemCallPlugin() {
 
-        registerSystemCall(new PRSystemCall("EXAMPLE_SET_HOURS", this) { //make sure that the name entered here and the name in ExampleSystemCallPlugin match this is for verification
+        registerSystemCall(new PRSystemCall("EXAMPLE_SET_HOURS") { //make sure that the name entered here and the name in ExampleSystemCallPlugin match this is for verification
             @Override
             public void handleSystemCall() {
                 exampleFrame.opExampleFrame();
                 exampleFrame.setHours(getRegister(4));
             }
         });
-        registerSystemCall(new PRSystemCall("EXAMPLE_SET_MINS", this) {
+        registerSystemCall(new PRSystemCall("EXAMPLE_SET_MINS") {
             @Override
             public void handleSystemCall() {
                 exampleFrame.opExampleFrame();
                 exampleFrame.setMins(getRegister(4));
             }
         });
-        registerSystemCall(new PRSystemCall("EXAMPLE_READ_HOURS", this) {
+        registerSystemCall(new PRSystemCall("EXAMPLE_READ_HOURS") {
             @Override
             public void handleSystemCall() {
                 exampleFrame.opExampleFrame();
                 setRegister(2, exampleFrame.getHours());
             }
         });
-        registerSystemCall(new PRSystemCall("EXAMPLE_READ_MINS", this) {
+        registerSystemCall(new PRSystemCall("EXAMPLE_READ_MINS") {
             @Override
             public void handleSystemCall() {
                 exampleFrame.opExampleFrame();
