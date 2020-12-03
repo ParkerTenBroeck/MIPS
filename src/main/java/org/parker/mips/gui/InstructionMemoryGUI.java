@@ -5,14 +5,14 @@
  */
 package org.parker.mips.gui;
 
-import org.parker.mips.gui.lookandfeel.RoundedBorder;
+import org.parker.mips.gui.theme.lookandfeel.RoundedBorder;
 import static org.parker.mips.gui.InstructionToString.instructionToString;
 import java.awt.Color;
 import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import javax.swing.DefaultListModel;
-import org.parker.mips.gui.ThemedJFrameComponents.ThemableComponent;
-import org.parker.mips.gui.ThemedJFrameComponents.ThemeHandler;
+import org.parker.mips.gui.theme.components.ThemableComponent;
+import org.parker.mips.gui.theme.ThemeHandler;
 import org.parker.mips.processor.Memory;
 import static org.parker.mips.processor.Memory.superGetWord;
 import static org.parker.mips.processor.Registers.getPc;
@@ -101,7 +101,7 @@ public class InstructionMemoryGUI extends javax.swing.JPanel implements Themable
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        modernScrollPane2 = new org.parker.mips.gui.lookandfeel.ModernScrollPane();
+        modernScrollPane2 = new org.parker.mips.gui.theme.lookandfeel.ModernScrollPane();
         instructionList = new javax.swing.JList<>();
 
         setOpaque(false);
@@ -129,6 +129,6 @@ public class InstructionMemoryGUI extends javax.swing.JPanel implements Themable
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private static javax.swing.JList<String> instructionList;
-    private static org.parker.mips.gui.lookandfeel.ModernScrollPane modernScrollPane2;
+    private static org.parker.mips.gui.theme.lookandfeel.ModernScrollPane modernScrollPane2;
     // End of variables declaration//GEN-END:variables
 }

@@ -2,7 +2,7 @@
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
-    <Menu class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuBar" name="menuBar">
+    <Menu class="org.parker.mips.gui.theme.components.ThemedJMenuBar" name="menuBar">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="33" green="33" red="33" type="rgb"/>
@@ -13,12 +13,12 @@
         <Property name="opaque" type="boolean" value="false"/>
       </Properties>
       <SubComponents>
-        <Menu class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu" name="fileMenu">
+        <Menu class="org.parker.mips.gui.theme.components.ThemedJMenu" name="fileMenu">
           <Properties>
             <Property name="text" type="java.lang.String" value="File"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem" name="openMenuButton">
+            <MenuItem class="org.parker.mips.gui.theme.components.ThemedJMenuItem" name="openMenuButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Open"/>
               </Properties>
@@ -26,12 +26,12 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openMenuButtonActionPerformed"/>
               </Events>
             </MenuItem>
-            <Menu class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu" name="exampleMenu">
+            <Menu class="org.parker.mips.gui.theme.components.ThemedJMenu" name="exampleMenu">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Examples"/>
               </Properties>
             </Menu>
-            <MenuItem class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem" name="newMenuButton">
+            <MenuItem class="org.parker.mips.gui.theme.components.ThemedJMenuItem" name="newMenuButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="New"/>
               </Properties>
@@ -39,7 +39,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newMenuButtonActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem" name="saveMenuButton">
+            <MenuItem class="org.parker.mips.gui.theme.components.ThemedJMenuItem" name="saveMenuButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Save"/>
               </Properties>
@@ -47,7 +47,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveMenuButtonActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem" name="saveAsMenuButton">
+            <MenuItem class="org.parker.mips.gui.theme.components.ThemedJMenuItem" name="saveAsMenuButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="SaveAs"/>
               </Properties>
@@ -57,17 +57,17 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu" name="editMenu">
+        <Menu class="org.parker.mips.gui.theme.components.ThemedJMenu" name="editMenu">
           <Properties>
             <Property name="text" type="java.lang.String" value="Edit"/>
           </Properties>
         </Menu>
-        <Menu class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu" name="optionsMenu">
+        <Menu class="org.parker.mips.gui.theme.components.ThemedJMenu" name="optionsMenu">
           <Properties>
             <Property name="text" type="java.lang.String" value="Options"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem" name="checkForUpdates">
+            <MenuItem class="org.parker.mips.gui.theme.components.ThemedJMenuItem" name="checkForUpdates">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Update"/>
               </Properties>
@@ -75,38 +75,38 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="checkForUpdatesActionPerformed"/>
               </Events>
             </MenuItem>
-            <Menu class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem" name="enableGUIUpdatingWhileRunningButton">
+            <Menu class="org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem" name="enableGUIUpdatingWhileRunningButton">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Enable GUI Updating While Running"/>
               </Properties>
             </Menu>
-            <MenuItem class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem" name="logSystemMessagesButton">
+            <MenuItem class="org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem" name="logSystemMessagesButton">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Log System Messages"/>
               </Properties>
             </MenuItem>
-            <Menu class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem" name="logMessagesButton">
+            <Menu class="org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem" name="logMessagesButton">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Log Messages"/>
               </Properties>
             </Menu>
-            <Menu class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem" name="logWarningsButton">
+            <Menu class="org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem" name="logWarningsButton">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Log Warnings"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
             </Menu>
-            <Menu class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem" name="logErrorsButton">
+            <Menu class="org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem" name="logErrorsButton">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Log Errors"/>
               </Properties>
             </Menu>
-            <Menu class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem" name="optionsButton">
+            <Menu class="org.parker.mips.gui.theme.components.ThemedJMenuItem" name="optionsButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Options"/>
               </Properties>
@@ -116,12 +116,12 @@
             </Menu>
           </SubComponents>
         </Menu>
-        <Menu class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu" name="compilerMenu">
+        <Menu class="org.parker.mips.gui.theme.components.ThemedJMenu" name="compilerMenu">
           <Properties>
             <Property name="text" type="java.lang.String" value="Compiler"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem" name="asciiChartButton">
+            <MenuItem class="org.parker.mips.gui.theme.components.ThemedJMenuItem" name="asciiChartButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Ascii chart"/>
               </Properties>
@@ -129,7 +129,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="asciiChartButtonActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem" name="documentationButton">
+            <MenuItem class="org.parker.mips.gui.theme.components.ThemedJMenuItem" name="documentationButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Documentation"/>
               </Properties>
@@ -137,13 +137,13 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="documentationButtonActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem" name="savePreProcessedFileButton">
+            <MenuItem class="org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem" name="savePreProcessedFileButton">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Save PreProcessed File"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem" name="saveCompileInformationButton">
+            <MenuItem class="org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem" name="saveCompileInformationButton">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Save CompileInformation"/>
@@ -151,45 +151,45 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu" name="runTimeMenu">
+        <Menu class="org.parker.mips.gui.theme.components.ThemedJMenu" name="runTimeMenu">
           <Properties>
             <Property name="text" type="java.lang.String" value="RunTime"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem" name="breakProgramOnRTEButton">
+            <MenuItem class="org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem" name="breakProgramOnRTEButton">
               <Properties>
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Break Program On RunTime Error"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem" name="adaptiveMemoryMenuButton">
+            <MenuItem class="org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem" name="adaptiveMemoryMenuButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Adaptive Memory"/>
               </Properties>
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu" name="systemCallPluginsJMenu">
+        <Menu class="org.parker.mips.gui.theme.components.ThemedJMenu" name="systemCallPluginsJMenu">
           <Properties>
             <Property name="text" type="java.lang.String" value="SystemCall Plugins"/>
           </Properties>
           <SubComponents>
-            <Menu class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu" name="systemCallFrameJMenu">
+            <Menu class="org.parker.mips.gui.theme.components.ThemedJMenu" name="systemCallFrameJMenu">
               <Properties>
                 <Property name="text" type="java.lang.String" value="SystemCall Frames"/>
               </Properties>
             </Menu>
-            <Menu class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu" name="systemCallExampleJMenu">
+            <Menu class="org.parker.mips.gui.theme.components.ThemedJMenu" name="systemCallExampleJMenu">
               <Properties>
                 <Property name="text" type="java.lang.String" value="SystemCall Examples"/>
               </Properties>
             </Menu>
-            <Menu class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu" name="registerSystemCallPluginsJMenu">
+            <Menu class="org.parker.mips.gui.theme.components.ThemedJMenu" name="registerSystemCallPluginsJMenu">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Registered SystemCall Plugins"/>
               </Properties>
             </Menu>
-            <Menu class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem" name="loadPluginJMenuItem">
+            <Menu class="org.parker.mips.gui.theme.components.ThemedJMenuItem" name="loadPluginJMenuItem">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Load Plugin"/>
               </Properties>
@@ -242,7 +242,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJPanel1" name="mainPanel">
+    <Container class="org.parker.mips.gui.theme.components.ThemedJPanel1" name="mainPanel">
 
       <Layout>
         <DimensionLayout dim="0">
@@ -369,31 +369,31 @@
                     </DimensionLayout>
                   </Layout>
                   <SubComponents>
-                    <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJButton" name="compileButton">
+                    <Component class="org.parker.mips.gui.theme.components.ThemedJButton" name="compileButton">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Compile"/>
                         <Property name="focusable" type="boolean" value="false"/>
                       </Properties>
                     </Component>
-                    <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJToggleButton" name="startButton">
+                    <Component class="org.parker.mips.gui.theme.components.ThemedJToggleButton" name="startButton">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Start"/>
                         <Property name="focusable" type="boolean" value="false"/>
                       </Properties>
                     </Component>
-                    <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJButton" name="stopButton">
+                    <Component class="org.parker.mips.gui.theme.components.ThemedJButton" name="stopButton">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Stop"/>
                         <Property name="focusable" type="boolean" value="false"/>
                       </Properties>
                     </Component>
-                    <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJButton" name="singleStepButton">
+                    <Component class="org.parker.mips.gui.theme.components.ThemedJButton" name="singleStepButton">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Single Step"/>
                         <Property name="focusable" type="boolean" value="false"/>
                       </Properties>
                     </Component>
-                    <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJButton" name="memoryButton">
+                    <Component class="org.parker.mips.gui.theme.components.ThemedJButton" name="memoryButton">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Memory"/>
                         <Property name="focusable" type="boolean" value="false"/>
@@ -418,19 +418,19 @@
                         <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="Main_GUI_aboutButton"/>
                       </AuxValues>
                     </Component>
-                    <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="InstructionsRan">
+                    <Component class="org.parker.mips.gui.theme.components.ThemedJLabel" name="InstructionsRan">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="InstructionsRan"/>
                       </Properties>
                     </Component>
-                    <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJButton" name="resetButton">
+                    <Component class="org.parker.mips.gui.theme.components.ThemedJButton" name="resetButton">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Reset"/>
                         <Property name="focusable" type="boolean" value="false"/>
                         <Property name="opaque" type="boolean" value="false"/>
                       </Properties>
                     </Component>
-                    <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="jLabel2">
+                    <Component class="org.parker.mips.gui.theme.components.ThemedJLabel" name="jLabel2">
                       <Properties>
                         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                           <Connection code="MIPS.VERSION" type="code"/>
@@ -537,7 +537,7 @@
                     </DimensionLayout>
                   </Layout>
                   <SubComponents>
-                    <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="linkedButton">
+                    <Component class="org.parker.mips.gui.theme.components.ThemedJCheckBox" name="linkedButton">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Linked File"/>
                       </Properties>
@@ -558,13 +558,13 @@
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="aboutLinkedFileActionPerformed"/>
                       </Events>
                     </Component>
-                    <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="enableBreak">
+                    <Component class="org.parker.mips.gui.theme.components.ThemedJCheckBox" name="enableBreak">
                       <Properties>
                         <Property name="selected" type="boolean" value="true"/>
                         <Property name="text" type="java.lang.String" value="Enable BreakPoints"/>
                       </Properties>
                     </Component>
-                    <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJSlider" name="delaySlider">
+                    <Component class="org.parker.mips.gui.theme.components.ThemedJSlider" name="delaySlider">
                       <Properties>
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="99" green="cc" red="0" type="rgb"/>
@@ -577,7 +577,7 @@
                         <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="delaySliderMouseReleased"/>
                       </Events>
                     </Component>
-                    <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="delayLable">
+                    <Component class="org.parker.mips.gui.theme.components.ThemedJLabel" name="delayLable">
                       <Properties>
                         <Property name="horizontalAlignment" type="int" value="0"/>
                         <Property name="text" type="java.lang.String" value="Delay"/>

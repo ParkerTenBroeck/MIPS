@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu;
-import org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem;
+import org.parker.mips.gui.theme.components.ThemedJMenu;
+import org.parker.mips.gui.theme.components.ThemedJMenuItem;
 import javax.swing.JOptionPane;
 import org.parker.mips.FileHandler;
 import org.parker.mips.Log;
@@ -246,31 +246,36 @@ public class MainGUI extends javax.swing.JFrame {
                 });
                 tempMenu.add(tempItem);
 
+                ArrayList<Node<ActionListener>> temp = plugin.getGeneralListeners(); //adds general listeners to syscall menu
+                if (temp != null) {
+                    temp.forEach((t) -> {
+                        generateJMenuFromNodeStructure(tempMenu, t);
+                    });
+                }
+
                 registerSystemCallPluginsJMenu.add(tempMenu);
             }
             {
                 ArrayList<Node<ActionListener>> temp = plugin.getFrameListeners();
-                if (temp == null) {
-                    continue;
+                if (temp != null) {
+                    ThemedJMenu tempMenu = new ThemedJMenu();
+                    tempMenu.setText(plugin.DESCRIPTION.NAME.replaceAll("_", " "));
+                    temp.forEach((t) -> {
+                        generateJMenuFromNodeStructure(tempMenu, t);
+                    });
+                    systemCallFrameJMenu.add(tempMenu);
                 }
-                ThemedJMenu tempMenu = new ThemedJMenu();
-                tempMenu.setText(plugin.DESCRIPTION.NAME.replaceAll("_", " "));
-                temp.forEach((t) -> {
-                    generateJMenuFromNodeStructure(tempMenu, t);
-                });
-                systemCallFrameJMenu.add(tempMenu);
             }
             {
                 ArrayList<Node<ActionListener>> temp = plugin.getInternalExamples();
-                if (temp == null) {
-                    continue;
+                if (temp != null) {
+                    ThemedJMenu tempMenu = new ThemedJMenu();
+                    tempMenu.setText(plugin.DESCRIPTION.NAME.replaceAll("_", " "));
+                    temp.forEach((t) -> {
+                        generateJMenuFromNodeStructure(tempMenu, t);
+                    });
+                    systemCallExampleJMenu.add(tempMenu);
                 }
-                ThemedJMenu tempMenu = new ThemedJMenu();
-                tempMenu.setText(plugin.DESCRIPTION.NAME.replaceAll("_", " "));
-                temp.forEach((t) -> {
-                    generateJMenuFromNodeStructure(tempMenu, t);
-                });
-                systemCallExampleJMenu.add(tempMenu);
             }
 
         }
@@ -366,60 +371,60 @@ public class MainGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        mainPanel = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJPanel1();
+        mainPanel = new org.parker.mips.gui.theme.components.ThemedJPanel1();
         jSplitPane1 = new javax.swing.JSplitPane();
         topPanel = new javax.swing.JPanel();
         topButtonBarPanel = new javax.swing.JPanel();
-        compileButton = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJButton();
-        startButton = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJToggleButton();
-        stopButton = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJButton();
-        singleStepButton = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJButton();
-        memoryButton = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJButton();
+        compileButton = new org.parker.mips.gui.theme.components.ThemedJButton();
+        startButton = new org.parker.mips.gui.theme.components.ThemedJToggleButton();
+        stopButton = new org.parker.mips.gui.theme.components.ThemedJButton();
+        singleStepButton = new org.parker.mips.gui.theme.components.ThemedJButton();
+        memoryButton = new org.parker.mips.gui.theme.components.ThemedJButton();
         aboutButton = new javax.swing.JButton();
-        InstructionsRan = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel();
-        resetButton = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJButton();
-        jLabel2 = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel();
+        InstructionsRan = new org.parker.mips.gui.theme.components.ThemedJLabel();
+        resetButton = new org.parker.mips.gui.theme.components.ThemedJButton();
+        jLabel2 = new org.parker.mips.gui.theme.components.ThemedJLabel();
         lowerContentPanel = new javax.swing.JPanel();
         instructionMemory_GUI1 = new org.parker.mips.gui.InstructionMemoryGUI();
         register_GUI1 = new org.parker.mips.gui.RegisterGUI();
         aSM_GUI1 = new org.parker.mips.gui.ASM_GUI();
         midButtonSliderPanel = new javax.swing.JPanel();
-        linkedButton = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox();
+        linkedButton = new org.parker.mips.gui.theme.components.ThemedJCheckBox();
         aboutLinkedFile = new javax.swing.JButton();
-        enableBreak = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox();
-        delaySlider = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJSlider();
-        delayLable = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel();
+        enableBreak = new org.parker.mips.gui.theme.components.ThemedJCheckBox();
+        delaySlider = new org.parker.mips.gui.theme.components.ThemedJSlider();
+        delayLable = new org.parker.mips.gui.theme.components.ThemedJLabel();
         bottomPanel = new javax.swing.JPanel();
         logFrame = new org.parker.mips.Log();
-        menuBar = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuBar();
-        fileMenu = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu();
-        openMenuButton = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem();
-        exampleMenu = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu();
-        newMenuButton = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem();
-        saveMenuButton = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem();
-        saveAsMenuButton = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem();
-        editMenu = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu();
-        optionsMenu = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu();
-        checkForUpdates = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem();
-        enableGUIUpdatingWhileRunningButton = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem();
-        logSystemMessagesButton = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem();
-        logMessagesButton = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem();
-        logWarningsButton = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem();
-        logErrorsButton = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem();
-        optionsButton = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem();
-        compilerMenu = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu();
-        asciiChartButton = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem();
-        documentationButton = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem();
-        savePreProcessedFileButton = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem();
-        saveCompileInformationButton = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem();
-        runTimeMenu = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu();
-        breakProgramOnRTEButton = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem();
-        adaptiveMemoryMenuButton = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem();
-        systemCallPluginsJMenu = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu();
-        systemCallFrameJMenu = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu();
-        systemCallExampleJMenu = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu();
-        registerSystemCallPluginsJMenu = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu();
-        loadPluginJMenuItem = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem();
+        menuBar = new org.parker.mips.gui.theme.components.ThemedJMenuBar();
+        fileMenu = new org.parker.mips.gui.theme.components.ThemedJMenu();
+        openMenuButton = new org.parker.mips.gui.theme.components.ThemedJMenuItem();
+        exampleMenu = new org.parker.mips.gui.theme.components.ThemedJMenu();
+        newMenuButton = new org.parker.mips.gui.theme.components.ThemedJMenuItem();
+        saveMenuButton = new org.parker.mips.gui.theme.components.ThemedJMenuItem();
+        saveAsMenuButton = new org.parker.mips.gui.theme.components.ThemedJMenuItem();
+        editMenu = new org.parker.mips.gui.theme.components.ThemedJMenu();
+        optionsMenu = new org.parker.mips.gui.theme.components.ThemedJMenu();
+        checkForUpdates = new org.parker.mips.gui.theme.components.ThemedJMenuItem();
+        enableGUIUpdatingWhileRunningButton = new org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem();
+        logSystemMessagesButton = new org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem();
+        logMessagesButton = new org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem();
+        logWarningsButton = new org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem();
+        logErrorsButton = new org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem();
+        optionsButton = new org.parker.mips.gui.theme.components.ThemedJMenuItem();
+        compilerMenu = new org.parker.mips.gui.theme.components.ThemedJMenu();
+        asciiChartButton = new org.parker.mips.gui.theme.components.ThemedJMenuItem();
+        documentationButton = new org.parker.mips.gui.theme.components.ThemedJMenuItem();
+        savePreProcessedFileButton = new org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem();
+        saveCompileInformationButton = new org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem();
+        runTimeMenu = new org.parker.mips.gui.theme.components.ThemedJMenu();
+        breakProgramOnRTEButton = new org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem();
+        adaptiveMemoryMenuButton = new org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem();
+        systemCallPluginsJMenu = new org.parker.mips.gui.theme.components.ThemedJMenu();
+        systemCallFrameJMenu = new org.parker.mips.gui.theme.components.ThemedJMenu();
+        systemCallExampleJMenu = new org.parker.mips.gui.theme.components.ThemedJMenu();
+        registerSystemCallPluginsJMenu = new org.parker.mips.gui.theme.components.ThemedJMenu();
+        loadPluginJMenuItem = new org.parker.mips.gui.theme.components.ThemedJMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("MIPS");
@@ -945,58 +950,58 @@ public class MainGUI extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel InstructionsRan;
+    private static org.parker.mips.gui.theme.components.ThemedJLabel InstructionsRan;
     private static org.parker.mips.gui.ASM_GUI aSM_GUI1;
     private static javax.swing.JButton aboutButton;
     private static javax.swing.JButton aboutLinkedFile;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem adaptiveMemoryMenuButton;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem asciiChartButton;
+    private static org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem adaptiveMemoryMenuButton;
+    private static org.parker.mips.gui.theme.components.ThemedJMenuItem asciiChartButton;
     private static javax.swing.JPanel bottomPanel;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem breakProgramOnRTEButton;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem checkForUpdates;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJButton compileButton;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu compilerMenu;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel delayLable;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJSlider delaySlider;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem documentationButton;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu editMenu;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox enableBreak;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem enableGUIUpdatingWhileRunningButton;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu exampleMenu;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu fileMenu;
+    private static org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem breakProgramOnRTEButton;
+    private static org.parker.mips.gui.theme.components.ThemedJMenuItem checkForUpdates;
+    private static org.parker.mips.gui.theme.components.ThemedJButton compileButton;
+    private static org.parker.mips.gui.theme.components.ThemedJMenu compilerMenu;
+    private static org.parker.mips.gui.theme.components.ThemedJLabel delayLable;
+    private static org.parker.mips.gui.theme.components.ThemedJSlider delaySlider;
+    private static org.parker.mips.gui.theme.components.ThemedJMenuItem documentationButton;
+    private static org.parker.mips.gui.theme.components.ThemedJMenu editMenu;
+    private static org.parker.mips.gui.theme.components.ThemedJCheckBox enableBreak;
+    private static org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem enableGUIUpdatingWhileRunningButton;
+    private static org.parker.mips.gui.theme.components.ThemedJMenu exampleMenu;
+    private static org.parker.mips.gui.theme.components.ThemedJMenu fileMenu;
     private static org.parker.mips.gui.InstructionMemoryGUI instructionMemory_GUI1;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel jLabel2;
+    private static org.parker.mips.gui.theme.components.ThemedJLabel jLabel2;
     private static javax.swing.JSplitPane jSplitPane1;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox linkedButton;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem loadPluginJMenuItem;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem logErrorsButton;
+    private static org.parker.mips.gui.theme.components.ThemedJCheckBox linkedButton;
+    private static org.parker.mips.gui.theme.components.ThemedJMenuItem loadPluginJMenuItem;
+    private static org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem logErrorsButton;
     private static org.parker.mips.Log logFrame;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem logMessagesButton;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem logSystemMessagesButton;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem logWarningsButton;
+    private static org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem logMessagesButton;
+    private static org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem logSystemMessagesButton;
+    private static org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem logWarningsButton;
     private static javax.swing.JPanel lowerContentPanel;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJPanel1 mainPanel;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJButton memoryButton;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuBar menuBar;
+    private static org.parker.mips.gui.theme.components.ThemedJPanel1 mainPanel;
+    private static org.parker.mips.gui.theme.components.ThemedJButton memoryButton;
+    private static org.parker.mips.gui.theme.components.ThemedJMenuBar menuBar;
     private static javax.swing.JPanel midButtonSliderPanel;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem newMenuButton;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem openMenuButton;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem optionsButton;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu optionsMenu;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu registerSystemCallPluginsJMenu;
+    private static org.parker.mips.gui.theme.components.ThemedJMenuItem newMenuButton;
+    private static org.parker.mips.gui.theme.components.ThemedJMenuItem openMenuButton;
+    private static org.parker.mips.gui.theme.components.ThemedJMenuItem optionsButton;
+    private static org.parker.mips.gui.theme.components.ThemedJMenu optionsMenu;
+    private static org.parker.mips.gui.theme.components.ThemedJMenu registerSystemCallPluginsJMenu;
     private static org.parker.mips.gui.RegisterGUI register_GUI1;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJButton resetButton;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu runTimeMenu;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem saveAsMenuButton;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem saveCompileInformationButton;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem saveMenuButton;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem savePreProcessedFileButton;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJButton singleStepButton;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJToggleButton startButton;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJButton stopButton;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu systemCallExampleJMenu;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu systemCallFrameJMenu;
-    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu systemCallPluginsJMenu;
+    private static org.parker.mips.gui.theme.components.ThemedJButton resetButton;
+    private static org.parker.mips.gui.theme.components.ThemedJMenu runTimeMenu;
+    private static org.parker.mips.gui.theme.components.ThemedJMenuItem saveAsMenuButton;
+    private static org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem saveCompileInformationButton;
+    private static org.parker.mips.gui.theme.components.ThemedJMenuItem saveMenuButton;
+    private static org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem savePreProcessedFileButton;
+    private static org.parker.mips.gui.theme.components.ThemedJButton singleStepButton;
+    private static org.parker.mips.gui.theme.components.ThemedJToggleButton startButton;
+    private static org.parker.mips.gui.theme.components.ThemedJButton stopButton;
+    private static org.parker.mips.gui.theme.components.ThemedJMenu systemCallExampleJMenu;
+    private static org.parker.mips.gui.theme.components.ThemedJMenu systemCallFrameJMenu;
+    private static org.parker.mips.gui.theme.components.ThemedJMenu systemCallPluginsJMenu;
     private static javax.swing.JPanel topButtonBarPanel;
     private static javax.swing.JPanel topPanel;
     // End of variables declaration//GEN-END:variables

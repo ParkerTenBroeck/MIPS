@@ -33,7 +33,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJPanel1" name="themedJPanel11">
+    <Container class="org.parker.mips.gui.theme.components.ThemedJPanel1" name="themedJPanel11">
 
       <Layout>
         <DimensionLayout dim="0">
@@ -48,7 +48,7 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Container class="org.parker.mips.gui.lookandfeel.ModernScrollPane" name="modernScrollPane1">
+        <Container class="org.parker.mips.gui.theme.lookandfeel.ModernScrollPane" name="modernScrollPane1">
           <Properties>
             <Property name="opaque" type="boolean" value="false"/>
           </Properties>

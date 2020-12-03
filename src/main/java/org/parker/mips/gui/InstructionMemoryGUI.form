@@ -29,7 +29,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="org.parker.mips.gui.lookandfeel.ModernScrollPane" name="modernScrollPane2">
+    <Container class="org.parker.mips.gui.theme.lookandfeel.ModernScrollPane" name="modernScrollPane2">
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>

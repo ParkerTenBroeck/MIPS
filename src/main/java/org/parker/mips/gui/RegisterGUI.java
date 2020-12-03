@@ -5,7 +5,7 @@
  */
 package org.parker.mips.gui;
 
-import org.parker.mips.gui.lookandfeel.RoundedBorder;
+import org.parker.mips.gui.theme.lookandfeel.RoundedBorder;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -13,8 +13,8 @@ import java.awt.FontMetrics;
 import java.beans.PropertyChangeEvent;
 import javax.swing.JTable;
 import javax.swing.table.TableColumnModel;
-import org.parker.mips.gui.ThemedJFrameComponents.ThemableComponent;
-import org.parker.mips.gui.ThemedJFrameComponents.ThemeHandler;
+import org.parker.mips.gui.theme.components.ThemableComponent;
+import org.parker.mips.gui.theme.ThemeHandler;
 import org.parker.mips.processor.Registers;
 
 /**
@@ -194,7 +194,7 @@ public class RegisterGUI extends javax.swing.JPanel implements ThemableComponent
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new org.parker.mips.gui.lookandfeel.ModernScrollPane();
+        jScrollPane1 = new org.parker.mips.gui.theme.lookandfeel.ModernScrollPane();
         jPanel2 = new javax.swing.JPanel();
         lowHigh = new javax.swing.JTable();
         registers = new javax.swing.JTable();
@@ -341,7 +341,7 @@ public class RegisterGUI extends javax.swing.JPanel implements ThemableComponent
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel2;
-    private org.parker.mips.gui.lookandfeel.ModernScrollPane jScrollPane1;
+    private org.parker.mips.gui.theme.lookandfeel.ModernScrollPane jScrollPane1;
     private static javax.swing.JTable lowHigh;
     private static javax.swing.JTable pc;
     private static javax.swing.JTable pc1;

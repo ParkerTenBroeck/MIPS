@@ -33,7 +33,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJTabbedPane" name="themedJTabbedPane1">
+    <Container class="org.parker.mips.gui.theme.components.ThemedJTabbedPane" name="themedJTabbedPane1">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="33" green="33" red="33" type="rgb"/>
@@ -42,7 +42,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
       <SubComponents>
-        <Container class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJPanel1" name="themedJPanel11">
+        <Container class="org.parker.mips.gui.theme.components.ThemedJPanel1" name="themedJPanel11">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="General">
@@ -119,48 +119,48 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="themedJLabel2">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJLabel" name="themedJLabel2">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Log Options"/>
               </Properties>
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="logSystemMessagesButton">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJCheckBox" name="logSystemMessagesButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Log System Messages"/>
               </Properties>
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="logMessagesButton">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJCheckBox" name="logMessagesButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Log Messages"/>
               </Properties>
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="logWarningsButton">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJCheckBox" name="logWarningsButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Log Warnigs"/>
               </Properties>
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="logErrorsButton">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJCheckBox" name="logErrorsButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Log Errors"/>
               </Properties>
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="themedJLabel3">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJLabel" name="themedJLabel3">
               <Properties>
                 <Property name="text" type="java.lang.String" value="GUI Options"/>
               </Properties>
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="enableAutoGUIUpdatesWhileRuning">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJCheckBox" name="enableAutoGUIUpdatesWhileRuning">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Enable Auto GUI Updates While Runing"/>
               </Properties>
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="themedJLabel5">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJLabel" name="themedJLabel5">
               <Properties>
                 <Property name="horizontalAlignment" type="int" value="2"/>
                 <Property name="text" type="java.lang.String" value="Options"/>
               </Properties>
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJButton" name="saveCurrentOptionsButton">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJButton" name="saveCurrentOptionsButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Save Current Options"/>
               </Properties>
@@ -170,19 +170,19 @@
                 <Property name="orientation" type="int" value="1"/>
               </Properties>
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJButton" name="loadOptionsButton">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJButton" name="loadOptionsButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Load Options"/>
               </Properties>
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJSlider" name="guiUpdateTimeSlider">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJSlider" name="guiUpdateTimeSlider">
               <Properties>
                 <Property name="maximum" type="int" value="500"/>
                 <Property name="minimum" type="int" value="1"/>
                 <Property name="value" type="int" value="100"/>
               </Properties>
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="themedJLabel8">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJLabel" name="themedJLabel8">
               <Properties>
                 <Property name="horizontalAlignment" type="int" value="0"/>
                 <Property name="text" type="java.lang.String" value="Update Time 1-500"/>
@@ -190,7 +190,7 @@
             </Component>
           </SubComponents>
         </Container>
-        <Container class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJPanel1" name="themedJPanel12">
+        <Container class="org.parker.mips.gui.theme.components.ThemedJPanel1" name="themedJPanel12">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Processor">
@@ -248,22 +248,22 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="breakOnRunTimeErrorButton">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJCheckBox" name="breakOnRunTimeErrorButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Break On RunTime Error"/>
               </Properties>
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="themedJLabel1">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJLabel" name="themedJLabel1">
               <Properties>
                 <Property name="text" type="java.lang.String" value="RunTime Options"/>
               </Properties>
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="adaptiveMemoryButton">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJCheckBox" name="adaptiveMemoryButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Adaptive Memory"/>
               </Properties>
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="enableBreakPointsButton">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJCheckBox" name="enableBreakPointsButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Enable BreakPoints"/>
               </Properties>
@@ -273,19 +273,19 @@
                 <Property name="orientation" type="int" value="1"/>
               </Properties>
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="themedJLabel10">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJLabel" name="themedJLabel10">
               <Properties>
                 <Property name="text" type="java.lang.String" value="General Options"/>
               </Properties>
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="reloadMemoryOnResetButton">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJCheckBox" name="reloadMemoryOnResetButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Reload Memory on Reset"/>
               </Properties>
             </Component>
           </SubComponents>
         </Container>
-        <Container class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJPanel1" name="themedJPanel13">
+        <Container class="org.parker.mips.gui.theme.components.ThemedJPanel1" name="themedJPanel13">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Compiler">
@@ -349,22 +349,22 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="themedJLabel6">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJLabel" name="themedJLabel6">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Compiler Options"/>
               </Properties>
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="savePreProcessorFileButton">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJCheckBox" name="savePreProcessorFileButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Save PreProcessed File"/>
               </Properties>
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="saveCompilerInfoFileButton">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJCheckBox" name="saveCompilerInfoFileButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Save Compiler Info File"/>
               </Properties>
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="saveCleanedFileButton">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJCheckBox" name="saveCleanedFileButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Save Cleaned File"/>
               </Properties>
@@ -374,29 +374,29 @@
                 <Property name="orientation" type="int" value="1"/>
               </Properties>
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="themedJLabel9">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJLabel" name="themedJLabel9">
               <Properties>
                 <Property name="text" type="java.lang.String" value="PreProcessor Option"/>
               </Properties>
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="includeRegDefButton">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJCheckBox" name="includeRegDefButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Include regdef"/>
               </Properties>
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="includeSysCallDefButton">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJCheckBox" name="includeSysCallDefButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Include syscalldef"/>
               </Properties>
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="linkedFileButton">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJCheckBox" name="linkedFileButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Use Linked File"/>
               </Properties>
             </Component>
           </SubComponents>
         </Container>
-        <Container class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJPanel1" name="themedJPanel15">
+        <Container class="org.parker.mips.gui.theme.components.ThemedJPanel1" name="themedJPanel15">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="SystemCalls">
@@ -434,24 +434,24 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="themedJLabel7">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJLabel" name="themedJLabel7">
               <Properties>
                 <Property name="text" type="java.lang.String" value="SystemCall Options"/>
               </Properties>
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="logSystemCallMessagesButton">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJCheckBox" name="logSystemCallMessagesButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Log SystemCall Messages"/>
               </Properties>
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBox" name="resetProcessorOnTrap0Button">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJCheckBox" name="resetProcessorOnTrap0Button">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Reset Processor On Trap 0"/>
               </Properties>
             </Component>
           </SubComponents>
         </Container>
-        <Container class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJPanel1" name="themedJPanel14">
+        <Container class="org.parker.mips.gui.theme.components.ThemedJPanel1" name="themedJPanel14">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Theme">
@@ -503,7 +503,7 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="themedJLabel4">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJLabel" name="themedJLabel4">
               <Properties>
                 <Property name="text" type="java.lang.String" value="GUI Themes"/>
               </Properties>
@@ -513,14 +513,14 @@
                 <Property name="orientation" type="int" value="1"/>
               </Properties>
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="themedJLabel11">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJLabel" name="themedJLabel11">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Syntax Theme"/>
               </Properties>
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJComboBox" name="syntaxThemeComboBox">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJComboBox" name="syntaxThemeComboBox">
             </Component>
-            <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJComboBox" name="guiThemeComboBox">
+            <Component class="org.parker.mips.gui.theme.components.ThemedJComboBox" name="guiThemeComboBox">
             </Component>
           </SubComponents>
         </Container>

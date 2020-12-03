@@ -17,9 +17,9 @@ import javax.swing.text.DefaultCaret;
 import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
-import org.parker.mips.gui.ThemedJFrameComponents.ThemableComponent;
-import org.parker.mips.gui.ThemedJFrameComponents.ThemeHandler;
-import org.parker.mips.gui.lookandfeel.ModernScrollPane;
+import org.parker.mips.gui.theme.components.ThemableComponent;
+import org.parker.mips.gui.theme.ThemeHandler;
+import org.parker.mips.gui.theme.lookandfeel.ModernScrollPane;
 
 /**
  *

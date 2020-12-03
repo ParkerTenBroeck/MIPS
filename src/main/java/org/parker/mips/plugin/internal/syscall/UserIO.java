@@ -138,9 +138,9 @@ public class UserIO extends SystemCallPluginFrame {
 
         jPanel2 = new javax.swing.JPanel();
         inputTextFeild = new javax.swing.JTextField();
-        modernScrollPane1 = new org.parker.mips.gui.lookandfeel.ModernScrollPane();
+        modernScrollPane1 = new org.parker.mips.gui.theme.lookandfeel.ModernScrollPane();
         outputTextArea = new javax.swing.JTextArea();
-        themedJButton1 = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJButton();
+        themedJButton1 = new org.parker.mips.gui.theme.components.ThemedJButton();
 
         setTitle("User IO");
         addFocusListener(new java.awt.event.FocusAdapter() {
@@ -288,8 +288,8 @@ public class UserIO extends SystemCallPluginFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private static javax.swing.JTextField inputTextFeild;
     private javax.swing.JPanel jPanel2;
-    private org.parker.mips.gui.lookandfeel.ModernScrollPane modernScrollPane1;
+    private org.parker.mips.gui.theme.lookandfeel.ModernScrollPane modernScrollPane1;
     private static javax.swing.JTextArea outputTextArea;
-    private org.parker.mips.gui.ThemedJFrameComponents.ThemedJButton themedJButton1;
+    private org.parker.mips.gui.theme.components.ThemedJButton themedJButton1;
     // End of variables declaration//GEN-END:variables
 }

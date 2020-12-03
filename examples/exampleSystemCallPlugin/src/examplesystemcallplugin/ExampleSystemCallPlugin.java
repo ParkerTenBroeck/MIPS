@@ -48,6 +48,7 @@ public class ExampleSystemCallPlugin extends SystemCallPlugin {
             }
         });
 
+        //
         registerInternalExamples(new Node("Root",
                 new Node[]{
                     new Node("Test 1 Folder",
@@ -59,6 +60,7 @@ public class ExampleSystemCallPlugin extends SystemCallPlugin {
                     new Node("File 2", new ResourceActionLoader("exampleProgram2.asm"))
                 }));
 
+        //
         registerFrameListeners(new Node("Root",
                 new Node[]{
                     new Node("Clock", new ActionListener() {
@@ -67,6 +69,24 @@ public class ExampleSystemCallPlugin extends SystemCallPlugin {
                             exampleFrame.setVisible(true);
                             exampleFrame.requestFocus();
                         }
+                    })}));
+
+        //
+        registerGeneralListeners(new Node("Root",
+                new Node[]{
+                    new Node("Example 1", (ActionListener) (ActionEvent ae) -> {
+                        logSystemCallPluginMessage("Example 1");
+                    }),
+                    new Node("Example SubFolder",
+                            new Node[]{
+                                new Node("Example 3", (ActionListener) (ActionEvent ae) -> {
+                                    logSystemCallPluginMessage("[Example SubFolder] Example 3");
+                                }),
+                                new Node("Example 4", (ActionListener) (ActionEvent ae) -> {
+                                    logSystemCallPluginMessage("[Example SubFolder] Example 4");
+                                })}),
+                    new Node("Example 2", (ActionListener) (ActionEvent ae) -> {
+                        logSystemCallPluginWarning("Example 2");
                     })}));
     }
 

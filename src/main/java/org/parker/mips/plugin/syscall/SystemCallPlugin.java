@@ -31,7 +31,7 @@ public abstract class SystemCallPlugin extends PluginBase {
 
     private ArrayList<Node<ActionListener>> reigsteredFrameListeners = null;
     private ArrayList<Node<ActionListener>> registeredInternalExamples = null;
-    private ArrayList<Node<ActionListener>> as = null;
+    private ArrayList<Node<ActionListener>> registeredGeneralListeners = null;
 
     public SystemCallPlugin() {
         {
@@ -234,6 +234,16 @@ public abstract class SystemCallPlugin extends PluginBase {
         return true;
     }
 
+    /**
+     *
+     * @param data
+     * @return
+     */
+    protected final boolean registerGeneralListeners(Node<ActionListener> data) {
+        this.registeredGeneralListeners = data.getChildernAndDestroyParent();
+        return true;
+    }
+
     //protected final boolean register
     public final ArrayList<Node<ActionListener>> getInternalExamples() {
         return registeredInternalExamples;
@@ -241,6 +251,10 @@ public abstract class SystemCallPlugin extends PluginBase {
 
     public final ArrayList<Node<ActionListener>> getFrameListeners() {
         return this.reigsteredFrameListeners;
+    }
+
+    public final ArrayList<Node<ActionListener>> getGeneralListeners() {
+        return this.registeredGeneralListeners;
     }
 
     private SystemCall.SystemCallData getSystemCallDataFromName(String name) {

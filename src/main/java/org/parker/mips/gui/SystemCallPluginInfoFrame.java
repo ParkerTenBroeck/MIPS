@@ -7,7 +7,7 @@ package org.parker.mips.gui;
 
 import java.awt.Color;
 import java.util.Arrays;
-import org.parker.mips.gui.lookandfeel.ModernScrollPane;
+import org.parker.mips.gui.theme.lookandfeel.ModernScrollPane;
 import org.parker.mips.plugin.syscall.SystemCall;
 import org.parker.mips.plugin.syscall.SystemCallPlugin;
 import org.parker.mips.plugin.syscall.SystemCallPluginHandler;
@@ -97,7 +97,7 @@ public class SystemCallPluginInfoFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        themedJPanel11 = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJPanel1();
+        themedJPanel11 = new org.parker.mips.gui.theme.components.ThemedJPanel1();
         modernScrollPane1 = new ModernScrollPane(Color.gray);
         jEditorPane1 = new javax.swing.JEditorPane();
 
@@ -137,7 +137,7 @@ public class SystemCallPluginInfoFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JEditorPane jEditorPane1;
-    private org.parker.mips.gui.lookandfeel.ModernScrollPane modernScrollPane1;
-    private org.parker.mips.gui.ThemedJFrameComponents.ThemedJPanel1 themedJPanel11;
+    private org.parker.mips.gui.theme.lookandfeel.ModernScrollPane modernScrollPane1;
+    private org.parker.mips.gui.theme.components.ThemedJPanel1 themedJPanel11;
     // End of variables declaration//GEN-END:variables
 }

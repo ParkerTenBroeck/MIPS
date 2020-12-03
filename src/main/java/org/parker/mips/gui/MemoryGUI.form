@@ -45,7 +45,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJPanel1" name="StuffHolder">
+    <Container class="org.parker.mips.gui.theme.components.ThemedJPanel1" name="StuffHolder">
 
       <Layout>
         <DimensionLayout dim="0">
@@ -99,12 +99,12 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJFormattedTextField" name="startingPosition">
+        <Component class="org.parker.mips.gui.theme.components.ThemedJFormattedTextField" name="startingPosition">
           <Properties>
             <Property name="text" type="java.lang.String" value="0"/>
           </Properties>
         </Component>
-        <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="startingPositionLable">
+        <Component class="org.parker.mips.gui.theme.components.ThemedJLabel" name="startingPositionLable">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="Mem Position"/>
@@ -120,19 +120,19 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="lengthLable">
+        <Component class="org.parker.mips.gui.theme.components.ThemedJLabel" name="lengthLable">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="Length"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
           </Properties>
         </Component>
-        <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJFormattedTextField" name="length">
+        <Component class="org.parker.mips.gui.theme.components.ThemedJFormattedTextField" name="length">
           <Properties>
             <Property name="text" type="java.lang.String" value="10"/>
           </Properties>
         </Component>
-        <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJButton" name="updateButton">
+        <Component class="org.parker.mips.gui.theme.components.ThemedJButton" name="updateButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Update"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -142,7 +142,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="updateButtonActionPerformed"/>
           </Events>
         </Component>
-        <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJToggleButton" name="autoUpdateButton">
+        <Component class="org.parker.mips.gui.theme.components.ThemedJToggleButton" name="autoUpdateButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Auto Update"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -176,7 +176,7 @@
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
-        <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel" name="memoryPointersLable">
+        <Component class="org.parker.mips.gui.theme.components.ThemedJLabel" name="memoryPointersLable">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="Memory Lables"/>
@@ -185,7 +185,7 @@
         </Component>
       </SubComponents>
     </Container>
-    <Container class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJPanel2" name="themedJPanel21">
+    <Container class="org.parker.mips.gui.theme.components.ThemedJPanel2" name="themedJPanel21">
 
       <Layout>
         <DimensionLayout dim="0">
@@ -200,7 +200,7 @@
         </DimensionLayout>
       </Layout>
     </Container>
-    <Container class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJPanel1" name="StuffHolder1">
+    <Container class="org.parker.mips.gui.theme.components.ThemedJPanel1" name="StuffHolder1">
 
       <Layout>
         <DimensionLayout dim="0">

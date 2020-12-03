@@ -95,7 +95,7 @@
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="10"/>
           </AuxValues>
         </Component>
-        <Container class="org.parker.mips.gui.lookandfeel.ModernScrollPane" name="modernScrollPane1">
+        <Container class="org.parker.mips.gui.theme.lookandfeel.ModernScrollPane" name="modernScrollPane1">
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
@@ -122,7 +122,7 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJButton" name="themedJButton1">
+        <Component class="org.parker.mips.gui.theme.components.ThemedJButton" name="themedJButton1">
           <Properties>
             <Property name="text" type="java.lang.String" value="Clear"/>
           </Properties>

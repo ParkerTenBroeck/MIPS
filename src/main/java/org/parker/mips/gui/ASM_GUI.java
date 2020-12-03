@@ -5,14 +5,14 @@
  */
 package org.parker.mips.gui;
 
-import org.parker.mips.gui.lookandfeel.RoundedBorder;
+import org.parker.mips.gui.theme.lookandfeel.RoundedBorder;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import org.parker.mips.FileHandler;
-import org.parker.mips.gui.ThemedJFrameComponents.ThemeHandler;
+import org.parker.mips.gui.theme.ThemeHandler;
 import org.parker.mips.OptionsHandler;
 
 /**

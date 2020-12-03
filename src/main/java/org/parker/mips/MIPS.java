@@ -9,7 +9,7 @@ import java.io.File;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import org.parker.mips.gui.MainGUI;
-import org.parker.mips.gui.ThemedJFrameComponents.ThemeHandler;
+import org.parker.mips.gui.theme.ThemeHandler;
 import static org.parker.mips.UpdateHandler.checkForUpdates;
 import org.parker.mips.plugin.PluginLoader;
 

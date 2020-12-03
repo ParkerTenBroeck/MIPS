@@ -5,7 +5,7 @@
  */
 package org.parker.mips.gui.rsyntax;
 
-import org.parker.mips.gui.lookandfeel.ModernScrollBarUI;
+import org.parker.mips.gui.theme.lookandfeel.ModernScrollBarUI;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
@@ -17,7 +17,7 @@ import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.folding.FoldParserManager;
 import org.fife.ui.rtextarea.RTextScrollPane;
-import org.parker.mips.gui.ThemedJFrameComponents.ThemeHandler;
+import org.parker.mips.gui.theme.ThemeHandler;
 import org.parker.mips.Log;
 import org.parker.mips.OptionsHandler;
 import org.parker.mips.ResourceHandler;

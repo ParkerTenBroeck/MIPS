@@ -7,7 +7,7 @@ package org.parker.mips.gui;
 
 import org.parker.mips.compiler.ASMCompiler;
 import org.parker.mips.compiler.data.MemoryLable;
-import org.parker.mips.gui.lookandfeel.ModernScrollPane;
+import org.parker.mips.gui.theme.lookandfeel.ModernScrollPane;
 import java.util.ArrayList;
 import javax.swing.ScrollPaneConstants;
 import org.parker.mips.processor.Memory;
@@ -129,17 +129,17 @@ public class MemoryGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        StuffHolder = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJPanel1();
-        startingPosition = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJFormattedTextField();
-        startingPositionLable = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel();
-        lengthLable = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel();
-        length = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJFormattedTextField();
-        updateButton = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJButton();
-        autoUpdateButton = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJToggleButton();
+        StuffHolder = new org.parker.mips.gui.theme.components.ThemedJPanel1();
+        startingPosition = new org.parker.mips.gui.theme.components.ThemedJFormattedTextField();
+        startingPositionLable = new org.parker.mips.gui.theme.components.ThemedJLabel();
+        lengthLable = new org.parker.mips.gui.theme.components.ThemedJLabel();
+        length = new org.parker.mips.gui.theme.components.ThemedJFormattedTextField();
+        updateButton = new org.parker.mips.gui.theme.components.ThemedJButton();
+        autoUpdateButton = new org.parker.mips.gui.theme.components.ThemedJToggleButton();
         memoryLables = new javax.swing.JComboBox<>();
-        memoryPointersLable = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel();
-        themedJPanel21 = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJPanel2();
-        StuffHolder1 = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJPanel1();
+        memoryPointersLable = new org.parker.mips.gui.theme.components.ThemedJLabel();
+        themedJPanel21 = new org.parker.mips.gui.theme.components.ThemedJPanel2();
+        StuffHolder1 = new org.parker.mips.gui.theme.components.ThemedJPanel1();
         memoryPositionScrollPane = new ModernScrollPane();
  ;
         memoryPositionTable = new javax.swing.JTable();
@@ -394,19 +394,19 @@ public class MemoryGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private org.parker.mips.gui.ThemedJFrameComponents.ThemedJPanel1 StuffHolder;
-    private org.parker.mips.gui.ThemedJFrameComponents.ThemedJPanel1 StuffHolder1;
-    private org.parker.mips.gui.ThemedJFrameComponents.ThemedJToggleButton autoUpdateButton;
-    private org.parker.mips.gui.ThemedJFrameComponents.ThemedJFormattedTextField length;
-    private org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel lengthLable;
+    private org.parker.mips.gui.theme.components.ThemedJPanel1 StuffHolder;
+    private org.parker.mips.gui.theme.components.ThemedJPanel1 StuffHolder1;
+    private org.parker.mips.gui.theme.components.ThemedJToggleButton autoUpdateButton;
+    private org.parker.mips.gui.theme.components.ThemedJFormattedTextField length;
+    private org.parker.mips.gui.theme.components.ThemedJLabel lengthLable;
     private javax.swing.JComboBox<String> memoryLables;
-    private org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel memoryPointersLable;
+    private org.parker.mips.gui.theme.components.ThemedJLabel memoryPointersLable;
     private javax.swing.JScrollPane memoryPositionScrollPane;
     private javax.swing.JTable memoryPositionTable;
-    private org.parker.mips.gui.ThemedJFrameComponents.ThemedJFormattedTextField startingPosition;
-    private org.parker.mips.gui.ThemedJFrameComponents.ThemedJLabel startingPositionLable;
-    private org.parker.mips.gui.ThemedJFrameComponents.ThemedJPanel2 themedJPanel21;
-    private org.parker.mips.gui.ThemedJFrameComponents.ThemedJButton updateButton;
+    private org.parker.mips.gui.theme.components.ThemedJFormattedTextField startingPosition;
+    private org.parker.mips.gui.theme.components.ThemedJLabel startingPositionLable;
+    private org.parker.mips.gui.theme.components.ThemedJPanel2 themedJPanel21;
+    private org.parker.mips.gui.theme.components.ThemedJButton updateButton;
     private javax.swing.JScrollPane valsScrollPane;
     private javax.swing.JTable valsTable;
     // End of variables declaration//GEN-END:variables
