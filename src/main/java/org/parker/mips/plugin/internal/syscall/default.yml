@@ -1,0 +1,89 @@
+name: Base
+main: org.parker.mips.plugin.internal.syscall.DefaultSystemCalls
+version: 1.0
+author: Parker TenBroeck
+description: Default System Calls Included with MIPS ISA
+system_calls:  
+    SYSTEM_HALT_PROGRAM:    
+        SYSTEM_CALL_NUMBER: 0
+        SYSTEM_CALL_DISCRIPTION: Stops the program
+        REGISTERS_READ_FROM: []
+        REGISTERS_WRITTEN_TO: []
+        PC_REG_READ_FROM: false
+        PC_REG_WRITTEN_TO: false
+        HIGH_REG_READ_FROM: false
+        HIGH_REG_WRITTEN_TO: false
+        LOW_REG_READ_FROM: false
+        LOW_REG_WRITTEN_TO: false
+        MEMORY_READ_FROM: false
+        MEMORY_WRITTEN_TO: false
+                
+    SYSTEM_RANDOM_NUM: 
+        SYSTEM_CALL_NUMBER: 99
+        SYSTEM_CALL_DISCRIPTION: Places a random number from between the values in $4 and $5 into $2.
+        REGISTERS_READ_FROM: [45]
+        REGISTERS_WRITTEN_TO: [2]
+        PC_REG_READ_FROM: false
+        PC_REG_WRITTEN_TO: false
+        HIGH_REG_READ_FROM: false
+        HIGH_REG_WRITTEN_TO: false
+        LOW_REG_READ_FROM: false
+        LOW_REG_WRITTEN_TO: false
+        MEMORY_READ_FROM: false
+        MEMORY_WRITTEN_TO: false
+
+    SYSTEM_SLEEP_MILLS: 
+        SYSTEM_CALL_NUMBER: 105
+        SYSTEM_CALL_DISCRIPTION: Sleeps for the number of millis in $4.
+        REGISTERS_READ_FROM: [4]
+        REGISTERS_WRITTEN_TO: []
+        PC_REG_READ_FROM: false
+        PC_REG_WRITTEN_TO: false
+        HIGH_REG_READ_FROM: false
+        HIGH_REG_WRITTEN_TO: false
+        LOW_REG_READ_FROM: false
+        LOW_REG_WRITTEN_TO: false
+        MEMORY_READ_FROM: false
+        MEMORY_WRITTEN_TO: false
+
+    SYSTEM_SLEEP_DELTA_MILLS: 
+        SYSTEM_CALL_NUMBER: 106
+        SYSTEM_CALL_DISCRIPTION: Sleeps for the number of millis in $4 minus the time it took since the trap was called.
+        REGISTERS_READ_FROM: [4]
+        REGISTERS_WRITTEN_TO: []
+        PC_REG_READ_FROM: false
+        PC_REG_WRITTEN_TO: false
+        HIGH_REG_READ_FROM: false
+        HIGH_REG_WRITTEN_TO: false
+        LOW_REG_READ_FROM: false
+        LOW_REG_WRITTEN_TO: false
+        MEMORY_READ_FROM: false
+        MEMORY_WRITTEN_TO: false
+
+    SYSTEM_BREAK_POINT: 
+        SYSTEM_CALL_NUMBER: 111
+        SYSTEM_CALL_DISCRIPTION: Stops the program if breakpoints are enabled
+        REGISTERS_READ_FROM: []
+        REGISTERS_WRITTEN_TO: []
+        PC_REG_READ_FROM: false
+        PC_REG_WRITTEN_TO: false
+        HIGH_REG_READ_FROM: false
+        HIGH_REG_WRITTEN_TO: false
+        LOW_REG_READ_FROM: false
+        LOW_REG_WRITTEN_TO: false
+        MEMORY_READ_FROM: false
+        MEMORY_WRITTEN_TO: false
+
+    SYSTEM_GET_MILLIS: 
+        SYSTEM_CALL_NUMBER: 130
+        SYSTEM_CALL_DISCRIPTION: Gives the lower half of the system millis and stores it in $2
+        REGISTERS_READ_FROM: []
+        REGISTERS_WRITTEN_TO: [2]
+        PC_REG_READ_FROM: false
+        PC_REG_WRITTEN_TO: false
+        HIGH_REG_READ_FROM: false
+        HIGH_REG_WRITTEN_TO: false
+        LOW_REG_READ_FROM: false
+        LOW_REG_WRITTEN_TO: false
+        MEMORY_READ_FROM: false
+        MEMORY_WRITTEN_TO: false

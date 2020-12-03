@@ -38,23 +38,40 @@ public class UpdateHandler {
             Reader reader = new InputStreamReader(inputStream);
 
             JsonParser parser = new JsonParser();
-            
+
             latestJsonRequest = parser.parse(reader).getAsJsonObject();
-            latestVersionLink = latestJsonRequest.get("tag_name").getAsString();
-            int compare = compareVersions(latestVersionLink, MIPS.VERSION);
+            String latestTag = latestJsonRequest.get("tag_name").getAsString();
 
-            if (compare == 0) {
-                isUpToDate = true;
-            } else if (compare > 0) {
-                Log.logWarning("There is an update avalible goto Options>Update to update");
-                latestVersionLink = latestJsonRequest.getAsJsonArray("assets").get(0).getAsJsonObject().get("browser_download_url").getAsString();
-                //System.out.println(latestVersionLink);
-            } else if (compare < 0) {
-                Log.logWarning("You are using a Beta Version there may be bugs and unexpected behavior goto Options>Update to get the latest stable relese");
-                latestVersionLink = latestJsonRequest.getAsJsonArray("assets").get(0).getAsJsonObject().get("browser_download_url").getAsString();
-            } else {
+            VersionComparison vc = new VersionComparison(latestTag, MIPS.VERSION);
 
+//            if(vc.v2PreReleseFlag){
+//                Log.logWarning("You are using a PreRelese there may be bugs or unexpected behavior");
+//            }
+            if (vc.isV1EqualToV2()) {
+                if (vc.v2PreReleseFlag) {
+                    Log.logWarning("You are using a PreRelese. Features may contain bugs or unexpected behavior, to upgrade to the latest goto Options>Update");
+                } else {
+                    isUpToDate = true;
+                }
+            } else if (vc.isV1GreaterThanV2()) {
+                if (vc.v2PreReleseFlag) {
+                    Log.logWarning("You are using an outdated PreRelese. Features may be outdated and may contain bugs or unexpected behavior, to upgrade to the latest goto Options>Update");
+                } else {
+                    Log.logWarning("There is a new Version available. To upgrade goto Options>Update");
+                }
+            } else if (vc.isV1LessThanV2()) {
+                if (vc.v2PreReleseFlag) {
+                    Log.logWarning("You are using an unrelesed PreRelese there may be bugs or unexpected behavior goto. to upgrade to the latest stable version goto Options>Update");
+                } else {
+                    Log.logWarning("You are using a inrelesed full relese there may be bugs and unexpected behavior goto Options>Update to get the latest stable relese");
+                }
             }
+
+            if (vc.v1PreReleseFlag) {
+                Log.logWarning("The latest version is a PreReslese?. This could be a bug please report");
+            }
+
+            latestVersionLink = latestJsonRequest.getAsJsonArray("assets").get(0).getAsJsonObject().get("browser_download_url").getAsString();
 
             //System.out.println(sb.toString());
             //return sb.toString();
@@ -110,9 +127,122 @@ public class UpdateHandler {
         //return false;
     }
 
-    public static int compareVersions(String v1, String v2) {
-        String[] v1a = v1.split("\\.");
-        String[] v2a = v2.split("\\.");
+    private static final class VersionComparison {
+
+        public final String v1;
+        public final boolean v1PreReleseFlag;
+        public final String v2;
+        public final boolean v2PreReleseFlag;
+        public final int comparasin;
+
+        public VersionComparison(final String v1, boolean v1PreReleseFlag, final String v2, boolean v2PreReleseFlag, int comparasin) {
+            this.v1 = v1;
+            this.v1PreReleseFlag = v1PreReleseFlag;
+            this.v2 = v2;
+            this.v2PreReleseFlag = v2PreReleseFlag;
+            this.comparasin = comparasin;
+        }
+
+        public VersionComparison(String v1, String v2) {
+            this.v1 = v1;
+            this.v2 = v2;
+
+            if (v1.contains("pre_") && v2.contains("pre_")) {
+                v1 = v1.replace("pre_", "").replace("_", ".");
+                v2 = v2.replace("pre_", "").replace("_", ".");
+                v1PreReleseFlag = true;
+                v2PreReleseFlag = true;
+            } else if (v1.contains("pre_") && !v2.contains("_pre")) { // if only one of the releses are pre preselese then get rid of the pre relese number and only compair versions
+                v1 = v1.replace("pre_", "").split("_")[0];
+                v1PreReleseFlag = true;
+                v2PreReleseFlag = false;
+            } else if (v2.contains("pre_") && !v1.contains("_pre")) {
+                v2 = v2.replace("pre_", "").split("_")[0];
+                v1PreReleseFlag = false;
+                v2PreReleseFlag = true;
+            } else {
+                v1PreReleseFlag = false;
+                v2PreReleseFlag = false;
+            }
+
+            String[] v1a = v1.split("\\.");
+            String[] v2a = v2.split("\\.");
+            int length = Math.max(v1a.length, v2a.length);
+
+            int tempCom = 0;
+
+            for (int i = 0; i < length; i++) {
+
+                int v1PlaceValue;
+                int v2PlaceValue;
+
+                try {
+                    v1PlaceValue = Integer.parseInt(v1a[i]);
+                } catch (Exception e) {
+                    v1PlaceValue = 0;
+                }
+
+                try {
+                    v2PlaceValue = Integer.parseInt(v2a[i]);
+                } catch (Exception e) {
+                    v2PlaceValue = 0;
+                }
+                if (Integer.compare(v1PlaceValue, v2PlaceValue) == 0) {
+
+                } else {
+                    if (tempCom == 0) {
+                        tempCom = Integer.compare(v1PlaceValue, v2PlaceValue); //return Integer.compare(v1PlaceValue, v2PlaceValue);
+                    }
+                    break;
+                }
+            }
+            if (tempCom != 0) {
+                this.comparasin = tempCom;
+            } else {
+                this.comparasin = 0;
+            }
+
+        }
+
+        public boolean isV1EqualToV2() {
+            return this.comparasin == 0;
+        }
+
+        public boolean isV1GreaterThanV2() {
+            return this.comparasin > 0;
+        }
+
+        public boolean isV1LessThanV2() {
+            return this.comparasin < 0;
+        }
+    }
+
+    public static int compareVersions(final String v1, final String v2) {
+
+        boolean v1PreReleseFlag = false;
+        boolean v2PreReleseFlag = false;
+
+        String tempV1 = v1;
+        String tempV2 = v2;
+
+        if (v1.contains("pre_") && v2.contains("pre_")) {
+            tempV1 = v1.replace("pre_", "").replace("_", ".");
+            tempV2 = v2.replace("pre_", "").replace("_", ".");
+            v1PreReleseFlag = true;
+            v2PreReleseFlag = true;
+        } else {
+            if (v1.contains("pre_") && !v2.contains("_pre")) { // if only one of the releses are pre preselese then get rid of the pre relese number and only compair versions
+                tempV1 = v1.replace("pre_", "").split("_")[0];
+                v1PreReleseFlag = true;
+            }
+            if (v2.contains("pre_") && !v1.contains("_pre")) {
+                tempV2 = v2.replace("pre_", "").split("_")[0];
+                v2PreReleseFlag = true;
+            }
+        }
+
+        String[] v1a = tempV1.split("\\.");
+        String[] v2a = tempV2.split("\\.");
         int length = Math.max(v1a.length, v2a.length);
 
         for (int i = 0; i < length; i++) {

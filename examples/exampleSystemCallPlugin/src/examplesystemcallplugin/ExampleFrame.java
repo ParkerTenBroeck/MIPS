@@ -5,14 +5,15 @@
  */
 package examplesystemcallplugin;
 
+import javax.swing.JFrame;
 import javax.swing.Timer;
-import org.parker.mips.PluginHandler.SystemCallPluginHandler.SystemCallPluginFrame;
+import org.parker.mips.plugin.syscall.SystemCallPluginFrame;
 
 /**
  *
  * @author parke
  */
-public class ExampleFrame extends SystemCallPluginFrame {
+public class ExampleFrame extends JFrame {
 
     public void opExampleFrame() {
         if (!isVisible()) {

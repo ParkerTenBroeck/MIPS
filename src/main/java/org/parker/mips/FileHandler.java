@@ -12,8 +12,8 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFileChooser;
-import org.parker.mips.GUI.ASM_GUI;
-import org.parker.mips.GUI.MainGUI;
+import org.parker.mips.gui.ASM_GUI;
+import org.parker.mips.gui.MainGUI;
 
 /**
  *
