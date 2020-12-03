@@ -5,8 +5,8 @@
  */
 package org.parker.mips.plugin.syscall;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
@@ -28,8 +28,10 @@ public abstract class SystemCallPlugin extends PluginBase {
     private final SystemCallPlugin instance;
     private final SystemCall[] systemCalls;
     private final SystemCall.SystemCallData[] systemCallData;
-    
-    private Object ad;
+
+    private ArrayList<Node<ActionListener>> reigsteredFrameListeners = null;
+    private ArrayList<Node<ActionListener>> registeredInternalExamples = null;
+    private ArrayList<Node<ActionListener>> as = null;
 
     public SystemCallPlugin() {
         {
@@ -64,18 +66,7 @@ public abstract class SystemCallPlugin extends PluginBase {
         this.instance = this;
     }
 
-    public static class NamedActionListener {
-
-        public final String FRAME_NAME;
-        public final ActionListener AL;
-
-        public NamedActionListener(String name, ActionListener al) {
-            this.FRAME_NAME = name;
-            this.AL = al;
-        }
-    }
-
-    public static class Node<T> {
+    public static final class Node<T> {
 
         public final String name;
         private T data = null;
@@ -95,6 +86,11 @@ public abstract class SystemCallPlugin extends PluginBase {
         public Node(T data) {
             this.data = data;
             this.name = null;
+        }
+
+        public Node(String name, Node<T>[] children) {
+            this.name = name;
+            this.addChildren(children);
         }
 
         public Node<T> addChild(String name, T data) {
@@ -125,9 +121,21 @@ public abstract class SystemCallPlugin extends PluginBase {
             return child;
         }
 
+        public void addChildren(Node<T>[] children) {
+            if (this.children == null) {
+                this.children = new ArrayList();
+            }
+
+            for (Node<T> each : children) {
+                each.setParent(this);
+                this.children.add(each);
+            }
+
+        }
+
         public void addChildren(ArrayList<Node<T>> children) {
-            if (children == null) {
-                children = new ArrayList();
+            if (this.children == null) {
+                this.children = new ArrayList();
             }
 
             children.forEach(each -> each.setParent(this));
@@ -139,6 +147,15 @@ public abstract class SystemCallPlugin extends PluginBase {
         }
 
         public ArrayList<Node<T>> getChildren() {
+            return children;
+        }
+
+        public ArrayList<Node<T>> getChildernAndDestroyParent() {
+            if (this.children == null) {
+                return null;
+            }
+
+            children.forEach(each -> each.setParent(null));
             return children;
         }
 
@@ -156,6 +173,21 @@ public abstract class SystemCallPlugin extends PluginBase {
 
         public Node<T> getParent() {
             return parent;
+        }
+
+    }
+
+    protected class ResourceActionLoader implements ActionListener {
+
+        private final String resources;
+
+        public ResourceActionLoader(String resources) {
+            this.resources = resources;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            System.out.println(resources);
         }
 
     }
@@ -181,23 +213,34 @@ public abstract class SystemCallPlugin extends PluginBase {
     }
 
     /**
-     * This method returns all of opening events the plugin contains
+     * Registers a
      *
-     * This allows for each plugin to have multiple frames accociated with it
+     * @param data
      *
-     * @return returns null if no opening events are used
+     * @return if the data was register correctly or not
      */
-    public NamedActionListener[] getAllSystemCallFrameNamedActionListeners() {
-        return null;
+    protected final boolean registerInternalExamples(Node<ActionListener> data) {
+        this.registeredInternalExamples = data.getChildernAndDestroyParent();
+        return true;
     }
 
     /**
-     * NOT YET IMPLEMENTED
      *
+     * @param data
      * @return
      */
-    protected Node<URL> getInternalSystemCallExampleResources() {
-        return null;
+    protected final boolean registerFrameListeners(Node<ActionListener> data) {
+        this.reigsteredFrameListeners = data.getChildernAndDestroyParent();
+        return true;
+    }
+
+    //protected final boolean register
+    public final ArrayList<Node<ActionListener>> getInternalExamples() {
+        return registeredInternalExamples;
+    }
+
+    public final ArrayList<Node<ActionListener>> getFrameListeners() {
+        return this.reigsteredFrameListeners;
     }
 
     private SystemCall.SystemCallData getSystemCallDataFromName(String name) {
@@ -211,14 +254,9 @@ public abstract class SystemCallPlugin extends PluginBase {
 
     protected abstract class PRSystemCall extends SystemCall {
 
-        public PRSystemCall(String systemCallName, Object o) {
-            super(instance.getSystemCallDataFromName(systemCallName), systemCallName, instance);
-        }
-
         public PRSystemCall(String systemCallName) {
             super(getSystemCallDataFromName(systemCallName), systemCallName, instance);
         }
-
     }
 
     /**

@@ -136,6 +136,7 @@ public class PluginLoader {
             
         } catch (Exception e) {
             logPluginLoaderError(e.toString());
+            e.printStackTrace();
         }
     }
     

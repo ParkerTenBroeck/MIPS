@@ -5,6 +5,8 @@
  */
 package org.parker.mips.plugin.internal.syscall;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import org.parker.mips.plugin.syscall.SystemCallPlugin;
 
 /**
@@ -17,7 +19,7 @@ public class UserIOSystemCalls extends SystemCallPlugin {
 
     public UserIOSystemCalls() {
 
-        registerSystemCall(new PRSystemCall("USERIO_PRINT_INT", this) {
+        registerSystemCall(new PRSystemCall("USERIO_PRINT_INT") {
             @Override
             public void handleSystemCall() {
                 userIO.openUserIO();
@@ -25,7 +27,7 @@ public class UserIOSystemCalls extends SystemCallPlugin {
             }
         });
 
-        registerSystemCall(new PRSystemCall("USERIO_PRINT_ASCIIZ_STRING", this) {
+        registerSystemCall(new PRSystemCall("USERIO_PRINT_ASCIIZ_STRING") {
             @Override
             public void handleSystemCall() {
                 userIO.openUserIO();
@@ -61,14 +63,14 @@ public class UserIOSystemCalls extends SystemCallPlugin {
                 }
             }
         });
-        registerSystemCall(new PRSystemCall("USERIO_READ_USER_INTEGER", this) {
+        registerSystemCall(new PRSystemCall("USERIO_READ_USER_INTEGER") {
             @Override
             public void handleSystemCall() {
                 userIO.openUserIO();
                 setRegister(2, UserIO.getInt());
             }
         });
-        registerSystemCall(new PRSystemCall("USERIO_READ_USER_STRING", this) {
+        registerSystemCall(new PRSystemCall("USERIO_READ_USER_STRING") {
             @Override
             public void handleSystemCall() {
                 int bufferSize = getRegister(5);
@@ -84,27 +86,37 @@ public class UserIOSystemCalls extends SystemCallPlugin {
                 setWord(memoryOffset + (i + 1) * 4, 0); //terminating zero
             }
         });
-        registerSystemCall(new PRSystemCall("USERIO_PRINT_CHAR", this) {
+        registerSystemCall(new PRSystemCall("USERIO_PRINT_CHAR") {
             @Override
             public void handleSystemCall() {
                 userIO.openUserIO();
                 userIO.outputUnicode(getRegister(4));
             }
         });
-        registerSystemCall(new PRSystemCall("USERIO_READ_USER_CHAR", this) {
+        registerSystemCall(new PRSystemCall("USERIO_READ_USER_CHAR") {
             @Override
             public void handleSystemCall() {
                 userIO.openUserIO();
                 setRegister(2, userIO.getNextChar());
             }
         });
-        registerSystemCall(new PRSystemCall("USERIO_LAST_USER_CHAR", this) {
+        registerSystemCall(new PRSystemCall("USERIO_LAST_USER_CHAR") {
             @Override
             public void handleSystemCall() {
                 userIO.openUserIO();
                 setRegister(2, userIO.lastChar());
             }
         });
+
+        registerFrameListeners(new Node("Root",
+                new Node[]{
+                    new Node("UserIO", new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent ae) {
+                            userIO.setVisible(true);
+                            userIO.requestFocus();
+                        }
+                    })}));
     }
 
     @Override
@@ -112,13 +124,13 @@ public class UserIOSystemCalls extends SystemCallPlugin {
         //nothing
     }
 
-    @Override
-    public NamedActionListener[] getAllSystemCallFrameNamedActionListeners() {
-        return new NamedActionListener[]{new NamedActionListener("UserIO", (ae) -> {
-            this.userIO.setVisible(true);
-            this.userIO.requestFocus();
-        })};
-    }
+//    @Override
+//    public NamedActionListener[] getAllSystemCallFrameNamedActionListeners() {
+//        return new NamedActionListener[]{new NamedActionListener("UserIO", (ae) -> {
+//            this.userIO.setVisible(true);
+//            this.userIO.requestFocus();
+//        })};
+//    }
 
     @Override
     public boolean onUnload() {

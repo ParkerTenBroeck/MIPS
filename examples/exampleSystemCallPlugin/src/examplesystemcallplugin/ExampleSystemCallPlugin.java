@@ -5,7 +5,8 @@
  */
 package examplesystemcallplugin;
 
-import java.net.URL;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import org.parker.mips.plugin.syscall.SystemCallPlugin;
 
 /**
@@ -47,6 +48,26 @@ public class ExampleSystemCallPlugin extends SystemCallPlugin {
             }
         });
 
+        registerInternalExamples(new Node("Root",
+                new Node[]{
+                    new Node("Test 1 Folder",
+                            new Node[]{
+                                new Node("File 3", new ResourceActionLoader("exampleProgram1.asm")),
+                                new Node("File 4", new ResourceActionLoader("exampleProgram2.asm"))
+                            }),
+                    new Node("File 1", new ResourceActionLoader("exampleProgram1.asm")),
+                    new Node("File 2", new ResourceActionLoader("exampleProgram2.asm"))
+                }));
+
+        registerFrameListeners(new Node("Root",
+                new Node[]{
+                    new Node("Clock", new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent ae) {
+                            exampleFrame.setVisible(true);
+                            exampleFrame.requestFocus();
+                        }
+                    })}));
     }
 
     @Override
@@ -57,28 +78,8 @@ public class ExampleSystemCallPlugin extends SystemCallPlugin {
     @Override
     public boolean onUnload() {
         //nessisary code to unload the plugin
+
+        exampleFrame.dispose();
         return true; //return false if there was an error
-    }
-
-    @Override
-    public NamedActionListener[] getAllSystemCallFrameNamedActionListeners() {
-
-        return new NamedActionListener[]{new NamedActionListener("Clock", (ae) -> {
-            this.exampleFrame.setVisible(true);
-            this.exampleFrame.requestFocus();
-        })};
-    }
-
-    @Override
-    public Node<URL> getInternalSystemCallExampleResources() {
-
-        Class<?> c = this.getClass();
-
-        Node<URL> root = new Node("Root");
-        Node<URL> temp = root.addChild("Path test 1");
-        temp.addChild("Prog 1", c.getResource("exampleProgram1.asm"));
-        temp.addChild("Prog 2", c.getResource("exampleProgram2.asm"));
-        
-        return root;
     }
 }

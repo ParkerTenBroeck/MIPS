@@ -1,4 +1,4 @@
-name: Default_System_Calls
+name: Base
 main: org.parker.mips.plugin.internal.syscall.DefaultSystemCalls
 version: 1.0
 author: Parker TenBroeck

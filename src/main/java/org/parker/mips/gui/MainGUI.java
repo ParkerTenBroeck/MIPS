@@ -8,16 +8,12 @@ package org.parker.mips.gui;
 import org.parker.mips.compiler.ASMCompiler;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -33,11 +29,9 @@ import org.parker.mips.processor.Processor;
 import org.parker.mips.ResourceHandler;
 import org.parker.mips.UpdateHandler;
 import org.parker.mips.OptionsHandler;
-import org.parker.mips.plugin.InvalidDescriptionException;
-import org.parker.mips.plugin.InvalidPluginException;
-import org.parker.mips.plugin.syscall.SystemCallPlugin.NamedActionListener;
 import org.parker.mips.plugin.syscall.SystemCallPluginHandler;
 import org.parker.mips.plugin.PluginLoader;
+import org.parker.mips.plugin.syscall.SystemCallPlugin.Node;
 
 /**
  *
@@ -254,32 +248,54 @@ public class MainGUI extends javax.swing.JFrame {
 
                 registerSystemCallPluginsJMenu.add(tempMenu);
             }
-
-            NamedActionListener[] foe = null;
-
-            try {
-                foe = plugin.getAllSystemCallFrameNamedActionListeners();
-            } catch (AbstractMethodError e) {
-                SystemCallPluginHandler.logSystemCallPluginHandlerError("System Call Plugin Did NOT implement abstract method: getAllSystemCallFrameNamedActionListeners. Unloading for saftey");
-                SystemCallPluginHandler.unRegisterSystemCallPlugin(plugin);
+            {
+                ArrayList<Node<ActionListener>> temp = plugin.getFrameListeners();
+                if (temp == null) {
+                    continue;
+                }
+                ThemedJMenu tempMenu = new ThemedJMenu();
+                tempMenu.setText(plugin.DESCRIPTION.NAME.replaceAll("_", " "));
+                temp.forEach((t) -> {
+                    generateJMenuFromNodeStructure(tempMenu, t);
+                });
+                systemCallFrameJMenu.add(tempMenu);
             }
-            if (plugin == null || foe == null) {
-                continue;
+            {
+                ArrayList<Node<ActionListener>> temp = plugin.getInternalExamples();
+                if (temp == null) {
+                    continue;
+                }
+                ThemedJMenu tempMenu = new ThemedJMenu();
+                tempMenu.setText(plugin.DESCRIPTION.NAME.replaceAll("_", " "));
+                temp.forEach((t) -> {
+                    generateJMenuFromNodeStructure(tempMenu, t);
+                });
+                systemCallExampleJMenu.add(tempMenu);
             }
 
-            ThemedJMenu tempMenu = new ThemedJMenu();
-
-            tempMenu.setText(plugin.DESCRIPTION.NAME.replaceAll("_", " "));
-
-            for (int i = 0; i < foe.length; i++) {
-                ThemedJMenuItem tempItem = new ThemedJMenuItem();
-                tempItem.setText(foe[i].FRAME_NAME);
-                tempItem.addActionListener(foe[i].AL);
-                tempMenu.add(tempItem);
-            }
-
-            systemCallFrameJMenu.add(tempMenu);
         }
+    }
+
+    private static ThemedJMenu generateJMenuFromNodeStructure(ThemedJMenu menu, Node<ActionListener> node) {
+        if (node == null) {
+            return menu;
+        }
+
+        if (node.hasChildern()) { // if node has no childerent then add to menu as an item
+            ThemedJMenuItem temp = new ThemedJMenuItem();
+            temp.setText(node.name);
+            temp.addActionListener((ActionListener) node.getData());
+            menu.add(temp);
+            return menu;
+        }
+
+        ThemedJMenu temp = new ThemedJMenu();
+        temp.setText(node.name);
+        node.getChildernAndDestroyParent().forEach((t) -> {
+            generateJMenuFromNodeStructure(temp, t);
+        });
+        menu.add(temp);
+        return menu;
     }
 
 //    public static void addSystemCallPluginToPluginLists(){
@@ -401,6 +417,7 @@ public class MainGUI extends javax.swing.JFrame {
         adaptiveMemoryMenuButton = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJCheckBoxMenuItem();
         systemCallPluginsJMenu = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu();
         systemCallFrameJMenu = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu();
+        systemCallExampleJMenu = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu();
         registerSystemCallPluginsJMenu = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu();
         loadPluginJMenuItem = new org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenuItem();
 
@@ -779,6 +796,9 @@ public class MainGUI extends javax.swing.JFrame {
         systemCallFrameJMenu.setText("SystemCall Frames");
         systemCallPluginsJMenu.add(systemCallFrameJMenu);
 
+        systemCallExampleJMenu.setText("SystemCall Examples");
+        systemCallPluginsJMenu.add(systemCallExampleJMenu);
+
         registerSystemCallPluginsJMenu.setText("Registered SystemCall Plugins");
         systemCallPluginsJMenu.add(registerSystemCallPluginsJMenu);
 
@@ -974,6 +994,7 @@ public class MainGUI extends javax.swing.JFrame {
     private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJButton singleStepButton;
     private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJToggleButton startButton;
     private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJButton stopButton;
+    private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu systemCallExampleJMenu;
     private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu systemCallFrameJMenu;
     private static org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu systemCallPluginsJMenu;
     private static javax.swing.JPanel topButtonBarPanel;

@@ -6,6 +6,8 @@
 package org.parker.mips.plugin;
 
 import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
 
 /**
  *
@@ -29,5 +31,13 @@ public abstract class PluginBase implements Plugin {
 
         this.DESCRIPTION = classLoader.DESCRIPTION;
         this.PLUGIN_FILE = classLoader.FILE;
+    }
+
+    protected final URL getResources(String string) {
+        return this.getClass().getClassLoader().getResource(string);
+    }
+
+    protected final InputStream getResourcesAsStream(String string) {
+        return this.getClass().getClassLoader().getResourceAsStream(string);
     }
 }

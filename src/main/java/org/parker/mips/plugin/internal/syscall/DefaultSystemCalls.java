@@ -27,13 +27,13 @@ public class DefaultSystemCalls extends SystemCallPlugin {
                 logRunTimeSystemCallMessage("Halted Processor");
             }
         });
-        registerSystemCall(new PRSystemCall("SYSTEM_RANDOM_NUM", this) {
+        registerSystemCall(new PRSystemCall("SYSTEM_RANDOM_NUM") {
             @Override
             public void handleSystemCall() {
                 setRegister(2, (int) (Math.random() * (getRegister(5) + 1 - getRegister(4))) + getRegister(4));
             }
         });
-        registerSystemCall(new PRSystemCall("SYSTEM_SLEEP_MILLS", this) {
+        registerSystemCall(new PRSystemCall("SYSTEM_SLEEP_MILLS") {
             @Override
             public void handleSystemCall() {
                 try {
@@ -43,7 +43,7 @@ public class DefaultSystemCalls extends SystemCallPlugin {
                 }
             }
         });
-        registerSystemCall(new PRSystemCall("SYSTEM_SLEEP_DELTA_MILLS", this) {
+        registerSystemCall(new PRSystemCall("SYSTEM_SLEEP_DELTA_MILLS") {
 
             long lastTimeCheck = 0;
 
@@ -60,13 +60,13 @@ public class DefaultSystemCalls extends SystemCallPlugin {
 
             }
         });
-        registerSystemCall(new PRSystemCall("SYSTEM_BREAK_POINT", this) {
+        registerSystemCall(new PRSystemCall("SYSTEM_BREAK_POINT") {
             @Override
             public void handleSystemCall() {
                 throwBreakPoint();
             }
         });
-        registerSystemCall(new PRSystemCall("SYSTEM_GET_MILLIS", this) {
+        registerSystemCall(new PRSystemCall("SYSTEM_GET_MILLIS") {
             @Override
             public void handleSystemCall() {
                 setRegister(2, (int) System.currentTimeMillis());

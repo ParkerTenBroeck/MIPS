@@ -179,6 +179,11 @@
                 <Property name="text" type="java.lang.String" value="SystemCall Frames"/>
               </Properties>
             </Menu>
+            <Menu class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu" name="systemCallExampleJMenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="SystemCall Examples"/>
+              </Properties>
+            </Menu>
             <Menu class="org.parker.mips.gui.ThemedJFrameComponents.ThemedJMenu" name="registerSystemCallPluginsJMenu">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Registered SystemCall Plugins"/>
