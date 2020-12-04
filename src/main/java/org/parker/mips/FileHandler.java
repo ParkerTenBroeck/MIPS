@@ -5,8 +5,11 @@
  */
 package org.parker.mips;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -40,6 +43,46 @@ public class FileHandler {
         }
         currentASMFile = null;
         currentMXNFile = null;
+        return true;
+    }
+
+    public static boolean loadASMExampleFromStream(InputStream stream) {
+        InputStreamReader isr = null;
+        BufferedReader br = null;
+        ArrayList<String> temp = new ArrayList<String>();
+        try {
+            isr = new InputStreamReader(stream);
+            br = new BufferedReader(isr);
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                temp.add(line);
+            }
+
+            loadedASMFile = temp;
+            isASMFileSaved = true;
+            currentASMFile = null;
+            currentMXNFile = null;
+            currentLoadedASMFileAbsolutePath = null;
+            return true;
+        } catch (Exception e) {
+            logFileHandlerError("Failed to load stream: " + e);
+        } finally {
+            try {
+                isr.close();
+            } catch (Exception e) {
+
+            }
+            try {
+                br.close();
+            } catch (Exception e) {
+            }
+            try {
+                stream.close();
+            } catch (Exception e) {
+
+            }
+        }
         return true;
     }
 

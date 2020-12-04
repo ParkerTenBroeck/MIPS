@@ -6,10 +6,14 @@
 package org.parker.mips.plugin;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Map;
+import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
 import org.parker.mips.MIPS;
 
 /**
@@ -70,6 +74,33 @@ public class PluginClassLoader extends URLClassLoader {
         } else {
             return super.loadClass(string);
         }
+    }
+
+    @Override
+    public InputStream getResourceAsStream(String data) {
+        JarFile j = null;
+        InputStream i = null;
+        try {
+            j = new JarFile(this.FILE);
+            ZipEntry entry = j.getEntry(data);
+            i = j.getInputStream(entry);
+            if (i != null) {
+                return i;
+            }
+        } catch (IOException ex) {
+            try {
+                j.close();
+            } catch (Exception e) {
+            }
+            try {
+                i.close();
+            } catch (Exception e) {
+
+            }
+            return super.getResourceAsStream(data);
+        }
+
+        return null;
     }
 
     @Override

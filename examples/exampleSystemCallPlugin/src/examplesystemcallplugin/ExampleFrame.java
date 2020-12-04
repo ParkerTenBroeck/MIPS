@@ -5,7 +5,6 @@
  */
 package examplesystemcallplugin;
 
-import javax.swing.JFrame;
 import javax.swing.Timer;
 import org.parker.mips.plugin.syscall.SystemCallPluginFrame;
 
@@ -13,7 +12,7 @@ import org.parker.mips.plugin.syscall.SystemCallPluginFrame;
  *
  * @author parke
  */
-public class ExampleFrame extends JFrame {
+public class ExampleFrame extends SystemCallPluginFrame {
 
     public void opExampleFrame() {
         if (!isVisible()) {
@@ -75,8 +74,6 @@ public class ExampleFrame extends JFrame {
         jRadioButton1 = new javax.swing.JRadioButton();
         hoursLable = new javax.swing.JLabel();
         minsLable = new javax.swing.JLabel();
-
-        setAlwaysOnTop(true);
 
         hoursSlider.setMajorTickSpacing(1);
         hoursSlider.setMaximum(12);

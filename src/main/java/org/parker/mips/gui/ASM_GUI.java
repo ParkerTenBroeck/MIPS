@@ -34,7 +34,7 @@ public class ASM_GUI extends javax.swing.JPanel {
         //return asmTextPane.getText().toCharArray();
     }
 
-    static void setTextAreaFromASMFile() {
+    public static void setTextAreaFromASMFile() {
         //aSMFormattedTextArea1.textArea.setText(new String(FileHandler.getLoadedASMFile()));
         setTextAreaFromList(FileHandler.getLoadedASMFile());
     }
