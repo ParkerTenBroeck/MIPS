@@ -128,10 +128,10 @@ public class PluginLoader {
             SystemCallPluginHandler.registerSystemCallPlugin((SystemCallPlugin) loadInternalPlugin("/org/parker/mips/plugin/internal/syscall/screen.yml"));
             SystemCallPluginHandler.registerSystemCallPlugin((SystemCallPlugin) loadInternalPlugin("/org/parker/mips/plugin/internal/syscall/userio.yml"));
 
-            SystemCallPluginHandler.registerSystemCallPlugin((SystemCallPlugin) loadPlugin(new File("C:\\GitHub\\MIPS\\examples\\exampleSystemCallPlugin\\dist\\exampleSystemCallPlugin.jar")));
-            if (true) {
-                return;
-            }
+//            SystemCallPluginHandler.registerSystemCallPlugin((SystemCallPlugin) loadPlugin(new File("C:\\GitHub\\MIPS\\examples\\exampleSystemCallPlugin\\dist\\exampleSystemCallPlugin.jar")));
+//            if (true) {
+//                return;
+//            }
 
             File file = new File(ResourceHandler.SYS_CALLS_PLUGIN_PATH);
             File files[] = file.listFiles();
