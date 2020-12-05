@@ -3,7 +3,7 @@ name: ExamplePlugin
 main: examplesystemcallplugin.ExampleSystemCallPlugin
 version: 1.1
 #not required for all plugins
-description: This is an example pluign.
+description: This is an example clock plugin that adds the ability to write to a GUI clock and read from number sliders.
 author: Parker TenBroeck
 authors: [Parker TenBroeck, Jim Williamson]
 website: https://github.com/ParkerTenBroeck/MIPS
