@@ -1,8 +1,14 @@
+#required for all plugins
 name: ExamplePlugin
-version: 1.1
 main: examplesystemcallplugin.ExampleSystemCallPlugin
-authors: [Parker TenBroeck]
-description: This is an example pluign
+version: 1.1
+#not required for all plugins
+description: This is an example pluign.
+author: Parker TenBroeck
+authors: [Parker TenBroeck, Jim Williamson]
+website: https://github.com/ParkerTenBroeck/MIPS
+prefix: Example Plugin
+#required for SystemCall plugins
 system_calls:
     EXAMPLE_SET_HOURS: 
         SYSTEM_CALL_NUMBER: 200
