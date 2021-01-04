@@ -32,7 +32,7 @@ public class INCLUDE extends Statement {
         if (path.contains(":")) {
 
         } else {
-            path = FileHandler.getASMFilePath().substring(0, FileHandler.getASMFilePath().lastIndexOf(ResourceHandler.FILE_SEPERATOR) + 1) + path;
+            path = FileHandler.getASMFilePath().substring(0, FileHandler.getASMFilePath().lastIndexOf(FileHandler.FILE_SEPERATOR) + 1) + path;
         }
 
         try {

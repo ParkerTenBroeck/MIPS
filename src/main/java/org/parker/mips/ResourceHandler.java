@@ -19,6 +19,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
+import static org.parker.mips.FileHandler.FILE_SEPERATOR;
 import org.parker.mips.gui.MainGUI;
 
 /**
@@ -26,9 +27,6 @@ import org.parker.mips.gui.MainGUI;
  * @author parke
  */
 public class ResourceHandler {
-
-    public static final String FILE_SEPERATOR = File.separator;
-
     //public static final String documentsPath = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
     public static final String DEFAULT_PATH = FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + FILE_SEPERATOR + "MIPS";
 
@@ -133,7 +131,7 @@ public class ResourceHandler {
                         continue;
                     }
                     if (entry.getName().startsWith(jarPath)) {
-                        File toWrite = new File(destPath + ResourceHandler.FILE_SEPERATOR + entry.getName().replaceFirst(jarPath, ""));
+                        File toWrite = new File(destPath + FileHandler.FILE_SEPERATOR + entry.getName().replaceFirst(jarPath, ""));
                         //Log.logMessage(toWrite.getAbsolutePath());
                         //System.out.println(toWrite.getAbsoluteFile() + " " + entry.getName());
                         if (entry.isDirectory()) {

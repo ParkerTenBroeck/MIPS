@@ -15,7 +15,6 @@ import java.io.FileReader;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Set;
 
@@ -71,7 +70,7 @@ public class OptionsHandler {
         if (name != null) {
             name = name.split("\\.")[0];
         }
-        readOptionsFromFile(ResourceHandler.USER_SAVED_CONFIG_PATH + ResourceHandler.FILE_SEPERATOR + name + "\\.json");
+        readOptionsFromFile(ResourceHandler.USER_SAVED_CONFIG_PATH + FileHandler.FILE_SEPERATOR + name + "\\.json");
     }
     
     public static void readOptionsFromCustomFile(File file) {
@@ -88,7 +87,7 @@ public class OptionsHandler {
         if (name != null) {
             name = name.split("\\.")[0];
         }
-        saveOptionsToFile(ResourceHandler.USER_SAVED_CONFIG_PATH + ResourceHandler.FILE_SEPERATOR + name + "\\.json");
+        saveOptionsToFile(ResourceHandler.USER_SAVED_CONFIG_PATH + FileHandler.FILE_SEPERATOR + name + "\\.json");
     }
     
     public static void saveOptionsToCustomFile(File file) {

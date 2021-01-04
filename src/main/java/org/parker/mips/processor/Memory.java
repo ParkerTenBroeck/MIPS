@@ -166,7 +166,7 @@ public class Memory {
             if (currentIndex >= memory.length * 2) {
                 temp = new byte[currentIndex + 16];
             } else {
-                temp = new byte[message.length() * 2];
+                temp = new byte[memory.length * 2];
             }
             for (int i = 0; i < memory.length; i++) {
                 temp[i] = memory[i];

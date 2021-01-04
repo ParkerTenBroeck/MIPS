@@ -223,7 +223,7 @@ public class ASMCompiler {
         }
         maxSizeInstruction++;
 
-        File file = new File(ResourceHandler.COMPILER_PATH + ResourceHandler.FILE_SEPERATOR + "CompilationInfo.txt");
+        File file = new File(ResourceHandler.COMPILER_PATH + FileHandler.FILE_SEPERATOR + "CompilationInfo.txt");
 
         try (PrintWriter out = new PrintWriter(file)) {
 

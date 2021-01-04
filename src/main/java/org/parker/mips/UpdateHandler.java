@@ -116,7 +116,7 @@ public class UpdateHandler {
             }
         }
 
-        String[] run = {"java", "-jar", ResourceHandler.DEFAULT_PATH + ResourceHandler.FILE_SEPERATOR + "updater.jar", MIPS.JAR_PATH, latestVersionLink};
+        String[] run = {"java", "-jar", ResourceHandler.DEFAULT_PATH + FileHandler.FILE_SEPERATOR + "updater.jar", MIPS.JAR_PATH, latestVersionLink};
         try {
             Runtime.getRuntime().exec(run);
         } catch (Exception ex) {

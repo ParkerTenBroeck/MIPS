@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import org.parker.mips.FileHandler;
 import org.parker.mips.OptionsHandler;
 import org.parker.mips.ResourceHandler;
 
@@ -257,12 +258,12 @@ public class PreProcessor {
     }
 
     private static void writePreProcessedFile(ArrayList<UserLine> fileInfo) {
-        File file = new File(ResourceHandler.COMPILER_PATH + ResourceHandler.FILE_SEPERATOR + "PreProcessedFile.asm");
+        File file = new File(ResourceHandler.COMPILER_PATH + FileHandler.FILE_SEPERATOR + "PreProcessedFile.asm");
         writeArrayListOfUserLinesToFile(fileInfo, file);
     }
 
     private static void writeCleanedFile(ArrayList<UserLine> fileInfo) {
-        File file = new File(ResourceHandler.COMPILER_PATH + ResourceHandler.FILE_SEPERATOR + "CleanedFile.asm");
+        File file = new File(ResourceHandler.COMPILER_PATH + FileHandler.FILE_SEPERATOR + "CleanedFile.asm");
         writeArrayListOfUserLinesToFile(fileInfo, file);
     }
 

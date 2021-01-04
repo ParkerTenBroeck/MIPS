@@ -19,9 +19,10 @@ import org.parker.mips.plugin.PluginLoader;
  */
 public class MIPS {
 
-    public static final String VERSION = "0.9.8";
+    public static final String VERSION = "0.9.8.0.1";
     public static final String JAR_PATH;
     //public static final String[] INSTRUCTIONS = new String[]{"add", "addu", "addi", "addiu", "and", "andi", "div", "divu", "mult", "multu", "nor", "or", "ori", "sll", "sllv", "sra", "srav", "srl", "srlv", "sub", "subu", "xor", "xori", "lhi", "llo", "slt", "sltu", "slti", "sltiu", "beq", "bgtz", "ble", "bne", "j", "jal", "jalr", "jr", "lb", "lbu", "lh", "lhu", "lw", "sb", "sh", "sw", "mfhi", "mflo", "mthi", "mtlo", "trap"};
+
 
     static {
         String tmp;
@@ -42,7 +43,6 @@ public class MIPS {
 
             }
         }
-
         OptionsHandler.readOptionsFromDefaultFile(); //loads Options from file 
 
         ResourceHandler.extractResources(); //loads all resorces into documents folder

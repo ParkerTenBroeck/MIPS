@@ -22,6 +22,7 @@ import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.util.Map;
 import java.util.Set;
+import org.parker.mips.FileHandler;
 import org.parker.mips.gui.MainGUI;
 import org.parker.mips.Log;
 import org.parker.mips.ResourceHandler;
@@ -246,12 +247,12 @@ public class ThemeHandler {
     }
 
     public static void readThemeFromThemeName(String name) {
-        readThemesFromFile(ResourceHandler.GUI_THEMES + ResourceHandler.FILE_SEPERATOR + name + ".json");
+        readThemesFromFile(ResourceHandler.GUI_THEMES + FileHandler.FILE_SEPERATOR + name + ".json");
 
     }
 
     public static void saveThemeAsThemeName(String name) {
-        saveThemesToFile(ResourceHandler.GUI_THEMES + ResourceHandler.FILE_SEPERATOR + name + ".json");
+        saveThemesToFile(ResourceHandler.GUI_THEMES + FileHandler.FILE_SEPERATOR + name + ".json");
     }
 
     private static void readThemesFromFile(String filePath) {

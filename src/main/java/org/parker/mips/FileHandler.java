@@ -24,6 +24,9 @@ import org.parker.mips.gui.MainGUI;
  */
 public class FileHandler {
 
+    public static final String FILE_SEPERATOR = File.separator;
+    public static final String FILE_DOT = ".";
+
     private static String currentLoadedASMFileAbsolutePath;
     private static File currentASMFile;
     private static File currentMXNFile;
@@ -115,15 +118,15 @@ public class FileHandler {
         String extention = null;
         String path = null;
         try {
-            extention = file.getPath().split("\\.")[1];
-            path = file.getPath().split("\\.")[0];
+            extention = getExtension(file);
+            path = file.getAbsolutePath().replace(FILE_DOT + extention, "");
         } catch (Exception e) {
-            Log.logError(file.getPath() + " is not a valid file");
+            Log.logError(file.getPath() + " is not a valid file" + e.toString());
             return false;
         }
 
         if (extention.equals("asm")) {
-            currentMXNFile = new File(file.getPath().replace("\\.asm", "\\.mxn"));
+            currentMXNFile = new File(path + FILE_DOT + "mxn");//new File(file.getPath().replace("\\.asm", "\\.mxn"));
             currentASMFile = file;
 
             try {
@@ -135,22 +138,38 @@ public class FileHandler {
             }
 
         } else if (extention.equals("mxn")) {
-            currentASMFile = new File(file.getPath().replace("\\.mxn", "\\.asm"));
+            currentASMFile = new File(path + FILE_DOT + "asm");//new File(file.getPath().replace("\\.mxn", "\\.asm"));;
             currentMXNFile = file;
 
-            try {
-                if (!currentASMFile.exists()) {
-                    currentASMFile.createNewFile();
-                }
-            } catch (Exception e) {
-                logFileHandlerError("Failed to create ASM File while loading ASM File");
+            if (!currentASMFile.exists()) {
+                currentASMFile = null;
             }
-
         } else if (extention.equals("mx")) {
             importMXFile(file);
 
+        } else if (extention.equals("txt")) { // text based
+
+            logFileHandlerWarning("Trying to load: " + file.getAbsolutePath() + " As an ASM File");
+            
+            currentMXNFile = new File(path + FILE_DOT + "mxn");//new File(file.getPath().replace("\\.asm", "\\.mxn"));
+            currentASMFile = file;
+
+            try {
+                if (!currentMXNFile.exists()) {
+                    currentMXNFile.createNewFile();
+                }
+            } catch (Exception e) {
+                logFileHandlerError("Failed to create MXN File while loading ASM File");
+            }
+
+        } else if (extention.equals("bin")) { //bin based
+            
+            logFileHandlerWarning("Trying to load: " + file.getAbsolutePath() + " As an MXN File");
+            
+            currentASMFile = null;
+            currentMXNFile = file;
         } else {
-            logFileHandlerError(file.getPath() + "/n is not a valid file");
+            logFileHandlerError(file.getPath() + "\n is not a valid file extention is not a supported file type: " + extention);
         }
         reloadAllFiles();
         return true;
@@ -221,7 +240,7 @@ public class FileHandler {
                     if (!pf.exists()) {
                         pf.mkdir();
                     }
-                    chosenFile = new File(pf.getAbsolutePath() + ResourceHandler.FILE_SEPERATOR + chosenFile.getName());
+                    chosenFile = new File(pf.getAbsolutePath() + FileHandler.FILE_SEPERATOR + chosenFile.getName());
                     if (chosenFile.exists()) {
                         int i = MainGUI.confirmBox("Warning", "This File Already Exists are you sure you want to overwrite it");
 
@@ -464,4 +483,27 @@ public class FileHandler {
         Log.logMessage("[FileHandler] " + message);
     }
 
+    public static String getExtension(String fileName) {
+        char ch;
+        int len;
+        if (fileName == null
+                || (len = fileName.length()) == 0
+                || (ch = fileName.charAt(len - 1)) == '/' || ch == '\\'
+                || //in the case of a directory
+                ch == '.') //in the case of . or ..
+        {
+            return "";
+        }
+        int dotInd = fileName.lastIndexOf('.'),
+                sepInd = Math.max(fileName.lastIndexOf('/'), fileName.lastIndexOf('\\'));
+        if (dotInd <= sepInd) {
+            return "";
+        } else {
+            return fileName.substring(dotInd + 1).toLowerCase();
+        }
+    }
+
+    public static String getExtension(File file) {
+        return getExtension(file.getAbsolutePath());
+    }
 }

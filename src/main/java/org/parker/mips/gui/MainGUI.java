@@ -887,7 +887,7 @@ public class MainGUI extends javax.swing.JFrame {
 
         //new HTMLFrame();
         try {
-            DesktopBrowser.openLinkInBrowser(ResourceHandler.DOCUMENTATION_PATH + ResourceHandler.FILE_SEPERATOR + "index.html");
+            DesktopBrowser.openLinkInBrowser(ResourceHandler.DOCUMENTATION_PATH + FileHandler.FILE_SEPERATOR + "index.html");
         } catch (Exception ex) {
             //Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
