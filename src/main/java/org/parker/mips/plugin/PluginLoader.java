@@ -68,7 +68,7 @@ public class PluginLoader {
                     jar = new JarFile(file);
                     entry = jar.getJarEntry(yamlPath);
                 } catch (IOException e) {
-                    throw new FileNotFoundException("Could not load Plugin at: " + file.getAbsolutePath() + " Error: " + e.toString());
+                    throw new FileNotFoundException("Could not load Plugin at: " + file.getAbsolutePath() + " \n" + Log.getFullExceptionMessage(e));
                 }
 
                 if (entry == null) {
@@ -103,7 +103,7 @@ public class PluginLoader {
                 try {
                     stream.close();
                 } catch (IOException e) {
-                    logPluginLoaderError(e.toString());
+                    logPluginLoaderError(Log.getFullExceptionMessage(e));
                 }
             }
         }
@@ -141,14 +141,13 @@ public class PluginLoader {
                         SystemCallPlugin scp = (SystemCallPlugin) loadPlugin(f);
                         SystemCallPluginHandler.registerSystemCallPlugin(scp);
                     } catch (Exception e) {
-                        logPluginLoaderError("Failed to load: " + f.getAbsolutePath() + " " + e.toString());
+                        logPluginLoaderError("Failed to load: " + f.getAbsolutePath() + "\n" + Log.getFullExceptionMessage(e));
                     }
                 }
             }
 
         } catch (Exception e) {
-            logPluginLoaderError(e.toString());
-            e.printStackTrace();
+            logPluginLoaderError(Log.getFullExceptionMessage(e));
         }
     }
 

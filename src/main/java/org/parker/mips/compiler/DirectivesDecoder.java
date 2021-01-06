@@ -8,6 +8,7 @@ package org.parker.mips.compiler;
 import org.parker.mips.compiler.data.UserLine;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.parker.mips.Log;
 
 /**
  *
@@ -55,7 +56,7 @@ public class DirectivesDecoder {
 
                 return tempByte;
             } catch (Exception e) {
-                ASMCompiler.DirectivesDecoderError("Invalid byte", line.realLineNumber);
+                ASMCompiler.DirectivesDecoderError("Invalid byte:\n" + Log.getFullExceptionMessage(e) , line.realLineNumber);
                 return new byte[0];
             }
 
@@ -75,7 +76,7 @@ public class DirectivesDecoder {
 
                 return tempByte;
             } catch (Exception e) {
-                ASMCompiler.DirectivesDecoderError("Invalid half word", line.realLineNumber);
+                ASMCompiler.DirectivesDecoderError("Invalid half word\n" + Log.getFullExceptionMessage(e), line.realLineNumber);
                 return new byte[0];
             }
 
@@ -97,7 +98,7 @@ public class DirectivesDecoder {
 
                 return tempByte;
             } catch (Exception e) {
-                ASMCompiler.DirectivesDecoderError("Invalid word", line.realLineNumber);
+                ASMCompiler.DirectivesDecoderError("Invalid word:\n" + Log.getFullExceptionMessage(e), line.realLineNumber);
                 return new byte[0];
             }
 

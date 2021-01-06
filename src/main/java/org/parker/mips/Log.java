@@ -10,6 +10,8 @@ import java.awt.Font;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.beans.PropertyChangeEvent;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import javax.swing.BoundedRangeModel;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
@@ -132,7 +134,7 @@ public class Log extends javax.swing.JPanel implements ThemableComponent {
         try {
             doc.insertString(doc.getLength(), message + "\n", att);
         } catch (Exception exc) {
-            exc.printStackTrace();
+            Log.logError(Log.getFullExceptionMessage(exc));
         }
 
     }
@@ -147,7 +149,7 @@ public class Log extends javax.swing.JPanel implements ThemableComponent {
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
         } catch (Exception e) {
-
+            Log.logError(Log.getFullExceptionMessage(e));
         }
 
         initComponents();
@@ -215,7 +217,22 @@ public class Log extends javax.swing.JPanel implements ThemableComponent {
             }
         });
 
-    }// </editor-fold>                        
+    }// </editor-fold>    
+
+    public static String getFullErrorMessage(Error e) {
+        StringWriter sw = new StringWriter();
+        e.printStackTrace(new PrintWriter(sw));
+        String exceptionAsString = sw.toString();
+        return exceptionAsString;
+    }
+
+    public static String getFullExceptionMessage(Exception e) {
+        StringWriter sw = new StringWriter();
+        e.printStackTrace(new PrintWriter(sw));
+        String exceptionAsString = sw.toString();
+        System.out.println(exceptionAsString);
+        return exceptionAsString;
+    }
 
     // Variables declaration - do not modify                     
     private static javax.swing.JScrollPane jScrollPane1;

@@ -65,7 +65,7 @@ public class ASMFormattedTextArea extends RTextScrollPane {
             Theme theme = Theme.load(in, (Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME));
             theme.apply(textArea);
         } catch (Exception e) {
-            Log.logError("Error loading SyntaxText area Theme " + name + ".xml: " + e.getMessage());
+            Log.logError("Error loading SyntaxText area Theme " + name + ".xml:\n" + Log.getFullExceptionMessage(e));
         }
 
         this.setBackground(textArea.getBackground());

@@ -283,7 +283,7 @@ public class ThemeHandler {
                     
 
                 } catch (Exception e) {
-                    logThemeHandlerError("Failed to read Theme file: " + e);
+                    logThemeHandlerError("Failed to read Theme file:\n" + Log.getFullExceptionMessage(e));
                 }
 
             });
@@ -295,7 +295,7 @@ public class ThemeHandler {
 
             logThemeHandlerSystemMessage("Successfully loaded " + file.getName() + "\n\n");
         } catch (Exception e) {
-            logThemeHandlerError("Failed to read Theme file: " + e);
+            logThemeHandlerError("Failed to read Theme file:\n" + Log.getFullExceptionMessage(e));
         } finally {
             try {
                 reader.close();
@@ -328,7 +328,7 @@ public class ThemeHandler {
 
             logThemeHandlerSystemMessage("Successfully saved " + file.getName() + "\n\n");
         } catch (Exception e) {
-            logThemeHandlerError("Failed to write Theme file: " + e);
+            logThemeHandlerError("Failed to write Theme file:\n" + Log.getFullExceptionMessage(e));
         } finally {
             try {
                 writer.close();

@@ -128,6 +128,7 @@ public class ResourceHandler {
                     try {
                         entry = enums.nextElement();
                     } catch (Exception e) {
+                        Log.logError(Log.getFullExceptionMessage(e));
                         continue;
                     }
                     if (entry.getName().startsWith(jarPath)) {
@@ -172,7 +173,7 @@ public class ResourceHandler {
                 }
             } catch (Exception ex) {
                 //System.out.println(ex);
-                logResourceHandlerWarning(ex.toString());
+                logResourceHandlerWarning(Log.getFullExceptionMessage(ex));
                 //Logger.getLogger(ResourceHandler.class.getName()).log(Level.SEVERE, null, ex);
                 //Log.logMessage("no");
                 return false;
@@ -189,7 +190,7 @@ public class ResourceHandler {
                 File dest = new File(destPath);
                 copyFolderReplaceOld(source, dest);
             } catch (Exception e) {
-                logResourceHandlerError("Cannot copy resources to Documents folder. Wrong path defined?");
+                logResourceHandlerError("Cannot copy resources to Documents folder. Wrong path defined?\n" + Log.getFullExceptionMessage(e));
                 return false;
             }
             return true;

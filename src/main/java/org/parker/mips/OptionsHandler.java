@@ -126,13 +126,13 @@ public class OptionsHandler {
                     holder.value = gson.fromJson(jo.getAsJsonObject(entry.getKey()).get("value"), holder.value.getClass());
                     
                 } catch (Exception e) {
-                    logOptionsHandlerError("Failed to read Options file: " + e);
+                    logOptionsHandlerError("Failed to read Options file:\n" + Log.getFullExceptionMessage(e));
                 }
                 
             });
             logOptionsHandlerSystemMessage("Successfully loaded " + file.getName() + "\n\n");
         } catch (Exception e) {
-            logOptionsHandlerError("Failed to read Options file: " + e);
+            logOptionsHandlerError("Failed to read Options file:\n" + Log.getFullExceptionMessage(e));
         } finally {
             try {
                 reader.close();
@@ -164,7 +164,7 @@ public class OptionsHandler {
             
             logOptionsHandlerSystemMessage("Successfully saved " + file.getName() + "\n\n");
         } catch (Exception e) {
-            logOptionsHandlerError("Failed to write Options file: " + e);
+            logOptionsHandlerError("Failed to write Options file:\n" + Log.getFullExceptionMessage(e));
         } finally {
             try {
                 writer.close();

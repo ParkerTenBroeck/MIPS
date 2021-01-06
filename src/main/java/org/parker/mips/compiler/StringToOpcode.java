@@ -445,7 +445,7 @@ public class StringToOpcode {
             int temp = ASMCompiler.parseInt(parameter);
             return temp;
         } catch (Exception e) {
-
+            
         }
         return ((ASMCompiler.getByteIndexOfMemoryLable(parameter.trim(), currentOpCodeLine) - currentByteIndex) >> 2) - 1;
     }

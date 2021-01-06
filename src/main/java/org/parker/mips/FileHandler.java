@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFileChooser;
@@ -69,7 +70,7 @@ public class FileHandler {
             currentLoadedASMFileAbsolutePath = null;
             return true;
         } catch (Exception e) {
-            logFileHandlerError("Failed to load stream: " + e);
+            logFileHandlerError("Failed to load stream:\n" + Log.getFullExceptionMessage(e));
         } finally {
             try {
                 isr.close();
@@ -121,7 +122,7 @@ public class FileHandler {
             extention = getExtension(file);
             path = file.getAbsolutePath().replace(FILE_DOT + extention, "");
         } catch (Exception e) {
-            Log.logError(file.getPath() + " is not a valid file" + e.toString());
+            Log.logError(file.getPath() + " is not a valid file\n" + Log.getFullExceptionMessage(e));
             return false;
         }
 
@@ -134,7 +135,7 @@ public class FileHandler {
                     currentMXNFile.createNewFile();
                 }
             } catch (Exception e) {
-                logFileHandlerError("Failed to create MXN File while loading ASM File");
+                logFileHandlerError("Failed to create MXN File while loading ASM File:\n" + Log.getFullExceptionMessage(e));
             }
 
         } else if (extention.equals("mxn")) {
@@ -150,7 +151,7 @@ public class FileHandler {
         } else if (extention.equals("txt")) { // text based
 
             logFileHandlerWarning("Trying to load: " + file.getAbsolutePath() + " As an ASM File");
-            
+
             currentMXNFile = new File(path + FILE_DOT + "mxn");//new File(file.getPath().replace("\\.asm", "\\.mxn"));
             currentASMFile = file;
 
@@ -159,13 +160,13 @@ public class FileHandler {
                     currentMXNFile.createNewFile();
                 }
             } catch (Exception e) {
-                logFileHandlerError("Failed to create MXN File while loading ASM File");
+                logFileHandlerError("Failed to create MXN File while loading ASM File:\n" + Log.getFullExceptionMessage(e));
             }
 
         } else if (extention.equals("bin")) { //bin based
-            
+
             logFileHandlerWarning("Trying to load: " + file.getAbsolutePath() + " As an MXN File");
-            
+
             currentASMFile = null;
             currentMXNFile = file;
         } else {
@@ -260,7 +261,7 @@ public class FileHandler {
 
             }
         } catch (Exception e) {
-            logFileHandlerError("There was an error while saving your file:" + e.getMessage());
+            logFileHandlerError("There was an error while saving your file:\n" + Log.getFullExceptionMessage(e));
             return false;
         }
         return false;
@@ -310,7 +311,7 @@ public class FileHandler {
                 try {
                     currentMXNFile.createNewFile();
                 } catch (Exception e) {
-                    logFileHandlerError("Failed to create MXN file at: " + currentMXNFile.getAbsolutePath());
+                    logFileHandlerError("Failed to create MXN file at: " + currentMXNFile.getAbsolutePath() + "\n" + Log.getFullExceptionMessage(e));
                 }
             }
             loadedMXNFile = loadFileAsByteArray(currentMXNFile);
@@ -342,7 +343,7 @@ public class FileHandler {
             reloadAllFiles();
             return true;
         } catch (Exception e) {
-            logFileHandlerError("unable to write ASM File:" + e.getMessage());
+            logFileHandlerError("unable to write ASM File: \n" + Log.getFullExceptionMessage(e));
             return false;
         }
 
@@ -365,20 +366,18 @@ public class FileHandler {
     }
 
     public static byte[] loadFileAsByteArray(String path) {
-        try {
-            return Files.readAllBytes(new File(path).toPath());
-        } catch (Exception e) {
-            Log.logError("Failed to load File:" + path);
-            return new byte[]{};
-        }
+        return loadFileAsByteArray(new File(path));
     }
 
     public static byte[] loadFileAsByteArray(File file) {
         try {
-            return Files.readAllBytes(file.toPath());
+            Path path = file.toPath();
+            return Files.readAllBytes(path);
         } catch (Exception e) {
             if (file != null) {
-                Log.logError("Failed to load File: " + file.getAbsoluteFile() + " " + e.getMessage());
+                logFileHandlerError("Failed to load Binary File: " + file.getAbsoluteFile() + " \n" + Log.getFullExceptionMessage(e));
+            } else {
+                logFileHandlerError("Failed to load Binary File: \n" + Log.getFullExceptionMessage(e));
             }
             return new byte[]{};
         }
@@ -386,10 +385,14 @@ public class FileHandler {
 
     public static ArrayList<String> loadFileAsStringList(File file) {
         try {
-            return new ArrayList(Files.readAllLines(file.toPath()));
+            Path path = file.toPath();
+            List<String> list = Files.readAllLines(path);
+            return new ArrayList(list);
         } catch (Exception e) {
             if (file != null) {
-                Log.logError("Failed to load File: " + file.getAbsoluteFile() + " " + e.getMessage());
+                logFileHandlerError("Failed to load Text File: " + file.getAbsoluteFile() + " \n" + Log.getFullExceptionMessage(e));
+            } else {
+                logFileHandlerError("Failed to load Text File: \n" + Log.getFullExceptionMessage(e));
             }
             return null;
         }
@@ -408,19 +411,15 @@ public class FileHandler {
             try {
                 currentMXNFile = File.createTempFile("tempMXN", "mxn");
             } catch (Exception e) {
-                logFileHandlerError("Cannot create temp MXN File" + e.getMessage());
+                logFileHandlerError("Cannot create temp MXN File \n" + Log.getFullExceptionMessage(e));
             }
         }
         try {
             Files.write(currentMXNFile.toPath(), byteArray);
             loadedMXNFile = byteArray;
-        } catch (Exception e) {
-            logFileHandlerError("Cannot save MXN File" + e.getMessage());
-        }
-        try {
             logFileHandlerMessage("Saved MXN file to: " + currentMXNFile.getAbsolutePath());
         } catch (Exception e) {
-            logFileHandlerError("Cant log save message error: " + e.getMessage());
+            logFileHandlerError("Cannot save MXN File\n" + Log.getFullExceptionMessage(e));
         }
     }
 
@@ -449,7 +448,7 @@ public class FileHandler {
             loadedMXNFile = tempBytes;
 
         } catch (Exception e) {
-            System.err.println(e);
+            logFileHandlerError("Failed to import MX File: \n" + Log.getFullExceptionMessage(e));
         }
     }
 

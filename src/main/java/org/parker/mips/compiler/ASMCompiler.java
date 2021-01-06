@@ -277,7 +277,7 @@ public class ASMCompiler {
             ASMCompiler.logCompilerMessage("Compilation Info File Wrote to: " + file.getAbsolutePath());
             out.flush();
         } catch (Exception e) {
-            ASMCompiler.logCompilerError("Unable to write Pre Processed File to: " + file.getAbsolutePath() + " " + e.getMessage());
+            ASMCompiler.logCompilerError("Unable to write Pre Processed File to: " + file.getAbsolutePath() + "\n" + Log.getFullExceptionMessage(e));
         }
     }
 
