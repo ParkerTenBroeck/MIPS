@@ -5,6 +5,7 @@
  */
 package org.parker.mips;
 
+import com.sun.media.jfxmedia.logging.Logger;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.AdjustmentEvent;

@@ -26,7 +26,10 @@ import org.parker.mips.gui.MainGUI;
 public class FileHandler {
 
     public static final String FILE_SEPERATOR = File.separator;
-    public static final String FILE_DOT = ".";
+    
+    public static final char EXTENSION_SEPARATOR = '.';
+    private static final char UNIX_SEPARATOR = '/';
+    private static final char WINDOWS_SEPARATOR = '\\';
 
     private static String currentLoadedASMFileAbsolutePath;
     private static File currentASMFile;
@@ -120,14 +123,14 @@ public class FileHandler {
         String path = null;
         try {
             extention = getExtension(file);
-            path = file.getAbsolutePath().replace(FILE_DOT + extention, "");
+            path = file.getAbsolutePath().replace(EXTENSION_SEPARATOR + extention, "");
         } catch (Exception e) {
             Log.logError(file.getPath() + " is not a valid file\n" + Log.getFullExceptionMessage(e));
             return false;
         }
 
         if (extention.equals("asm")) {
-            currentMXNFile = new File(path + FILE_DOT + "mxn");//new File(file.getPath().replace("\\.asm", "\\.mxn"));
+            currentMXNFile = new File(path + EXTENSION_SEPARATOR + "mxn");//new File(file.getPath().replace("\\.asm", "\\.mxn"));
             currentASMFile = file;
 
             try {
@@ -139,7 +142,7 @@ public class FileHandler {
             }
 
         } else if (extention.equals("mxn")) {
-            currentASMFile = new File(path + FILE_DOT + "asm");//new File(file.getPath().replace("\\.mxn", "\\.asm"));;
+            currentASMFile = new File(path + EXTENSION_SEPARATOR + "asm");//new File(file.getPath().replace("\\.mxn", "\\.asm"));;
             currentMXNFile = file;
 
             if (!currentASMFile.exists()) {
@@ -152,7 +155,7 @@ public class FileHandler {
 
             logFileHandlerWarning("Trying to load: " + file.getAbsolutePath() + " As an ASM File");
 
-            currentMXNFile = new File(path + FILE_DOT + "mxn");//new File(file.getPath().replace("\\.asm", "\\.mxn"));
+            currentMXNFile = new File(path + EXTENSION_SEPARATOR + "mxn");//new File(file.getPath().replace("\\.asm", "\\.mxn"));
             currentASMFile = file;
 
             try {
@@ -201,11 +204,11 @@ public class FileHandler {
         try {
             File pd = new File(ResourceHandler.DEFAULT_PROJECTS_PATH);
             JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
-            fc.setSelectedFile(new File("project_" + pd.listFiles().length + "\\.asm"));
+            fc.setSelectedFile(new File("project_" + pd.listFiles().length + ".asm"));
             int returnVal = fc.showOpenDialog(MainGUI.getFrame());
 
             if (returnVal != 0) {
-                currentASMFile = File.createTempFile("ASMTemp", "\\.asm");
+                currentASMFile = File.createTempFile("ASMTemp", ".asm");
                 boolean temp = writeUserTextAreaToASMFile();
                 isASMFileSaved = false;
                 return temp;
@@ -220,10 +223,10 @@ public class FileHandler {
                 return false;
             }
 
-            if (!chosenFile.getName().contains(".")) {
-                chosenFile = new File(chosenFile.getAbsolutePath() + "\\.asm");
-            } else if (chosenFile.getName().endsWith("\\.asm")) {
-                chosenFile = new File(chosenFile.getAbsolutePath().split("\\.")[0] + "\\.asm");
+            if (getExtension(chosenFile.getPath()).equals("")) {
+                chosenFile = new File(chosenFile.getAbsolutePath() + EXTENSION_SEPARATOR + "asm");
+            } else if (getExtension(chosenFile.getPath()).equals("asm")) {
+                //chosenFile = new File(chosenFile.getAbsolutePath().split("\\.")[0] + "\\.asm");
             }
 
             if (chosenFile.exists()) {
@@ -231,13 +234,14 @@ public class FileHandler {
 
                 if (i == 0) {
                     currentASMFile = chosenFile;
-                    currentMXNFile = new File(currentASMFile.getAbsolutePath().replaceAll("\\.asm", "\\.mxn"));
+                    currentMXNFile = new File(removeExtension(currentASMFile.getAbsolutePath()) + EXTENSION_SEPARATOR + "mxn");
                     return writeUserTextAreaToASMFile();
                 }
             } else {
                 //System.out.println(chosenFile.getParent());
                 if (chosenFile.getParent().equals(ResourceHandler.DEFAULT_PROJECTS_PATH)) {
-                    File pf = new File(chosenFile.getAbsolutePath().split("\\.")[0]);
+                    //File pf = new File(chosenFile.getAbsolutePath().re("\\.")[0]);
+                    File pf = new File(removeExtension(chosenFile.getAbsolutePath()));
                     if (!pf.exists()) {
                         pf.mkdir();
                     }
@@ -247,7 +251,7 @@ public class FileHandler {
 
                         if (i == 0) {
                             currentASMFile = chosenFile;
-                            currentMXNFile = new File(currentASMFile.getAbsolutePath().replaceAll("\\.asm", "\\.mxn"));
+                            currentMXNFile = new File(removeExtension(currentASMFile.getAbsolutePath()) + EXTENSION_SEPARATOR + "mxn");
                             return saveASMFileFromUserTextArea();
                             //isASMFileSaved = true;
                             //return true;
@@ -256,7 +260,7 @@ public class FileHandler {
 
                 }
                 currentASMFile = chosenFile;
-                currentMXNFile = new File(currentASMFile.getAbsolutePath().replaceAll("\\.asm", "\\.mxn"));
+                currentMXNFile = new File(removeExtension(currentASMFile.getAbsolutePath()) + EXTENSION_SEPARATOR + "mxn");
                 return writeUserTextAreaToASMFile();
 
             }
@@ -415,7 +419,12 @@ public class FileHandler {
             }
         }
         try {
-            Files.write(currentMXNFile.toPath(), byteArray);
+            if (!currentMXNFile.exists()) {
+                logFileHandlerWarning("Current MXN File does not exist, Creating new MXN file");
+                currentMXNFile.createNewFile();
+            }
+            Path path = currentMXNFile.toPath();
+            Files.write(path, byteArray);
             loadedMXNFile = byteArray;
             logFileHandlerMessage("Saved MXN file to: " + currentMXNFile.getAbsolutePath());
         } catch (Exception e) {
@@ -504,5 +513,35 @@ public class FileHandler {
 
     public static String getExtension(File file) {
         return getExtension(file.getAbsolutePath());
+    }
+
+    public static String removeExtension(String filename) {
+        if (filename == null) {
+            return null;
+        }
+        int index = indexOfExtension(filename);
+        if (index == -1) {
+            return filename;
+        } else {
+            return filename.substring(0, index);
+        }
+    }
+
+    public static int indexOfExtension(String filename) {
+        if (filename == null) {
+            return -1;
+        }
+        int extensionPos = filename.lastIndexOf(EXTENSION_SEPARATOR);
+        int lastSeparator = indexOfLastSeparator(filename);
+        return lastSeparator > extensionPos ? -1 : extensionPos;
+    }
+
+    public static int indexOfLastSeparator(String filename) {
+        if (filename == null) {
+            return -1;
+        }
+        int lastUnixPos = filename.lastIndexOf(UNIX_SEPARATOR);
+        int lastWindowsPos = filename.lastIndexOf(WINDOWS_SEPARATOR);
+        return Math.max(lastUnixPos, lastWindowsPos);
     }
 }
