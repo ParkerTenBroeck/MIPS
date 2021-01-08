@@ -17,6 +17,7 @@ import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.folding.FoldParserManager;
 import org.fife.ui.rtextarea.RTextScrollPane;
+import org.parker.mips.FileHandler;
 import org.parker.mips.gui.theme.ThemeHandler;
 import org.parker.mips.Log;
 import org.parker.mips.OptionsHandler;
@@ -61,11 +62,15 @@ public class ASMFormattedTextArea extends RTextScrollPane {
 
     public final void setTheme(String name) {
         try {
-            InputStream in = new FileInputStream(new File(ResourceHandler.SYNTAX_THEMES + ResourceHandler.FILE_SEPERATOR + name + ".xml"));
+//<<<<<<< HEAD
+            InputStream in = new FileInputStream(new File(ResourceHandler.SYNTAX_THEMES + FileHandler.FILE_SEPERATOR + name + ".xml"));
             Theme theme = Theme.load(in);
+//=======
+//            Theme theme = Theme.load(in, (Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME));
+//>>>>>>> master
             theme.apply(textArea);
         } catch (Exception e) {
-            Log.logError("Error loading SyntaxText area Theme " + name + ".xml: " + e.getMessage());
+            Log.logError("Error loading SyntaxText area Theme " + name + ".xml:\n" + Log.getFullExceptionMessage(e));
         }
 
         this.setBackground(textArea.getBackground());

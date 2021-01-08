@@ -76,9 +76,9 @@ public class UpdateHandler {
             //System.out.println(sb.toString());
             //return sb.toString();
         } catch (MalformedURLException ex) {
-            Logger.getLogger(MIPS.class.getName()).log(Level.SEVERE, null, ex);
+            Log.logError("Error While Updating\n" + Log.getFullExceptionMessage(ex));
         } catch (IOException ex) {
-            Logger.getLogger(MIPS.class.getName()).log(Level.SEVERE, null, ex);
+            Log.logError("Error While Updating\n" + Log.getFullExceptionMessage(ex));
         }
     }
 
@@ -116,11 +116,11 @@ public class UpdateHandler {
             }
         }
 
-        String[] run = {"java", "-jar", ResourceHandler.DEFAULT_PATH + ResourceHandler.FILE_SEPERATOR + "updater.jar", MIPS.JAR_PATH, latestVersionLink};
+        String[] run = {"java", "-jar", ResourceHandler.DEFAULT_PATH + FileHandler.FILE_SEPERATOR + "updater.jar", MIPS.JAR_PATH, latestVersionLink};
         try {
             Runtime.getRuntime().exec(run);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Log.logError(Log.getFullExceptionMessage(ex));
         }
         System.exit(0);
 

@@ -10,6 +10,7 @@ import org.parker.mips.compiler.PreProcessor;
 import static org.parker.mips.compiler.PreProcessor.loadFile;
 import java.util.ArrayList;
 import org.parker.mips.FileHandler;
+import org.parker.mips.Log;
 import org.parker.mips.ResourceHandler;
 
 /**
@@ -32,7 +33,7 @@ public class INCLUDE extends Statement {
         if (path.contains(":")) {
 
         } else {
-            path = FileHandler.getASMFilePath().substring(0, FileHandler.getASMFilePath().lastIndexOf(ResourceHandler.FILE_SEPERATOR) + 1) + path;
+            path = FileHandler.getASMFilePath().substring(0, FileHandler.getASMFilePath().lastIndexOf(FileHandler.FILE_SEPERATOR) + 1) + path;
         }
 
         try {
@@ -54,8 +55,7 @@ public class INCLUDE extends Statement {
                 generatedDataToAdd = loadFile(path, line.realLineNumber);
             }
         } catch (Exception e) {
-            System.out.println(e);
-            PreProcessor.logPreProcessorError("Failed to load included File", line.realLineNumber);
+            PreProcessor.logPreProcessorError("Failed to load included File:\n" + Log.getFullExceptionMessage(e), line.realLineNumber);
         }
 
     }

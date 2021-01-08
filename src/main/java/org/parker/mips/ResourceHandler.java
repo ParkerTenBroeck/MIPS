@@ -19,6 +19,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
+import static org.parker.mips.FileHandler.FILE_SEPERATOR;
 import org.parker.mips.gui.MainGUI;
 
 /**
@@ -26,9 +27,6 @@ import org.parker.mips.gui.MainGUI;
  * @author parke
  */
 public class ResourceHandler {
-
-    public static final String FILE_SEPERATOR = File.separator;
-
     //public static final String documentsPath = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
     public static final String DEFAULT_PATH = FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + FILE_SEPERATOR + "MIPS";
 
@@ -130,10 +128,11 @@ public class ResourceHandler {
                     try {
                         entry = enums.nextElement();
                     } catch (Exception e) {
+                        Log.logError(Log.getFullExceptionMessage(e));
                         continue;
                     }
                     if (entry.getName().startsWith(jarPath)) {
-                        File toWrite = new File(destPath + ResourceHandler.FILE_SEPERATOR + entry.getName().replaceFirst(jarPath, ""));
+                        File toWrite = new File(destPath + FileHandler.FILE_SEPERATOR + entry.getName().replaceFirst(jarPath, ""));
                         //Log.logMessage(toWrite.getAbsolutePath());
                         //System.out.println(toWrite.getAbsoluteFile() + " " + entry.getName());
                         if (entry.isDirectory()) {
@@ -174,7 +173,7 @@ public class ResourceHandler {
                 }
             } catch (Exception ex) {
                 //System.out.println(ex);
-                logResourceHandlerWarning(ex.toString());
+                logResourceHandlerWarning(Log.getFullExceptionMessage(ex));
                 //Logger.getLogger(ResourceHandler.class.getName()).log(Level.SEVERE, null, ex);
                 //Log.logMessage("no");
                 return false;
@@ -191,7 +190,7 @@ public class ResourceHandler {
                 File dest = new File(destPath);
                 copyFolderReplaceOld(source, dest);
             } catch (Exception e) {
-                logResourceHandlerError("Cannot copy resources to Documents folder. Wrong path defined?");
+                logResourceHandlerError("Cannot copy resources to Documents folder. Wrong path defined?\n" + Log.getFullExceptionMessage(e));
                 return false;
             }
             return true;

@@ -17,6 +17,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import org.parker.mips.FileHandler;
+import org.parker.mips.Log;
 import org.parker.mips.OptionsHandler;
 import org.parker.mips.ResourceHandler;
 
@@ -52,7 +54,7 @@ public class PreProcessor {
             }
             PreProcessor.logPreProcessorMessage("[Pre Processor] Loaded File: " + tempFile.getAbsolutePath());
         } catch (Exception e) {
-            PreProcessor.logPreProcessorError("Cannot read file Specified" + " " + e.getMessage(), realLineOfFilePath);
+            PreProcessor.logPreProcessorError("Cannot read file Specified" + "\n" + Log.getFullExceptionMessage(e), realLineOfFilePath);
         }
         return file;
     }
@@ -218,7 +220,7 @@ public class PreProcessor {
             try {
                 currentLine.line = cleanLine(currentLine.line);
             } catch (Exception e) {
-                PreProcessor.logPreProcessorError("Cannot Clean Line", currentLine.realLineNumber); //cleans the line (fixes spacing and removes comments)
+                PreProcessor.logPreProcessorError("Cannot Clean Line:\n" + Log.getFullExceptionMessage(e), currentLine.realLineNumber); //cleans the line (fixes spacing and removes comments)
             }
 
             if (currentLine.line.equals("") || currentLine.line.equals("/n")) { //if line is empty delete it and move on
@@ -257,12 +259,12 @@ public class PreProcessor {
     }
 
     private static void writePreProcessedFile(ArrayList<UserLine> fileInfo) {
-        File file = new File(ResourceHandler.COMPILER_PATH + ResourceHandler.FILE_SEPERATOR + "PreProcessedFile.asm");
+        File file = new File(ResourceHandler.COMPILER_PATH + FileHandler.FILE_SEPERATOR + "PreProcessedFile.asm");
         writeArrayListOfUserLinesToFile(fileInfo, file);
     }
 
     private static void writeCleanedFile(ArrayList<UserLine> fileInfo) {
-        File file = new File(ResourceHandler.COMPILER_PATH + ResourceHandler.FILE_SEPERATOR + "CleanedFile.asm");
+        File file = new File(ResourceHandler.COMPILER_PATH + FileHandler.FILE_SEPERATOR + "CleanedFile.asm");
         writeArrayListOfUserLinesToFile(fileInfo, file);
     }
 
@@ -280,7 +282,7 @@ public class PreProcessor {
             PreProcessor.logPreProcessorMessage(file.getName() + " File Wrote to:" + file.getAbsolutePath());
             out.flush();
         } catch (Exception e) {
-            PreProcessor.logPreProcessorError("Unable to write " + file.getName() + " File to:" + file.getAbsolutePath() + " " + e.getMessage());
+            PreProcessor.logPreProcessorError("Unable to write " + file.getName() + " File to:" + file.getAbsolutePath() + "\n" + Log.getFullExceptionMessage(e));
         } finally {
             try {
 

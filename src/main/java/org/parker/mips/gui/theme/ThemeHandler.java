@@ -36,6 +36,7 @@ public class ThemeHandler {
             UIManager.setLookAndFeel(new FlatDarkLaf());
         } catch (Exception e) {
             System.out.println(e);
+
         }
 
         JFrame.setDefaultLookAndFeelDecorated(true);
@@ -47,7 +48,7 @@ public class ThemeHandler {
         try {
             UIManager.setLookAndFeel(new FlatDarkLaf());
         } catch (Exception e) {
-            System.out.println(e);
+
         }
         JFrame.setDefaultLookAndFeelDecorated(true);
         JDialog.setDefaultLookAndFeelDecorated(true);

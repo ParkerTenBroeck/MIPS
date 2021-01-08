@@ -110,7 +110,7 @@ public class SystemCallPluginHandler {
                 sc.handleSystemCall();
             } catch (Exception e) {
                 logRunTimeSystemCallError("System Call: " + sc.DATA.SYSTEM_CALL_NAME
-                        + " from plugin: " + sc.HOST_PLUGIN.DESCRIPTION.NAME + " generated exeption: " + e.getMessage());
+                        + " from plugin: " + sc.HOST_PLUGIN.DESCRIPTION.NAME + "\n" + Log.getFullExceptionMessage(e));
             }
         } else {
             logRunTimeSystemCallError("Invalid System Call either does not exist or was not registered ID: " + id);
@@ -135,7 +135,7 @@ public class SystemCallPluginHandler {
                             }
                         }
                     } catch (Exception e) {
-                        logSystemCallPluginHandlerError("Could not unregister SystemCall" + sc.DATA.SYSTEM_CALL_NAME + " Error: " + e.toString());
+                        logSystemCallPluginHandlerError("Could not unregister SystemCall" + sc.DATA.SYSTEM_CALL_NAME + " \n" + Log.getFullExceptionMessage(e));
                         wasError = true;
                     }
                 }
