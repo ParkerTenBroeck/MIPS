@@ -25,9 +25,9 @@ import org.parker.mips.gui.MainGUI;
  */
 public class FileHandler {
 
-    public static final String FILE_SEPERATOR = File.separator;
-    
+    public static final char FILE_SEPERATOR = File.separatorChar;
     public static final char EXTENSION_SEPARATOR = '.';
+    //platform spesific
     private static final char UNIX_SEPARATOR = '/';
     private static final char WINDOWS_SEPARATOR = '\\';
 
@@ -204,7 +204,7 @@ public class FileHandler {
         try {
             File pd = new File(ResourceHandler.DEFAULT_PROJECTS_PATH);
             JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
-            fc.setSelectedFile(new File("project_" + pd.listFiles().length + ".asm"));
+            fc.setSelectedFile(new File("project_" + pd.listFiles().length));
             int returnVal = fc.showOpenDialog(MainGUI.getFrame());
 
             if (returnVal != 0) {
@@ -225,8 +225,6 @@ public class FileHandler {
 
             if (getExtension(chosenFile.getPath()).equals("")) {
                 chosenFile = new File(chosenFile.getAbsolutePath() + EXTENSION_SEPARATOR + "asm");
-            } else if (getExtension(chosenFile.getPath()).equals("asm")) {
-                //chosenFile = new File(chosenFile.getAbsolutePath().split("\\.")[0] + "\\.asm");
             }
 
             if (chosenFile.exists()) {
@@ -238,24 +236,36 @@ public class FileHandler {
                     return writeUserTextAreaToASMFile();
                 }
             } else {
-                //System.out.println(chosenFile.getParent());
-                if (chosenFile.getParent().equals(ResourceHandler.DEFAULT_PROJECTS_PATH)) {
-                    //File pf = new File(chosenFile.getAbsolutePath().re("\\.")[0]);
+                if (chosenFile.getParent().equals(ResourceHandler.DEFAULT_PROJECTS_PATH)) {//this creates a new project folder
+
                     File pf = new File(removeExtension(chosenFile.getAbsolutePath()));
-                    if (!pf.exists()) {
+
+                    if (!pf.exists()) { // creates a folder in the project directory with the name given by the user
                         pf.mkdir();
                     }
-                    chosenFile = new File(pf.getAbsolutePath() + FileHandler.FILE_SEPERATOR + chosenFile.getName());
-                    if (chosenFile.exists()) {
-                        int i = MainGUI.confirmBox("Warning", "This File Already Exists are you sure you want to overwrite it");
+
+                    String tempName = pf.getAbsolutePath() + FileHandler.FILE_SEPERATOR + removeExtension(pf.getName()); //create a path to a file with no extention with the same name as the directory
+                    File generatedASMFile = new File(tempName + EXTENSION_SEPARATOR + "asm");
+                    File generatedMXNFile = new File(tempName + EXTENSION_SEPARATOR + "mxn");
+
+                    if (generatedASMFile.exists() || generatedMXNFile.exists()) {
+
+                        int i = -1;
+
+                        if (generatedASMFile.exists() && !generatedASMFile.exists()) {//only ASM file exists
+                            i = MainGUI.confirmBox("Warning", generatedASMFile.getName() + " Already Exists are you sure you want to overwrite it");
+                        } else if (!generatedASMFile.exists() && generatedASMFile.exists()) {//only MXN file exists
+                            i = MainGUI.confirmBox("Warning", generatedMXNFile.getName() + " Already Exists are you sure you want to overwrite it");
+                        } else if (generatedASMFile.exists() && generatedASMFile.exists()) {//both ASM and MXN files exist
+                            i = MainGUI.confirmBox("Warning", generatedASMFile.getName() + " and " + generatedMXNFile.getName() + " Already Exists are you sure you want to overwrite them");
+                        }
 
                         if (i == 0) {
-                            currentASMFile = chosenFile;
-                            currentMXNFile = new File(removeExtension(currentASMFile.getAbsolutePath()) + EXTENSION_SEPARATOR + "mxn");
+                            currentASMFile = generatedASMFile;
+                            currentMXNFile = generatedMXNFile;
                             return saveASMFileFromUserTextArea();
-                            //isASMFileSaved = true;
-                            //return true;
                         }
+                        return false;
                     }
 
                 }
@@ -268,6 +278,10 @@ public class FileHandler {
             logFileHandlerError("There was an error while saving your file:\n" + Log.getFullExceptionMessage(e));
             return false;
         }
+        return false;
+    }
+    
+    public static boolean createNewProject(File file){
         return false;
     }
 
