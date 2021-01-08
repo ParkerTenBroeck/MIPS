@@ -45,12 +45,13 @@ public class ASMFormattedTextArea extends RTextScrollPane {
         //super(textArea, true, new Color(201, 201, 201));
 
         this.setBorder(null);
-
-        this.getVerticalScrollBar().setOpaque(false);
-        this.getVerticalScrollBar().setUI(new ModernScrollBarUI(this, new Color(50, 50, 50)));
-
-        this.getHorizontalScrollBar().setOpaque(false);
-        this.getHorizontalScrollBar().setUI(new ModernScrollBarUI(this, new Color(50, 50, 50)));
+        this.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_AS_NEEDED);
+//
+//        this.getVerticalScrollBar().setOpaque(false);
+//        this.getVerticalScrollBar().setUI(new ModernScrollBarUI());
+//
+//        this.getHorizontalScrollBar().setOpaque(false);
+//        this.getHorizontalScrollBar().setUI(new ModernScrollBarUI());
 
         this.setTheme(OptionsHandler.currentSyntaxTheme.value);
 
@@ -61,7 +62,7 @@ public class ASMFormattedTextArea extends RTextScrollPane {
     public final void setTheme(String name) {
         try {
             InputStream in = new FileInputStream(new File(ResourceHandler.SYNTAX_THEMES + ResourceHandler.FILE_SEPERATOR + name + ".xml"));
-            Theme theme = Theme.load(in, (Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME));
+            Theme theme = Theme.load(in);
             theme.apply(textArea);
         } catch (Exception e) {
             Log.logError("Error loading SyntaxText area Theme " + name + ".xml: " + e.getMessage());

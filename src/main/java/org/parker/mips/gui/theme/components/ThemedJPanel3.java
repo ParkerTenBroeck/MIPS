@@ -11,7 +11,7 @@ package org.parker.mips.gui.theme.components;
  */
 public class ThemedJPanel3 extends ThemedJPanel {
 
-    public ThemedJPanel3() {
-        super(backgroundColorType.BACKGROUND_COLOR_3);
-    }
+//    public ThemedJPanel3() {
+//        super(backgroundColorType.BACKGROUND_COLOR_3);
+//    }
 }

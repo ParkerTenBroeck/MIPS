@@ -36,9 +36,6 @@
       <Events>
         <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="aSMFormattedTextArea1KeyTyped"/>
       </Events>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="        new org.parker.mips.gui.rsyntax.ASMFormattedTextArea(){&#xa;            @Override&#xa;            public void setBackground(Color color){&#xa;                super.setBackground(color);&#xa;                border.setColor(color);&#xa;                instance.setBackground(color);&#xa;                instance.repaint();&#xa;            }&#xa;        };"/>
-      </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
     </Container>

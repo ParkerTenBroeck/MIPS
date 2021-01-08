@@ -6,10 +6,8 @@
 package org.parker.mips;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
-import java.beans.PropertyChangeEvent;
 import javax.swing.BoundedRangeModel;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
@@ -17,34 +15,17 @@ import javax.swing.text.DefaultCaret;
 import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
-import org.parker.mips.gui.theme.components.ThemableComponent;
-import org.parker.mips.gui.theme.ThemeHandler;
 import org.parker.mips.gui.theme.lookandfeel.ModernScrollPane;
 
 /**
  *
  * @author parke
  */
-public class Log extends javax.swing.JPanel implements ThemableComponent {
-
-    @Override
-    public void propertyChange(PropertyChangeEvent pce) {
-        switch (pce.getPropertyName()) {
-            case ThemeHandler.TEXT_AREA_BACKGROUND_2_PROPERTY_NAME:
-                jTextPane1.setBackground((Color) pce.getNewValue());
-                break;
-            case ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME:
-                jTextPane1.setFont((Font) pce.getNewValue());
-                break;
-        }
-    }
+public class Log extends javax.swing.JPanel {
 
     static {
         Log.initComponents();
-
         Log log = new Log();
-        ThemeHandler.addPropertyChangeListenerFromName(ThemeHandler.TEXT_AREA_BACKGROUND_2_PROPERTY_NAME, log);
-        ThemeHandler.addPropertyChangeListenerFromName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME, log);
     }
 
     public static void clearDisplay() {
@@ -61,7 +42,7 @@ public class Log extends javax.swing.JPanel implements ThemableComponent {
 
         SimpleAttributeSet att = new SimpleAttributeSet();
         StyleConstants.setForeground(att, Color.RED);
-        StyleConstants.setBold(att, true);
+        StyleConstants.setBold(att, false);
         Log.appendMessageToVirtualConsoleLog("[Error] " + message, att);
     }
 
@@ -73,7 +54,7 @@ public class Log extends javax.swing.JPanel implements ThemableComponent {
 
         SimpleAttributeSet att = new SimpleAttributeSet();
         StyleConstants.setForeground(att, Color.YELLOW);
-        StyleConstants.setBold(att, true);
+        StyleConstants.setBold(att, false);
         Log.appendMessageToVirtualConsoleLog("[Warning] " + message, att);
     }
 
@@ -84,8 +65,8 @@ public class Log extends javax.swing.JPanel implements ThemableComponent {
         System.out.println("[System Message] " + message);
 
         SimpleAttributeSet att = new SimpleAttributeSet();
-        StyleConstants.setForeground(att, Color.BLACK);
-        StyleConstants.setBold(att, true);
+        StyleConstants.setForeground(att, Color.LIGHT_GRAY);
+        StyleConstants.setBold(att, false);
         Log.appendMessageToVirtualConsoleLog("[System Message] " + message, att);
     }
 
@@ -96,8 +77,8 @@ public class Log extends javax.swing.JPanel implements ThemableComponent {
         System.out.println("[Message] " + message);
 
         SimpleAttributeSet att = new SimpleAttributeSet();
-        StyleConstants.setForeground(att, Color.BLACK);
-        StyleConstants.setBold(att, true);
+        StyleConstants.setForeground(att, Color.LIGHT_GRAY);
+        StyleConstants.setBold(att, false);
         Log.appendMessageToVirtualConsoleLog("[Message] " + message, att);
     }
 
@@ -174,8 +155,8 @@ public class Log extends javax.swing.JPanel implements ThemableComponent {
 
         jScrollPane1 = new ModernScrollPane(Color.LIGHT_GRAY);
         jTextPane1 = new javax.swing.JTextPane();
-        jTextPane1.setBackground((Color) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.TEXT_AREA_BACKGROUND_2_PROPERTY_NAME));
-        jTextPane1.setFont((Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME)); // NOI18N
+        //jTextPane1.setBackground((Color) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.TEXT_AREA_BACKGROUND_2_PROPERTY_NAME));
+        //jTextPane1.setFont((Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME)); // NOI18N
         jTextPane1.setEditable(false);
         jTextPane1.setContentType("HTML/plain"); // NOI18N
         jScrollPane1.setViewportView(jTextPane1);

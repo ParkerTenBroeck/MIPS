@@ -21,9 +21,6 @@ import org.parker.mips.OptionsHandler;
  */
 public class ASM_GUI extends javax.swing.JPanel {
 
-    private static RoundedBorder border = new RoundedBorder(new Color(0, 0, 51), 0, 15);
-    private final ASM_GUI instance;
-
     public static void clearText() {
         //asmTextPane.setText("");
         aSMFormattedTextArea1.textArea.setText("");
@@ -59,10 +56,7 @@ public class ASM_GUI extends javax.swing.JPanel {
      * Creates new form AMS_GUI
      */
     public ASM_GUI() {
-        instance = this;
         initComponents();
-        border.setColor(aSMFormattedTextArea1.getBackground());
-        this.setBorder(border);
 
         //asmScrollArea.getVerticalScrollBar().setUI(new ModernScrollBarUI(asmScrollArea));
         //aSMFormattedTextArea1.textArea.setEditable(false);
@@ -78,12 +72,12 @@ public class ASM_GUI extends javax.swing.JPanel {
                     newFontSize = 1;
                 }
                 aSMFormattedTextArea1.setAllFontSize(newFontSize);
-                Font temp = new Font(((Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME)).getName(), Font.PLAIN, newFontSize);
-                ThemeHandler.setThemeFromName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME, temp, true, true);
+//                Font temp = new Font(((Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME)).getName(), Font.PLAIN, newFontSize);
+//                ThemeHandler.setThemeFromName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME, temp, true, true);
 
-                ThemeHandler.setThemeFromName(ThemeHandler.BUTTON_TEXT_FONT_PROPERTY_NAME, temp, true, true);
+//                ThemeHandler.setThemeFromName(ThemeHandler.BUTTON_TEXT_FONT_PROPERTY_NAME, temp, true, true);
 
-                ThemeHandler.setThemeFromName(ThemeHandler.LABLE_TEXT_FONT_PROPERTY_NAME, temp, true, true);
+//                ThemeHandler.setThemeFromName(ThemeHandler.LABLE_TEXT_FONT_PROPERTY_NAME, temp, true, true);
             } else {
                 int unit = aSMFormattedTextArea1.getVerticalScrollBar().getUnitIncrement();
                 int scrolled = mouseWheelEvent.getUnitsToScroll() * 5;
@@ -116,15 +110,7 @@ public class ASM_GUI extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        aSMFormattedTextArea1 =         new org.parker.mips.gui.rsyntax.ASMFormattedTextArea(){
-            @Override
-            public void setBackground(Color color){
-                super.setBackground(color);
-                border.setColor(color);
-                instance.setBackground(color);
-                instance.repaint();
-            }
-        };
+        aSMFormattedTextArea1 = new org.parker.mips.gui.rsyntax.ASMFormattedTextArea();
 
         setBackground(new java.awt.Color(102, 102, 0));
         setOpaque(false);

@@ -21,52 +21,37 @@ import static org.parker.mips.processor.Registers.getPc;
  *
  * @author parke
  */
-public class InstructionMemoryGUI extends javax.swing.JPanel implements ThemableComponent {
+public class InstructionMemoryGUI extends javax.swing.JPanel{
 
     private static int toMiddle = 0;
 
-    private static RoundedBorder roundedBorder = new RoundedBorder(new Color(0, 0, 51), 0, 15);
+   // private static RoundedBorder roundedBorder = new RoundedBorder(new Color(0, 0, 51), 0, 15);
 
-    @Override
-    public void propertyChange(PropertyChangeEvent pce) {
-        switch (pce.getPropertyName()) {
-            case ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME:
-                this.instructionList.setFont((Font) pce.getNewValue());
-                break;
-            case ThemeHandler.TEXT_COLOR_1_PROPERTY_NAME:
-                this.instructionList.setForeground((Color) pce.getNewValue());
-                break;
-            case ThemeHandler.TEXT_AREA_BACKGROUND_1_PROPERTY_NAME:
-                this.roundedBorder.setColor((Color) pce.getNewValue());
-                this.instructionList.setBackground((Color) pce.getNewValue());
-                break;
-        }
-    }
-
+ 
     public InstructionMemoryGUI() {
         initComponents();
 
         //this.setFont((Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.BUTTON_TEXT_FONT_PROPERTY_NAME));
-        ThemeHandler.addPropertyChangeListenerFromName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME, this);
-
-        ThemeHandler.addPropertyChangeListenerFromName(ThemeHandler.TEXT_COLOR_1_PROPERTY_NAME, this);
-
-        ThemeHandler.addPropertyChangeListenerFromName(ThemeHandler.TEXT_AREA_BACKGROUND_1_PROPERTY_NAME, this);
-
-        this.setBorder(roundedBorder);
-
-        Color backgroundColor = (Color) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.TEXT_AREA_BACKGROUND_1_PROPERTY_NAME);
-
-        this.roundedBorder.setColor(backgroundColor);
-        this.instructionList.setBackground(backgroundColor);
-
-        Color textColor = (Color) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.TEXT_COLOR_1_PROPERTY_NAME);
-
-        this.instructionList.setForeground(textColor);
-
-        Font generalFont = (Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME);
-
-        this.instructionList.setFont(generalFont);
+//        ThemeHandler.addPropertyChangeListenerFromName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME, this);
+//
+//        ThemeHandler.addPropertyChangeListenerFromName(ThemeHandler.TEXT_COLOR_1_PROPERTY_NAME, this);
+//
+//        ThemeHandler.addPropertyChangeListenerFromName(ThemeHandler.TEXT_AREA_BACKGROUND_1_PROPERTY_NAME, this);
+//
+//        this.setBorder(roundedBorder);
+//
+//        Color backgroundColor = (Color) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.TEXT_AREA_BACKGROUND_1_PROPERTY_NAME);
+//
+//        this.roundedBorder.setColor(backgroundColor);
+//        this.instructionList.setBackground(backgroundColor);
+//
+//        Color textColor = (Color) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.TEXT_COLOR_1_PROPERTY_NAME);
+//
+//        this.instructionList.setForeground(textColor);
+//
+//        Font generalFont = (Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME);
+//
+//        this.instructionList.setFont(generalFont);
 
     }
 

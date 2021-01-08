@@ -5,6 +5,7 @@
  */
 package org.parker.mips.gui;
 
+import com.formdev.flatlaf.FlatDarkLaf;
 import org.parker.mips.compiler.ASMCompiler;
 import java.awt.Color;
 import java.awt.Component;
@@ -99,6 +100,8 @@ public class MainGUI extends javax.swing.JFrame {
      * Creates new form Main_GUI
      */
     public MainGUI() {
+        FlatDarkLaf.install();
+
         initComponents();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 

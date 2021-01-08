@@ -86,16 +86,16 @@ public class OptionsGUI extends javax.swing.JFrame {
             for (int i = 0; i < files.length; i++) {
                 names[i] = files[i].getName().split("\\.")[0];
             }
-            this.guiThemeComboBox.setModel(new DefaultComboBoxModel(names));
-            this.guiThemeComboBox.setSelectedItem(OptionsHandler.currentGUITheme.value);
-            
-            this.guiThemeComboBox.addActionListener((ae) -> {
+            this.guiThemeList.setModel(new DefaultComboBoxModel(names));
+            this.guiThemeList.setSelectedValue(OptionsHandler.currentGUITheme.value, true);
+
+            this.guiThemeList.addListSelectionListener((ae) -> {
                 //System.err.println("asdasdasdasdasda");
-                String name = (String) guiThemeComboBox.getSelectedItem();
+                String name = (String) guiThemeList.getSelectedValue();
 
                 if (!name.equals(OptionsHandler.currentGUITheme.value)) {
                     OptionsHandler.currentGUITheme.value = name;
-                    ThemeHandler.loadCurrentTheme();
+                    //ThemeHandler.loadCurrentTheme();
                 }
                 //ThemeHandler.readThemeFromThemeName();
             });
@@ -108,12 +108,12 @@ public class OptionsGUI extends javax.swing.JFrame {
             for (int i = 0; i < files.length; i++) {
                 names[i] = files[i].getName().split("\\.")[0];
             }
-            this.syntaxThemeComboBox.setModel(new DefaultComboBoxModel(names));
-            this.syntaxThemeComboBox.setSelectedItem(OptionsHandler.currentSyntaxTheme.value);
-            
-            this.syntaxThemeComboBox.addActionListener((ae) -> {
+            this.syntaxThemeList.setModel(new DefaultComboBoxModel(names));
+            this.syntaxThemeList.setSelectedValue(OptionsHandler.currentSyntaxTheme.value, true);
+
+            this.syntaxThemeList.addListSelectionListener((ae) -> {
                 //System.err.println("asdasdasdasdasda");
-                String name = (String) syntaxThemeComboBox.getSelectedItem();
+                String name = (String) syntaxThemeList.getSelectedValue();
 
                 if (!name.equals(OptionsHandler.currentSyntaxTheme.value)) {
                     OptionsHandler.currentSyntaxTheme.value = name;
@@ -172,10 +172,11 @@ public class OptionsGUI extends javax.swing.JFrame {
         resetProcessorOnTrap0Button = new org.parker.mips.gui.theme.components.ThemedJCheckBox();
         themedJPanel14 = new org.parker.mips.gui.theme.components.ThemedJPanel1();
         themedJLabel4 = new org.parker.mips.gui.theme.components.ThemedJLabel();
-        jSeparator4 = new javax.swing.JSeparator();
         themedJLabel11 = new org.parker.mips.gui.theme.components.ThemedJLabel();
-        syntaxThemeComboBox = new org.parker.mips.gui.theme.components.ThemedJComboBox();
-        guiThemeComboBox = new org.parker.mips.gui.theme.components.ThemedJComboBox();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        guiThemeList = new javax.swing.JList<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        syntaxThemeList = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -427,9 +428,21 @@ public class OptionsGUI extends javax.swing.JFrame {
 
         themedJLabel4.setText("GUI Themes");
 
-        jSeparator4.setOrientation(javax.swing.SwingConstants.VERTICAL);
-
         themedJLabel11.setText("Syntax Theme");
+
+        guiThemeList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane2.setViewportView(guiThemeList);
+
+        syntaxThemeList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(syntaxThemeList);
 
         javax.swing.GroupLayout themedJPanel14Layout = new javax.swing.GroupLayout(themedJPanel14);
         themedJPanel14.setLayout(themedJPanel14Layout);
@@ -438,31 +451,26 @@ public class OptionsGUI extends javax.swing.JFrame {
             .addGroup(themedJPanel14Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(themedJPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(themedJLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(guiThemeComboBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(224, 224, 224)
-                .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(themedJLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(themedJPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(themedJLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(syntaxThemeComboBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(208, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1)
+                    .addComponent(themedJLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE))
+                .addContainerGap(339, Short.MAX_VALUE))
         );
         themedJPanel14Layout.setVerticalGroup(
             themedJPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator4, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(themedJPanel14Layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(themedJPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(themedJLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(themedJLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(themedJPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(themedJPanel14Layout.createSequentialGroup()
-                        .addComponent(themedJLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(guiThemeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(themedJPanel14Layout.createSequentialGroup()
-                        .addComponent(themedJLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(syntaxThemeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(318, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
+                .addContainerGap())
         );
 
         themedJTabbedPane1.addTab("Theme", themedJPanel14);
@@ -524,14 +532,15 @@ public class OptionsGUI extends javax.swing.JFrame {
     private org.parker.mips.gui.theme.components.ThemedJCheckBox breakOnRunTimeErrorButton;
     private org.parker.mips.gui.theme.components.ThemedJCheckBox enableAutoGUIUpdatesWhileRuning;
     private org.parker.mips.gui.theme.components.ThemedJCheckBox enableBreakPointsButton;
-    private org.parker.mips.gui.theme.components.ThemedJComboBox guiThemeComboBox;
+    private javax.swing.JList<String> guiThemeList;
     private org.parker.mips.gui.theme.components.ThemedJSlider guiUpdateTimeSlider;
     private org.parker.mips.gui.theme.components.ThemedJCheckBox includeRegDefButton;
     private org.parker.mips.gui.theme.components.ThemedJCheckBox includeSysCallDefButton;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JSeparator jSeparator4;
     private org.parker.mips.gui.theme.components.ThemedJCheckBox linkedFileButton;
     private org.parker.mips.gui.theme.components.ThemedJButton loadOptionsButton;
     private org.parker.mips.gui.theme.components.ThemedJCheckBox logErrorsButton;
@@ -545,7 +554,7 @@ public class OptionsGUI extends javax.swing.JFrame {
     private org.parker.mips.gui.theme.components.ThemedJCheckBox saveCompilerInfoFileButton;
     private org.parker.mips.gui.theme.components.ThemedJButton saveCurrentOptionsButton;
     private org.parker.mips.gui.theme.components.ThemedJCheckBox savePreProcessorFileButton;
-    private org.parker.mips.gui.theme.components.ThemedJComboBox syntaxThemeComboBox;
+    private javax.swing.JList<String> syntaxThemeList;
     private org.parker.mips.gui.theme.components.ThemedJLabel themedJLabel1;
     private org.parker.mips.gui.theme.components.ThemedJLabel themedJLabel10;
     private org.parker.mips.gui.theme.components.ThemedJLabel themedJLabel11;

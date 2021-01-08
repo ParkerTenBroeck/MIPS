@@ -47,11 +47,13 @@ public class MIPS {
 
         ResourceHandler.extractResources(); //loads all resorces into documents folder
 
-        ThemeHandler.loadCurrentTheme(); //loads current theme
-
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
+
+                //FlatInspector.install("ctrl shift alt X");
+                ThemeHandler.init(); //loads current theme
+
                 MainGUI gui = new MainGUI(); //creates the GUI
 
                 try {                                   //loads the Icon for the JFrame
@@ -64,6 +66,7 @@ public class MIPS {
                 } catch (Exception e) {
 
                 }
+                ThemeHandler.updateTheme(); //loads current theme
             }
         };
         runnable.run();
@@ -71,6 +74,7 @@ public class MIPS {
         PluginLoader.loadDefaultPlugins(); //loads all plugins internal and external
 
         checkForUpdates(); //checks for updates
+
     }
 
 }
