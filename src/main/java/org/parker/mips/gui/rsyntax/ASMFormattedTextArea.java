@@ -5,8 +5,6 @@
  */
 package org.parker.mips.gui.rsyntax;
 
-import org.parker.mips.gui.theme.lookandfeel.ModernScrollBarUI;
-import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,7 +16,6 @@ import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.folding.FoldParserManager;
 import org.fife.ui.rtextarea.RTextScrollPane;
 import org.parker.mips.FileHandler;
-import org.parker.mips.gui.theme.ThemeHandler;
 import org.parker.mips.Log;
 import org.parker.mips.OptionsHandler;
 import org.parker.mips.ResourceHandler;
@@ -43,48 +40,50 @@ public class ASMFormattedTextArea extends RTextScrollPane {
 
         textArea.setSyntaxEditingStyle("MIPS");
         textArea.setCodeFoldingEnabled(true);
-        //super(textArea, true, new Color(201, 201, 201));
 
         this.setBorder(null);
         this.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_AS_NEEDED);
-//
-//        this.getVerticalScrollBar().setOpaque(false);
-//        this.getVerticalScrollBar().setUI(new ModernScrollBarUI());
-//
-//        this.getHorizontalScrollBar().setOpaque(false);
-//        this.getHorizontalScrollBar().setUI(new ModernScrollBarUI());
 
-        this.setTheme(OptionsHandler.currentSyntaxTheme.value);
+        this.setTheme(OptionsHandler.currentEditorTheme.val());
 
         //Theme theme = Theme.
+        //setAllFontSize(18);
         this.repaint();
     }
 
     public final void setTheme(String name) {
         try {
-//<<<<<<< HEAD
-            InputStream in = new FileInputStream(new File(ResourceHandler.SYNTAX_THEMES + FileHandler.FILE_SEPERATOR + name + ".xml"));
+            //Font cF = this.getFont();
+
+            InputStream in = new FileInputStream(new File(ResourceHandler.EDITOR_THEMES + FileHandler.FILE_SEPERATOR + name + ".xml"));
             Theme theme = Theme.load(in);
-//=======
-//            Theme theme = Theme.load(in, (Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME));
-//>>>>>>> master
             theme.apply(textArea);
+
+            //setAllFontSize(18);
+            //this.setFont(this.getFont());
         } catch (Exception e) {
             Log.logError("Error loading SyntaxText area Theme " + name + ".xml:\n" + Log.getFullExceptionMessage(e));
         }
-
-        this.setBackground(textArea.getBackground());
     }
 
-    public void setAllFontSize(int size) {
-        Font temp = new Font(this.getFont().getName(), Font.PLAIN, size);
-        this.setFont(temp);
-        this.textArea.setFont(temp);
-        this.getGutter().setLineNumberFont(temp);
+    public void setAllFont(Font font) {
+        this.setFont(font);
+        this.textArea.setFont(font);
+        this.getGutter().setLineNumberFont(font);
     }
+//    @Override
+//    public void setFont(Font font) {
+//        font = new Font(font.getName(), Font.PLAIN, 18);
+//        super.setFont(font);
+//        if (this.textArea != null) {
+//            this.textArea.setFont(font);
+//        }
+//        if (this.getGutter() != null) {
+//            this.getGutter().setLineNumberFont(font);
+//        }
+//    }
 
-    public int getAllFontSize() {
-        return this.getFont().getSize();
-    }
-
+//    public int getAllFontSize() {
+//        return this.getFont().getSize();
+//    }
 }

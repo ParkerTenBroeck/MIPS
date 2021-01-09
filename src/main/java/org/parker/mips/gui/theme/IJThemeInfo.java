@@ -1,4 +1,16 @@
 /*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package org.parker.mips.gui.theme;
+
+/**
+ *
+ * @author parke
+ */
+
+/*
  * Copyright 2019 FormDev Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,32 +26,31 @@
  * limitations under the License.
  */
 
-package org.parker.mips.gui.theme;
-
-
 import java.io.File;
 
 /**
  * @author Karl Tauber
  */
-class IJThemeInfo
+public class IJThemeInfo
 {
-	final String name;
-	final String resourceName;
-	final String license;
-	final String licenseFile;
-	final String sourceCodeUrl;
-	final String sourceCodePath;
-	final File themeFile;
-	final String lafClassName;
+	public final String name;
+	public final String resourceName;
+	public final boolean dark;
+	public final String license;
+	public final String licenseFile;
+	public final String sourceCodeUrl;
+	public final String sourceCodePath;
+	public final File themeFile;
+	public final String lafClassName;
 
-	IJThemeInfo( String name, String resourceName,
+	IJThemeInfo( String name, String resourceName, boolean dark,
 		String license, String licenseFile,
 		String sourceCodeUrl, String sourceCodePath,
 		File themeFile, String lafClassName )
 	{
 		this.name = name;
 		this.resourceName = resourceName;
+		this.dark = dark;
 		this.license = license;
 		this.licenseFile = licenseFile;
 		this.sourceCodeUrl = sourceCodeUrl;

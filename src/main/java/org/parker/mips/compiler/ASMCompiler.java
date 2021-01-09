@@ -188,7 +188,7 @@ public class ASMCompiler {
         Memory.setMemory(memByteArray);
         FileHandler.saveByteArrayToMXNFile(memByteArray);
 
-        if (OptionsHandler.saveCompilationInfo.value) {
+        if (OptionsHandler.saveCompilationInfo.val()) {
             saveOriginsToFile();
         }
 

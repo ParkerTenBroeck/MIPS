@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import java.awt.Font;
 import java.io.File;
 import java.io.FileReader;
 import java.io.Writer;
@@ -57,39 +58,41 @@ public class OptionsHandler {
     //System Calls
     public static final Holder<Boolean> logSystemCallMessages = new Holder(true);
     public static final Holder<Boolean> resetProcessorOnTrap0 = new Holder(false);
-    
+
     //Theme Handler
     public static final Holder<String> currentGUITheme = new Holder("Dark");
-    public static final Holder<String> currentSyntaxTheme = new Holder("Dark");
-    
+    public static final Holder<String> currentEditorTheme = new Holder("Dark");
+    public static final Holder<Font> currentGUIFont = new Holder(new Font("Segoe UI", 0, 15));
+    public static final Holder<Font> currentEditorFont = new Holder(new Font("Segoe UI", 0, 15));
+
     public static void readOptionsFromDefaultFile() {
         readOptionsFromFile(ResourceHandler.DEFAULT_OPTIONS_FILE);
     }
-    
+
     public static void readOptionsFromCustomFile(String name) {
         if (name != null) {
             name = name.split("\\.")[0];
         }
         readOptionsFromFile(ResourceHandler.USER_SAVED_CONFIG_PATH + FileHandler.FILE_SEPERATOR + name + "\\.json");
     }
-    
+
     public static void readOptionsFromCustomFile(File file) {
         if (file != null) {
             readOptionsFromFile(file.getAbsolutePath());
         }
     }
-    
+
     public static void saveOptionsToDefaultFile() {
         saveOptionsToFile(ResourceHandler.DEFAULT_OPTIONS_FILE);
     }
-    
+
     public static void saveOptionsToCustomFile(String name) {
         if (name != null) {
             name = name.split("\\.")[0];
         }
         saveOptionsToFile(ResourceHandler.USER_SAVED_CONFIG_PATH + FileHandler.FILE_SEPERATOR + name + "\\.json");
     }
-    
+
     public static void saveOptionsToCustomFile(File file) {
         if (file != null) {
             String path = file.getAbsolutePath();
@@ -100,35 +103,40 @@ public class OptionsHandler {
             }
         }
     }
-    
+
     private static void readOptionsFromFile(String filePath) {
-        
+
         File file = new File(filePath);
         FileReader reader = null;
-        
+
         try {
-            
+
             reader = new FileReader(file);
-            
+
             JsonParser parser = new JsonParser();
-            
+
             JsonObject jo = parser.parse(reader).getAsJsonObject();
-            
+
             Gson gson = new Gson();
-            
+
             Set<Map.Entry<String, JsonElement>> entries = jo.entrySet();//will return members of your object
             entries.forEach((entry) -> {
-                
+
                 try {
                     Field field = OptionsHandler.class.getDeclaredField(entry.getKey()); //gets the field from field name
                     Holder holder = (Holder) field.get(OptionsHandler.class); //gets the instance of the FINAL holder 
 
-                    holder.value = gson.fromJson(jo.getAsJsonObject(entry.getKey()).get("value"), holder.value.getClass());
-                    
+                    JsonElement tempJE = jo.getAsJsonObject(entry.getKey()).get("value");
+                    Class<?> clazz = holder.val().getClass();
+                    Object as = gson.fromJson(tempJE, clazz);
+                    if (as != null) {
+                        holder.val(as);
+                    }
+
                 } catch (Exception e) {
-                    logOptionsHandlerError("Failed to read Options file:\n" + Log.getFullExceptionMessage(e));
+                    logOptionsHandlerError("Error Field invalid " + entry.getKey() + ":\n" + Log.getFullExceptionMessage(e));
                 }
-                
+
             });
             logOptionsHandlerSystemMessage("Successfully loaded " + file.getName() + "\n\n");
         } catch (Exception e) {
@@ -137,12 +145,12 @@ public class OptionsHandler {
             try {
                 reader.close();
             } catch (Exception e) {
-                
+
             }
         }
-        
+
     }
-    
+
     private static void saveOptionsToFile(String filePath) {
         GsonBuilder gsonBuilder = new GsonBuilder();
         // Allowing the serialization of static fields    
@@ -161,7 +169,7 @@ public class OptionsHandler {
             writer = Files.newBufferedWriter(file.toPath());
             //System.err.println("asdasd");
             gson.toJson(new OptionsHandler(), writer);
-            
+
             logOptionsHandlerSystemMessage("Successfully saved " + file.getName() + "\n\n");
         } catch (Exception e) {
             logOptionsHandlerError("Failed to write Options file:\n" + Log.getFullExceptionMessage(e));
@@ -169,21 +177,21 @@ public class OptionsHandler {
             try {
                 writer.close();
             } catch (Exception e) {
-                
+
             }
         }
     }
-    
+
     private static void logOptionsHandlerError(String message) {
         Log.logError("[Options Handler] " + message);
     }
-    
+
     private static void logOptionsHandlerWarning(String message) {
         Log.logWarning("[Options Handler] " + message);
     }
-    
+
     private static void logOptionsHandlerSystemMessage(String message) {
         Log.logSystemMessage("[Options Handler] " + message);
     }
-    
+
 }

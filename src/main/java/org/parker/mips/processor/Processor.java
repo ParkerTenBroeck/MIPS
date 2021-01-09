@@ -36,7 +36,7 @@ public class Processor implements Runnable {
         stop();
         instructionsRan = 0;
         Registers.reset();
-        if (OptionsHandler.reloadMemoryOnReset.value) {
+        if (OptionsHandler.reloadMemoryOnReset.val()) {
             reloadMemoryFromLoadedMXNFile();
         }
         MainGUI.refresh();
@@ -156,7 +156,7 @@ public class Processor implements Runnable {
 //    static long duration = (endTime - startTime);  //divide by 1000000 to get milliseconds.
 
     public static void logRunTimeError(String message) {
-        if (MainGUI.breakOnRunTimeError()) {
+        if (OptionsHandler.breakOnRunTimeError.val()) {
             Processor.stop();
             MainGUI.refreshAll();
         }

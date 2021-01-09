@@ -18,6 +18,8 @@ import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import org.parker.mips.gui.MainGUI;
+import static org.parker.mips.gui.MainGUI.createWarningQuestion;
 
 /**
  *
@@ -95,24 +97,17 @@ public class UpdateHandler {
         }
 
         if (!FileHandler.isASMFileSaved()) {
-            int confirm = JOptionPane.showOptionDialog(
-                    null, "you have unsaved work are you sure you want to continue?",
-                    "Exit Confirmation", JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE, null, null, null);
-            if (confirm == 0) {
-            } else {
-                Log.logMessage("Update Cancelled");
+            int confirm = MainGUI.createWarningQuestion("Exit Confirmation", "You have unsaved work would you like to save before continuing?");
+
+            if (confirm == JOptionPane.CANCEL_OPTION) {
                 return;
             }
-        } else {
-            int confirm = JOptionPane.showOptionDialog(
-                    null, "are you sure you want to continue?",
-                    "Exit Confirmation", JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE, null, null, null);
-            if (confirm == 0) {
-            } else {
-                Log.logMessage("Update Cancelled");
-                return;
+            if (confirm == JOptionPane.YES_OPTION) {
+                FileHandler.saveASMFileFromUserTextArea();
+                OptionsHandler.saveOptionsToDefaultFile();
+            }
+            if (confirm == JOptionPane.NO_OPTION) {
+                OptionsHandler.saveOptionsToDefaultFile();
             }
         }
 

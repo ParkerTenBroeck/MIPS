@@ -12,7 +12,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import org.parker.mips.FileHandler;
-import org.parker.mips.gui.theme.ThemeHandler;
 import org.parker.mips.OptionsHandler;
 
 /**
@@ -45,7 +44,7 @@ public class ASM_GUI extends javax.swing.JPanel {
     }
 
     public static void loadCurrentTheme() {
-        setTextAreaThemeFromName(OptionsHandler.currentSyntaxTheme.value);
+        setTextAreaThemeFromName(OptionsHandler.currentEditorTheme.val());
     }
 
     public static void setTextAreaThemeFromName(String name) {
@@ -58,35 +57,39 @@ public class ASM_GUI extends javax.swing.JPanel {
     public ASM_GUI() {
         initComponents();
 
+        OptionsHandler.currentEditorFont.addValueListener((e) -> {
+            if(aSMFormattedTextArea1 != null){
+                aSMFormattedTextArea1.setAllFont(OptionsHandler.currentEditorFont.val());
+            }
+        });
+        
         //asmScrollArea.getVerticalScrollBar().setUI(new ModernScrollBarUI(asmScrollArea));
         //aSMFormattedTextArea1.textArea.setEditable(false);
         //aSMFormattedTextArea1.textArea.setStyledDocument(new DefaultStyledDocument());
-        aSMFormattedTextArea1.setAllFontSize(15);
-
-        aSMFormattedTextArea1.textArea.addMouseWheelListener(mouseWheelEvent
-                -> {
-            if (mouseWheelEvent.isControlDown()) {
-                int scrolled = mouseWheelEvent.getUnitsToScroll();
-                int newFontSize = aSMFormattedTextArea1.getAllFontSize() + scrolled;
-                if (newFontSize <= 0) {
-                    newFontSize = 1;
-                }
-                aSMFormattedTextArea1.setAllFontSize(newFontSize);
-//                Font temp = new Font(((Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME)).getName(), Font.PLAIN, newFontSize);
-//                ThemeHandler.setThemeFromName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME, temp, true, true);
-
-//                ThemeHandler.setThemeFromName(ThemeHandler.BUTTON_TEXT_FONT_PROPERTY_NAME, temp, true, true);
-
-//                ThemeHandler.setThemeFromName(ThemeHandler.LABLE_TEXT_FONT_PROPERTY_NAME, temp, true, true);
-            } else {
-                int unit = aSMFormattedTextArea1.getVerticalScrollBar().getUnitIncrement();
-                int scrolled = mouseWheelEvent.getUnitsToScroll() * 5;
-                //System.out.println(scrolled);
-                int currentPos = aSMFormattedTextArea1.getVerticalScrollBar().getValue();
-                aSMFormattedTextArea1.getVerticalScrollBar().setValue(unit * scrolled + currentPos);
-            }
-        });
-
+        //aSMFormattedTextArea1.setAllFontSize(15);
+//        aSMFormattedTextArea1.textArea.addMouseWheelListener(mouseWheelEvent
+//                -> {
+//            if (mouseWheelEvent.isControlDown()) {
+//                int scrolled = mouseWheelEvent.getUnitsToScroll();
+//                int newFontSize = aSMFormattedTextArea1.getAllFontSize() + scrolled;
+//                if (newFontSize <= 0) {
+//                    newFontSize = 1;
+//                }
+//                aSMFormattedTextArea1.setAllFontSize(newFontSize);
+////                Font temp = new Font(((Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME)).getName(), Font.PLAIN, newFontSize);
+////                ThemeHandler.setThemeFromName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME, temp, true, true);
+//
+////                ThemeHandler.setThemeFromName(ThemeHandler.BUTTON_TEXT_FONT_PROPERTY_NAME, temp, true, true);
+//
+////                ThemeHandler.setThemeFromName(ThemeHandler.LABLE_TEXT_FONT_PROPERTY_NAME, temp, true, true);
+//            } else {
+//                int unit = aSMFormattedTextArea1.getVerticalScrollBar().getUnitIncrement();
+//                int scrolled = mouseWheelEvent.getUnitsToScroll() * 5;
+//                //System.out.println(scrolled);
+//                int currentPos = aSMFormattedTextArea1.getVerticalScrollBar().getValue();
+//                aSMFormattedTextArea1.getVerticalScrollBar().setValue(unit * scrolled + currentPos);
+//            }
+//        });
         aSMFormattedTextArea1.textArea.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent ke) {
@@ -105,6 +108,15 @@ public class ASM_GUI extends javax.swing.JPanel {
         });
 
     }
+
+//    @Override
+//    public void setFont(Font font) {
+//        super.setFont(font);
+//
+////        if (aSMFormattedTextArea1 != null) {
+////            aSMFormattedTextArea1.setFont(font);
+////        }
+//    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

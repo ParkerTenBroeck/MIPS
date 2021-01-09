@@ -5,8 +5,6 @@
  */
 package org.parker.mips.gui;
 
-import org.parker.mips.gui.theme.lookandfeel.RoundedBorder;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -25,7 +23,7 @@ public class RegisterGUI extends javax.swing.JPanel {
      */
     public RegisterGUI() {
         initComponents();
-        //setFont(this.getFont());
+        setFont(this.getFont());
     }
 
     @Override

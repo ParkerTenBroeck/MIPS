@@ -14,11 +14,5 @@ import org.parker.mips.Holder;
  */
 public class ThemedJCheckBoxMenuItem extends JCheckBoxMenuItem {
     
-    private Holder<Boolean> isSelected;
-    
-    public void setSelected(Holder<Boolean> value) {
-        this.isSelected = value;
-    }
-    
 
 }

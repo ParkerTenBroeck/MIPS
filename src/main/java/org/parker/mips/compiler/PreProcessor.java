@@ -185,11 +185,11 @@ public class PreProcessor {
     public static ArrayList<UserLine> preProcess(ArrayList<UserLine> file) {
 
         if (file != null) {
-            if (OptionsHandler.includeRegDef.value) {
+            if (OptionsHandler.includeRegDef.val()) {
                 file.add(0, new UserLine("#include \"" + ResourceHandler.REG_DEF_HEADER_FILE + "\"", -2));
                 logPreProcessorMessage("Included regdef.asm");
             }
-            if (OptionsHandler.includeSysCallDef.value) {
+            if (OptionsHandler.includeSysCallDef.val()) {
                 file.add(0, new UserLine("#include \"" + ResourceHandler.SYS_CALL_DEF_HEADER_FILE + "\"", -3));
                 logPreProcessorMessage("Included syscalldef.asm");
             }
@@ -230,7 +230,7 @@ public class PreProcessor {
             cleanedData.add(currentLine);
 
         }
-        if (OptionsHandler.saveCleanedFile.value && firstLayer) {
+        if (OptionsHandler.saveCleanedFile.val() && firstLayer) {
             writeCleanedFile(cleanedData);
         }
 
@@ -251,7 +251,7 @@ public class PreProcessor {
             preProcessedData.addAll(preProcessLine(currentLine)); //preprocesses line and adds resulting line / lines to pre processed file
 
         }
-        if (OptionsHandler.savePreProcessedFile.value) {
+        if (OptionsHandler.savePreProcessedFile.val()) {
             writePreProcessedFile(preProcessedData);
         }
 

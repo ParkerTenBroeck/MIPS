@@ -13,11 +13,11 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import javax.swing.BoundedRangeModel;
 import javax.swing.JScrollPane;
-import javax.swing.UIManager;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
+import org.parker.mips.gui.theme.ThemeHandler;
 import org.parker.mips.gui.theme.lookandfeel.ModernScrollPane;
 
 /**
@@ -27,6 +27,7 @@ import org.parker.mips.gui.theme.lookandfeel.ModernScrollPane;
 public class Log extends javax.swing.JPanel {
 
     static {
+        ThemeHandler.init();
         Log.initComponents();
         Log log = new Log();
     }
@@ -38,7 +39,7 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logError(String message) {
-        if (!OptionsHandler.logErrors.value) {
+        if (!OptionsHandler.logErrors.val()) {
             return;
         }
         System.err.println("[Error] " + message);
@@ -50,7 +51,7 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logWarning(String message) {
-        if (!OptionsHandler.logWarnings.value) {
+        if (!OptionsHandler.logWarnings.val()) {
             return;
         }
         System.out.println("[Warning] " + message);
@@ -62,7 +63,7 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logSystemMessage(String message) {
-        if (!OptionsHandler.logSystemMessages.value) {
+        if (!OptionsHandler.logSystemMessages.val()) {
             return;
         }
         System.out.println("[System Message] " + message);
@@ -74,7 +75,7 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logMessage(String message) {
-        if (!OptionsHandler.logMessages.value) {
+        if (!OptionsHandler.logMessages.val()) {
             return;
         }
         System.out.println("[Message] " + message);
@@ -86,7 +87,7 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logCustomMessage(String message, SimpleAttributeSet att) {
-        if (!OptionsHandler.logMessages.value) {
+        if (!OptionsHandler.logMessages.val()) {
             return;
         }
         System.out.println("[Message] " + message);
@@ -95,7 +96,7 @@ public class Log extends javax.swing.JPanel {
     }
 
     public static void logCustomMessage(String message, boolean bold, boolean italic, boolean underline, Color color, String font) {
-        if (!OptionsHandler.logMessages.value) {
+        if (!OptionsHandler.logMessages.val()) {
             return;
         }
         System.out.println("[Message] " + message);
@@ -127,12 +128,6 @@ public class Log extends javax.swing.JPanel {
     }
 
     private void initLayout() {
-
-        try {
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-        } catch (Exception e) {
-            Log.logError(Log.getFullExceptionMessage(e));
-        }
 
         initComponents();
 

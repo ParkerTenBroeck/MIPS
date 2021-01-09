@@ -5,12 +5,25 @@
  */
 package org.parker.mips.gui;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+import java.awt.Component;
+import java.awt.Font;
 import java.io.File;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
+import javax.swing.JList;
+import javax.swing.UIManager;
+import javax.swing.border.CompoundBorder;
 import org.parker.mips.gui.theme.ThemeHandler;
 import org.parker.mips.OptionsHandler;
 import org.parker.mips.ResourceHandler;
+import org.parker.mips.gui.theme.IJThemeInfo;
 
 /**
  *
@@ -23,44 +36,54 @@ public class OptionsGUI extends javax.swing.JFrame {
      */
     public OptionsGUI() {
         initComponents();
-        this.setVisible(true);
-        this.setTitle("Options");
 
+        initGUIThemeComponents();
+        initEditorThemeComponents();
+
+        this.setTitle("Options");
+        try {
+            this.setIconImage(new FlatSVGIcon("images/project.svg").getImage());
+        } catch (Exception e) {
+
+        }
+
+        //Add icon
         //linking all of the components to the linked OPTIONS
         //General
         //logging
-        this.logSystemMessagesButton.setSelected(OptionsHandler.logSystemMessages);
-        this.logMessagesButton.setSelected(OptionsHandler.logMessages);
-        this.logWarningsButton.setSelected(OptionsHandler.logWarnings);
-        this.logErrorsButton.setSelected(OptionsHandler.logErrors);
+        OptionsHandler.logSystemMessages.LinkJButton(this.logSystemMessagesButton);
+        OptionsHandler.logMessages.LinkJButton(this.logMessagesButton);
+        OptionsHandler.logWarnings.LinkJButton(this.logWarningsButton);
+        OptionsHandler.logErrors.LinkJButton(this.logErrorsButton);
 
         //GUI options
-        this.enableAutoGUIUpdatesWhileRuning.setSelected(OptionsHandler.enableGUIAutoUpdateWhileRunning);
-        this.guiUpdateTimeSlider.setValue(OptionsHandler.GUIAutoUpdateRefreshTime);
+        OptionsHandler.enableGUIAutoUpdateWhileRunning.LinkJButton(this.enableAutoGUIUpdatesWhileRuning);
+        OptionsHandler.GUIAutoUpdateRefreshTime.LinkJSlider(this.guiUpdateTimeSlider);
 
         //Compiler
-        this.saveCleanedFileButton.setSelected(OptionsHandler.saveCleanedFile);
-        this.savePreProcessorFileButton.setSelected(OptionsHandler.savePreProcessedFile);
-        this.saveCompilerInfoFileButton.setSelected(OptionsHandler.saveCompilationInfo);
-        this.linkedFileButton.setSelected(OptionsHandler.linkedFile);
+        OptionsHandler.saveCleanedFile.LinkJButton(this.saveCleanedFileButton);
+        OptionsHandler.savePreProcessedFile.LinkJButton(this.savePreProcessorFileButton);
+        OptionsHandler.saveCompilationInfo.LinkJButton(this.saveCompilerInfoFileButton);
+        OptionsHandler.linkedFile.LinkJButton(this.linkedFileButton);
 
         //PreProcessor
-        this.includeRegDefButton.setSelected(OptionsHandler.includeRegDef);
-        this.includeSysCallDefButton.setSelected(OptionsHandler.includeSysCallDef);
+        OptionsHandler.includeRegDef.LinkJButton(this.includeRegDefButton);
+        OptionsHandler.includeSysCallDef.LinkJButton(this.includeSysCallDefButton);
 
         //Processor
         //Run Time
-        this.breakOnRunTimeErrorButton.setSelected(OptionsHandler.breakOnRunTimeError);
-        this.adaptiveMemoryButton.setSelected(OptionsHandler.adaptiveMemory);
-        this.enableBreakPointsButton.setSelected(OptionsHandler.enableBreakPoints);
+        OptionsHandler.breakOnRunTimeError.LinkJButton(this.breakOnRunTimeErrorButton);
+        OptionsHandler.adaptiveMemory.LinkJButton(this.adaptiveMemoryButton);
+        OptionsHandler.enableBreakPoints.LinkJButton(this.enableBreakPointsButton);
 
         //Non RunTime
-        this.reloadMemoryOnResetButton.setSelected(OptionsHandler.reloadMemoryOnReset);
+        OptionsHandler.reloadMemoryOnReset.LinkJButton(this.reloadMemoryOnResetButton);
 
         //System Calls
-        this.logSystemCallMessagesButton.setSelected(OptionsHandler.logSystemCallMessages);
-        this.resetProcessorOnTrap0Button.setSelected(OptionsHandler.resetProcessorOnTrap0);
+        OptionsHandler.logSystemCallMessages.LinkJButton(this.logSystemCallMessagesButton);
+        OptionsHandler.resetProcessorOnTrap0.LinkJButton(this.resetProcessorOnTrap0Button);
 
+        //Others
         this.loadOptionsButton.addActionListener((ae) -> {
             JFileChooser fc = ResourceHandler.createFileChooser(ResourceHandler.USER_SAVED_CONFIG_PATH);
             int val = ResourceHandler.openFileChooser(fc);
@@ -79,49 +102,238 @@ public class OptionsGUI extends javax.swing.JFrame {
             }
         });
 
-        {
-            File file = new File(ResourceHandler.GUI_THEMES);
-            File[] files = file.listFiles();
-            String[] names = new String[files.length];
-            for (int i = 0; i < files.length; i++) {
-                names[i] = files[i].getName().split("\\.")[0];
+        this.setVisible(true);
+    }
+
+    private void initGUIThemeComponents() {
+        // add font families
+        // get current font
+        Font currentFont = OptionsHandler.currentGUIFont.val();
+        String currentFamily = currentFont.getFamily();
+        String currentSize = Integer.toString(currentFont.getSize());
+
+        ArrayList<String> families = new ArrayList<>(Arrays.asList(
+                "Arial", "Cantarell", "Comic Sans MS", "Courier New", "DejaVu Sans",
+                "Dialog", "Liberation Sans", "Monospaced", "Noto Sans", "Roboto",
+                "SansSerif", "Segoe UI", "Serif", "Tahoma", "Ubuntu", "Verdana"));
+        if (!families.contains(currentFamily)) {
+            families.add(currentFamily);
+        }
+        families.sort(String.CASE_INSENSITIVE_ORDER);
+
+        guiFontList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = families.toArray(new String[0]);
+
+            public int getSize() {
+                return strings.length;
             }
-            this.guiThemeList.setModel(new DefaultComboBoxModel(names));
-            this.guiThemeList.setSelectedValue(OptionsHandler.currentGUITheme.value, true);
 
-            this.guiThemeList.addListSelectionListener((ae) -> {
-                //System.err.println("asdasdasdasdasda");
-                String name = (String) guiThemeList.getSelectedValue();
+            public String getElementAt(int i) {
+                return strings[i];
+            }
+        });
+        guiFontList.setSelectedValue(currentFamily, false);
 
-                if (!name.equals(OptionsHandler.currentGUITheme.value)) {
-                    OptionsHandler.currentGUITheme.value = name;
-                    //ThemeHandler.loadCurrentTheme();
-                }
-                //ThemeHandler.readThemeFromThemeName();
-            });
+        guiFontList.addListSelectionListener((lse) -> {
+            OptionsHandler.currentGUIFont.val(ThemeHandler.changeFontFamily(OptionsHandler.currentGUIFont.val(), guiFontList.getSelectedValue()));
+        });
+        OptionsHandler.currentGUIFont.addValueListener((e) -> {
+            String current = OptionsHandler.currentGUIFont.val().getFontName();
+            if (!current.equals(guiFontList.getSelectedValue())) {
+                guiFontList.setSelectedValue(current, true);
+            }
+        });
+
+        // add font sizes
+        ArrayList<String> sizes = new ArrayList<>(Arrays.asList(
+                "10", "12", "14", "16", "18", "20", "24", "28"));
+        if (!sizes.contains(currentSize)) {
+            sizes.add(currentSize);
+        }
+        sizes.sort(String.CASE_INSENSITIVE_ORDER);
+
+        guiFontSizeList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = sizes.toArray(new String[0]);
+
+            public int getSize() {
+                return strings.length;
+            }
+
+            public String getElementAt(int i) {
+                return strings[i];
+            }
+        });
+
+        guiFontSizeList.setSelectedValue(currentSize, false);
+
+        guiFontSizeList.addListSelectionListener((lse) -> {
+            String fontSize = guiFontSizeList.getSelectedValue();
+            int val = Integer.parseInt(fontSize);
+            OptionsHandler.currentGUIFont.val(ThemeHandler.changeFontSize(OptionsHandler.currentGUIFont.val(), val));
+        });
+
+        OptionsHandler.currentGUIFont.addValueListener((e) -> {
+            String current = Integer.toString(OptionsHandler.currentGUIFont.val().getSize());
+            if (!current.equals(guiFontList.getSelectedValue())) {
+                guiFontList.setSelectedValue(current, true);
+            }
+        });
+
+        {//fills the list with all pissible GUI themes
+//            File file = new File(ResourceHandler.GUI_THEMES);
+//            File[] files = file.listFiles();
+//            String[] names = new String[files.length];
+//            for (int i = 0; i < files.length; i++) {
+//                names[i] = files[i].getName().split("\\.")[0];
+//            }
+//            this.guiThemeList.setModel(new DefaultComboBoxModel(names));
+//            this.guiThemeList.setSelectedValue(OptionsHandler.currentGUITheme.val(), true);
+//
+//            this.guiThemeList.addListSelectionListener((ae) -> {
+//                //System.err.println("asdasdasdasdasda");
+//                String name = (String) guiThemeList.getSelectedValue();
+//
+//                if (!name.equals(OptionsHandler.currentGUITheme.val())) {
+//                    OptionsHandler.currentGUITheme.val(name);
+//                }
+//            });
+
+//            guiThemeList.setCellRenderer(new DefaultListCellRenderer() {
+//                @Override
+//                public Component getListCellRendererComponent(JList<?> list, Object value,
+//                        int index, boolean isSelected, boolean cellHasFocus) {
+//                    String title = categories.get(index);
+//                    String name = ((IJThemeInfo) value).name;
+//                    int sep = name.indexOf('/');
+//                    if (sep >= 0) {
+//                        name = name.substring(sep + 1).trim();
+//                    }
+//
+//                    JComponent c = (JComponent) super.getListCellRendererComponent(list, name, index, isSelected, cellHasFocus);
+//                    c.setToolTipText(buildToolTip((IJThemeInfo) value));
+//                    if (title != null) {
+//                        c.setBorder(new CompoundBorder(new ListCellTitledBorder(themesList, title), c.getBorder()));
+//                    }
+//                    return c;
+//                }
+//
+//                private String buildToolTip(IJThemeInfo ti) {
+//                    if (ti.themeFile != null) {
+//                        return ti.themeFile.getPath();
+//                    }
+//                    if (ti.resourceName == null) {
+//                        return ti.name;
+//                    }
+//
+//                    return "Name: " + ti.name
+//                            + "\nLicense: " + ti.license
+//                            + "\nSource Code: " + ti.sourceCodeUrl;
+//                }
+//            });
         }
 
-        {
-            File file = new File(ResourceHandler.SYNTAX_THEMES);
+    }
+
+    private void initEditorThemeComponents() {
+
+        Font currentFont = OptionsHandler.currentEditorFont.val();
+        String currentFamily = currentFont.getFamily();
+        String currentSize = Integer.toString(currentFont.getSize());
+
+        ArrayList<String> families = new ArrayList<>(Arrays.asList(
+                "Arial", "Cantarell", "Comic Sans MS", "Courier New", "DejaVu Sans",
+                "Dialog", "Liberation Sans", "Monospaced", "Noto Sans", "Roboto",
+                "SansSerif", "Segoe UI", "Serif", "Tahoma", "Ubuntu", "Verdana"));
+        if (!families.contains(currentFamily)) {
+            families.add(currentFamily);
+        }
+        families.sort(String.CASE_INSENSITIVE_ORDER);
+
+        editorFontList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = families.toArray(new String[0]);
+
+            public int getSize() {
+                return strings.length;
+            }
+
+            public String getElementAt(int i) {
+                return strings[i];
+            }
+        });
+        editorFontList.setSelectedValue(currentFamily, false);
+
+        editorFontList.addListSelectionListener((lse) -> {
+            OptionsHandler.currentEditorFont.val(ThemeHandler.changeFontFamily(OptionsHandler.currentEditorFont.val(), editorFontList.getSelectedValue()));
+        });
+
+        OptionsHandler.currentEditorFont.addValueListener((e) -> {
+            String current = OptionsHandler.currentEditorFont.val().getFontName();
+            if (!current.equals(editorFontList.getSelectedValue())) {
+                editorFontList.setSelectedValue(current, true);
+            }
+        });
+
+        // add font sizes
+        ArrayList<String> sizes = new ArrayList<>(Arrays.asList(
+                "10", "12", "14", "16", "18", "20", "24", "28"));
+        if (!sizes.contains(currentSize)) {
+            sizes.add(currentSize);
+        }
+        sizes.sort(String.CASE_INSENSITIVE_ORDER);
+
+        editorFontSizeList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = sizes.toArray(new String[0]);
+
+            public int getSize() {
+                return strings.length;
+            }
+
+            public String getElementAt(int i) {
+                return strings[i];
+            }
+        });
+
+        editorFontSizeList.setSelectedValue(currentSize, false);
+
+        editorFontSizeList.addListSelectionListener((lse) -> {
+            String fontSize = editorFontSizeList.getSelectedValue();
+            int val = Integer.parseInt(fontSize);
+            OptionsHandler.currentEditorFont.val(ThemeHandler.changeFontSize(OptionsHandler.currentEditorFont.val(), val));
+
+        });
+
+        OptionsHandler.currentEditorFont.addValueListener((e) -> {
+            String current = Integer.toString(OptionsHandler.currentEditorFont.val().getSize());
+            if (!current.equals(editorFontList.getSelectedValue())) {
+                editorFontList.setSelectedValue(current, true);
+            }
+        });
+
+        {//loads list of available themes
+            File file = new File(ResourceHandler.EDITOR_THEMES);
             File[] files = file.listFiles();
+            if (files != null) {
+
             String[] names = new String[files.length];
             for (int i = 0; i < files.length; i++) {
                 names[i] = files[i].getName().split("\\.")[0];
             }
-            this.syntaxThemeList.setModel(new DefaultComboBoxModel(names));
-            this.syntaxThemeList.setSelectedValue(OptionsHandler.currentSyntaxTheme.value, true);
+            this.editorThemeList.setModel(new DefaultComboBoxModel(names));
+            this.editorThemeList.setSelectedValue(OptionsHandler.currentEditorTheme.val(), true);
 
-            this.syntaxThemeList.addListSelectionListener((ae) -> {
+            this.editorThemeList.addListSelectionListener((ae) -> {
                 //System.err.println("asdasdasdasdasda");
-                String name = (String) syntaxThemeList.getSelectedValue();
+                String name = (String) editorThemeList.getSelectedValue();
 
-                if (!name.equals(OptionsHandler.currentSyntaxTheme.value)) {
-                    OptionsHandler.currentSyntaxTheme.value = name;
+                if (!name.equals(OptionsHandler.currentEditorTheme.val())) {
+                    OptionsHandler.currentEditorTheme.val(name);
                     ASM_GUI.loadCurrentTheme();
                 }
                 //ThemeHandler.readThemeFromThemeName();
             });
+            }
         }
+
     }
 
     /**
@@ -171,12 +383,27 @@ public class OptionsGUI extends javax.swing.JFrame {
         logSystemCallMessagesButton = new org.parker.mips.gui.theme.components.ThemedJCheckBox();
         resetProcessorOnTrap0Button = new org.parker.mips.gui.theme.components.ThemedJCheckBox();
         themedJPanel14 = new org.parker.mips.gui.theme.components.ThemedJPanel1();
-        themedJLabel4 = new org.parker.mips.gui.theme.components.ThemedJLabel();
-        themedJLabel11 = new org.parker.mips.gui.theme.components.ThemedJLabel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel1 = new javax.swing.JPanel();
+        themedJLabel13 = new org.parker.mips.gui.theme.components.ThemedJLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         guiThemeList = new javax.swing.JList<>();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        guiFontList = new javax.swing.JList<>();
+        themedJLabel4 = new org.parker.mips.gui.theme.components.ThemedJLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        guiFontSizeList = new javax.swing.JList<>();
+        themedJLabel12 = new org.parker.mips.gui.theme.components.ThemedJLabel();
+        jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        syntaxThemeList = new javax.swing.JList<>();
+        editorThemeList = new javax.swing.JList<>();
+        themedJLabel11 = new org.parker.mips.gui.theme.components.ThemedJLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        editorFontSizeList = new javax.swing.JList<>();
+        themedJLabel14 = new org.parker.mips.gui.theme.components.ThemedJLabel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        editorFontList = new javax.swing.JList<>();
+        themedJLabel15 = new org.parker.mips.gui.theme.components.ThemedJLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -228,13 +455,13 @@ public class OptionsGUI extends javax.swing.JFrame {
                     .addComponent(enableAutoGUIUpdatesWhileRuning, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(guiUpdateTimeSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(themedJLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(themedJPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(themedJPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(themedJLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(saveCurrentOptionsButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(loadOptionsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(loadOptionsButton, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                    .addComponent(saveCurrentOptionsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(146, 146, 146))
         );
         themedJPanel11Layout.setVerticalGroup(
@@ -426,51 +653,140 @@ public class OptionsGUI extends javax.swing.JFrame {
 
         themedJTabbedPane1.addTab("SystemCalls", themedJPanel15);
 
-        themedJLabel4.setText("GUI Themes");
+        themedJLabel13.setText("Font Size");
 
-        themedJLabel11.setText("Syntax Theme");
-
-        guiThemeList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane2.setViewportView(guiThemeList);
 
-        syntaxThemeList.setModel(new javax.swing.AbstractListModel<String>() {
+        guiFontList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "1", "2", "3", "4" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        guiFontList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane3.setViewportView(guiFontList);
+
+        themedJLabel4.setText("Theme");
+
+        guiFontSizeList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane4.setViewportView(guiFontSizeList);
+
+        themedJLabel12.setText("Font");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(themedJLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(themedJLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(themedJLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
+                .addContainerGap(137, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(themedJLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(themedJLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(themedJLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane2)
+                        .addGap(13, 13, 13))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE))
+                        .addContainerGap())))
+        );
+
+        jTabbedPane1.addTab("GUI", jPanel1);
+
+        editorThemeList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(syntaxThemeList);
+        jScrollPane1.setViewportView(editorThemeList);
+
+        themedJLabel11.setText("Theme");
+
+        editorFontSizeList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane5.setViewportView(editorFontSizeList);
+
+        themedJLabel14.setText("Font");
+
+        editorFontList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "1", "2", "3", "4" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        editorFontList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane6.setViewportView(editorFontList);
+
+        themedJLabel15.setText("Font Size");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                    .addComponent(themedJLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(themedJLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(themedJLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(137, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(themedJLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(themedJLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane6)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(themedJLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Editor", jPanel2);
 
         javax.swing.GroupLayout themedJPanel14Layout = new javax.swing.GroupLayout(themedJPanel14);
         themedJPanel14.setLayout(themedJPanel14Layout);
         themedJPanel14Layout.setHorizontalGroup(
             themedJPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(themedJPanel14Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(themedJPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(themedJLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(themedJPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1)
-                    .addComponent(themedJLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE))
-                .addContainerGap(339, Short.MAX_VALUE))
+            .addComponent(jTabbedPane1)
         );
         themedJPanel14Layout.setVerticalGroup(
             themedJPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(themedJPanel14Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(themedJPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(themedJLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(themedJLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(themedJPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
-                .addContainerGap())
+            .addComponent(jTabbedPane1)
         );
 
         themedJTabbedPane1.addTab("Theme", themedJPanel14);
@@ -498,22 +814,7 @@ public class OptionsGUI extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(OptionsGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(OptionsGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(OptionsGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(OptionsGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
+
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -530,17 +831,29 @@ public class OptionsGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.parker.mips.gui.theme.components.ThemedJCheckBox adaptiveMemoryButton;
     private org.parker.mips.gui.theme.components.ThemedJCheckBox breakOnRunTimeErrorButton;
+    private javax.swing.JList<String> editorFontList;
+    private javax.swing.JList<String> editorFontSizeList;
+    private javax.swing.JList<String> editorThemeList;
     private org.parker.mips.gui.theme.components.ThemedJCheckBox enableAutoGUIUpdatesWhileRuning;
     private org.parker.mips.gui.theme.components.ThemedJCheckBox enableBreakPointsButton;
-    private javax.swing.JList<String> guiThemeList;
+    private javax.swing.JList<String> guiFontList;
+    private javax.swing.JList<String> guiFontSizeList;
+    private javax.swing.JList<IJThemeInfo> guiThemeList;
     private org.parker.mips.gui.theme.components.ThemedJSlider guiUpdateTimeSlider;
     private org.parker.mips.gui.theme.components.ThemedJCheckBox includeRegDefButton;
     private org.parker.mips.gui.theme.components.ThemedJCheckBox includeSysCallDefButton;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private org.parker.mips.gui.theme.components.ThemedJCheckBox linkedFileButton;
     private org.parker.mips.gui.theme.components.ThemedJButton loadOptionsButton;
     private org.parker.mips.gui.theme.components.ThemedJCheckBox logErrorsButton;
@@ -554,10 +867,13 @@ public class OptionsGUI extends javax.swing.JFrame {
     private org.parker.mips.gui.theme.components.ThemedJCheckBox saveCompilerInfoFileButton;
     private org.parker.mips.gui.theme.components.ThemedJButton saveCurrentOptionsButton;
     private org.parker.mips.gui.theme.components.ThemedJCheckBox savePreProcessorFileButton;
-    private javax.swing.JList<String> syntaxThemeList;
     private org.parker.mips.gui.theme.components.ThemedJLabel themedJLabel1;
     private org.parker.mips.gui.theme.components.ThemedJLabel themedJLabel10;
     private org.parker.mips.gui.theme.components.ThemedJLabel themedJLabel11;
+    private org.parker.mips.gui.theme.components.ThemedJLabel themedJLabel12;
+    private org.parker.mips.gui.theme.components.ThemedJLabel themedJLabel13;
+    private org.parker.mips.gui.theme.components.ThemedJLabel themedJLabel14;
+    private org.parker.mips.gui.theme.components.ThemedJLabel themedJLabel15;
     private org.parker.mips.gui.theme.components.ThemedJLabel themedJLabel2;
     private org.parker.mips.gui.theme.components.ThemedJLabel themedJLabel3;
     private org.parker.mips.gui.theme.components.ThemedJLabel themedJLabel4;

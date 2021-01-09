@@ -44,7 +44,7 @@ public class ResourceHandler {
     //Themes and realted resources
     public static final String THEME_PATH = DEFAULT_PATH + FILE_SEPERATOR + "Themes";
     public static final String GUI_THEMES = THEME_PATH + FILE_SEPERATOR + "GUIThemes";
-    public static final String SYNTAX_THEMES = THEME_PATH + FILE_SEPERATOR + "SyntaxThemes";
+    public static final String EDITOR_THEMES = THEME_PATH + FILE_SEPERATOR + "EditorThemes";
 
     //Header and related resources
     public static final String STANDARD_HEADER_PATH = DEFAULT_PATH + FILE_SEPERATOR + "StandardHeaderFiles";

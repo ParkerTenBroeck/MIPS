@@ -31,11 +31,6 @@ public class UI extends JApplet {
 
 
    static void all() {
-      try {
-         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-      } catch (Exception var1) {
-         ;
-      }
 
       jP.add(new binPanel(applet, arg));
    }

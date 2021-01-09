@@ -5,7 +5,7 @@
  */
 package org.parker.mips.gui;
 
-import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.parker.mips.compiler.ASMCompiler;
 import java.awt.Color;
 import java.awt.Component;
@@ -14,7 +14,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -42,6 +45,7 @@ public class MainGUI extends javax.swing.JFrame {
 
     private static Thread autoUpdateThread;
     private static boolean autoUpdate;
+    private static MainGUI instance;
 
     public static synchronized boolean isRunning() {
         return autoUpdate;
@@ -58,15 +62,15 @@ public class MainGUI extends javax.swing.JFrame {
     private static synchronized void startAutoUpdate() {
         MainGUI.startButton.setSelected(true);
         MainGUI.autoUpdate = true;
-        if (!OptionsHandler.enableGUIAutoUpdateWhileRunning.value) {
+        if (!OptionsHandler.enableGUIAutoUpdateWhileRunning.val()) {
             return;
         }
         autoUpdateThread = new Thread() {
             public void run() {
-                while (autoUpdate && OptionsHandler.enableGUIAutoUpdateWhileRunning.value) {
+                while (autoUpdate && OptionsHandler.enableGUIAutoUpdateWhileRunning.val()) {
                     MainGUI.refresh();
                     try {
-                        Thread.sleep(OptionsHandler.GUIAutoUpdateRefreshTime.value);
+                        Thread.sleep(OptionsHandler.GUIAutoUpdateRefreshTime.val());
                     } catch (Exception e) {
 
                     }
@@ -100,25 +104,37 @@ public class MainGUI extends javax.swing.JFrame {
      * Creates new form Main_GUI
      */
     public MainGUI() {
-        FlatDarkLaf.install();
 
         initComponents();
+
+        try {
+            URL url = ClassLoader.getSystemClassLoader().getResource("images/logo4.png");
+            ImageIcon icon = new ImageIcon(url);
+            this.setIconImage(icon.getImage());
+
+            aboutButton.setIcon(new FlatSVGIcon("images/informationDialog.svg", (int) (aboutButton.getWidth() / 1.5), (int) (aboutButton.getHeight() / 1.5)));
+            aboutLinkedFile.setIcon(new FlatSVGIcon("images/informationDialog.svg", (int) (aboutLinkedFile.getWidth() / 1.5), (int) (aboutLinkedFile.getHeight() / 1.5)));
+
+        } catch (Exception e) {
+            Log.logError(Log.getFullExceptionMessage(e));
+        }
+
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        enableBreak.setSelected(OptionsHandler.enableBreakPoints);
-        linkedButton.setSelected(OptionsHandler.linkedFile);
+        OptionsHandler.enableBreakPoints.LinkJButton(enableBreak);
+        OptionsHandler.linkedFile.LinkJButton(linkedButton);
 
-        saveCompileInformationButton.setSelected(OptionsHandler.saveCompilationInfo);
-        savePreProcessedFileButton.setSelected(OptionsHandler.savePreProcessedFile);
+        OptionsHandler.saveCompilationInfo.LinkJButton(saveCompileInformationButton);
+        OptionsHandler.savePreProcessedFile.LinkJButton(savePreProcessedFileButton);
 
-        breakProgramOnRTEButton.setSelected(OptionsHandler.breakOnRunTimeError);
-        adaptiveMemoryMenuButton.setSelected(OptionsHandler.adaptiveMemory);
+        OptionsHandler.breakOnRunTimeError.LinkJButton(breakProgramOnRTEButton);
+        OptionsHandler.adaptiveMemory.LinkJButton(adaptiveMemoryMenuButton);
 
-        enableGUIUpdatingWhileRunningButton.setSelected(OptionsHandler.enableGUIAutoUpdateWhileRunning);
-        logSystemMessagesButton.setSelected(OptionsHandler.logSystemMessages);
-        logMessagesButton.setSelected(OptionsHandler.logMessages);
-        logWarningsButton.setSelected(OptionsHandler.logWarnings);
-        logErrorsButton.setSelected(OptionsHandler.logErrors);
+        OptionsHandler.enableGUIAutoUpdateWhileRunning.LinkJButton(enableGUIUpdatingWhileRunningButton);
+        OptionsHandler.logSystemMessages.LinkJButton(logSystemMessagesButton);
+        OptionsHandler.logMessages.LinkJButton(logMessagesButton);
+        OptionsHandler.logWarnings.LinkJButton(logWarningsButton);
+        OptionsHandler.logErrors.LinkJButton(logErrorsButton);
 
         addCompileButtonListener((ae) -> {
             Processor.stop();
@@ -151,19 +167,23 @@ public class MainGUI extends javax.swing.JFrame {
             Processor.reset();
         });
 
-        //new ModernSliderUI(this.delaySlider);
-        //makeTextAreaAutoScroll(virtualConsolLog);
         WindowListener exitListener = new WindowAdapter() {
 
             @Override
             public void windowClosing(WindowEvent e) {
 
                 if (!FileHandler.isASMFileSaved()) {
-                    int confirm = JOptionPane.showOptionDialog(
-                            null, "you have unsaved work are you sure you want to exit?",
-                            "Exit Confirmation", JOptionPane.YES_NO_OPTION,
-                            JOptionPane.QUESTION_MESSAGE, null, null, null);
-                    if (confirm == 0) {
+                    int confirm = createWarningQuestion("Exit Confirmation", "You have unsaved work would you like to save before continuing?");
+
+                    if (confirm == JOptionPane.CANCEL_OPTION) {
+
+                    }
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        FileHandler.saveASMFileFromUserTextArea();
+                        OptionsHandler.saveOptionsToDefaultFile();
+                        System.exit(0);
+                    }
+                    if (confirm == JOptionPane.NO_OPTION) {
                         OptionsHandler.saveOptionsToDefaultFile();
                         System.exit(0);
                     }
@@ -193,34 +213,19 @@ public class MainGUI extends javax.swing.JFrame {
             }
 
         } catch (Exception ex) {
-            //appendMessageToVirtualConsoleLog(ex.toString(), null);
-            //Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         new dragAndDrop(mainPanel);
         this.setVisible(true);
         Thread.currentThread().setName("GUI");
         refresh();
+
+        if (instance != null) {
+            instance.dispatchEvent(new WindowEvent(instance, WindowEvent.WINDOW_CLOSING));
+        }
+        instance = this;
     }
 
-//    public static void addPluginFrameOpeningEventsToMainGUISystemCallPluginLists(SystemCallPlugin plugin, NamedFrameOpeningEvent[] foe) {
-//        if (plugin == null || foe == null) {
-//            return;
-//        }
-//        
-//        ThemedJMenu tempMen = new ThemedJMenu();
-//        
-//        tempMen.setText(plugin.PLUGIN_NAME.replaceAll("_", " "));
-//
-//        for(int i = 0; i < foe.length; i ++){
-//            ThemedJMenuItem tempIte = new ThemedJMenuItem();
-//            tempIte.setText(foe[i].FRAME_NAME);
-//            tempIte.addActionListener(foe[i].AL);
-//            tempMen.add(tempIte);
-//        }
-//
-//        systemCallFrameJMenu.add(tempMen);
-//    }
     public static void reloadSystemCallPluginLists() {
         systemCallFrameJMenu.removeAll();
         registerSystemCallPluginsJMenu.removeAll();
@@ -362,7 +367,7 @@ public class MainGUI extends javax.swing.JFrame {
     }
 
     public static int confirmBox(String titleBar, String infoMessage) {
-        return JOptionPane.showConfirmDialog(null, infoMessage, titleBar, JOptionPane.INFORMATION_MESSAGE);
+        return JOptionPane.showConfirmDialog(instance, infoMessage, titleBar, JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
@@ -883,18 +888,14 @@ public class MainGUI extends javax.swing.JFrame {
 
     private void checkForUpdatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkForUpdatesActionPerformed
         UpdateHandler.update();
-//Browser.openLinkInBrowser("https://github.com/ParkerTenBroeck/MIPS");
     }//GEN-LAST:event_checkForUpdatesActionPerformed
 
     private void documentationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_documentationButtonActionPerformed
-
-        //new HTMLFrame();
         try {
             DesktopBrowser.openLinkInBrowser(ResourceHandler.DOCUMENTATION_PATH + FileHandler.FILE_SEPERATOR + "index.html");
         } catch (Exception ex) {
             //Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //Browser.openLinkInBrowser("https://github.com/ParkerTenBroeck/MIPS/blob/master/MIPS%20documentation/MIPS%20Instructions-Traps-Registers.pdf");
     }//GEN-LAST:event_documentationButtonActionPerformed
 
     private void optionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_optionsButtonActionPerformed
@@ -915,6 +916,70 @@ public class MainGUI extends javax.swing.JFrame {
 
     }//GEN-LAST:event_loadPluginJMenuItemActionPerformed
 
+    //messages (ok)
+    public static void createPlaneMessage(String title, String message) {
+        createCustomOptionDialog(title, message, JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE, null, null, null);
+    }
+
+    public static void createPlaneInfo(String title, String message) {
+        createCustomOptionDialog(title, message, JOptionPane.PLAIN_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+    }
+
+    public static void createWarningMessage(String title, String message) {
+        createCustomOptionDialog(title, message, JOptionPane.PLAIN_MESSAGE, JOptionPane.WARNING_MESSAGE, null, null, null);
+    }
+
+    public static void createErrorMessage(String title, String message) {
+        createCustomOptionDialog(title, message, JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE, null, null, null);
+    }
+
+    //choices (yes, no)
+    public static int createPlaneChoice(String title, String message) {
+        return createCustomOptionDialog(title, message, JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+    }
+
+    public static int createInfoChoice(String title, String message) {
+        return createCustomOptionDialog(title, message, JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+    }
+
+    public static int createWarningChoice(String title, String message) {
+        return createCustomOptionDialog(title, message, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
+    }
+
+    public static int createErrorChoice(String title, String message) {
+        return createCustomOptionDialog(title, message, JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null);
+    }
+
+    //Question (yes, no, cancel)
+    public static int createPlaneQuestion(String title, String message) {
+        return createCustomOptionDialog(title, message, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+    }
+
+    public static int createInfoQuestion(String title, String message) {
+        return createCustomOptionDialog(title, message, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+    }
+
+    public static int createWarningQuestion(String title, String message) {
+        return createCustomOptionDialog(title, message, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
+    }
+
+    public static int createErrorQuestion(String title, String message) {
+        return createCustomOptionDialog(title, message, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null);
+    }
+
+    //custom
+    public static int createCustomOptionDialog(String title, String message, int i, int ii) {
+        return createCustomOptionDialog(title, message, i, ii, null, null, null);
+    }
+
+    public static int createCustomOptionDialog(String title, String message, int i, int ii, Icon icon) {
+        return createCustomOptionDialog(title, message, i, ii, icon, null, null);
+    }
+
+    public static int createCustomOptionDialog(String title, String message, int i, int ii, Icon icon, Object[] objects, Object object) {
+        return JOptionPane.showOptionDialog(instance, message, title, i, ii, icon, objects, object);
+    }
+
     public static void addCompileButtonListener(ActionListener al) {
         MainGUI.compileButton.addActionListener(al);
     }
@@ -933,22 +998,6 @@ public class MainGUI extends javax.swing.JFrame {
 
     public static void addResetButtonListener(ActionListener al) {
         MainGUI.resetButton.addActionListener(al);
-    }
-
-    public static boolean isMemoryAdaptive() {
-        return MainGUI.adaptiveMemoryMenuButton.isSelected();
-    }
-
-    public static boolean savePreProcessedFile() {
-        return savePreProcessedFileButton.isSelected();
-    }
-
-    public static boolean saveCompilationInfo() {
-        return saveCompileInformationButton.isSelected();
-    }
-
-    public static boolean breakOnRunTimeError() {
-        return breakProgramOnRTEButton.isSelected();
     }
 
 
