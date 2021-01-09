@@ -17,7 +17,7 @@ import org.parker.mips.plugin.PluginLoader;
  */
 public class MIPS {
 
-    public static final String VERSION = "0.9.8.0.4";
+    public static final String VERSION = "0.9.8.1";
     public static final String JAR_PATH;
 
     static {
