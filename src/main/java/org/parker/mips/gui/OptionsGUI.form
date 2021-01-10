@@ -217,7 +217,7 @@
                           <Component id="themedJLabel10" min="-2" max="-2" attributes="0"/>
                           <Component id="reloadMemoryOnResetButton" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="108" max="32767" attributes="0"/>
+                      <EmptySpace pref="125" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -242,7 +242,7 @@
                               <Component id="reloadMemoryOnResetButton" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="255" max="32767" attributes="0"/>
+                      <EmptySpace pref="269" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -306,7 +306,7 @@
                           <Component id="saveCompilerInfoFileButton" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="linkedFileButton" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="137" max="32767" attributes="0"/>
+                      <EmptySpace pref="152" max="32767" attributes="0"/>
                       <Component id="jSeparator2" min="-2" pref="15" max="-2" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -343,7 +343,7 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="linkedFileButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="230" max="32767" attributes="0"/>
+                      <EmptySpace pref="244" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -415,7 +415,7 @@
                           <Component id="themedJLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="logSystemCallMessagesButton" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="420" max="32767" attributes="0"/>
+                      <EmptySpace pref="423" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -428,7 +428,7 @@
                       <Component id="logSystemCallMessagesButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="resetProcessorOnTrap0Button" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="280" max="32767" attributes="0"/>
+                      <EmptySpace pref="294" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -768,20 +768,6 @@
               </SubComponents>
             </Container>
           </SubComponents>
-        </Container>
-        <Container class="org.parker.mips.gui.editor.rsyntax.FormattedTextEditor" name="formattedTextEditor1">
-          <Properties>
-            <Property name="rollover" type="boolean" value="true"/>
-          </Properties>
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="tab6">
-                <Property name="tabTitle" type="java.lang.String" value="tab6"/>
-              </JTabbedPaneConstraints>
-            </Constraint>
-          </Constraints>
-
-          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
         </Container>
       </SubComponents>
     </Container>

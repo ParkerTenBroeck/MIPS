@@ -12,6 +12,7 @@ import static org.parker.mips.compiler.PreProcessor.loadFile;
 import java.util.ArrayList;
 import org.parker.mips.FileHandler;
 import org.parker.mips.Log;
+import org.parker.mips.gui.editor.EditorHandler;
 
 /**
  *
@@ -25,7 +26,7 @@ public class INCLUDE extends Statement {
 
     }
 
-    public INCLUDE(UserLine line, File file) {
+    public INCLUDE(UserLine line) {
         super(line);
 
         String path = IDENTIFIRE;
@@ -33,6 +34,7 @@ public class INCLUDE extends Statement {
         if (path.contains(":")) {
 
         } else {
+            File file = EditorHandler.getFalseFileFromLastFocused();
             path = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf(FileHandler.FILE_SEPERATOR) + 1) + path;
         }
 
@@ -103,8 +105,8 @@ public class INCLUDE extends Statement {
 
     @Override
     public Statement generateStatement(ArrayList<UserLine> data, int currentIndex, ArrayList<Statement> statements) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        //return new INCLUDE(data.get(currentIndex));
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new INCLUDE(data.get(currentIndex));
     }
 
     @Override

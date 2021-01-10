@@ -16,6 +16,7 @@ import java.awt.dnd.DropTargetListener;
 import java.io.File;
 import javax.swing.JComponent;
 import org.parker.mips.FileHandler;
+import org.parker.mips.gui.editor.Editor;
 import org.parker.mips.gui.editor.EditorHandler;
 
 /**
@@ -55,7 +56,7 @@ public class dragAndDrop {
                             java.util.List list = (java.util.List) tr.getTransferData(flavors[i]);
                             for (int j = 0; j < list.size(); j++) {
                                 //filePathLable.setText(((File) list.get(j)).getPath());
-                                EditorHandler.loadFileIntoEditor((File) list.get(j));
+                                Editor.loadFileIntoEditor((File) list.get(j));
                                 MainGUI.refreshAll();
                                 //list.get(j); is the file
                             }

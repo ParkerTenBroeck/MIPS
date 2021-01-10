@@ -304,25 +304,19 @@ public class FileHandler {
         }
     }
 
-    public static void saveByteArrayToFile(byte[] byteArray, File file) {
-        if (file == null) {
-            try {
-                file = File.createTempFile("tempBIN", "bin");
-            } catch (Exception e) {
-                logFileHandlerError("Cannot create temp bin File \n" + Log.getFullExceptionMessage(e));
-            }
-        }
+    public static boolean saveByteArrayToFile(byte[] byteArray, File file) {
         try {
             if (!file.exists()) {
-                logFileHandlerWarning("File does not exist, Creating new file");
                 file.createNewFile();
             }
             Path path = file.toPath();
             Files.write(path, byteArray);
             logFileHandlerMessage("Saved file to: " + file.getAbsolutePath());
+            return true;
         } catch (Exception e) {
             logFileHandlerError("Cannot save File\n" + Log.getFullExceptionMessage(e));
         }
+        return false;
     }
 
     public static byte[] importMXFile(File file) {
@@ -343,7 +337,7 @@ public class FileHandler {
 
             return tempBytes;
 
-        } catch (IOException | NumberFormatException e) {
+        } catch (Exception e) {
             logFileHandlerError("Failed to import MX File: \n" + Log.getFullExceptionMessage(e));
         }
         return new byte[0];
@@ -368,7 +362,7 @@ public class FileHandler {
     public static byte[] readFileAsByteArray(File file) {
         try {
             return Files.readAllBytes(file.toPath());
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         return new byte[0];
@@ -379,7 +373,7 @@ public class FileHandler {
             Path path = file.toPath();
             List<String> list = Files.readAllLines(path);
             return new ArrayList(list);
-        } catch (IOException e) {
+        } catch (Exception e) {
             if (file != null) {
                 logFileHandlerError("Failed to load Text File: " + file.getAbsoluteFile() + " \n" + Log.getFullExceptionMessage(e));
             } else {
@@ -394,7 +388,7 @@ public class FileHandler {
             Path path = file.toPath();
             byte[] bytes = Files.readAllBytes(path);
             return byteArrayToString(bytes);
-        } catch (IOException e) {
+        } catch (Exception e) {
             if (file != null) {
                 logFileHandlerError("Failed to load Text File: " + file.getAbsoluteFile() + " \n" + Log.getFullExceptionMessage(e));
             } else {

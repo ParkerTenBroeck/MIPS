@@ -396,7 +396,6 @@ public class OptionsGUI extends javax.swing.JFrame {
         jScrollPane6 = new javax.swing.JScrollPane();
         editorFontList = new javax.swing.JList<>();
         themedJLabel15 = new org.parker.mips.gui.theme.components.ThemedJLabel();
-        formattedTextEditor1 = new org.parker.mips.gui.editor.rsyntax.FormattedTextEditor();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -523,7 +522,7 @@ public class OptionsGUI extends javax.swing.JFrame {
                 .addGroup(themedJPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(themedJLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(reloadMemoryOnResetButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(108, Short.MAX_VALUE))
+                .addContainerGap(125, Short.MAX_VALUE))
         );
         themedJPanel12Layout.setVerticalGroup(
             themedJPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -543,7 +542,7 @@ public class OptionsGUI extends javax.swing.JFrame {
                         .addComponent(themedJLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(reloadMemoryOnResetButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(255, Short.MAX_VALUE))
+                .addContainerGap(269, Short.MAX_VALUE))
         );
 
         themedJTabbedPane1.addTab("Processor", themedJPanel12);
@@ -578,7 +577,7 @@ public class OptionsGUI extends javax.swing.JFrame {
                     .addComponent(savePreProcessorFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(saveCompilerInfoFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(linkedFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 137, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 152, Short.MAX_VALUE)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(themedJPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -609,7 +608,7 @@ public class OptionsGUI extends javax.swing.JFrame {
                         .addComponent(includeSysCallDefButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(linkedFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(230, Short.MAX_VALUE))
+                .addContainerGap(244, Short.MAX_VALUE))
         );
 
         themedJTabbedPane1.addTab("Compiler", themedJPanel13);
@@ -630,7 +629,7 @@ public class OptionsGUI extends javax.swing.JFrame {
                     .addComponent(resetProcessorOnTrap0Button, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(themedJLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(logSystemCallMessagesButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(420, Short.MAX_VALUE))
+                .addContainerGap(423, Short.MAX_VALUE))
         );
         themedJPanel15Layout.setVerticalGroup(
             themedJPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -641,7 +640,7 @@ public class OptionsGUI extends javax.swing.JFrame {
                 .addComponent(logSystemCallMessagesButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(resetProcessorOnTrap0Button, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(280, Short.MAX_VALUE))
+                .addContainerGap(294, Short.MAX_VALUE))
         );
 
         themedJTabbedPane1.addTab("SystemCalls", themedJPanel15);
@@ -784,9 +783,6 @@ public class OptionsGUI extends javax.swing.JFrame {
 
         themedJTabbedPane1.addTab("Theme", themedJPanel14);
 
-        formattedTextEditor1.setRollover(true);
-        themedJTabbedPane1.addTab("tab6", formattedTextEditor1);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -832,7 +828,6 @@ public class OptionsGUI extends javax.swing.JFrame {
     private javax.swing.JList<String> editorThemeList;
     private org.parker.mips.gui.theme.components.ThemedJCheckBox enableAutoGUIUpdatesWhileRuning;
     private org.parker.mips.gui.theme.components.ThemedJCheckBox enableBreakPointsButton;
-    private org.parker.mips.gui.editor.rsyntax.FormattedTextEditor formattedTextEditor1;
     private javax.swing.JList<String> guiFontList;
     private javax.swing.JList<String> guiFontSizeList;
     private javax.swing.JList<IJThemeInfo> guiThemeList;

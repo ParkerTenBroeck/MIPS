@@ -36,7 +36,9 @@ import org.parker.mips.processor.Processor;
 import org.parker.mips.ResourceHandler;
 import org.parker.mips.UpdateHandler;
 import org.parker.mips.OptionsHandler;
+import org.parker.mips.gui.editor.Editor;
 import org.parker.mips.gui.editor.EditorHandler;
+import org.parker.mips.gui.editor.rsyntax.FormattedTextEditor;
 import org.parker.mips.plugin.syscall.SystemCallPluginHandler;
 import org.parker.mips.plugin.PluginLoader;
 import org.parker.mips.plugin.syscall.SystemCallPlugin.Node;
@@ -99,8 +101,7 @@ public class MainGUI extends javax.swing.JFrame {
 
     public static void refreshAll() {
         //ASM_GUI.setTextAreaFromASMFile();
-        
-        
+
         Memory.reloadMemory();
         InstructionMemoryGUI.refreshValues();
         refresh();
@@ -145,6 +146,7 @@ public class MainGUI extends javax.swing.JFrame {
         addCompileButtonListener((ae) -> {
             Processor.stop();
             Processor.reset();
+            EditorHandler.saveAll();
             ASMCompiler.compileDefault();
         });
 
@@ -185,7 +187,9 @@ public class MainGUI extends javax.swing.JFrame {
 
                     }
                     if (confirm == JOptionPane.YES_OPTION) {
-                        EditorHandler.saveAll();
+                        if (!EditorHandler.saveAll()) {
+                            return;
+                        }
                         OptionsHandler.saveOptionsToDefaultFile();
                         System.exit(0);
                     }
@@ -208,9 +212,10 @@ public class MainGUI extends javax.swing.JFrame {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     Processor.stop();
                     Processor.reset();
-//                    if (FileHandler.loadExampleFile(new File(((ThemedJMenuItem) evt.getSource()).getName()))) {
-//                        ASMCompiler.compile();
-//                    }
+                    //if (FileHandler.loadExampleFile(new File(((ThemedJMenuItem) evt.getSource()).getName()))) {
+                    new FormattedTextEditor(FileHandler.loadFileAsString(new File(((ThemedJMenuItem) evt.getSource()).getName())));
+                    ASMCompiler.compileDefault();
+                    //}
                 }
             };
 
@@ -317,9 +322,6 @@ public class MainGUI extends javax.swing.JFrame {
         return menu;
     }
 
-//    public static void addSystemCallPluginToPluginLists(){
-//        
-//    }
     private static ThemedJMenu generateJMenuFromFile(File file, ActionListener al) {
         if (file.isDirectory()) {
             ThemedJMenu jMenu = new ThemedJMenu();
@@ -401,7 +403,7 @@ public class MainGUI extends javax.swing.JFrame {
         lowerContentPanel = new javax.swing.JPanel();
         instructionMemory_GUI1 = new org.parker.mips.gui.InstructionMemoryGUI();
         register_GUI1 = new org.parker.mips.gui.RegisterGUI();
-        aSM_GUI1 = new org.parker.mips.gui.ASM_GUI();
+        aSM_GUI1 = new org.parker.mips.gui.EditorTabbedPane();
         midButtonSliderPanel = new javax.swing.JPanel();
         linkedButton = new org.parker.mips.gui.theme.components.ThemedJCheckBox();
         aboutLinkedFile = new javax.swing.JButton();
@@ -856,12 +858,12 @@ public class MainGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_aboutButtonActionPerformed
 
     private void openMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuButtonActionPerformed
-        JFileChooser fc = new JFileChooser();
+        JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
         int returnVal = fc.showOpenDialog(MainGUI.getFrame());
 
-        if (returnVal != fc.FILES_AND_DIRECTORIES) {
+        if (returnVal != JFileChooser.FILES_AND_DIRECTORIES) {
             File chosenFile = fc.getSelectedFile();
-            EditorHandler.loadFileIntoEditor(chosenFile);
+            Editor.loadFileIntoEditor(chosenFile);
         }
     }//GEN-LAST:event_openMenuButtonActionPerformed
 
@@ -870,26 +872,15 @@ public class MainGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_memoryButtonActionPerformed
 
     private void saveMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuButtonActionPerformed
-        EditorHandler.saveAll();
+        EditorHandler.saveLastFocused();
     }//GEN-LAST:event_saveMenuButtonActionPerformed
 
     private void saveAsMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsMenuButtonActionPerformed
-        //FileHandler.saveAsASMFileFromUserTextArea();
+        EditorHandler.saveAsLastFocused();
     }//GEN-LAST:event_saveAsMenuButtonActionPerformed
 
     private void newMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newMenuButtonActionPerformed
-        JFileChooser fc = new JFileChooser();
-        int returnVal = fc.showOpenDialog(MainGUI.getFrame());
-
-        if (returnVal != fc.FILES_ONLY) {
-            File chosenFile = fc.getSelectedFile();
-            try {
-                chosenFile.createNewFile();
-                EditorHandler.loadFileIntoEditor(chosenFile);
-            } catch (IOException ex) {
-                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        new FormattedTextEditor();
     }//GEN-LAST:event_newMenuButtonActionPerformed
 
     private void asciiChartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asciiChartButtonActionPerformed
@@ -1022,7 +1013,7 @@ public class MainGUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private static org.parker.mips.gui.theme.components.ThemedJLabel InstructionsRan;
-    private static org.parker.mips.gui.ASM_GUI aSM_GUI1;
+    private static org.parker.mips.gui.EditorTabbedPane aSM_GUI1;
     private static javax.swing.JButton aboutButton;
     private static javax.swing.JButton aboutLinkedFile;
     private static org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem adaptiveMemoryMenuButton;

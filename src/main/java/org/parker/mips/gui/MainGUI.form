@@ -481,7 +481,7 @@
                         </Property>
                       </Properties>
                     </Component>
-                    <Component class="org.parker.mips.gui.ASM_GUI" name="aSM_GUI1">
+                    <Component class="org.parker.mips.gui.EditorTabbedPane" name="aSM_GUI1">
                       <Properties>
                         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                           <Dimension value="[500, 56]"/>

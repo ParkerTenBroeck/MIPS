@@ -6,7 +6,6 @@
 package org.parker.mips.processor;
 
 import org.parker.mips.OptionsHandler;
-import org.parker.mips.gui.MainGUI;
 import static org.parker.mips.processor.Processor.logRunTimeError;
 
 /**
@@ -15,14 +14,16 @@ import static org.parker.mips.processor.Processor.logRunTimeError;
  */
 public class Memory {
 
+    private static byte[] savedMemory;
     private static byte[] memory = new byte[0];
 
     public static void setMemory(byte[] memory) {
         if (memory == null) {
-            Memory.memory = new byte[0];
+            Memory.savedMemory = new byte[0];
         } else {
-            Memory.memory = memory;
+            Memory.savedMemory = memory;
         }
+        reloadMemory();
     }
 
     public static byte[] getMemory() {
@@ -179,11 +180,15 @@ public class Memory {
     }
 
     public static int getSize() {
-        return memory.length;
+        if (memory != null) {
+            return memory.length;
+        } else {
+            return 0;
+        }
     }
 
     public static void reloadMemory() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Memory.memory = Memory.savedMemory;
     }
 
 }

@@ -168,11 +168,17 @@ public class ASMCompiler {
         memoryLables = new ArrayList<MemoryLable>();
         memoryByteList = new ArrayList<ByteP>();
         origins = new ArrayList<Origin>();
-
-        EditorHandler.saveAll();
+        
+        if(file == null || !file.exists() || file.isDirectory()){
+            logCompilerError("File does not exist or is a directory");
+            return;
+        }
+        if(!FileHandler.getExtension(file).equals("asm")){
+            logCompilerWarning("This file is not an assembly file tyring to compile it may result in errors");
+        }
 
         Log.clearDisplay();
-        //ASMCompiler.logCompilerMessage("Started Compilation of file: " + FileHandler.getASMFilePath());
+        ASMCompiler.logCompilerMessage("Started Compilation of file: " + file.getAbsolutePath());
 
         ArrayList<UserLine> temp = getInstructions(file);
 
@@ -187,7 +193,7 @@ public class ASMCompiler {
         byte[] memByteArray = createByteArrayFromByteList();
 
         Memory.setMemory(memByteArray);
-        FileHandler.saveByteArrayToFile(memByteArray, null);
+        //FileHandler.saveByteArrayToFile(memByteArray, );
 
         if (OptionsHandler.saveCompilationInfo.val()) {
             saveOriginsToFile(file.getAbsolutePath());
@@ -547,6 +553,6 @@ public class ASMCompiler {
     }
 
     public static void compileDefault() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        compile(EditorHandler.getFalseFileFromLastFocused());
     }
 }
