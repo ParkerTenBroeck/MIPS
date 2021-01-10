@@ -37,13 +37,9 @@ public class Processor implements Runnable {
         instructionsRan = 0;
         Registers.reset();
         if (OptionsHandler.reloadMemoryOnReset.val()) {
-            reloadMemoryFromLoadedMXNFile();
+            Memory.reloadMemory();
         }
         MainGUI.refresh();
-    }
-
-    public static void reloadMemoryFromLoadedMXNFile() {
-        Memory.setMemory(FileHandler.getLoadedMXNFile());
     }
 
     public static void setDelay(int delay) {

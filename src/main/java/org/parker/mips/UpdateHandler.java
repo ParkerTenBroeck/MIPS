@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import org.parker.mips.gui.MainGUI;
 import static org.parker.mips.gui.MainGUI.createWarningQuestion;
+import org.parker.mips.gui.editor.EditorHandler;
 
 /**
  *
@@ -96,14 +97,14 @@ public class UpdateHandler {
             return;
         }
 
-        if (!FileHandler.isASMFileSaved()) {
+        if (!EditorHandler.isAllSaved()) {
             int confirm = MainGUI.createWarningQuestion("Exit Confirmation", "You have unsaved work would you like to save before continuing?");
 
             if (confirm == JOptionPane.CANCEL_OPTION) {
                 return;
             }
             if (confirm == JOptionPane.YES_OPTION) {
-                FileHandler.saveASMFileFromUserTextArea();
+                EditorHandler.saveAll();
                 OptionsHandler.saveOptionsToDefaultFile();
             }
             if (confirm == JOptionPane.NO_OPTION) {

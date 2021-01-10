@@ -59,13 +59,13 @@ public class PreProcessor {
         return file;
     }
 
-    private static Statement generateStatement(ArrayList<UserLine> file, int index) {
+    private static Statement generateStatement(ArrayList<UserLine> loadedFile, int index) {
 
-        UserLine currentLine = file.get(index);
+        UserLine currentLine = loadedFile.get(index);
 
         for (Statement validStatement : validStatements) {
             if (validStatement.doesStatementBelongToMe(currentLine)) {
-                Statement temp = validStatement.generateStatement(file, index, statements);
+                Statement temp = validStatement.generateStatement(loadedFile, index, statements);
 
                 if (!temp.IDENTIFIRE.isEmpty()) {
 

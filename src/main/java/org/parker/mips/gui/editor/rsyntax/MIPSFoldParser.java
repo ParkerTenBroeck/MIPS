@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.gui.rsyntax;
+package org.parker.mips.gui.editor.rsyntax;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,13 +20,13 @@ import org.fife.ui.rsyntaxtextarea.folding.FoldType;
  *
  * @author parke
  */
-public class ASMFoldParser implements FoldParser {
+public class MIPSFoldParser implements FoldParser {
 
     /**
      * Constructor.
      *
      */
-    public ASMFoldParser() { 
+    public MIPSFoldParser() { 
     }
 
     /**

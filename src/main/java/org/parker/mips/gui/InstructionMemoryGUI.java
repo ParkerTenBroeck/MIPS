@@ -5,14 +5,8 @@
  */
 package org.parker.mips.gui;
 
-import org.parker.mips.gui.theme.lookandfeel.RoundedBorder;
-import static org.parker.mips.gui.InstructionToString.instructionToString;
-import java.awt.Color;
-import java.awt.Font;
-import java.beans.PropertyChangeEvent;
+import static org.parker.mips.compiler.InstructionToString.instructionToString;
 import javax.swing.DefaultListModel;
-import org.parker.mips.gui.theme.components.ThemableComponent;
-import org.parker.mips.gui.theme.ThemeHandler;
 import org.parker.mips.processor.Memory;
 import static org.parker.mips.processor.Memory.superGetWord;
 import static org.parker.mips.processor.Registers.getPc;
@@ -24,35 +18,9 @@ import static org.parker.mips.processor.Registers.getPc;
 public class InstructionMemoryGUI extends javax.swing.JPanel{
 
     private static int toMiddle = 0;
-
-   // private static RoundedBorder roundedBorder = new RoundedBorder(new Color(0, 0, 51), 0, 15);
-
  
     public InstructionMemoryGUI() {
         initComponents();
-
-        //this.setFont((Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.BUTTON_TEXT_FONT_PROPERTY_NAME));
-//        ThemeHandler.addPropertyChangeListenerFromName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME, this);
-//
-//        ThemeHandler.addPropertyChangeListenerFromName(ThemeHandler.TEXT_COLOR_1_PROPERTY_NAME, this);
-//
-//        ThemeHandler.addPropertyChangeListenerFromName(ThemeHandler.TEXT_AREA_BACKGROUND_1_PROPERTY_NAME, this);
-//
-//        this.setBorder(roundedBorder);
-//
-//        Color backgroundColor = (Color) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.TEXT_AREA_BACKGROUND_1_PROPERTY_NAME);
-//
-//        this.roundedBorder.setColor(backgroundColor);
-//        this.instructionList.setBackground(backgroundColor);
-//
-//        Color textColor = (Color) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.TEXT_COLOR_1_PROPERTY_NAME);
-//
-//        this.instructionList.setForeground(textColor);
-//
-//        Font generalFont = (Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME);
-//
-//        this.instructionList.setFont(generalFont);
-
     }
 
     public static void refresh() {

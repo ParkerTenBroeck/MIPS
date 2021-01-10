@@ -14,8 +14,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -33,6 +36,7 @@ import org.parker.mips.processor.Processor;
 import org.parker.mips.ResourceHandler;
 import org.parker.mips.UpdateHandler;
 import org.parker.mips.OptionsHandler;
+import org.parker.mips.gui.editor.EditorHandler;
 import org.parker.mips.plugin.syscall.SystemCallPluginHandler;
 import org.parker.mips.plugin.PluginLoader;
 import org.parker.mips.plugin.syscall.SystemCallPlugin.Node;
@@ -94,8 +98,10 @@ public class MainGUI extends javax.swing.JFrame {
     }
 
     public static void refreshAll() {
-        ASM_GUI.setTextAreaFromASMFile();
-        Memory.setMemory(FileHandler.getLoadedMXNFile());
+        //ASM_GUI.setTextAreaFromASMFile();
+        
+        
+        Memory.reloadMemory();
         InstructionMemoryGUI.refreshValues();
         refresh();
     }
@@ -139,7 +145,7 @@ public class MainGUI extends javax.swing.JFrame {
         addCompileButtonListener((ae) -> {
             Processor.stop();
             Processor.reset();
-            ASMCompiler.compile();
+            ASMCompiler.compileDefault();
         });
 
         addStartButtonListener((ae) -> {
@@ -172,14 +178,14 @@ public class MainGUI extends javax.swing.JFrame {
             @Override
             public void windowClosing(WindowEvent e) {
 
-                if (!FileHandler.isASMFileSaved()) {
+                if (!EditorHandler.isAllSaved()) {
                     int confirm = createWarningQuestion("Exit Confirmation", "You have unsaved work would you like to save before continuing?");
 
                     if (confirm == JOptionPane.CANCEL_OPTION) {
 
                     }
                     if (confirm == JOptionPane.YES_OPTION) {
-                        FileHandler.saveASMFileFromUserTextArea();
+                        EditorHandler.saveAll();
                         OptionsHandler.saveOptionsToDefaultFile();
                         System.exit(0);
                     }
@@ -202,9 +208,9 @@ public class MainGUI extends javax.swing.JFrame {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     Processor.stop();
                     Processor.reset();
-                    if (FileHandler.loadExampleFile(new File(((ThemedJMenuItem) evt.getSource()).getName()))) {
-                        ASMCompiler.compile();
-                    }
+//                    if (FileHandler.loadExampleFile(new File(((ThemedJMenuItem) evt.getSource()).getName()))) {
+//                        ASMCompiler.compile();
+//                    }
                 }
             };
 
@@ -850,8 +856,12 @@ public class MainGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_aboutButtonActionPerformed
 
     private void openMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuButtonActionPerformed
-        if (FileHandler.openUserSelectedFile()) {
-            refreshAll();
+        JFileChooser fc = new JFileChooser();
+        int returnVal = fc.showOpenDialog(MainGUI.getFrame());
+
+        if (returnVal != fc.FILES_AND_DIRECTORIES) {
+            File chosenFile = fc.getSelectedFile();
+            EditorHandler.loadFileIntoEditor(chosenFile);
         }
     }//GEN-LAST:event_openMenuButtonActionPerformed
 
@@ -860,16 +870,25 @@ public class MainGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_memoryButtonActionPerformed
 
     private void saveMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuButtonActionPerformed
-        FileHandler.saveASMFileFromUserTextArea();
+        EditorHandler.saveAll();
     }//GEN-LAST:event_saveMenuButtonActionPerformed
 
     private void saveAsMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsMenuButtonActionPerformed
-        FileHandler.saveAsASMFileFromUserTextArea();
+        //FileHandler.saveAsASMFileFromUserTextArea();
     }//GEN-LAST:event_saveAsMenuButtonActionPerformed
 
     private void newMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newMenuButtonActionPerformed
-        if (FileHandler.newFile(true)) {
-            refreshAll();
+        JFileChooser fc = new JFileChooser();
+        int returnVal = fc.showOpenDialog(MainGUI.getFrame());
+
+        if (returnVal != fc.FILES_ONLY) {
+            File chosenFile = fc.getSelectedFile();
+            try {
+                chosenFile.createNewFile();
+                EditorHandler.loadFileIntoEditor(chosenFile);
+            } catch (IOException ex) {
+                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_newMenuButtonActionPerformed
 
@@ -883,7 +902,7 @@ public class MainGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_aboutLinkedFileActionPerformed
 
     private void linkedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linkedButtonActionPerformed
-        ASM_GUI.setEnable(!linkedButton.isSelected());
+        //ASM_GUI.setEnable(!linkedButton.isSelected());
     }//GEN-LAST:event_linkedButtonActionPerformed
 
     private void checkForUpdatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkForUpdatesActionPerformed

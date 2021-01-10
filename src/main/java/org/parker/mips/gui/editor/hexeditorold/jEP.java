@@ -1,4 +1,4 @@
-package org.parker.mips.gui.hexeditorold;
+package org.parker.mips.gui.editor.hexeditorold;
 
 import java.net.URL;
 import java.text.MessageFormat;

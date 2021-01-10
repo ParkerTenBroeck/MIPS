@@ -15,7 +15,6 @@ import org.parker.mips.FileHandler;
 import org.parker.mips.gui.MainGUI;
 import org.parker.mips.Log;
 import org.parker.mips.compiler.ASMCompiler;
-import org.parker.mips.gui.ASM_GUI;
 import org.parker.mips.processor.Memory;
 import org.parker.mips.processor.Processor;
 import org.parker.mips.processor.Registers;
@@ -190,10 +189,11 @@ public abstract class SystemCallPlugin extends PluginBase {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            FileHandler.loadASMExampleFromStream(CLASS_LOADER.getResourceAsStream(resources));
-            ASM_GUI.setTextAreaFromASMFile();
-            ASMCompiler.compile();
-            //System.out.println(resources);
+            throw new UnsupportedOperationException("");
+            //FileHandler.loadASMExampleFromStream(CLASS_LOADER.getResourceAsStream(resources));
+            //ASM_GUI.setTextAreaFromASMFile();
+          
+            //ASMCompiler.compileDefault();
         }
 
     }

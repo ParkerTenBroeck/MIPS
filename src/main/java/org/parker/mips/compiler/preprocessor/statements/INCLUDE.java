@@ -5,13 +5,13 @@
  */
 package org.parker.mips.compiler.preprocessor.statements;
 
+import java.io.File;
 import org.parker.mips.compiler.data.UserLine;
 import org.parker.mips.compiler.PreProcessor;
 import static org.parker.mips.compiler.PreProcessor.loadFile;
 import java.util.ArrayList;
 import org.parker.mips.FileHandler;
 import org.parker.mips.Log;
-import org.parker.mips.ResourceHandler;
 
 /**
  *
@@ -25,7 +25,7 @@ public class INCLUDE extends Statement {
 
     }
 
-    public INCLUDE(UserLine line) {
+    public INCLUDE(UserLine line, File file) {
         super(line);
 
         String path = IDENTIFIRE;
@@ -33,7 +33,7 @@ public class INCLUDE extends Statement {
         if (path.contains(":")) {
 
         } else {
-            path = FileHandler.getASMFilePath().substring(0, FileHandler.getASMFilePath().lastIndexOf(FileHandler.FILE_SEPERATOR) + 1) + path;
+            path = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf(FileHandler.FILE_SEPERATOR) + 1) + path;
         }
 
         try {
@@ -41,7 +41,7 @@ public class INCLUDE extends Statement {
             String fileExtention = path.split("\\.")[1];
             if (fileExtention.equals("mxn") || fileExtention.equals("bin")) {
                 generatedDataToAdd = new ArrayList<UserLine>();
-                byte[] temp = FileHandler.loadFileAsByteArray(path);
+                byte[] temp = FileHandler.loadFileAsByteArray(new File(path));
                 String data = ".byte ";
                 for (int i = 0; i < temp.length; i++) {
                     data = data + temp[i];
@@ -103,7 +103,8 @@ public class INCLUDE extends Statement {
 
     @Override
     public Statement generateStatement(ArrayList<UserLine> data, int currentIndex, ArrayList<Statement> statements) {
-        return new INCLUDE(data.get(currentIndex));
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //return new INCLUDE(data.get(currentIndex));
     }
 
     @Override

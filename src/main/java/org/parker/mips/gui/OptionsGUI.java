@@ -6,20 +6,12 @@
 package org.parker.mips.gui;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import java.awt.Component;
 import java.awt.Font;
 import java.io.File;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
 import javax.swing.JFileChooser;
-import javax.swing.JList;
-import javax.swing.UIManager;
-import javax.swing.border.CompoundBorder;
 import org.parker.mips.gui.theme.ThemeHandler;
 import org.parker.mips.OptionsHandler;
 import org.parker.mips.ResourceHandler;
@@ -327,7 +319,7 @@ public class OptionsGUI extends javax.swing.JFrame {
 
                 if (!name.equals(OptionsHandler.currentEditorTheme.val())) {
                     OptionsHandler.currentEditorTheme.val(name);
-                    ASM_GUI.loadCurrentTheme();
+                    //ASM_GUI.loadCurrentTheme();
                 }
                 //ThemeHandler.readThemeFromThemeName();
             });
@@ -404,6 +396,7 @@ public class OptionsGUI extends javax.swing.JFrame {
         jScrollPane6 = new javax.swing.JScrollPane();
         editorFontList = new javax.swing.JList<>();
         themedJLabel15 = new org.parker.mips.gui.theme.components.ThemedJLabel();
+        formattedTextEditor1 = new org.parker.mips.gui.editor.rsyntax.FormattedTextEditor();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -791,6 +784,9 @@ public class OptionsGUI extends javax.swing.JFrame {
 
         themedJTabbedPane1.addTab("Theme", themedJPanel14);
 
+        formattedTextEditor1.setRollover(true);
+        themedJTabbedPane1.addTab("tab6", formattedTextEditor1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -836,6 +832,7 @@ public class OptionsGUI extends javax.swing.JFrame {
     private javax.swing.JList<String> editorThemeList;
     private org.parker.mips.gui.theme.components.ThemedJCheckBox enableAutoGUIUpdatesWhileRuning;
     private org.parker.mips.gui.theme.components.ThemedJCheckBox enableBreakPointsButton;
+    private org.parker.mips.gui.editor.rsyntax.FormattedTextEditor formattedTextEditor1;
     private javax.swing.JList<String> guiFontList;
     private javax.swing.JList<String> guiFontSizeList;
     private javax.swing.JList<IJThemeInfo> guiThemeList;

@@ -17,6 +17,7 @@ import org.parker.mips.Log;
 import org.parker.mips.OptionsHandler;
 import org.parker.mips.processor.Memory;
 import org.parker.mips.ResourceHandler;
+import org.parker.mips.gui.editor.EditorHandler;
 
 class ByteP {
 
@@ -162,18 +163,18 @@ public class ASMCompiler {
     static private ArrayList<Origin> origins = new ArrayList<Origin>();
     static private ArrayList<ByteP> memoryByteList = new ArrayList<ByteP>();
 
-    public static void compile() {
+    public static void compile(File file) {
 
         memoryLables = new ArrayList<MemoryLable>();
         memoryByteList = new ArrayList<ByteP>();
         origins = new ArrayList<Origin>();
 
-        FileHandler.saveASMFileFromUserTextArea();
+        EditorHandler.saveAll();
 
         Log.clearDisplay();
-        ASMCompiler.logCompilerMessage("Started Compilation of file: " + FileHandler.getASMFilePath());
+        //ASMCompiler.logCompilerMessage("Started Compilation of file: " + FileHandler.getASMFilePath());
 
-        ArrayList<UserLine> temp = getInstructions();
+        ArrayList<UserLine> temp = getInstructions(file);
 
         temp = PreProcessor.preProcess(temp);
 
@@ -186,10 +187,10 @@ public class ASMCompiler {
         byte[] memByteArray = createByteArrayFromByteList();
 
         Memory.setMemory(memByteArray);
-        FileHandler.saveByteArrayToMXNFile(memByteArray);
+        FileHandler.saveByteArrayToFile(memByteArray, null);
 
         if (OptionsHandler.saveCompilationInfo.val()) {
-            saveOriginsToFile();
+            saveOriginsToFile(file.getAbsolutePath());
         }
 
         temp.clear();
@@ -199,7 +200,7 @@ public class ASMCompiler {
         MainGUI.refreshAll();
     }
 
-    public static void saveOriginsToFile() {
+    public static void saveOriginsToFile(String compiledFileName) {
 
         int maxSizeMemoryLable = 0;
         int maxSizeInstruction = 0;
@@ -227,7 +228,7 @@ public class ASMCompiler {
 
         try (PrintWriter out = new PrintWriter(file)) {
 
-            out.println("Compilation Info of File: " + FileHandler.getASMFilePath());
+            out.println("Compilation Info of File: " + compiledFileName);
             out.println();
 
             for (Origin org : origins) {
@@ -460,17 +461,17 @@ public class ASMCompiler {
         }
     }
 
-    private static ArrayList<UserLine> getInstructions() {
+    private static ArrayList<UserLine> getInstructions(File file) {
         int lineNumber = 0;
 
-        ArrayList<UserLine> file = new ArrayList<UserLine>();
-        List<String> temp = FileHandler.getLoadedASMFile();
+        ArrayList<UserLine> loadedFile = new ArrayList<UserLine>();
+        List<String> temp = FileHandler.loadFileAsStringList(file);
 
         for (String line : temp) {
-            file.add(new UserLine(line, lineNumber + 1));
+            loadedFile.add(new UserLine(line, lineNumber + 1));
             lineNumber++;
         }
-        return file;
+        return loadedFile;
     }
 
     public static void DirectivesDecoderError(String message, int line) {
@@ -543,5 +544,9 @@ public class ASMCompiler {
                 return new ArrayList<MemoryLable>();
             }
         }
+    }
+
+    public static void compileDefault() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

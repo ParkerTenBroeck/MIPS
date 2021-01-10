@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.gui.rsyntax;
+package org.parker.mips.gui.editor.rsyntax;
 
 import org.parker.mips.compiler.PreProcessor;
 import org.parker.mips.compiler.preprocessor.statements.Statement;
