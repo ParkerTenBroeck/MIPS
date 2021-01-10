@@ -5,10 +5,12 @@
  */
 package org.parker.mips.gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import javax.swing.JTable;
+import javax.swing.UIManager;
 import javax.swing.table.TableColumnModel;
 import org.parker.mips.processor.Registers;
 
@@ -24,13 +26,25 @@ public class RegisterGUI extends javax.swing.JPanel {
     public RegisterGUI() {
         initComponents();
         setFont(this.getFont());
+//        lowHigh.setShowVerticalLines(true);
+//        lowHigh.setShowHorizontalLines(true);
+//lowHigh.setGridColor( false ? Color.red : UIManager.getColor( "Table.gridColor" ) );
+//        pc.setShowVerticalLines(true);
+//        pc.setShowHorizontalLines(true);
+//
+//        pc1.setShowVerticalLines(true);
+//        pc1.setShowHorizontalLines(true);
+//        
+//        registers.setShowVerticalLines(true);
+//        registers.setShowHorizontalLines(true);
     }
 
     @Override
     public void setFont(Font font) {
         super.setFont(font);
-        if(pc != null)
-        configTables(this.getFontMetrics(font));
+        if (pc != null) {
+            configTables(this.getFontMetrics(font));
+        }
     }
 
     private void configTables(FontMetrics fm) {

@@ -56,8 +56,8 @@ public class FormattedTextEditor extends Editor {
         for (FocusListener fl : this.getFocusListeners()) {
             textArea.addFocusListener(fl);
         }
-        
-        if(file != null){
+
+        if (file != null) {
             this.textArea.setText(FileHandler.loadFileAsString(file));
         }
     }
@@ -93,12 +93,21 @@ public class FormattedTextEditor extends Editor {
         scrollPane.setViewportView(textArea);
         scrollPane.setLineNumbersEnabled(true);
 
-        AbstractTokenMakerFactory atmf = (AbstractTokenMakerFactory) TokenMakerFactory.getDefaultInstance();
-        atmf.putMapping("MIPS", "org.parker.mips.gui.editor.rsyntax.MIPSAbstractTokenMaker");
-        FoldParserManager.get().addFoldParserMapping("MIPS", new MIPSFoldParser());
+        String ext = "";
+        if (currentFile != null && currentFile.exists()) {
+            ext = FileHandler.getExtension(currentFile);
+        }
 
-        textArea.setSyntaxEditingStyle("MIPS");
-        textArea.setCodeFoldingEnabled(true);
+        switch (ext) {
+            default:
+                AbstractTokenMakerFactory atmf = (AbstractTokenMakerFactory) TokenMakerFactory.getDefaultInstance();
+                atmf.putMapping("MIPS", "org.parker.mips.gui.editor.rsyntax.MIPSAbstractTokenMaker");
+                FoldParserManager.get().addFoldParserMapping("MIPS", new MIPSFoldParser());
+
+                textArea.setSyntaxEditingStyle("MIPS");
+                textArea.setCodeFoldingEnabled(true);
+                break;
+        }
 
         scrollPane.setBorder(null);
         scrollPane.setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_AS_NEEDED);

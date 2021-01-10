@@ -44,6 +44,7 @@ public class EditorTabbedPane extends javax.swing.JPanel {
     public EditorTabbedPane() {
         initComponents();
         
+        jTabbedPane1.setTabLayoutPolicy( JTabbedPane.SCROLL_TAB_LAYOUT );
         jTabbedPane1.putClientProperty(TABBED_PANE_TAB_CLOSABLE, true);
         //jTabbedPane1.putClientProperty(TABBED_PANE_TAB_CLOSE_TOOLTIPTEXT, "Close"); //USING THIS WILL CAUSE CRASHES
         jTabbedPane1.putClientProperty(TABBED_PANE_TAB_CLOSE_CALLBACK,

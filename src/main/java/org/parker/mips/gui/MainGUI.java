@@ -111,7 +111,6 @@ public class MainGUI extends javax.swing.JFrame {
      * Creates new form Main_GUI
      */
     public MainGUI() {
-
         initComponents();
 
         try {
@@ -121,7 +120,6 @@ public class MainGUI extends javax.swing.JFrame {
 
             aboutButton.setIcon(new FlatSVGIcon("images/informationDialog.svg", (int) (aboutButton.getWidth() / 1.5), (int) (aboutButton.getHeight() / 1.5)));
             aboutLinkedFile.setIcon(new FlatSVGIcon("images/informationDialog.svg", (int) (aboutLinkedFile.getWidth() / 1.5), (int) (aboutLinkedFile.getHeight() / 1.5)));
-
         } catch (Exception e) {
             Log.logError(Log.getFullExceptionMessage(e));
         }
@@ -365,17 +363,11 @@ public class MainGUI extends javax.swing.JFrame {
     }
 
     public static void refresh() {
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                RegisterGUI.updateVals();
-                InstructionMemoryGUI.refresh();
-                InstructionsRan.setText(Long.toString(Processor.getInstructionsRan()));
-            }
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            RegisterGUI.updateVals();
+            InstructionMemoryGUI.refresh();
+            InstructionsRan.setText(Long.toString(Processor.getInstructionsRan()));
         });
-    }
-
-    public static int confirmBox(String titleBar, String infoMessage) {
-        return JOptionPane.showConfirmDialog(instance, infoMessage, titleBar, JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
@@ -904,7 +896,6 @@ public class MainGUI extends javax.swing.JFrame {
         try {
             DesktopBrowser.openLinkInBrowser(ResourceHandler.DOCUMENTATION_PATH + FileHandler.FILE_SEPERATOR + "index.html");
         } catch (Exception ex) {
-            //Logger.getLogger(Main_GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_documentationButtonActionPerformed
 
@@ -915,15 +906,11 @@ public class MainGUI extends javax.swing.JFrame {
     private void loadPluginJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadPluginJMenuItemActionPerformed
         JFileChooser fc = new JFileChooser();
         int returnVal = fc.showOpenDialog(MainGUI.getFrame());
-
         if (returnVal != 0) {
             return;
         }
-
         File chosenFile = fc.getSelectedFile();
-
         PluginLoader.loadPlugin(chosenFile);
-
     }//GEN-LAST:event_loadPluginJMenuItemActionPerformed
 
     //messages (ok)

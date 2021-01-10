@@ -168,12 +168,16 @@ public class ASMCompiler {
         memoryLables = new ArrayList<MemoryLable>();
         memoryByteList = new ArrayList<ByteP>();
         origins = new ArrayList<Origin>();
-        
-        if(file == null || !file.exists() || file.isDirectory()){
-            logCompilerError("File does not exist or is a directory");
+
+        if (file == null) {
+            logCompilerError("File is null");
             return;
         }
-        if(!FileHandler.getExtension(file).equals("asm")){
+        if (!file.exists() || file.isDirectory()) {
+            logCompilerError("File does not exist or is a directory: " + file.getAbsolutePath());
+        }
+
+        if (!FileHandler.getExtension(file).equals("asm")) {
             logCompilerWarning("This file is not an assembly file tyring to compile it may result in errors");
         }
 
@@ -193,7 +197,6 @@ public class ASMCompiler {
         byte[] memByteArray = createByteArrayFromByteList();
 
         Memory.setMemory(memByteArray);
-        //FileHandler.saveByteArrayToFile(memByteArray, );
 
         if (OptionsHandler.saveCompilationInfo.val()) {
             saveOriginsToFile(file.getAbsolutePath());
