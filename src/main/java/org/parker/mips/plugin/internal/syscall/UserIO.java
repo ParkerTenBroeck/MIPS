@@ -139,7 +139,7 @@ public class UserIO extends SystemCallPluginFrame {
         jPanel2 = new javax.swing.JPanel();
         modernScrollPane1 = new org.parker.mips.gui.theme.lookandfeel.ModernScrollPane();
         outputTextArea = new javax.swing.JTextArea();
-        themedJButton1 = new org.parker.mips.gui.theme.components.ThemedJButton();
+        themedJButton1 = new javax.swing.JButton();
         inputTextFeild = new javax.swing.JTextField();
 
         setTitle("User IO");
@@ -230,32 +230,11 @@ public class UserIO extends SystemCallPluginFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_inputTextFeildActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new UserIO().setVisible(true);
-            }
-        });
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private static javax.swing.JTextField inputTextFeild;
     private javax.swing.JPanel jPanel2;
     private org.parker.mips.gui.theme.lookandfeel.ModernScrollPane modernScrollPane1;
     private static javax.swing.JTextArea outputTextArea;
-    private org.parker.mips.gui.theme.components.ThemedJButton themedJButton1;
+    private javax.swing.JButton themedJButton1;
     // End of variables declaration//GEN-END:variables
 }

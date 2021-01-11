@@ -97,7 +97,7 @@ public class SystemCallPluginInfoFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        themedJPanel11 = new org.parker.mips.gui.theme.components.ThemedJPanel1();
+        themedJPanel11 = new javax.swing.JPanel();
         modernScrollPane1 = new ModernScrollPane(Color.gray);
         jEditorPane1 = new javax.swing.JEditorPane();
 
@@ -138,6 +138,6 @@ public class SystemCallPluginInfoFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JEditorPane jEditorPane1;
     private org.parker.mips.gui.theme.lookandfeel.ModernScrollPane modernScrollPane1;
-    private org.parker.mips.gui.theme.components.ThemedJPanel1 themedJPanel11;
+    private javax.swing.JPanel themedJPanel11;
     // End of variables declaration//GEN-END:variables
 }
