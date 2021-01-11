@@ -1,0 +1,49 @@
+plugins{
+	id 'java'
+	id 'org.parker.mips.java-application-conventions'
+}
+
+sourceCompatibility = '1.8'
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+
+mainClassName = 'org.parker.mips.MIPS'
+
+if (!hasProperty('mainClass')) {
+    ext.mainClass = mainClassName
+}
+
+processResources {
+    from ('src/main/java') {
+        include '**/*.json'
+        include '**/*.yml'
+    }
+}
+
+jar {
+    manifest {
+        attributes(
+               'Main-Class': mainClassName
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+	//functionality
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation  group: 'org.yaml', name: 'snakeyaml', version: '1.8'
+    
+	
+	//GUI
+	implementation  'com.fifesoft:rsyntaxtextarea:3.1.1'
+	
+    implementation  group: 'com.formdev', name: 'flatlaf', version: '0.46'
+    implementation  group: 'com.formdev', name: 'flatlaf-extras', version: '0.46'
+}
