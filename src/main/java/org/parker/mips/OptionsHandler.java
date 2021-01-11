@@ -40,7 +40,6 @@ public class OptionsHandler {
     public static final Holder<Boolean> saveCleanedFile = new Holder(false);
     public static final Holder<Boolean> savePreProcessedFile = new Holder(false);
     public static final Holder<Boolean> saveCompilationInfo = new Holder(false);
-    public static final Holder<Boolean> linkedFile = new Holder(false);
 
     //PreProcessor
     public static final Holder<Boolean> includeRegDef = new Holder(true);

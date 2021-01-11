@@ -21,7 +21,7 @@ public class Processor implements Runnable {
 
     private static boolean isRunning = false;
     private static long instructionsRan = 0;
-    private static int delay;
+    private static long delay;
 
     public static long getInstructionsRan() {
         return instructionsRan;
@@ -42,11 +42,11 @@ public class Processor implements Runnable {
         MainGUI.refresh();
     }
 
-    public static void setDelay(int delay) {
+    public static void setDelay(long delay) {
         Processor.delay = delay;
     }
 
-    public static synchronized int getDelay() {
+    public static synchronized long getDelay() {
         return delay;
     }
 

@@ -18,7 +18,6 @@ import java.util.logging.Logger;
 import org.parker.mips.Log;
 import org.parker.mips.MIPS;
 import org.parker.mips.ResourceHandler;
-;
 import org.parker.mips.plugin.syscall.SystemCallPlugin;
 import org.parker.mips.plugin.syscall.SystemCallPluginHandler;
 import org.yaml.snakeyaml.Yaml;

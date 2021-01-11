@@ -24,8 +24,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import org.parker.mips.gui.theme.components.ThemedJMenu;
-import org.parker.mips.gui.theme.components.ThemedJMenuItem;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import org.parker.mips.FileHandler;
 import org.parker.mips.Log;
@@ -55,10 +55,6 @@ public class MainGUI extends javax.swing.JFrame {
 
     public static synchronized boolean isRunning() {
         return autoUpdate;
-    }
-
-    public static boolean isLinked() {
-        return linkedButton.isSelected();
     }
 
     public static synchronized boolean canBreak() {
@@ -119,7 +115,7 @@ public class MainGUI extends javax.swing.JFrame {
             this.setIconImage(icon.getImage());
 
             aboutButton.setIcon(new FlatSVGIcon("images/informationDialog.svg", (int) (aboutButton.getWidth() / 1.5), (int) (aboutButton.getHeight() / 1.5)));
-            aboutLinkedFile.setIcon(new FlatSVGIcon("images/informationDialog.svg", (int) (aboutLinkedFile.getWidth() / 1.5), (int) (aboutLinkedFile.getHeight() / 1.5)));
+            //aboutLinkedFile.setIcon(new FlatSVGIcon("images/informationDialog.svg", (int) (aboutLinkedFile.getWidth() / 1.5), (int) (aboutLinkedFile.getHeight() / 1.5)));
         } catch (Exception e) {
             Log.logError(Log.getFullExceptionMessage(e));
         }
@@ -127,7 +123,7 @@ public class MainGUI extends javax.swing.JFrame {
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         OptionsHandler.enableBreakPoints.LinkJButton(enableBreak);
-        OptionsHandler.linkedFile.LinkJButton(linkedButton);
+        //OptionsHandler.linkedFile.LinkJButton(linkedButton);
 
         OptionsHandler.saveCompilationInfo.LinkJButton(saveCompileInformationButton);
         OptionsHandler.savePreProcessedFile.LinkJButton(savePreProcessedFileButton);
@@ -211,7 +207,7 @@ public class MainGUI extends javax.swing.JFrame {
                     Processor.stop();
                     Processor.reset();
                     //if (FileHandler.loadExampleFile(new File(((ThemedJMenuItem) evt.getSource()).getName()))) {
-                    new FormattedTextEditor(FileHandler.loadFileAsString(new File(((ThemedJMenuItem) evt.getSource()).getName())));
+                    new FormattedTextEditor(FileHandler.loadFileAsString(new File(((javax.swing.JMenuItem) evt.getSource()).getName())));
                     ASMCompiler.compileDefault();
                     //}
                 }
@@ -243,9 +239,9 @@ public class MainGUI extends javax.swing.JFrame {
         for (SystemCallPlugin plugin : plugins) {
 
             {
-                ThemedJMenu tempMenu = new ThemedJMenu();
+            	javax.swing.JMenu tempMenu = new javax.swing.JMenu();
                 tempMenu.setText(plugin.DESCRIPTION.NAME);
-                ThemedJMenuItem tempItem = new ThemedJMenuItem();
+                javax.swing.JMenuItem tempItem = new javax.swing.JMenuItem();
                 tempItem.setText("Open SystemCall Plugin Info Frame");
                 tempItem.addActionListener((ae) -> {
                     new SystemCallPluginInfoFrame(plugin);
@@ -253,7 +249,7 @@ public class MainGUI extends javax.swing.JFrame {
                 });
                 tempMenu.add(tempItem);
 
-                tempItem = new ThemedJMenuItem();
+                tempItem = new javax.swing.JMenuItem();
                 tempItem.setText("Unregister SystemCall Plugin");
                 tempItem.addActionListener((ae) -> {
                     System.out.println(plugin);
@@ -275,7 +271,7 @@ public class MainGUI extends javax.swing.JFrame {
             {
                 ArrayList<Node<ActionListener>> temp = plugin.getFrameListeners();
                 if (temp != null) {
-                    ThemedJMenu tempMenu = new ThemedJMenu();
+                	javax.swing.JMenu tempMenu = new javax.swing.JMenu();
                     tempMenu.setText(plugin.DESCRIPTION.NAME.replaceAll("_", " "));
                     temp.forEach((t) -> {
                         generateJMenuFromNodeStructure(tempMenu, t);
@@ -286,7 +282,7 @@ public class MainGUI extends javax.swing.JFrame {
             {
                 ArrayList<Node<ActionListener>> temp = plugin.getInternalExamples();
                 if (temp != null) {
-                    ThemedJMenu tempMenu = new ThemedJMenu();
+                	javax.swing.JMenu tempMenu = new javax.swing.JMenu();
                     tempMenu.setText(plugin.DESCRIPTION.NAME.replaceAll("_", " "));
                     temp.forEach((t) -> {
                         generateJMenuFromNodeStructure(tempMenu, t);
@@ -298,20 +294,20 @@ public class MainGUI extends javax.swing.JFrame {
         }
     }
 
-    private static ThemedJMenu generateJMenuFromNodeStructure(ThemedJMenu menu, Node<ActionListener> node) {
+    private static javax.swing.JMenu generateJMenuFromNodeStructure(javax.swing.JMenu menu, Node<ActionListener> node) {
         if (node == null) {
             return menu;
         }
 
         if (node.hasChildern()) { // if node has no childerent then add to menu as an item
-            ThemedJMenuItem temp = new ThemedJMenuItem();
+        	javax.swing.JMenuItem temp = new javax.swing.JMenuItem();
             temp.setText(node.name);
             temp.addActionListener((ActionListener) node.getData());
             menu.add(temp);
             return menu;
         }
 
-        ThemedJMenu temp = new ThemedJMenu();
+        javax.swing.JMenu temp = new javax.swing.JMenu();
         temp.setText(node.name);
         node.getChildernAndDestroyParent().forEach((t) -> {
             generateJMenuFromNodeStructure(temp, t);
@@ -320,9 +316,9 @@ public class MainGUI extends javax.swing.JFrame {
         return menu;
     }
 
-    private static ThemedJMenu generateJMenuFromFile(File file, ActionListener al) {
+    private static javax.swing.JMenu generateJMenuFromFile(File file, ActionListener al) {
         if (file.isDirectory()) {
-            ThemedJMenu jMenu = new ThemedJMenu();
+        	javax.swing.JMenu jMenu = new javax.swing.JMenu();
 
             String name = file.getName();
             if (name.contains("‰")) {
@@ -350,7 +346,7 @@ public class MainGUI extends javax.swing.JFrame {
 
                         }
                     }
-                    ThemedJMenuItem jMenuItem = new ThemedJMenuItem();
+                    javax.swing.JMenuItem jMenuItem = new javax.swing.JMenuItem();
                     jMenuItem.setText(namef2);
                     jMenuItem.setName(f2.getAbsolutePath());
                     jMenuItem.addActionListener(al);
@@ -379,60 +375,60 @@ public class MainGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        mainPanel = new org.parker.mips.gui.theme.components.ThemedJPanel1();
+        mainPanel = new javax.swing.JPanel();
         jSplitPane1 = new javax.swing.JSplitPane();
         topPanel = new javax.swing.JPanel();
         topButtonBarPanel = new javax.swing.JPanel();
-        compileButton = new org.parker.mips.gui.theme.components.ThemedJButton();
-        startButton = new org.parker.mips.gui.theme.components.ThemedJToggleButton();
-        stopButton = new org.parker.mips.gui.theme.components.ThemedJButton();
-        singleStepButton = new org.parker.mips.gui.theme.components.ThemedJButton();
-        memoryButton = new org.parker.mips.gui.theme.components.ThemedJButton();
+        compileButton = new javax.swing.JButton();
+        startButton = new javax.swing.JToggleButton();
+        stopButton = new javax.swing.JButton();
+        singleStepButton = new javax.swing.JButton();
+        memoryButton = new javax.swing.JButton();
         aboutButton = new javax.swing.JButton();
-        InstructionsRan = new org.parker.mips.gui.theme.components.ThemedJLabel();
-        resetButton = new org.parker.mips.gui.theme.components.ThemedJButton();
-        jLabel2 = new org.parker.mips.gui.theme.components.ThemedJLabel();
+        InstructionsRan = new javax.swing.JLabel();
+        resetButton = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
         lowerContentPanel = new javax.swing.JPanel();
         instructionMemory_GUI1 = new org.parker.mips.gui.InstructionMemoryGUI();
         register_GUI1 = new org.parker.mips.gui.RegisterGUI();
         aSM_GUI1 = new org.parker.mips.gui.EditorTabbedPane();
         midButtonSliderPanel = new javax.swing.JPanel();
-        linkedButton = new org.parker.mips.gui.theme.components.ThemedJCheckBox();
-        aboutLinkedFile = new javax.swing.JButton();
-        enableBreak = new org.parker.mips.gui.theme.components.ThemedJCheckBox();
-        delaySlider = new org.parker.mips.gui.theme.components.ThemedJSlider();
-        delayLable = new org.parker.mips.gui.theme.components.ThemedJLabel();
+        //linkedButton = new javax.swing.JCheckBox();
+        //aboutLinkedFile = new javax.swing.JButton();
+        enableBreak = new javax.swing.JCheckBox();
+        delaySlider = new javax.swing.JSlider();
+        delayLable = new javax.swing.JLabel();
         bottomPanel = new javax.swing.JPanel();
         logFrame = new org.parker.mips.Log();
-        menuBar = new org.parker.mips.gui.theme.components.ThemedJMenuBar();
-        fileMenu = new org.parker.mips.gui.theme.components.ThemedJMenu();
-        openMenuButton = new org.parker.mips.gui.theme.components.ThemedJMenuItem();
-        exampleMenu = new org.parker.mips.gui.theme.components.ThemedJMenu();
-        newMenuButton = new org.parker.mips.gui.theme.components.ThemedJMenuItem();
-        saveMenuButton = new org.parker.mips.gui.theme.components.ThemedJMenuItem();
-        saveAsMenuButton = new org.parker.mips.gui.theme.components.ThemedJMenuItem();
-        editMenu = new org.parker.mips.gui.theme.components.ThemedJMenu();
-        optionsMenu = new org.parker.mips.gui.theme.components.ThemedJMenu();
-        checkForUpdates = new org.parker.mips.gui.theme.components.ThemedJMenuItem();
-        enableGUIUpdatingWhileRunningButton = new org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem();
-        logSystemMessagesButton = new org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem();
-        logMessagesButton = new org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem();
-        logWarningsButton = new org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem();
-        logErrorsButton = new org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem();
-        optionsButton = new org.parker.mips.gui.theme.components.ThemedJMenuItem();
-        compilerMenu = new org.parker.mips.gui.theme.components.ThemedJMenu();
-        asciiChartButton = new org.parker.mips.gui.theme.components.ThemedJMenuItem();
-        documentationButton = new org.parker.mips.gui.theme.components.ThemedJMenuItem();
-        savePreProcessedFileButton = new org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem();
-        saveCompileInformationButton = new org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem();
-        runTimeMenu = new org.parker.mips.gui.theme.components.ThemedJMenu();
-        breakProgramOnRTEButton = new org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem();
-        adaptiveMemoryMenuButton = new org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem();
-        systemCallPluginsJMenu = new org.parker.mips.gui.theme.components.ThemedJMenu();
-        systemCallFrameJMenu = new org.parker.mips.gui.theme.components.ThemedJMenu();
-        systemCallExampleJMenu = new org.parker.mips.gui.theme.components.ThemedJMenu();
-        registerSystemCallPluginsJMenu = new org.parker.mips.gui.theme.components.ThemedJMenu();
-        loadPluginJMenuItem = new org.parker.mips.gui.theme.components.ThemedJMenuItem();
+        menuBar = new javax.swing.JMenuBar();
+        fileMenu = new javax.swing.JMenu();
+        openMenuButton = new javax.swing.JMenuItem();
+        exampleMenu = new javax.swing.JMenu();
+        newMenuButton = new javax.swing.JMenuItem();
+        saveMenuButton = new javax.swing.JMenuItem();
+        saveAsMenuButton = new javax.swing.JMenuItem();
+        editMenu = new javax.swing.JMenu();
+        optionsMenu = new javax.swing.JMenu();
+        checkForUpdates = new javax.swing.JMenuItem();
+        enableGUIUpdatingWhileRunningButton = new javax.swing.JCheckBoxMenuItem();
+        logSystemMessagesButton = new javax.swing.JCheckBoxMenuItem();
+        logMessagesButton = new javax.swing.JCheckBoxMenuItem();
+        logWarningsButton = new javax.swing.JCheckBoxMenuItem();
+        logErrorsButton = new javax.swing.JCheckBoxMenuItem();
+        optionsButton = new javax.swing.JMenuItem();
+        compilerMenu = new javax.swing.JMenu();
+        asciiChartButton = new javax.swing.JMenuItem();
+        documentationButton = new javax.swing.JMenuItem();
+        savePreProcessedFileButton = new javax.swing.JCheckBoxMenuItem();
+        saveCompileInformationButton = new javax.swing.JCheckBoxMenuItem();
+        runTimeMenu = new javax.swing.JMenu();
+        breakProgramOnRTEButton = new javax.swing.JCheckBoxMenuItem();
+        adaptiveMemoryMenuButton = new javax.swing.JCheckBoxMenuItem();
+        systemCallPluginsJMenu = new javax.swing.JMenu();
+        systemCallFrameJMenu = new javax.swing.JMenu();
+        systemCallExampleJMenu = new javax.swing.JMenu();
+        registerSystemCallPluginsJMenu = new javax.swing.JMenu();
+        loadPluginJMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("MIPS");
@@ -561,22 +557,22 @@ public class MainGUI extends javax.swing.JFrame {
 
         midButtonSliderPanel.setOpaque(false);
 
-        linkedButton.setText("Linked File");
-        linkedButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                linkedButtonActionPerformed(evt);
-            }
-        });
+//        linkedButton.setText("Linked File");
+//        linkedButton.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                linkedButtonActionPerformed(evt);
+//            }
+//        });
 
-        aboutLinkedFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/info.png"))); // NOI18N
-        aboutLinkedFile.setBorderPainted(false);
-        aboutLinkedFile.setContentAreaFilled(false);
-        aboutLinkedFile.setFocusPainted(false);
-        aboutLinkedFile.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aboutLinkedFileActionPerformed(evt);
-            }
-        });
+//        aboutLinkedFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/info.png"))); // NOI18N
+//        aboutLinkedFile.setBorderPainted(false);
+//        aboutLinkedFile.setContentAreaFilled(false);
+//        aboutLinkedFile.setFocusPainted(false);
+//        aboutLinkedFile.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                aboutLinkedFileActionPerformed(evt);
+//            }
+//        });
 
         enableBreak.setSelected(true);
         enableBreak.setText("Enable BreakPoints");
@@ -585,14 +581,14 @@ public class MainGUI extends javax.swing.JFrame {
         delaySlider.setMaximum(1000);
         delaySlider.setValue(0);
         delaySlider.setFocusable(false);
-        delaySlider.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                delaySliderMouseReleased(evt);
-            }
-        });
 
         delayLable.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        delayLable.setText("Delay");
+        delayLable.setText("Instruction Delay: " + delaySlider.getValue() + "ns");
+        delaySlider.addChangeListener(cl ->{
+        	long trueValue = (long) Math.pow(delaySlider.getValue(), 3);
+        	delayLable.setText("Instruction Delay: " + trueValue + "ns");	
+        	 Processor.setDelay(trueValue);
+        });
 
         javax.swing.GroupLayout midButtonSliderPanelLayout = new javax.swing.GroupLayout(midButtonSliderPanel);
         midButtonSliderPanel.setLayout(midButtonSliderPanelLayout);
@@ -602,11 +598,11 @@ public class MainGUI extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addGroup(midButtonSliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(enableBreak, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(midButtonSliderPanelLayout.createSequentialGroup()
-                        .addComponent(linkedButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(aboutLinkedFile, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(63, 63, 63)
+//                    .addGroup(midButtonSliderPanelLayout.createSequentialGroup()
+//                        .addComponent(linkedButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+//                        .addComponent(aboutLinkedFile, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                ).addGap(63, 63, 63)
                 .addGroup(midButtonSliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(delaySlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(delayLable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -617,8 +613,8 @@ public class MainGUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, midButtonSliderPanelLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(midButtonSliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(linkedButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(aboutLinkedFile, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    //.addComponent(linkedButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    //.addComponent(aboutLinkedFile, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(delayLable, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(midButtonSliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -841,10 +837,6 @@ public class MainGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void delaySliderMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_delaySliderMouseReleased
-        Processor.setDelay((int) Math.pow(delaySlider.getValue(), 3));
-    }//GEN-LAST:event_delaySliderMouseReleased
-
     private void aboutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutButtonActionPerformed
         DesktopBrowser.openLinkInBrowser("https://github.com/ParkerTenBroeck/MIPS/blob/master/README.md");
     }//GEN-LAST:event_aboutButtonActionPerformed
@@ -870,6 +862,22 @@ public class MainGUI extends javax.swing.JFrame {
     private void saveAsMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsMenuButtonActionPerformed
         EditorHandler.saveAsLastFocused();
     }//GEN-LAST:event_saveAsMenuButtonActionPerformed
+    
+    private void saveMemoryButtonActionPreformed(java.awt.event.ActionEvent evt) {
+    	JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
+        int returnVal = fc.showOpenDialog(MainGUI.getFrame());
+        if (returnVal == fc.FILES_ONLY) {
+            FileHandler.saveByteArrayToFile(Memory.getMemory(), fc.getSelectedFile());
+        }
+    }
+    
+    private void loadMemoryButtonActionPreformed(java.awt.event.ActionEvent evt) {
+    	JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
+        int returnVal = fc.showOpenDialog(MainGUI.getFrame());
+        if (returnVal == fc.FILES_ONLY) {
+            Memory.setMemory(FileHandler.loadFileAsByteArray(fc.getSelectedFile()));
+        }
+    }
 
     private void newMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newMenuButtonActionPerformed
         new FormattedTextEditor();
@@ -999,58 +1007,58 @@ public class MainGUI extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private static org.parker.mips.gui.theme.components.ThemedJLabel InstructionsRan;
+    private static javax.swing.JLabel InstructionsRan;
     private static org.parker.mips.gui.EditorTabbedPane aSM_GUI1;
     private static javax.swing.JButton aboutButton;
-    private static javax.swing.JButton aboutLinkedFile;
-    private static org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem adaptiveMemoryMenuButton;
-    private static org.parker.mips.gui.theme.components.ThemedJMenuItem asciiChartButton;
+    //private static javax.swing.JButton aboutLinkedFile;
+    private static javax.swing.JCheckBoxMenuItem adaptiveMemoryMenuButton;
+    private static javax.swing.JMenuItem asciiChartButton;
     private static javax.swing.JPanel bottomPanel;
-    private static org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem breakProgramOnRTEButton;
-    private static org.parker.mips.gui.theme.components.ThemedJMenuItem checkForUpdates;
-    private static org.parker.mips.gui.theme.components.ThemedJButton compileButton;
-    private static org.parker.mips.gui.theme.components.ThemedJMenu compilerMenu;
-    private static org.parker.mips.gui.theme.components.ThemedJLabel delayLable;
-    private static org.parker.mips.gui.theme.components.ThemedJSlider delaySlider;
-    private static org.parker.mips.gui.theme.components.ThemedJMenuItem documentationButton;
-    private static org.parker.mips.gui.theme.components.ThemedJMenu editMenu;
-    private static org.parker.mips.gui.theme.components.ThemedJCheckBox enableBreak;
-    private static org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem enableGUIUpdatingWhileRunningButton;
-    private static org.parker.mips.gui.theme.components.ThemedJMenu exampleMenu;
-    private static org.parker.mips.gui.theme.components.ThemedJMenu fileMenu;
+    private static javax.swing.JCheckBoxMenuItem breakProgramOnRTEButton;
+    private static javax.swing.JMenuItem checkForUpdates;
+    private static javax.swing.JButton compileButton;
+    private static javax.swing.JMenu compilerMenu;
+    private static javax.swing.JLabel delayLable;
+    private static javax.swing.JSlider delaySlider;
+    private static javax.swing.JMenuItem documentationButton;
+    private static javax.swing.JMenu editMenu;
+    private static javax.swing.JCheckBox enableBreak;
+    private static javax.swing.JCheckBoxMenuItem enableGUIUpdatingWhileRunningButton;
+    private static javax.swing.JMenu exampleMenu;
+    private static javax.swing.JMenu fileMenu;
     private static org.parker.mips.gui.InstructionMemoryGUI instructionMemory_GUI1;
-    private static org.parker.mips.gui.theme.components.ThemedJLabel jLabel2;
+    private static javax.swing.JLabel jLabel2;
     private static javax.swing.JSplitPane jSplitPane1;
-    private static org.parker.mips.gui.theme.components.ThemedJCheckBox linkedButton;
-    private static org.parker.mips.gui.theme.components.ThemedJMenuItem loadPluginJMenuItem;
-    private static org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem logErrorsButton;
+    //private static javax.swing.JCheckBox linkedButton;
+    private static javax.swing.JMenuItem loadPluginJMenuItem;
+    private static javax.swing.JCheckBoxMenuItem logErrorsButton;
     private static org.parker.mips.Log logFrame;
-    private static org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem logMessagesButton;
-    private static org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem logSystemMessagesButton;
-    private static org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem logWarningsButton;
+    private static javax.swing.JCheckBoxMenuItem logMessagesButton;
+    private static javax.swing.JCheckBoxMenuItem logSystemMessagesButton;
+    private static javax.swing.JCheckBoxMenuItem logWarningsButton;
     private static javax.swing.JPanel lowerContentPanel;
-    private static org.parker.mips.gui.theme.components.ThemedJPanel1 mainPanel;
-    private static org.parker.mips.gui.theme.components.ThemedJButton memoryButton;
-    private static org.parker.mips.gui.theme.components.ThemedJMenuBar menuBar;
+    private static javax.swing.JPanel mainPanel;
+    private static javax.swing.JButton memoryButton;
+    private static javax.swing.JMenuBar menuBar;
     private static javax.swing.JPanel midButtonSliderPanel;
-    private static org.parker.mips.gui.theme.components.ThemedJMenuItem newMenuButton;
-    private static org.parker.mips.gui.theme.components.ThemedJMenuItem openMenuButton;
-    private static org.parker.mips.gui.theme.components.ThemedJMenuItem optionsButton;
-    private static org.parker.mips.gui.theme.components.ThemedJMenu optionsMenu;
-    private static org.parker.mips.gui.theme.components.ThemedJMenu registerSystemCallPluginsJMenu;
+    private static javax.swing.JMenuItem newMenuButton;
+    private static javax.swing.JMenuItem openMenuButton;
+    private static javax.swing.JMenuItem optionsButton;
+    private static javax.swing.JMenu optionsMenu;
+    private static javax.swing.JMenu registerSystemCallPluginsJMenu;
     private static org.parker.mips.gui.RegisterGUI register_GUI1;
-    private static org.parker.mips.gui.theme.components.ThemedJButton resetButton;
-    private static org.parker.mips.gui.theme.components.ThemedJMenu runTimeMenu;
-    private static org.parker.mips.gui.theme.components.ThemedJMenuItem saveAsMenuButton;
-    private static org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem saveCompileInformationButton;
-    private static org.parker.mips.gui.theme.components.ThemedJMenuItem saveMenuButton;
-    private static org.parker.mips.gui.theme.components.ThemedJCheckBoxMenuItem savePreProcessedFileButton;
-    private static org.parker.mips.gui.theme.components.ThemedJButton singleStepButton;
-    private static org.parker.mips.gui.theme.components.ThemedJToggleButton startButton;
-    private static org.parker.mips.gui.theme.components.ThemedJButton stopButton;
-    private static org.parker.mips.gui.theme.components.ThemedJMenu systemCallExampleJMenu;
-    private static org.parker.mips.gui.theme.components.ThemedJMenu systemCallFrameJMenu;
-    private static org.parker.mips.gui.theme.components.ThemedJMenu systemCallPluginsJMenu;
+    private static javax.swing.JButton resetButton;
+    private static javax.swing.JMenu runTimeMenu;
+    private static javax.swing.JMenuItem saveAsMenuButton;
+    private static javax.swing.JCheckBoxMenuItem saveCompileInformationButton;
+    private static javax.swing.JMenuItem saveMenuButton;
+    private static javax.swing.JCheckBoxMenuItem savePreProcessedFileButton;
+    private static javax.swing.JButton singleStepButton;
+    private static javax.swing.JToggleButton startButton;
+    private static javax.swing.JButton stopButton;
+    private static javax.swing.JMenu systemCallExampleJMenu;
+    private static javax.swing.JMenu systemCallFrameJMenu;
+    private static javax.swing.JMenu systemCallPluginsJMenu;
     private static javax.swing.JPanel topButtonBarPanel;
     private static javax.swing.JPanel topPanel;
     // End of variables declaration//GEN-END:variables

@@ -56,7 +56,6 @@ public class OptionsGUI extends javax.swing.JFrame {
         OptionsHandler.saveCleanedFile.LinkJButton(this.saveCleanedFileButton);
         OptionsHandler.savePreProcessedFile.LinkJButton(this.savePreProcessorFileButton);
         OptionsHandler.saveCompilationInfo.LinkJButton(this.saveCompilerInfoFileButton);
-        OptionsHandler.linkedFile.LinkJButton(this.linkedFileButton);
 
         //PreProcessor
         OptionsHandler.includeRegDef.LinkJButton(this.includeRegDefButton);
@@ -369,7 +368,6 @@ public class OptionsGUI extends javax.swing.JFrame {
         themedJLabel9 = new org.parker.mips.gui.theme.components.ThemedJLabel();
         includeRegDefButton = new org.parker.mips.gui.theme.components.ThemedJCheckBox();
         includeSysCallDefButton = new org.parker.mips.gui.theme.components.ThemedJCheckBox();
-        linkedFileButton = new org.parker.mips.gui.theme.components.ThemedJCheckBox();
         themedJPanel15 = new org.parker.mips.gui.theme.components.ThemedJPanel1();
         themedJLabel7 = new org.parker.mips.gui.theme.components.ThemedJLabel();
         logSystemCallMessagesButton = new org.parker.mips.gui.theme.components.ThemedJCheckBox();
@@ -429,7 +427,10 @@ public class OptionsGUI extends javax.swing.JFrame {
         guiUpdateTimeSlider.setValue(100);
 
         themedJLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        themedJLabel8.setText("Update Time 1-500");
+        themedJLabel8.setText("Update Time: " + OptionsHandler.GUIAutoUpdateRefreshTime.val()+ " ms");
+        OptionsHandler.GUIAutoUpdateRefreshTime.addValueListener(vl ->{
+        	themedJLabel8.setText("Update Time: " + OptionsHandler.GUIAutoUpdateRefreshTime.val() + " ms");
+        });
 
         javax.swing.GroupLayout themedJPanel11Layout = new javax.swing.GroupLayout(themedJPanel11);
         themedJPanel11.setLayout(themedJPanel11Layout);
@@ -563,8 +564,6 @@ public class OptionsGUI extends javax.swing.JFrame {
 
         includeSysCallDefButton.setText("Include syscalldef");
 
-        linkedFileButton.setText("Use Linked File");
-
         javax.swing.GroupLayout themedJPanel13Layout = new javax.swing.GroupLayout(themedJPanel13);
         themedJPanel13.setLayout(themedJPanel13Layout);
         themedJPanel13Layout.setHorizontalGroup(
@@ -575,8 +574,8 @@ public class OptionsGUI extends javax.swing.JFrame {
                     .addComponent(themedJLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(saveCleanedFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(savePreProcessorFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(saveCompilerInfoFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(linkedFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(saveCompilerInfoFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    //.addComponent(linkedFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 152, Short.MAX_VALUE)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -607,7 +606,7 @@ public class OptionsGUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(includeSysCallDefButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(linkedFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                //.addComponent(linkedFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(244, Short.MAX_VALUE))
         );
 
@@ -846,7 +845,6 @@ public class OptionsGUI extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private org.parker.mips.gui.theme.components.ThemedJCheckBox linkedFileButton;
     private org.parker.mips.gui.theme.components.ThemedJButton loadOptionsButton;
     private org.parker.mips.gui.theme.components.ThemedJCheckBox logErrorsButton;
     private org.parker.mips.gui.theme.components.ThemedJCheckBox logMessagesButton;
