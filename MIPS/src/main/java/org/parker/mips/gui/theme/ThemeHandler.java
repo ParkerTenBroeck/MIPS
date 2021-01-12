@@ -48,7 +48,7 @@ public class ThemeHandler {
 
 		OptionsHandler.currentGUIFont.addValueListener((e) -> {
 			UIManager.put("defaultFont", OptionsHandler.currentGUIFont.val());
-			updateUI();
+			smoothUpdateUI();
 		});
 		UIManager.put("defaultFont", OptionsHandler.currentGUIFont.val());// sets to current font
 
@@ -80,12 +80,20 @@ public class ThemeHandler {
 		asd = true;
 	}
 
-	public static void updateUI() {
+	public static void smoothUpdateUI() {
 
 		EventQueue.invokeLater(() -> {
 			FlatAnimatedLafChange.showSnapshot();
 			FlatLaf.updateUI();
 			FlatAnimatedLafChange.hideSnapshotWithAnimation();
+		});
+	}
+	
+	public static void updateUI() {
+		EventQueue.invokeLater(() -> {
+			//FlatAnimatedLafChange.showSnapshot();
+			FlatLaf.updateUI();
+			//FlatAnimatedLafChange.hideSnapshotWithAnimation();
 		});
 	}
 

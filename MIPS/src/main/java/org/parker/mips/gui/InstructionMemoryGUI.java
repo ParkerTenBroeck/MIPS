@@ -54,7 +54,7 @@ public class InstructionMemoryGUI extends javax.swing.JPanel{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        modernScrollPane2 = new org.parker.mips.gui.theme.lookandfeel.ModernScrollPane();
+        modernScrollPane2 = new javax.swing.JScrollPane();
         instructionList = new javax.swing.JList<>();
 
         setOpaque(false);
@@ -62,7 +62,6 @@ public class InstructionMemoryGUI extends javax.swing.JPanel{
         instructionList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         instructionList.setFocusable(false);
         instructionList.setRequestFocusEnabled(false);
-        instructionList.setSelectionBackground(new java.awt.Color(0, 204, 153));
         modernScrollPane2.setViewportView(instructionList);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -80,6 +79,6 @@ public class InstructionMemoryGUI extends javax.swing.JPanel{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private static javax.swing.JList<String> instructionList;
-    private static org.parker.mips.gui.theme.lookandfeel.ModernScrollPane modernScrollPane2;
+    private static javax.swing.JScrollPane modernScrollPane2;
     // End of variables declaration//GEN-END:variables
 }

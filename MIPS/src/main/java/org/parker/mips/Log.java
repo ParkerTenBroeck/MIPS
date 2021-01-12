@@ -26,10 +26,14 @@ import org.parker.mips.gui.theme.lookandfeel.ModernScrollPane;
  */
 public class Log extends javax.swing.JPanel {
 
-    static {
-        ThemeHandler.init();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	
+	static {
         Log.initComponents();
-        Log log = new Log();
     }
 
     public static void clearDisplay() {
@@ -151,7 +155,7 @@ public class Log extends javax.swing.JPanel {
             return;
         }
 
-        jScrollPane1 = new ModernScrollPane(Color.LIGHT_GRAY);
+        jScrollPane1 = new ModernScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
         //jTextPane1.setBackground((Color) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.TEXT_AREA_BACKGROUND_2_PROPERTY_NAME));
         //jTextPane1.setFont((Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME)); // NOI18N

@@ -45,6 +45,7 @@ public class MIPS {
 
         ThemeHandler.init();
         MainGUI gui = new MainGUI(); //creates the GUI
+        //ThemeHandler.updateUI();
 
         PluginLoader.loadDefaultPlugins(); //loads all plugins internal and external
 

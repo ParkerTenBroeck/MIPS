@@ -39,6 +39,7 @@ import org.parker.mips.OptionsHandler;
 import org.parker.mips.gui.editor.Editor;
 import org.parker.mips.gui.editor.EditorHandler;
 import org.parker.mips.gui.editor.rsyntax.FormattedTextEditor;
+import org.parker.mips.gui.theme.ThemeHandler;
 import org.parker.mips.plugin.syscall.SystemCallPluginHandler;
 import org.parker.mips.plugin.PluginLoader;
 import org.parker.mips.plugin.syscall.SystemCallPlugin.Node;
@@ -221,13 +222,14 @@ public class MainGUI extends javax.swing.JFrame {
         }
 
         new dragAndDrop(mainPanel);
-        this.setVisible(true);
         Thread.currentThread().setName("GUI");
         refresh();
 
         if (instance != null) {
             instance.dispatchEvent(new WindowEvent(instance, WindowEvent.WINDOW_CLOSING));
         }
+        ThemeHandler.updateUI();
+        this.setVisible(true);
         instance = this;
     }
 
