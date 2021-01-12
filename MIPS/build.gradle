@@ -46,4 +46,5 @@ dependencies {
 	
     implementation  group: 'com.formdev', name: 'flatlaf', version: '0.46'
     implementation  group: 'com.formdev', name: 'flatlaf-extras', version: '0.46'
+    implementation  group: 'com.formdev', name: 'flatlaf-intellij-themes', version: '0.46'
 }

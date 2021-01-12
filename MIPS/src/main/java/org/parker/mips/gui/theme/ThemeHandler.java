@@ -36,146 +36,152 @@ import org.parker.mips.ResourceHandler;
  */
 public class ThemeHandler {
 
-    private static boolean asd = false;
+	public static final String THEMES_PACKAGE = "/com/formdev/flatlaf/intellijthemes/themes/";
 
-    public static void init() {
-        if (asd) {
-            return;
-        }
-        FlatInspector.install("ctrl shift alt X");
+	private static boolean asd = false;
 
-        OptionsHandler.currentGUIFont.addValueListener((e) -> {
-            UIManager.put("defaultFont", OptionsHandler.currentGUIFont.val());
-            updateTheme();
-        });
-        UIManager.put("defaultFont", OptionsHandler.currentGUIFont.val());//sets to current font
+	public static void init() {
+		if (asd) {
+			return;
+		}
+		FlatInspector.install("ctrl shift alt X");
 
-        OptionsHandler.currentGUITheme.addValueListener((e) -> {
+		OptionsHandler.currentGUIFont.addValueListener((e) -> {
+			UIManager.put("defaultFont", OptionsHandler.currentGUIFont.val());
+			updateUI();
+		});
+		UIManager.put("defaultFont", OptionsHandler.currentGUIFont.val());// sets to current font
 
-        });
+		OptionsHandler.currentGUITheme.addValueListener((e) -> {
 
-        UIManager.put("ScrollBar.thumbArc", 2);
-        UIManager.put("ScrollBar.thumbInsets", new Insets(2, 2, 2, 2));
-        JFrame.setDefaultLookAndFeelDecorated(true);
-        JDialog.setDefaultLookAndFeelDecorated(true);
-        UIManager.put("Button.arc", 0);
-        UIManager.put("Component.arc", 0);
-        UIManager.put("CheckBox.arc", 0);
-        UIManager.put("ProgressBar.arc", 0);
-        UIManager.put("CheckBox.icon.style", "filled");
-        if (SystemInfo.isMacOS && System.getProperty("apple.laf.useScreenMenuBar") == null) {
-            System.setProperty("apple.laf.useScreenMenuBar", "true");
-        }
+		});
 
-        JFrame.setDefaultLookAndFeelDecorated(true);
-        JDialog.setDefaultLookAndFeelDecorated(true);
+		UIManager.put("ScrollBar.thumbArc", 2);
+		UIManager.put("ScrollBar.thumbInsets", new Insets(2, 2, 2, 2));
+		JFrame.setDefaultLookAndFeelDecorated(true);
+		JDialog.setDefaultLookAndFeelDecorated(true);
+		UIManager.put("Button.arc", 0);
+		UIManager.put("Component.arc", 0);
+		UIManager.put("CheckBox.arc", 0);
+		UIManager.put("ProgressBar.arc", 0);
+		UIManager.put("CheckBox.icon.style", "filled");
+		if (SystemInfo.isMacOS && System.getProperty("apple.laf.useScreenMenuBar") == null) {
+			System.setProperty("apple.laf.useScreenMenuBar", "true");
+		}
 
-        try {
-            UIManager.setLookAndFeel(new FlatDarkLaf());
-        } catch (Exception e) {
-            System.out.println(e);
+		JFrame.setDefaultLookAndFeelDecorated(true);
+		JDialog.setDefaultLookAndFeelDecorated(true);
 
-        }
-        asd = true;
-    }
+		setTheme(OptionsHandler.currentGUITheme.val());
+		OptionsHandler.currentGUITheme.addValueListener(vl -> {
+			setTheme(OptionsHandler.currentGUITheme.val());
+		});
 
-    public static void updateTheme() {
+		asd = true;
+	}
 
-        EventQueue.invokeLater(() -> {
-            FlatAnimatedLafChange.showSnapshot();
-            FlatLaf.updateUI();
-            FlatAnimatedLafChange.hideSnapshotWithAnimation();
-        });
-    }
+	public static void updateUI() {
 
-    public static Font changeFontSize(Font font, int newSize) {
-        return StyleContext.getDefaultStyleContext().getFont(font.getFamily(), font.getStyle(), newSize);
-    }
+		EventQueue.invokeLater(() -> {
+			FlatAnimatedLafChange.showSnapshot();
+			FlatLaf.updateUI();
+			FlatAnimatedLafChange.hideSnapshotWithAnimation();
+		});
+	}
 
-    public static Font changeFontFamily(Font font, String newFontFamily) {
-        return StyleContext.getDefaultStyleContext().getFont(newFontFamily, font.getStyle(), font.getSize());
-    }
+	public static Font changeFontSize(Font font, int newSize) {
+		return StyleContext.getDefaultStyleContext().getFont(font.getFamily(), font.getStyle(), newSize);
+	}
 
-    private static void setTheme(IJThemeInfo themeInfo) {
-        if (themeInfo == null) {
-            return;
-        }
+	public static Font changeFontFamily(Font font, String newFontFamily) {
+		return StyleContext.getDefaultStyleContext().getFont(newFontFamily, font.getStyle(), font.getSize());
+	}
 
-        // change look and feel
-        if (themeInfo.lafClassName != null) {
-            if (themeInfo.lafClassName.equals(UIManager.getLookAndFeel().getClass().getName())) {
-                return;
-            }
+	private static void setTheme(IJThemeInfo themeInfo) {
+		if (themeInfo == null) {
+			return;
+		}
 
-            FlatAnimatedLafChange.showSnapshot();
+		EventQueue.invokeLater(() -> {
+			// change look and feel
+			if (themeInfo.lafClassName != null) {
+				if (themeInfo.lafClassName.equals(UIManager.getLookAndFeel().getClass().getName())) {
+					return;
+				}
 
-            try {
-                UIManager.setLookAndFeel(themeInfo.lafClassName);
-            } catch (Exception ex) {
-                //ex.printStackTrace();
-                //showInformationDialog( "Failed to create '" + themeInfo.lafClassName + "'.", ex );
-            }
-        } else if (themeInfo.themeFile != null) {
-            FlatAnimatedLafChange.showSnapshot();
+				FlatAnimatedLafChange.showSnapshot();
 
-            try {
-                if (themeInfo.themeFile.getName().endsWith(".properties")) {
-                    FlatLaf.install(new FlatPropertiesLaf(themeInfo.name, themeInfo.themeFile));
-                } else {
-                    FlatLaf.install(IntelliJTheme.createLaf(new FileInputStream(themeInfo.themeFile)));
-                }
+				try {
+					UIManager.setLookAndFeel(themeInfo.lafClassName);
+				} catch (Exception ex) {
+					// ex.printStackTrace();
+					// showInformationDialog( "Failed to create '" + themeInfo.lafClassName + "'.",
+					// ex );
+				}
+			} else if (themeInfo.themeFile != null) {
+				FlatAnimatedLafChange.showSnapshot();
 
-                //DemoPrefs.getState().put( DemoPrefs.KEY_LAF_THEME, DemoPrefs.FILE_PREFIX + themeInfo.themeFile );
-            } catch (Exception ex) {
-                //ex.printStackTrace();
-                //showInformationDialog( "Failed to load '" + themeInfo.themeFile + "'.", ex );
-            }
-        } else {
-            FlatAnimatedLafChange.showSnapshot();
+				try {
+					if (themeInfo.themeFile.getName().endsWith(".properties")) {
+						FlatLaf.install(new FlatPropertiesLaf(themeInfo.name, themeInfo.themeFile));
+					} else {
+						FlatLaf.install(IntelliJTheme.createLaf(new FileInputStream(themeInfo.themeFile)));
+					}
 
-            IntelliJTheme.install(ThemeHandler.class.getResourceAsStream(/*THEMES_PACKAGE +*/ themeInfo.resourceName));
-            //DemoPrefs.getState().put( DemoPrefs.KEY_LAF_THEME, DemoPrefs.RESOURCE_PREFIX + themeInfo.resourceName );
-        }
+					// DemoPrefs.getState().put( DemoPrefs.KEY_LAF_THEME, DemoPrefs.FILE_PREFIX +
+					// themeInfo.themeFile );
+				} catch (Exception ex) {
+					// ex.printStackTrace();
+					// showInformationDialog( "Failed to load '" + themeInfo.themeFile + "'.", ex );
+				}
+			} else {
+				FlatAnimatedLafChange.showSnapshot();
 
-        // update all components
-        FlatLaf.updateUI();
-        FlatAnimatedLafChange.hideSnapshotWithAnimation();
-    }
+				IntelliJTheme.install(ThemeHandler.class.getResourceAsStream(THEMES_PACKAGE + themeInfo.resourceName));
+				// DemoPrefs.getState().put( DemoPrefs.KEY_LAF_THEME, DemoPrefs.RESOURCE_PREFIX
+				// + themeInfo.resourceName );
+			}
 
-    private static void saveTheme(IJThemeInfo themeInfo) {
-        if (themeInfo == null || themeInfo.resourceName == null) {
-            return;
-        }
+			// update all components
+			FlatLaf.updateUI();
+			FlatAnimatedLafChange.hideSnapshotWithAnimation();
+		});
+	}
 
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setSelectedFile(new File(ResourceHandler.GUI_THEMES, themeInfo.resourceName));
-        if (fileChooser.showSaveDialog(SwingUtilities.windowForComponent(null)) != JFileChooser.APPROVE_OPTION) {
-            return;
-        }
+	private static void saveTheme(IJThemeInfo themeInfo) {
+		if (themeInfo == null || themeInfo.resourceName == null) {
+			return;
+		}
 
-        File file = fileChooser.getSelectedFile();
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setSelectedFile(new File(ResourceHandler.GUI_THEMES, themeInfo.resourceName));
+		if (fileChooser.showSaveDialog(SwingUtilities.windowForComponent(null)) != JFileChooser.APPROVE_OPTION) {
+			return;
+		}
 
-        // save theme
-        try {
-            Files.copy(ThemeHandler.class.getResourceAsStream(/*THEMES_PACKAGE +*/ themeInfo.resourceName),
-                    file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException ex) {
-            //showInformationDialog("Failed to save theme to '" + file + "'.", ex);
-            return;
-        }
+		File file = fileChooser.getSelectedFile();
 
-        // save license
-        if (themeInfo.licenseFile != null) {
-            try {
-                File licenseFile = new File(file.getParentFile(),
-                        StringUtils.removeTrailing(file.getName(), ".theme.json")
-                        + themeInfo.licenseFile.substring(themeInfo.licenseFile.indexOf('.')));
-                Files.copy(ThemeHandler.class.getResourceAsStream(/*THEMES_PACKAGE +*/ themeInfo.licenseFile),
-                        licenseFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            } catch (IOException ex) {
-                //showInformationDialog("Failed to save theme license to '" + file + "'.", ex);
-                return;
-            }
-        }
-    }
+		// save theme
+		try {
+			Files.copy(ThemeHandler.class.getResourceAsStream(THEMES_PACKAGE + themeInfo.resourceName), file.toPath(),
+					StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException ex) {
+			// showInformationDialog("Failed to save theme to '" + file + "'.", ex);
+			return;
+		}
+
+		// save license
+		if (themeInfo.licenseFile != null) {
+			try {
+				File licenseFile = new File(file.getParentFile(),
+						StringUtils.removeTrailing(file.getName(), ".theme.json")
+								+ themeInfo.licenseFile.substring(themeInfo.licenseFile.indexOf('.')));
+				Files.copy(ThemeHandler.class.getResourceAsStream(THEMES_PACKAGE + themeInfo.licenseFile),
+						licenseFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			} catch (IOException ex) {
+				// showInformationDialog("Failed to save theme license to '" + file + "'.", ex);
+				return;
+			}
+		}
+	}
 }

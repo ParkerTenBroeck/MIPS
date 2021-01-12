@@ -5,6 +5,7 @@
  */
 package org.parker.mips;
 
+import com.formdev.flatlaf.FlatDarkLaf;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -18,6 +19,8 @@ import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.util.Map;
 import java.util.Set;
+
+import org.parker.mips.gui.theme.IJThemeInfo;
 
 /**
  *
@@ -59,7 +62,7 @@ public class OptionsHandler {
     public static final Holder<Boolean> resetProcessorOnTrap0 = new Holder(false);
 
     //Theme Handler
-    public static final Holder<String> currentGUITheme = new Holder("Dark");
+    public static final Holder<IJThemeInfo> currentGUITheme = new Holder(new IJThemeInfo( "Flat Dark", null, true, null, null, null, null, null, FlatDarkLaf.class.getName() ));
     public static final Holder<String> currentEditorTheme = new Holder("Dark");
     public static final Holder<Font> currentGUIFont = new Holder(new Font("Segoe UI", 0, 15));
     public static final Holder<Font> currentEditorFont = new Holder(new Font("Segoe UI", 0, 15));

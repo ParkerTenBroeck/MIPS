@@ -31,8 +31,7 @@ import java.io.File;
 /**
  * @author Karl Tauber
  */
-public class IJThemeInfo
-{
+public class IJThemeInfo {
 	public final String name;
 	public final String resourceName;
 	public final boolean dark;
@@ -43,11 +42,8 @@ public class IJThemeInfo
 	public final File themeFile;
 	public final String lafClassName;
 
-	IJThemeInfo( String name, String resourceName, boolean dark,
-		String license, String licenseFile,
-		String sourceCodeUrl, String sourceCodePath,
-		File themeFile, String lafClassName )
-	{
+	public IJThemeInfo(String name, String resourceName, boolean dark, String license, String licenseFile,
+			String sourceCodeUrl, String sourceCodePath, File themeFile, String lafClassName) {
 		this.name = name;
 		this.resourceName = resourceName;
 		this.dark = dark;
@@ -57,5 +53,20 @@ public class IJThemeInfo
 		this.sourceCodePath = sourceCodePath;
 		this.themeFile = themeFile;
 		this.lafClassName = lafClassName;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof IJThemeInfo) {
+			IJThemeInfo info = (IJThemeInfo)o;
+			return info.name.equals(this.name);
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public String toString() {
+		return name;
 	}
 }

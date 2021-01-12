@@ -59,8 +59,6 @@ public class InstructionMemoryGUI extends javax.swing.JPanel{
 
         setOpaque(false);
 
-        instructionList.setBackground(new java.awt.Color(0, 0, 51));
-        instructionList.setForeground(new java.awt.Color(204, 204, 204));
         instructionList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         instructionList.setFocusable(false);
         instructionList.setRequestFocusEnabled(false);

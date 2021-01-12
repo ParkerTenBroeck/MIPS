@@ -5,9 +5,11 @@
  */
 package org.parker.mips;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -226,4 +228,24 @@ public class FileHandler {
         int lastWindowsPos = filename.lastIndexOf(WINDOWS_SEPARATOR);
         return Math.max(lastUnixPos, lastWindowsPos);
     }
+
+	public static byte[] loadStreamAsByteArray(InputStream stream) {
+		try {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        
+        byte[] buffer = new byte[1024];
+        int len;
+ 
+        // read bytes from the input stream and store them in buffer
+        while ((len = stream.read(buffer)) != -1) {
+            // write bytes from the buffer into output stream
+            os.write(buffer, 0, len);
+        }
+ 
+        return os.toByteArray();
+		}catch(Exception e) {
+			logFileHandlerError("Failed to load stream:\n" + Log.getFullExceptionMessage(e));
+		}
+		return null;
+	}
 }

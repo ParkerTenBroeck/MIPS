@@ -421,7 +421,9 @@ public class MainGUI extends javax.swing.JFrame {
         documentationButton = new javax.swing.JMenuItem();
         savePreProcessedFileButton = new javax.swing.JCheckBoxMenuItem();
         saveCompileInformationButton = new javax.swing.JCheckBoxMenuItem();
-        runTimeMenu = new javax.swing.JMenu();
+        processorMenu = new javax.swing.JMenu();
+        saveMemoryButton = new javax.swing.JMenuItem();
+        loadMemoryButton = new javax.swing.JMenuItem();
         breakProgramOnRTEButton = new javax.swing.JCheckBoxMenuItem();
         adaptiveMemoryMenuButton = new javax.swing.JCheckBoxMenuItem();
         systemCallPluginsJMenu = new javax.swing.JMenu();
@@ -789,16 +791,31 @@ public class MainGUI extends javax.swing.JFrame {
 
         menuBar.add(compilerMenu);
 
-        runTimeMenu.setText("RunTime");
+        processorMenu.setText("Processor");
 
         breakProgramOnRTEButton.setSelected(true);
         breakProgramOnRTEButton.setText("Break Program On RunTime Error");
-        runTimeMenu.add(breakProgramOnRTEButton);
+        processorMenu.add(breakProgramOnRTEButton);
 
         adaptiveMemoryMenuButton.setText("Adaptive Memory");
-        runTimeMenu.add(adaptiveMemoryMenuButton);
+        processorMenu.add(adaptiveMemoryMenuButton);
+        
+        saveMemoryButton.setText("Save Memory to File");
+        loadMemoryButton.setText("Load Memory from File");
+        saveMemoryButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveMenuButtonActionPerformed(evt);
+            }
+        });
+        loadMemoryButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadMemoryButtonActionPreformed(evt);
+            }
+        });
+        processorMenu.add(saveMemoryButton);
+        processorMenu.add(loadMemoryButton);
 
-        menuBar.add(runTimeMenu);
+        menuBar.add(processorMenu);
 
         systemCallPluginsJMenu.setText("SystemCall Plugins");
 
@@ -877,6 +894,9 @@ public class MainGUI extends javax.swing.JFrame {
         if (returnVal == fc.FILES_ONLY) {
             Memory.setMemory(FileHandler.loadFileAsByteArray(fc.getSelectedFile()));
         }
+        Processor.stop();
+        Processor.reset();
+        refreshAll();
     }
 
     private void newMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newMenuButtonActionPerformed
@@ -1048,7 +1068,9 @@ public class MainGUI extends javax.swing.JFrame {
     private static javax.swing.JMenu registerSystemCallPluginsJMenu;
     private static org.parker.mips.gui.RegisterGUI register_GUI1;
     private static javax.swing.JButton resetButton;
-    private static javax.swing.JMenu runTimeMenu;
+    private static javax.swing.JMenu processorMenu;
+    private static javax.swing.JMenuItem saveMemoryButton;
+    private static javax.swing.JMenuItem loadMemoryButton;
     private static javax.swing.JMenuItem saveAsMenuButton;
     private static javax.swing.JCheckBoxMenuItem saveCompileInformationButton;
     private static javax.swing.JMenuItem saveMenuButton;

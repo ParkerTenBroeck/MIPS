@@ -7,12 +7,14 @@ package org.parker.mips.plugin.syscall;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import org.parker.mips.FileHandler;
 import org.parker.mips.gui.MainGUI;
+import org.parker.mips.gui.editor.rsyntax.FormattedTextEditor;
 import org.parker.mips.Log;
 import org.parker.mips.compiler.ASMCompiler;
 import org.parker.mips.processor.Memory;
@@ -189,11 +191,18 @@ public abstract class SystemCallPlugin extends PluginBase {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            throw new UnsupportedOperationException("");
+            try {
+            	InputStream stream = CLASS_LOADER.getResourceAsStream(resources);
+            	byte[] bytes = FileHandler.loadStreamAsByteArray(stream);
+            	String text = new String(bytes);
+            	new FormattedTextEditor(text);
             //FileHandler.loadASMExampleFromStream(CLASS_LOADER.getResourceAsStream(resources));
             //ASM_GUI.setTextAreaFromASMFile();
           
             //ASMCompiler.compileDefault();
+            }catch(Exception e) {
+            	
+            }
         }
 
     }
