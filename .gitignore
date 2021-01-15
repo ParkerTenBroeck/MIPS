@@ -12,10 +12,14 @@
 
 #projects
 !/MIPS/
-/MIPS/build
+/MIPS/*
+!/MIPS/src
+!/MIPS/build.gradle
 
 !/ExampleSystemCallPlugin/
-/ExampleSystemCallPlugin/build/
+/ExampleSystemCallPlugin/*
+!/ExampleSystemCallPlugin/src
+!/ExampleSystemCallPlugin/build.gradle
 
 
 #Github
