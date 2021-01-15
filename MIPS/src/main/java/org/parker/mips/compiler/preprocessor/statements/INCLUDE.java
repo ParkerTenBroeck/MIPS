@@ -5,14 +5,16 @@
  */
 package org.parker.mips.compiler.preprocessor.statements;
 
-import java.io.File;
-import org.parker.mips.compiler.data.UserLine;
-import org.parker.mips.compiler.PreProcessor;
-import static org.parker.mips.compiler.PreProcessor.loadFile;
-import java.util.ArrayList;
 import org.parker.mips.FileHandler;
 import org.parker.mips.Log;
+import org.parker.mips.compiler.PreProcessor;
+import org.parker.mips.compiler.data.UserLine;
 import org.parker.mips.gui.editor.EditorHandler;
+
+import java.io.File;
+import java.util.ArrayList;
+
+import static org.parker.mips.compiler.PreProcessor.loadFile;
 
 /**
  *
@@ -35,7 +37,7 @@ public class INCLUDE extends Statement {
 
         } else {
             File file = EditorHandler.getFalseFileFromLastFocused();
-            path = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf(FileHandler.FILE_SEPERATOR) + 1) + path;
+            path = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf(FileHandler.FILE_SEPARATOR) + 1) + path;
         }
 
         try {

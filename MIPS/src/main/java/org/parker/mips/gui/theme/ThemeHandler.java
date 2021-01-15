@@ -5,30 +5,24 @@
  */
 package org.parker.mips.gui.theme;
 
-import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatPropertiesLaf;
 import com.formdev.flatlaf.IntelliJTheme;
-import com.formdev.flatlaf.util.SystemInfo;
-import java.awt.Font;
-import java.awt.Insets;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.text.StyleContext;
-import org.parker.mips.OptionsHandler;
 import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
 import com.formdev.flatlaf.extras.FlatInspector;
 import com.formdev.flatlaf.util.StringUtils;
-import java.awt.EventQueue;
+import com.formdev.flatlaf.util.SystemInfo;
+import org.parker.mips.OptionsHandler;
+import org.parker.mips.ResourceHandler;
+
+import javax.swing.*;
+import javax.swing.text.StyleContext;
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import javax.swing.JFileChooser;
-import org.parker.mips.ResourceHandler;
 
 /**
  *
@@ -46,15 +40,15 @@ public class ThemeHandler {
 		}
 		FlatInspector.install("ctrl shift alt X");
 
-		OptionsHandler.currentGUIFont.addValueListener((e) -> {
+		OptionsHandler.currentGUIFont.addObserver((o,v) -> {
 			UIManager.put("defaultFont", OptionsHandler.currentGUIFont.val());
 			smoothUpdateUI();
 		});
 		UIManager.put("defaultFont", OptionsHandler.currentGUIFont.val());// sets to current font
 
-		OptionsHandler.currentGUITheme.addValueListener((e) -> {
-
-		});
+//		OptionsHandler.currentGUITheme.addObserver((o,v) -> {
+//
+//		});
 
 		UIManager.put("ScrollBar.thumbArc", 2);
 		UIManager.put("ScrollBar.thumbInsets", new Insets(2, 2, 2, 2));
@@ -73,7 +67,7 @@ public class ThemeHandler {
 		JDialog.setDefaultLookAndFeelDecorated(true);
 
 		setTheme(OptionsHandler.currentGUITheme.val());
-		OptionsHandler.currentGUITheme.addValueListener(vl -> {
+		OptionsHandler.currentGUITheme.addObserver((o,v) -> {
 			setTheme(OptionsHandler.currentGUITheme.val());
 		});
 
@@ -90,11 +84,7 @@ public class ThemeHandler {
 	}
 	
 	public static void updateUI() {
-		EventQueue.invokeLater(() -> {
-			//FlatAnimatedLafChange.showSnapshot();
-			FlatLaf.updateUI();
-			//FlatAnimatedLafChange.hideSnapshotWithAnimation();
-		});
+		EventQueue.invokeLater(FlatLaf::updateUI);
 	}
 
 	public static Font changeFontSize(Font font, int newSize) {
@@ -156,7 +146,7 @@ public class ThemeHandler {
 		});
 	}
 
-	private static void saveTheme(IJThemeInfo themeInfo) {
+	public static void saveTheme(IJThemeInfo themeInfo) {
 		if (themeInfo == null || themeInfo.resourceName == null) {
 			return;
 		}

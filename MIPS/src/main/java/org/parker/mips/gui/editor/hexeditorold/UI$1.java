@@ -1,11 +1,7 @@
 package org.parker.mips.gui.editor.hexeditorold;
 
-import java.awt.GraphicsEnvironment;
-import java.awt.Insets;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
+import javax.swing.*;
+import java.awt.*;
 
 final class UI$1 implements Runnable {
 

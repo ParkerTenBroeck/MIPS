@@ -6,19 +6,18 @@
 package org.parker.mips;
 
 
-import java.awt.Color;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import javax.swing.BoundedRangeModel;
-import javax.swing.JScrollPane;
+import org.parker.mips.gui.theme.lookandfeel.ModernScrollPane;
+
+import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
-import org.parker.mips.gui.theme.ThemeHandler;
-import org.parker.mips.gui.theme.lookandfeel.ModernScrollPane;
+import java.awt.*;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 /**
  *

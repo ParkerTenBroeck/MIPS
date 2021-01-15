@@ -5,9 +5,10 @@
  */
 package org.parker.mips.plugin.internal.syscall;
 
+import org.parker.mips.plugin.syscall.SystemCallPlugin;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.parker.mips.plugin.syscall.SystemCallPlugin;
 
 /**
  *

@@ -8,9 +8,10 @@ package org.parker.mips.gui;
 import org.parker.mips.compiler.ASMCompiler;
 import org.parker.mips.compiler.data.MemoryLable;
 import org.parker.mips.gui.theme.lookandfeel.ModernScrollPane;
-import java.util.ArrayList;
-import javax.swing.ScrollPaneConstants;
 import org.parker.mips.processor.Memory;
+
+import javax.swing.*;
+import java.util.ArrayList;
 
 /**
  *

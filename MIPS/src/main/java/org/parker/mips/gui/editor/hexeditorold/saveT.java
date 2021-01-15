@@ -1,14 +1,9 @@
 package org.parker.mips.gui.editor.hexeditorold;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import javax.swing.*;
+import java.io.*;
 import java.util.Arrays;
 import java.util.Vector;
-import javax.swing.JOptionPane;
-import javax.swing.JProgressBar;
 
 class saveT extends Thread {
 

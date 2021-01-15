@@ -5,14 +5,15 @@
  */
 package org.parker.mips.gui.editor.rsyntax;
 
-import org.parker.mips.compiler.PreProcessor;
-import org.parker.mips.compiler.preprocessor.statements.Statement;
-import org.parker.mips.compiler.StringToOpcode;
-import javax.swing.text.Segment;
 import org.fife.ui.rsyntaxtextarea.AbstractTokenMaker;
 import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.TokenMap;
+import org.parker.mips.compiler.PreProcessor;
+import org.parker.mips.compiler.StringToOpcode;
+import org.parker.mips.compiler.preprocessor.statements.Statement;
+
+import javax.swing.text.Segment;
 
 /**
  *

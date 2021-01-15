@@ -5,12 +5,14 @@
  */
 package org.parker.mips.gui;
 
-import java.awt.Color;
-import java.util.Arrays;
 import org.parker.mips.gui.theme.lookandfeel.ModernScrollPane;
 import org.parker.mips.plugin.syscall.SystemCall;
 import org.parker.mips.plugin.syscall.SystemCallPlugin;
 import org.parker.mips.plugin.syscall.SystemCallPluginHandler;
+
+import java.awt.*;
+import java.util.Arrays;
+
 import static org.parker.mips.plugin.syscall.SystemCallPluginHandler.getSystemCallNumberFromGeneratedNumber;
 
 /**

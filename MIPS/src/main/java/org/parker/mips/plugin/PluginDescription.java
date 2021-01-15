@@ -5,10 +5,11 @@
  */
 package org.parker.mips.plugin;
 
+import org.yaml.snakeyaml.Yaml;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Map;
-import org.yaml.snakeyaml.Yaml;
 
 /**
  *

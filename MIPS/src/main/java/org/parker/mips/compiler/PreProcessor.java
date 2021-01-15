@@ -5,22 +5,18 @@
  */
 package org.parker.mips.compiler;
 
-import org.parker.mips.compiler.preprocessor.statements.INCLUDE;
-import org.parker.mips.compiler.preprocessor.statements.IF;
-import org.parker.mips.compiler.preprocessor.statements.DEFINE;
-import org.parker.mips.compiler.preprocessor.statements.UNDEF;
-import org.parker.mips.compiler.preprocessor.statements.Statement;
-import org.parker.mips.compiler.preprocessor.statements.DEFINLINE;
+import org.parker.mips.FileHandler;
+import org.parker.mips.Log;
+import org.parker.mips.OptionsHandler;
+import org.parker.mips.ResourceHandler;
 import org.parker.mips.compiler.data.UserLine;
+import org.parker.mips.compiler.preprocessor.statements.*;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import org.parker.mips.FileHandler;
-import org.parker.mips.Log;
-import org.parker.mips.OptionsHandler;
-import org.parker.mips.ResourceHandler;
 
 /**
  *
@@ -259,12 +255,12 @@ public class PreProcessor {
     }
 
     private static void writePreProcessedFile(ArrayList<UserLine> fileInfo) {
-        File file = new File(ResourceHandler.COMPILER_PATH + FileHandler.FILE_SEPERATOR + "PreProcessedFile.asm");
+        File file = new File(ResourceHandler.COMPILER_PATH + FileHandler.FILE_SEPARATOR + "PreProcessedFile.asm");
         writeArrayListOfUserLinesToFile(fileInfo, file);
     }
 
     private static void writeCleanedFile(ArrayList<UserLine> fileInfo) {
-        File file = new File(ResourceHandler.COMPILER_PATH + FileHandler.FILE_SEPERATOR + "CleanedFile.asm");
+        File file = new File(ResourceHandler.COMPILER_PATH + FileHandler.FILE_SEPARATOR + "CleanedFile.asm");
         writeArrayListOfUserLinesToFile(fileInfo, file);
     }
 

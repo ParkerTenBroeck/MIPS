@@ -5,16 +5,6 @@
  */
 package org.parker.mips.gui.editor.rsyntax;
 
-import java.awt.BorderLayout;
-import java.awt.Font;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
 import org.fife.ui.rsyntaxtextarea.AbstractTokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Theme;
@@ -26,6 +16,18 @@ import org.parker.mips.Log;
 import org.parker.mips.OptionsHandler;
 import org.parker.mips.ResourceHandler;
 import org.parker.mips.gui.editor.Editor;
+
+import java.awt.*;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Observable;
+import java.util.Observer;
+
+import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
 
 /**
  *
@@ -73,7 +75,7 @@ public class FormattedTextEditor extends Editor {
 
     public final void setTheme(String name) {
         try {
-            InputStream in = new FileInputStream(new File(ResourceHandler.EDITOR_THEMES + FileHandler.FILE_SEPERATOR + name + ".xml"));
+            InputStream in = new FileInputStream(new File(ResourceHandler.EDITOR_THEMES + FileHandler.FILE_SEPARATOR + name + ".xml"));
             Theme theme = Theme.load(in);
             theme.apply(textArea);
         } catch (Exception e) {
@@ -115,17 +117,23 @@ public class FormattedTextEditor extends Editor {
         this.setLayout(new BorderLayout());
         this.add(scrollPane, BorderLayout.CENTER);
 
-        OptionsHandler.currentEditorTheme.addValueListener((e) -> {
-            if (textArea != null) {
-                setTheme(OptionsHandler.currentEditorTheme.val());
-                setAllFont(OptionsHandler.currentEditorFont.val());
+        OptionsHandler.currentEditorTheme.addObserver(new Observer() {
+            @Override
+            public void update(Observable o, Object arg) {
+                if (textArea != null) {
+                    FormattedTextEditor.this.setTheme(OptionsHandler.currentEditorTheme.val());
+                    FormattedTextEditor.this.setAllFont(OptionsHandler.currentEditorFont.val());
+                }
             }
         });
         setTheme(OptionsHandler.currentEditorTheme.val());
 
-        OptionsHandler.currentEditorFont.addValueListener((e) -> {
-            if (textArea != null) {
-                setAllFont(OptionsHandler.currentEditorFont.val());
+        OptionsHandler.currentEditorFont.addObserver(new Observer() {
+            @Override
+            public void update(Observable o, Object arg) {
+                if (textArea != null) {
+                    FormattedTextEditor.this.setAllFont(OptionsHandler.currentEditorFont.val());
+                }
             }
         });
         setAllFont(OptionsHandler.currentEditorFont.val());

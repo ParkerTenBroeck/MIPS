@@ -1,10 +1,10 @@
 package org.parker.mips.gui.editor.hexeditorold;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Vector;
-import javax.swing.JProgressBar;
 
 class findT extends Thread {
 

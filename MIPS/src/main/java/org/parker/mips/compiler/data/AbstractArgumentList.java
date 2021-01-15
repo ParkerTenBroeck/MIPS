@@ -5,8 +5,6 @@
  */
 package org.parker.mips.compiler.data;
 
-import java.util.Collection;
-
 /**
  *
  * @author parke

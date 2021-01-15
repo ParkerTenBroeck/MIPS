@@ -6,11 +6,10 @@
 package org.parker.mips.gui;
 
 import org.parker.mips.compiler.data.MemoryLable;
+
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collections;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
-import javax.swing.JTextField;
 
 /**
  *

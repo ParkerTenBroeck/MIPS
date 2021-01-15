@@ -5,6 +5,14 @@
  */
 package org.parker.mips.plugin;
 
+import org.parker.mips.Log;
+import org.parker.mips.MIPS;
+import org.parker.mips.ResourceHandler;
+import org.parker.mips.plugin.syscall.SystemCallPlugin;
+import org.parker.mips.plugin.syscall.SystemCallPluginHandler;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.error.YAMLException;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -13,15 +21,6 @@ import java.net.MalformedURLException;
 import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.parker.mips.Log;
-import org.parker.mips.MIPS;
-import org.parker.mips.ResourceHandler;
-import org.parker.mips.plugin.syscall.SystemCallPlugin;
-import org.parker.mips.plugin.syscall.SystemCallPluginHandler;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.error.YAMLException;
 
 /**
  *

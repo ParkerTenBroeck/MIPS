@@ -5,19 +5,20 @@
  */
 package org.parker.mips.compiler;
 
+import org.parker.mips.FileHandler;
+import org.parker.mips.Log;
+import org.parker.mips.OptionsHandler;
+import org.parker.mips.ResourceHandler;
 import org.parker.mips.compiler.data.MemoryLable;
 import org.parker.mips.compiler.data.UserLine;
 import org.parker.mips.gui.MainGUI;
+import org.parker.mips.gui.editor.EditorHandler;
+import org.parker.mips.processor.Memory;
+
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import org.parker.mips.FileHandler;
-import org.parker.mips.Log;
-import org.parker.mips.OptionsHandler;
-import org.parker.mips.processor.Memory;
-import org.parker.mips.ResourceHandler;
-import org.parker.mips.gui.editor.EditorHandler;
 
 class ByteP {
 
@@ -233,7 +234,7 @@ public class ASMCompiler {
         }
         maxSizeInstruction++;
 
-        File file = new File(ResourceHandler.COMPILER_PATH + FileHandler.FILE_SEPERATOR + "CompilationInfo.txt");
+        File file = new File(ResourceHandler.COMPILER_PATH + FileHandler.FILE_SEPARATOR + "CompilationInfo.txt");
 
         try (PrintWriter out = new PrintWriter(file)) {
 

@@ -5,10 +5,12 @@
  */
 package org.parker.mips;
 
+import org.parker.mips.gui.MainGUI;
+
+import javax.swing.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -17,8 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFileChooser;
-import org.parker.mips.gui.MainGUI;
 
 /**
  *
@@ -26,7 +26,7 @@ import org.parker.mips.gui.MainGUI;
  */
 public class FileHandler {
 
-    public static final char FILE_SEPERATOR = File.separatorChar;
+    public static final char FILE_SEPARATOR = File.separatorChar;
     public static final char EXTENSION_SEPARATOR = '.';
     //platform spesific
     private static final char UNIX_SEPARATOR = '/';

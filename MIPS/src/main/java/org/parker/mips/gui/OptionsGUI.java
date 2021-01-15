@@ -12,35 +12,20 @@ import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.ui.FlatUIUtils;
 import com.formdev.flatlaf.util.UIScale;
-
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Objects;
-
-import javax.swing.AbstractListModel;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JFileChooser;
-import javax.swing.JList;
-import javax.swing.UIManager;
-import javax.swing.border.Border;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
-import org.parker.mips.gui.theme.ThemeHandler;
 import org.parker.mips.OptionsHandler;
 import org.parker.mips.ResourceHandler;
 import org.parker.mips.gui.theme.IJThemeInfo;
 import org.parker.mips.gui.theme.IJThemesManager;
+import org.parker.mips.gui.theme.ThemeHandler;
+
+import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
+import java.io.File;
+import java.util.*;
 
 /**
  *
@@ -153,10 +138,13 @@ public class OptionsGUI extends javax.swing.JFrame {
 			OptionsHandler.currentGUIFont.val(
 					ThemeHandler.changeFontFamily(OptionsHandler.currentGUIFont.val(), guiFontList.getSelectedValue()));
 		});
-		OptionsHandler.currentGUIFont.addValueListener((e) -> {
-			String current = OptionsHandler.currentGUIFont.val().getFontName();
-			if (!current.equals(guiFontList.getSelectedValue())) {
-				guiFontList.setSelectedValue(current, true);
+		OptionsHandler.currentGUIFont.addObserver(new Observer() {
+			@Override
+			public void update(Observable o, Object arg) {
+				String current = OptionsHandler.currentGUIFont.val().getFontName();
+				if (!current.equals(guiFontList.getSelectedValue())) {
+					guiFontList.setSelectedValue(current, true);
+				}
 			}
 		});
 
@@ -187,7 +175,7 @@ public class OptionsGUI extends javax.swing.JFrame {
 			OptionsHandler.currentGUIFont.val(ThemeHandler.changeFontSize(OptionsHandler.currentGUIFont.val(), val));
 		});
 
-		OptionsHandler.currentGUIFont.addValueListener((e) -> {
+		OptionsHandler.currentGUIFont.addObserver((e, a) -> {
 			String current = Integer.toString(OptionsHandler.currentGUIFont.val().getSize());
 			if (!current.equals(guiFontList.getSelectedValue())) {
 				guiFontList.setSelectedValue(current, true);
@@ -199,15 +187,12 @@ public class OptionsGUI extends javax.swing.JFrame {
 
 			guiThemeList.setSelectedValue(OptionsHandler.currentGUITheme.val(), true);
 
-			OptionsHandler.currentGUITheme.addValueListener(vl -> {
-				if (!guiThemeList.getSelectedValue().equals(OptionsHandler.currentGUITheme.val()))
-					guiThemeList.setSelectedValue(OptionsHandler.currentGUITheme.val(), true);
+			OptionsHandler.currentGUITheme.addObserver((o,v) -> {
+				if (!guiThemeList.getSelectedValue().equals(v))
+					guiThemeList.setSelectedValue(v, true);
 			});
 
-			guiThemeList.addListSelectionListener(new ListSelectionListener() {
-
-				@Override
-				public void valueChanged(ListSelectionEvent e) {
+			guiThemeList.addListSelectionListener((e) -> {
 					if (e.getValueIsAdjusting()) {
 						return;
 					}
@@ -220,8 +205,7 @@ public class OptionsGUI extends javax.swing.JFrame {
 					if (!val.equals(OptionsHandler.currentGUITheme.val())){
 						OptionsHandler.currentGUITheme.val(val);
 					}
-				}
-			});
+				});
 
 		}
 
@@ -364,7 +348,7 @@ public class OptionsGUI extends javax.swing.JFrame {
 					editorFontList.getSelectedValue()));
 		});
 
-		OptionsHandler.currentEditorFont.addValueListener((e) -> {
+		OptionsHandler.currentEditorFont.addObserver((o,v) -> {
 			String current = OptionsHandler.currentEditorFont.val().getFontName();
 			if (!current.equals(editorFontList.getSelectedValue())) {
 				editorFontList.setSelectedValue(current, true);
@@ -400,7 +384,7 @@ public class OptionsGUI extends javax.swing.JFrame {
 
 		});
 
-		OptionsHandler.currentEditorFont.addValueListener((e) -> {
+		OptionsHandler.currentEditorFont.addObserver((o,v) -> {
 			String current = Integer.toString(OptionsHandler.currentEditorFont.val().getSize());
 			if (!current.equals(editorFontList.getSelectedValue())) {
 				editorFontList.setSelectedValue(current, true);
@@ -534,7 +518,7 @@ public class OptionsGUI extends javax.swing.JFrame {
 
 		themedJLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 		themedJLabel8.setText("Update Time: " + OptionsHandler.GUIAutoUpdateRefreshTime.val() + " ms");
-		OptionsHandler.GUIAutoUpdateRefreshTime.addValueListener(vl -> {
+		OptionsHandler.GUIAutoUpdateRefreshTime.addObserver((o,v) -> {
 			themedJLabel8.setText("Update Time: " + OptionsHandler.GUIAutoUpdateRefreshTime.val() + " ms");
 		});
 

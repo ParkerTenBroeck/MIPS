@@ -11,11 +11,11 @@ package org.parker.mips.plugin;
  */
 public interface Plugin {
     
-    public void onLoad();
+    void onLoad();
     
-    public boolean onUnload();
+    boolean onUnload();
     
-    public void onEnable();
+    void onEnable();
     
-    public void onDissable();
+    void onDissable();
 }

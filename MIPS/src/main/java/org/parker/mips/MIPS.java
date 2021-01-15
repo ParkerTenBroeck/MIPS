@@ -5,11 +5,16 @@
  */
 package org.parker.mips;
 
-import java.io.File;
 import org.parker.mips.gui.MainGUI;
+import org.parker.mips.gui.OptionsGUI;
 import org.parker.mips.gui.theme.ThemeHandler;
-import static org.parker.mips.UpdateHandler.checkForUpdates;
 import org.parker.mips.plugin.PluginLoader;
+
+import java.io.File;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
+import static org.parker.mips.UpdateHandler.checkForUpdates;
 
 /**
  *
@@ -50,6 +55,11 @@ public class MIPS {
         PluginLoader.loadDefaultPlugins(); //loads all plugins internal and external
 
         checkForUpdates(); //checks for updates
+
+        for(int i = 0; i < 20; i ++){
+            new OptionsGUI();
+        }
+
     }
 
 }

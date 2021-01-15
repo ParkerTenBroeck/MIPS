@@ -6,43 +6,28 @@
 package org.parker.mips.gui;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import org.parker.mips.*;
 import org.parker.mips.compiler.ASMCompiler;
-import java.awt.Color;
-import java.awt.Component;
+import org.parker.mips.gui.editor.Editor;
+import org.parker.mips.gui.editor.EditorHandler;
+import org.parker.mips.gui.editor.rsyntax.FormattedTextEditor;
+import org.parker.mips.gui.theme.ThemeHandler;
+import org.parker.mips.plugin.PluginLoader;
+import org.parker.mips.plugin.syscall.SystemCallPlugin;
+import org.parker.mips.plugin.syscall.SystemCallPlugin.Node;
+import org.parker.mips.plugin.syscall.SystemCallPluginHandler;
+import org.parker.mips.processor.Memory;
+import org.parker.mips.processor.Processor;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import org.parker.mips.FileHandler;
-import org.parker.mips.Log;
-import org.parker.mips.MIPS;
-import org.parker.mips.plugin.syscall.SystemCallPlugin;
-import org.parker.mips.processor.Memory;
-import org.parker.mips.processor.Processor;
-import org.parker.mips.ResourceHandler;
-import org.parker.mips.UpdateHandler;
-import org.parker.mips.OptionsHandler;
-import org.parker.mips.gui.editor.Editor;
-import org.parker.mips.gui.editor.EditorHandler;
-import org.parker.mips.gui.editor.rsyntax.FormattedTextEditor;
-import org.parker.mips.gui.theme.ThemeHandler;
-import org.parker.mips.plugin.syscall.SystemCallPluginHandler;
-import org.parker.mips.plugin.PluginLoader;
-import org.parker.mips.plugin.syscall.SystemCallPlugin.Node;
 
 /**
  *
@@ -362,7 +347,7 @@ public class MainGUI extends javax.swing.JFrame {
 
     public static void refresh() {
         javax.swing.SwingUtilities.invokeLater(() -> {
-            RegisterGUI.updateVals();
+            register_GUI1.updateVals();
             InstructionMemoryGUI.refresh();
             InstructionsRan.setText(Long.toString(Processor.getInstructionsRan()));
         });
@@ -924,7 +909,7 @@ public class MainGUI extends javax.swing.JFrame {
 
     private void documentationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_documentationButtonActionPerformed
         try {
-            DesktopBrowser.openLinkInBrowser(ResourceHandler.DOCUMENTATION_PATH + FileHandler.FILE_SEPERATOR + "index.html");
+            DesktopBrowser.openLinkInBrowser(ResourceHandler.DOCUMENTATION_PATH + FileHandler.FILE_SEPARATOR + "index.html");
         } catch (Exception ex) {
         }
     }//GEN-LAST:event_documentationButtonActionPerformed

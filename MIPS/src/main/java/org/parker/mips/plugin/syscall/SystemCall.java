@@ -5,9 +5,10 @@
  */
 package org.parker.mips.plugin.syscall;
 
+import org.parker.mips.plugin.PluginLoader;
+
 import java.util.ArrayList;
 import java.util.Map;
-import org.parker.mips.plugin.PluginLoader;
 
 /**
  * systemCallNum must me a completely unique int between zero and 2^26 this

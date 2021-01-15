@@ -5,6 +5,8 @@
  */
 package org.parker.mips.plugin;
 
+import org.parker.mips.MIPS;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,7 +16,6 @@ import java.net.URLClassLoader;
 import java.util.Map;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
-import org.parker.mips.MIPS;
 
 /**
  *
@@ -41,7 +42,7 @@ public class PluginClassLoader extends URLClassLoader {
 
         //new DefaultSystemCalls();
         try {
-            Class<?> jarClass = null;
+            Class<?> jarClass;
             try {
                 if (file.getAbsolutePath().equals(new File(MIPS.JAR_PATH).getAbsolutePath())) {
                     jarClass = this.findClass(DESCRIPTION.MAIN);
@@ -52,7 +53,7 @@ public class PluginClassLoader extends URLClassLoader {
                 throw new InvalidPluginException("Cannot find main class '" + DESCRIPTION.MAIN + "'", ex);
             }
 
-            Class<? extends Plugin> pluginClass = null;
+            Class<? extends Plugin> pluginClass;
             try {
                 pluginClass = jarClass.asSubclass(Plugin.class);
             } catch (ClassCastException ex) {

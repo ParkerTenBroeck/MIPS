@@ -5,10 +5,11 @@
  */
 package org.parker.mips.compiler;
 
+import org.parker.mips.Log;
 import org.parker.mips.compiler.data.UserLine;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.parker.mips.Log;
 
 /**
  *

@@ -1,7 +1,9 @@
 package org.parker.mips.gui.theme;
 
+import com.formdev.flatlaf.json.Json;
+import com.formdev.flatlaf.util.StringUtils;
+
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -10,8 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.formdev.flatlaf.json.Json;
-import com.formdev.flatlaf.util.StringUtils;
 
 /**
  * @author Karl Tauber

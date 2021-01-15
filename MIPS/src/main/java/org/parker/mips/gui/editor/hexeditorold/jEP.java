@@ -1,12 +1,11 @@
 package org.parker.mips.gui.editor.hexeditorold;
 
+import javax.swing.*;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkEvent.EventType;
+import javax.swing.event.HyperlinkListener;
 import java.net.URL;
 import java.text.MessageFormat;
-import javax.swing.JEditorPane;
-import javax.swing.JScrollPane;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
-import javax.swing.event.HyperlinkEvent.EventType;
 
 class jEP extends JScrollPane implements HyperlinkListener {
 

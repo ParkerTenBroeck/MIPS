@@ -5,10 +5,10 @@
  */
 package org.parker.mips.plugin.syscall;
 
-import java.net.URL;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import org.parker.mips.processor.Processor;
+
+import javax.swing.*;
+import java.net.URL;
 
 /**
  *

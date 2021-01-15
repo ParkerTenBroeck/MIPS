@@ -5,16 +5,14 @@
  */
 package org.parker.mips.plugin.internal.syscall;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
+import org.parker.mips.plugin.syscall.SystemCallPluginFrame;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import javax.swing.JPanel;
-import org.parker.mips.plugin.syscall.SystemCallPluginFrame;
 
 /**
  *

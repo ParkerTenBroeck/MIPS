@@ -6,6 +6,7 @@
 package org.parker.mips.processor;
 
 import org.parker.mips.OptionsHandler;
+
 import static org.parker.mips.processor.Processor.logRunTimeError;
 
 /**
@@ -170,9 +171,7 @@ public class Memory {
             } else {
                 temp = new byte[memory.length * 2];
             }
-            for (int i = 0; i < memory.length; i++) {
-                temp[i] = memory[i];
-            }
+            System.arraycopy(memory, 0, temp, 0, memory.length);
             memory = temp;
         } else {
             logRunTimeError(message + " " + currentIndex);

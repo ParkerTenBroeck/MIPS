@@ -6,12 +6,10 @@
 package org.parker.mips;
 
 import com.formdev.flatlaf.FlatDarkLaf;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import java.awt.Font;
+import com.google.gson.*;
+import org.parker.mips.gui.theme.IJThemeInfo;
+
+import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.Writer;
@@ -19,8 +17,6 @@ import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.util.Map;
 import java.util.Set;
-
-import org.parker.mips.gui.theme.IJThemeInfo;
 
 /**
  *
@@ -75,7 +71,7 @@ public class OptionsHandler {
         if (name != null) {
             name = name.split("\\.")[0];
         }
-        readOptionsFromFile(ResourceHandler.USER_SAVED_CONFIG_PATH + FileHandler.FILE_SEPERATOR + name + "\\.json");
+        readOptionsFromFile(ResourceHandler.USER_SAVED_CONFIG_PATH + FileHandler.FILE_SEPARATOR + name + "\\.json");
     }
 
     public static void readOptionsFromCustomFile(File file) {
@@ -92,7 +88,7 @@ public class OptionsHandler {
         if (name != null) {
             name = name.split("\\.")[0];
         }
-        saveOptionsToFile(ResourceHandler.USER_SAVED_CONFIG_PATH + FileHandler.FILE_SEPERATOR + name + "\\.json");
+        saveOptionsToFile(ResourceHandler.USER_SAVED_CONFIG_PATH + FileHandler.FILE_SEPARATOR + name + "\\.json");
     }
 
     public static void saveOptionsToCustomFile(File file) {

@@ -5,14 +5,11 @@
  */
 package org.parker.mips.gui;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import javax.swing.JTable;
-import javax.swing.UIManager;
-import javax.swing.table.TableColumnModel;
 import org.parker.mips.processor.Registers;
+
+import javax.swing.*;
+import javax.swing.table.TableColumnModel;
+import java.awt.*;
 
 /**
  *
@@ -23,20 +20,17 @@ public class RegisterGUI extends javax.swing.JPanel {
     /**
      * Creates new form Registers
      */
+
+
+    private final int[] lastUpdatedVals;
+
     public RegisterGUI() {
+        lastUpdatedVals = new int[40];
+        for(int i = 0; i < lastUpdatedVals.length; i ++){
+            lastUpdatedVals[i] = -2;
+        }
         initComponents();
         setFont(this.getFont());
-//        lowHigh.setShowVerticalLines(true);
-//        lowHigh.setShowHorizontalLines(true);
-//lowHigh.setGridColor( false ? Color.red : UIManager.getColor( "Table.gridColor" ) );
-//        pc.setShowVerticalLines(true);
-//        pc.setShowHorizontalLines(true);
-//
-//        pc1.setShowVerticalLines(true);
-//        pc1.setShowHorizontalLines(true);
-//        
-//        registers.setShowVerticalLines(true);
-//        registers.setShowHorizontalLines(true);
     }
 
     @Override
@@ -82,17 +76,40 @@ public class RegisterGUI extends javax.swing.JPanel {
         colModel.getColumn(3).setPreferredWidth(fourth);
     }
 
-    public static void updateVals() {
+    public void updateVals() {
+        int currentRegisterValue;
+
         for (int i = 1; i <= 31; i++) {
-            setRegisterRow(registers, i - 1, Registers.getRegister(i));
+            currentRegisterValue = Registers.getRegister(i);
+            if(lastUpdatedVals[i] != currentRegisterValue){
+                setRegisterRow(registers, i - 1, currentRegisterValue);
+                lastUpdatedVals[i] = currentRegisterValue;
+            }
+        }
+        currentRegisterValue = Registers.getPc();
+        if(lastUpdatedVals[32] != currentRegisterValue){
+            setRegisterRow(pc, 0, currentRegisterValue);
+            lastUpdatedVals[32] = currentRegisterValue;
         }
 
-        setRegisterRow(pc, 0, Registers.getPc());
+        boolean updatedHighLow = false;
+        currentRegisterValue = Registers.getLow();
+        if(lastUpdatedVals[33] != currentRegisterValue){
+            setRegisterRow(lowHigh, 0, currentRegisterValue);
+            lastUpdatedVals[33] = currentRegisterValue;
+            updatedHighLow = true;
+        }
 
-        setRegisterRow(lowHigh, 0, Registers.getLow());
-        setRegisterRow(lowHigh, 1, Registers.getHigh());
-        lowHigh.setValueAt(((long) Registers.getHigh() << 32) | (long) Registers.getLow(),
-                2, 3);
+        currentRegisterValue = Registers.getHigh();
+        if(lastUpdatedVals[34] != currentRegisterValue){
+            setRegisterRow(lowHigh, 1, currentRegisterValue);
+            lastUpdatedVals[34] = currentRegisterValue;
+            updatedHighLow = true;
+        }
+        if(updatedHighLow){
+            lowHigh.setValueAt(((long) Registers.getHigh() << 32) | (long) Registers.getLow(),
+                    2, 3);
+        }
     }
 
     private static void setRegisterRow(JTable table, int row, int val) {
@@ -102,14 +119,6 @@ public class RegisterGUI extends javax.swing.JPanel {
         table.setValueAt(bin, row, 1);
         table.setValueAt(hex, row, 2);
         table.setValueAt(val, row, 3);
-    }
-
-    public static String intToHexString(int val) {
-        return String.format("%8s", Integer.toHexString(val)).replaceAll(" ", "0");
-    }
-
-    public static String intToBinString(int val) {
-        return String.format("%32s", Integer.toBinaryString(val)).replaceAll(" ", "0");
     }
 
     /**
@@ -255,8 +264,8 @@ public class RegisterGUI extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel2;
-    private org.parker.mips.gui.theme.lookandfeel.ModernScrollPane jScrollPane1;
+    private static javax.swing.JPanel jPanel2;
+    private static org.parker.mips.gui.theme.lookandfeel.ModernScrollPane jScrollPane1;
     private static javax.swing.JTable lowHigh;
     private static javax.swing.JTable pc;
     private static javax.swing.JTable pc1;

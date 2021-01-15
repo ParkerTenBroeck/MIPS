@@ -5,9 +5,10 @@
  */
 package org.parker.mips.gui.editor;
 
+import org.parker.mips.gui.EditorTabbedPane;
+
 import java.io.File;
 import java.util.ArrayList;
-import org.parker.mips.gui.EditorTabbedPane;
 
 /**
  *

@@ -5,22 +5,17 @@
  */
 package org.parker.mips;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import org.parker.mips.gui.MainGUI;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
+import java.io.*;
 import java.util.Enumeration;
 import java.util.Objects;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileSystemView;
-import static org.parker.mips.FileHandler.FILE_SEPERATOR;
-import org.parker.mips.gui.MainGUI;
+
+import static org.parker.mips.FileHandler.FILE_SEPARATOR;
 
 /**
  *
@@ -28,28 +23,28 @@ import org.parker.mips.gui.MainGUI;
  */
 public class ResourceHandler {
     //public static final String documentsPath = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
-    public static final String DEFAULT_PATH = FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + FILE_SEPERATOR + "MIPS";
+    public static final String DEFAULT_PATH = FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + FILE_SEPARATOR + "MIPS";
 
-    public static final String DEFAULT_PROJECTS_PATH = DEFAULT_PATH + FILE_SEPERATOR + "Projects";
-    public static final String DOCUMENTATION_PATH = DEFAULT_PATH + FILE_SEPERATOR + "Documentation";
-    public static final String EXAMPLES_PATH = DEFAULT_PATH + FILE_SEPERATOR + "Examples";
-    public static final String COMPILER_PATH = DEFAULT_PATH + FILE_SEPERATOR + "Compiler";
-    public static final String SYS_CALLS_PLUGIN_PATH = DEFAULT_PATH + FILE_SEPERATOR + "SystemCallPlugins";
+    public static final String DEFAULT_PROJECTS_PATH = DEFAULT_PATH + FILE_SEPARATOR + "Projects";
+    public static final String DOCUMENTATION_PATH = DEFAULT_PATH + FILE_SEPARATOR + "Documentation";
+    public static final String EXAMPLES_PATH = DEFAULT_PATH + FILE_SEPARATOR + "Examples";
+    public static final String COMPILER_PATH = DEFAULT_PATH + FILE_SEPARATOR + "Compiler";
+    public static final String SYS_CALLS_PLUGIN_PATH = DEFAULT_PATH + FILE_SEPARATOR + "SystemCallPlugins";
 
     //Config and related resources
-    public static final String CONFIG_PATH = DEFAULT_PATH + FILE_SEPERATOR + "Config";
-    public static final String USER_SAVED_CONFIG_PATH = CONFIG_PATH + FILE_SEPERATOR + "UserSavedConfig";
-    public static final String DEFAULT_OPTIONS_FILE = ResourceHandler.CONFIG_PATH + FILE_SEPERATOR + "Options.json";
+    public static final String CONFIG_PATH = DEFAULT_PATH + FILE_SEPARATOR + "Config";
+    public static final String USER_SAVED_CONFIG_PATH = CONFIG_PATH + FILE_SEPARATOR + "UserSavedConfig";
+    public static final String DEFAULT_OPTIONS_FILE = ResourceHandler.CONFIG_PATH + FILE_SEPARATOR + "Options.json";
 
     //Themes and realted resources
-    public static final String THEME_PATH = DEFAULT_PATH + FILE_SEPERATOR + "Themes";
-    public static final String GUI_THEMES = THEME_PATH + FILE_SEPERATOR + "GUIThemes";
-    public static final String EDITOR_THEMES = THEME_PATH + FILE_SEPERATOR + "EditorThemes";
+    public static final String THEME_PATH = DEFAULT_PATH + FILE_SEPARATOR + "Themes";
+    public static final String GUI_THEMES = THEME_PATH + FILE_SEPARATOR + "GUIThemes";
+    public static final String EDITOR_THEMES = THEME_PATH + FILE_SEPARATOR + "EditorThemes";
 
     //Header and related resources
-    public static final String STANDARD_HEADER_PATH = DEFAULT_PATH + FILE_SEPERATOR + "StandardHeaderFiles";
-    public static final String SYS_CALL_DEF_HEADER_FILE = ResourceHandler.STANDARD_HEADER_PATH + FILE_SEPERATOR + "syscalldef.asm";
-    public static final String REG_DEF_HEADER_FILE = ResourceHandler.STANDARD_HEADER_PATH + FILE_SEPERATOR + "regdef.asm";
+    public static final String STANDARD_HEADER_PATH = DEFAULT_PATH + FILE_SEPARATOR + "StandardHeaderFiles";
+    public static final String SYS_CALL_DEF_HEADER_FILE = ResourceHandler.STANDARD_HEADER_PATH + FILE_SEPARATOR + "syscalldef.asm";
+    public static final String REG_DEF_HEADER_FILE = ResourceHandler.STANDARD_HEADER_PATH + FILE_SEPARATOR + "regdef.asm";
 
     public static boolean extractResources() {
 
@@ -132,7 +127,7 @@ public class ResourceHandler {
                         continue;
                     }
                     if (entry.getName().startsWith(jarPath)) {
-                        File toWrite = new File(destPath + FileHandler.FILE_SEPERATOR + entry.getName().replaceFirst(jarPath, ""));
+                        File toWrite = new File(destPath + FileHandler.FILE_SEPARATOR + entry.getName().replaceFirst(jarPath, ""));
                         //Log.logMessage(toWrite.getAbsolutePath());
                         //System.out.println(toWrite.getAbsoluteFile() + " " + entry.getName());
                         if (entry.isDirectory()) {

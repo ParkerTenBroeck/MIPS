@@ -1,7 +1,7 @@
 package org.parker.mips.gui.editor.hexeditorold;
 
-import java.io.File;
 import javax.swing.filechooser.FileFilter;
+import java.io.File;
 
 class filterRW extends FileFilter {
 

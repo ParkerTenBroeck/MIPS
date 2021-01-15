@@ -1,17 +1,12 @@
 package org.parker.mips.gui.editor.hexeditorold;
 
-import java.awt.BorderLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.Enumeration;
 import java.util.Properties;
-import javax.swing.JApplet;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRootPane;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
 public class UI extends JApplet {
 

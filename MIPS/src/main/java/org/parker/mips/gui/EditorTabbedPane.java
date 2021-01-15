@@ -5,19 +5,19 @@
  */
 package org.parker.mips.gui;
 
-import static com.formdev.flatlaf.FlatClientProperties.TABBED_PANE_TAB_CLOSABLE;
-import static com.formdev.flatlaf.FlatClientProperties.TABBED_PANE_TAB_CLOSE_CALLBACK;
-import java.awt.AWTEvent;
-import java.awt.EventQueue;
-import java.awt.event.MouseEvent;
-import java.util.function.BiConsumer;
-import javax.swing.JLabel;
-import javax.swing.JTabbedPane;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import org.parker.mips.gui.editor.Editor;
 import org.parker.mips.gui.editor.EditorHandler;
 import org.parker.mips.gui.editor.rsyntax.FormattedTextEditor;
+
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.util.function.BiConsumer;
+
+import static com.formdev.flatlaf.FlatClientProperties.TABBED_PANE_TAB_CLOSABLE;
+import static com.formdev.flatlaf.FlatClientProperties.TABBED_PANE_TAB_CLOSE_CALLBACK;
 
 /**
  *

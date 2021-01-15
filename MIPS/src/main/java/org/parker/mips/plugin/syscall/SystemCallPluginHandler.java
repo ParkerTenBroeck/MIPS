@@ -5,14 +5,14 @@
  */
 package org.parker.mips.plugin.syscall;
 
+import org.parker.mips.Log;
+import org.parker.mips.ResourceHandler;
+import org.parker.mips.gui.MainGUI;
+
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import org.parker.mips.gui.MainGUI;
-import org.parker.mips.Log;
-import static org.parker.mips.processor.Processor.logRunTimeError;
-import static org.parker.mips.processor.Processor.logRunTimeMessage;
-import static org.parker.mips.processor.Processor.logRunTimeWarning;
-import org.parker.mips.ResourceHandler;
+
+import static org.parker.mips.processor.Processor.*;
 
 /**
  *

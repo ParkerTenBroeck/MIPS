@@ -5,19 +5,18 @@
  */
 package org.parker.mips.gui.editor;
 
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import org.parker.mips.FileHandler;
 import org.parker.mips.ResourceHandler;
 import org.parker.mips.gui.EditorTabbedPane;
 import org.parker.mips.gui.MainGUI;
 import org.parker.mips.gui.editor.rsyntax.FormattedTextEditor;
+
+import javax.swing.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 /**
  *

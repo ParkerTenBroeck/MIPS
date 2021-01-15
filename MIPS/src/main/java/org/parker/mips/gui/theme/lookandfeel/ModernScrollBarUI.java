@@ -5,9 +5,9 @@
  */
 package org.parker.mips.gui.theme.lookandfeel;
 
-import java.awt.Color;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
+import java.awt.*;
 
 /**
  *

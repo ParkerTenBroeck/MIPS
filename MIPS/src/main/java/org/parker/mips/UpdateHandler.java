@@ -7,6 +7,10 @@ package org.parker.mips;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.parker.mips.gui.MainGUI;
+import org.parker.mips.gui.editor.EditorHandler;
+
+import javax.swing.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -15,12 +19,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import org.parker.mips.gui.MainGUI;
-import static org.parker.mips.gui.MainGUI.createWarningQuestion;
-import org.parker.mips.gui.editor.EditorHandler;
 
 /**
  *
@@ -112,7 +110,7 @@ public class UpdateHandler {
             }
         }
 
-        String[] run = {"java", "-jar", ResourceHandler.DEFAULT_PATH + FileHandler.FILE_SEPERATOR + "updater.jar", MIPS.JAR_PATH, latestVersionLink};
+        String[] run = {"java", "-jar", ResourceHandler.DEFAULT_PATH + FileHandler.FILE_SEPARATOR + "updater.jar", MIPS.JAR_PATH, latestVersionLink};
         try {
             Runtime.getRuntime().exec(run);
         } catch (Exception ex) {

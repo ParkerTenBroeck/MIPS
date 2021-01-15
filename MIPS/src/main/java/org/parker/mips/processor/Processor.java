@@ -5,10 +5,10 @@
  */
 package org.parker.mips.processor;
 
-import org.parker.mips.FileHandler;
-import org.parker.mips.gui.MainGUI;
 import org.parker.mips.Log;
 import org.parker.mips.OptionsHandler;
+import org.parker.mips.gui.MainGUI;
+
 import static org.parker.mips.processor.InstructionDecode.runInstruction;
 import static org.parker.mips.processor.Memory.getWord;
 import static org.parker.mips.processor.Registers.getPc;
@@ -88,17 +88,15 @@ public class Processor implements Runnable {
     }
 
     public static void runSingleStep() {
-        if (isRunning == true) {
+        if (isRunning) {
             return;
         }
 
         isRunning = true;
-        Thread thread = new Thread() {
-            public void run() {
-                singleStep();
-                isRunning = false;
-            }
-        };
+        Thread thread = new Thread(() -> {
+            singleStep();
+            isRunning = false;
+        });
         thread.start();
     }
 

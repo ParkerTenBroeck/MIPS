@@ -5,6 +5,16 @@
  */
 package org.parker.mips.plugin.syscall;
 
+import org.parker.mips.FileHandler;
+import org.parker.mips.Log;
+import org.parker.mips.gui.MainGUI;
+import org.parker.mips.gui.editor.rsyntax.FormattedTextEditor;
+import org.parker.mips.plugin.PluginBase;
+import org.parker.mips.plugin.PluginClassLoader;
+import org.parker.mips.processor.Memory;
+import org.parker.mips.processor.Processor;
+import org.parker.mips.processor.Registers;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.InputStream;
@@ -12,16 +22,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import org.parker.mips.FileHandler;
-import org.parker.mips.gui.MainGUI;
-import org.parker.mips.gui.editor.rsyntax.FormattedTextEditor;
-import org.parker.mips.Log;
-import org.parker.mips.compiler.ASMCompiler;
-import org.parker.mips.processor.Memory;
-import org.parker.mips.processor.Processor;
-import org.parker.mips.processor.Registers;
-import org.parker.mips.plugin.PluginBase;
-import org.parker.mips.plugin.PluginClassLoader;
 
 /**
  *
