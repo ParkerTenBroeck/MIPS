@@ -5,18 +5,23 @@
  */
 package org.parker.mips.compiler.preprocessor.statements;
 
+import org.parker.mips.compiler.CompilationLevel;
+import org.parker.mips.compiler.CompilationLogger;
 import org.parker.mips.compiler.PreProcessor;
 import org.parker.mips.compiler.data.AbstractArgumentList;
 import org.parker.mips.compiler.data.UserLine;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.logging.Logger;
 
 /**
  *
  * @author parke
  */
 public class DEFINLINE extends Statement {
+
+    private static final CompilationLogger LOGGER = new CompilationLogger(DEFINLINE.class.getName());
 
     private int sizeOfStatement;
     private ArrayList<UserLine> inlineUserLines = new ArrayList<UserLine>();
@@ -39,7 +44,7 @@ public class DEFINLINE extends Statement {
         args = Arrays.copyOf(aal.args, aal.args.length);
         for (int i = 0; i < args.length; i++) {
             if (args[i].trim().contains(" ")) {
-                PreProcessor.logPreProcessorError("Argument Place holders cannot contain spaces", input.realLineNumber);
+                LOGGER.log(CompilationLevel.COMPILATION_ERROR, "Argument Place holders cannot contain spaces", input);
             }
         }
 
@@ -63,7 +68,7 @@ public class DEFINLINE extends Statement {
                 inlineUserLines.add(file.get(i));
             }
             if (i == file.size() - 1) {
-                PreProcessor.logPreProcessorError("Reached end of file #definline never terminated use #endinline", file.get(i).realLineNumber);
+                LOGGER.log(CompilationLevel.COMPILATION_ERROR,"Reached end of file #definline never terminated use #endinline", file.get(i));
             }
         }
     }
@@ -79,12 +84,12 @@ public class DEFINLINE extends Statement {
 
             for (int i = 0; i < args.length; i++) {
                 if (args[i].trim().contains(" ")) {
-                    PreProcessor.logPreProcessorError("Arguments cannot contain spaces", input.realLineNumber);
+                    LOGGER.log(CompilationLevel.COMPILATION_ERROR,"Arguments cannot contain spaces", input);
                 }
             }
 
             if (inputAal.args.length != this.args.length) {
-                PreProcessor.logPreProcessorError("number of arguments do not match", input.realLineNumber);
+                LOGGER.log(CompilationLevel.COMPILATION_ERROR,"number of arguments do not match", input);
             }
 
             for (int i = 0; i < inlineUserLines.size(); i++) {

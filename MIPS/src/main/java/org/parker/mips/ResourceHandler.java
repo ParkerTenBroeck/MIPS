@@ -14,8 +14,10 @@ import java.util.Enumeration;
 import java.util.Objects;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import static org.parker.mips.FileHandler.FILE_SEPARATOR;
+import static org.parker.mips.FileUtils.FILE_SEPARATOR;
 
 /**
  *
@@ -46,6 +48,12 @@ public class ResourceHandler {
     public static final String SYS_CALL_DEF_HEADER_FILE = ResourceHandler.STANDARD_HEADER_PATH + FILE_SEPARATOR + "syscalldef.asm";
     public static final String REG_DEF_HEADER_FILE = ResourceHandler.STANDARD_HEADER_PATH + FILE_SEPARATOR + "regdef.asm";
 
+    //Logging
+    public static final String LOG_PATH = DEFAULT_PATH + FILE_SEPARATOR + "Log";
+    public static final String LASTES_LOG = LOG_PATH + FILE_SEPARATOR + "latest.log";
+
+    private final static Logger LOGGER = Logger.getLogger(ResourceHandler.class.getName());
+
     public static boolean extractResources() {
 
         boolean temp = true;
@@ -54,6 +62,7 @@ public class ResourceHandler {
         temp &= createDirectory(DEFAULT_PROJECTS_PATH);
         temp &= createDirectory(DOCUMENTATION_PATH);
         temp &= createDirectory(EXAMPLES_PATH);
+        temp &= createDirectory(LOG_PATH);
 
         //Config
         temp &= createDirectory(CONFIG_PATH);
@@ -73,9 +82,9 @@ public class ResourceHandler {
         temp &= extractResourceToFolder(THEME_PATH, "Themes");
 
         if (temp) {
-            logResourceHandlerSystemMessage("Extracted all resourced with 0 errors" + "\n\n");
+            LOGGER.log(Level.CONFIG, "Extracted all resourced with 0 errors");
         } else {
-            logResourceHandlerError("Extracted resources with errors" + "\n\n");
+            LOGGER.log(Level.WARNING, "Extracted resources with errors");
         }
         return temp;
     }
@@ -95,7 +104,7 @@ public class ResourceHandler {
     private static boolean createDirectory(String path) {
         File dir = new File(path);
         if (!dir.exists()) {
-            logResourceHandlerSystemMessage("Created Directory: " + path);
+            LOGGER.log(Level.CONFIG, "Created Directory: " + path);
             return dir.mkdir();
         }
         return true;
@@ -103,7 +112,7 @@ public class ResourceHandler {
 
     private static boolean extractResourceToFolder(String destPath, String jarPath) {
 
-        logResourceHandlerSystemMessage("Started extraction of Resources: " + jarPath + " to Dest: " + destPath);
+        LOGGER.log(Level.CONFIG, "Started extraction of Resources: " + jarPath + " to Dest: " + destPath);
 
         String protocol = ResourceHandler.class.getResource("").getProtocol();
         if (Objects.equals(protocol, "jar")) { //run in jar
@@ -123,12 +132,13 @@ public class ResourceHandler {
                     try {
                         entry = enums.nextElement();
                     } catch (Exception e) {
-                        Log.logError(Log.getFullExceptionMessage(e));
+                        LOGGER.log(Level.SEVERE,"failed to get the next element", e);
+                        //LogFrame.logError(LogFrame.getFullExceptionMessage(e));
                         continue;
                     }
                     if (entry.getName().startsWith(jarPath)) {
-                        File toWrite = new File(destPath + FileHandler.FILE_SEPARATOR + entry.getName().replaceFirst(jarPath, ""));
-                        //Log.logMessage(toWrite.getAbsolutePath());
+                        File toWrite = new File(destPath + FileUtils.FILE_SEPARATOR + entry.getName().replaceFirst(jarPath, ""));
+                        //LogP.logMessage(toWrite.getAbsolutePath());
                         //System.out.println(toWrite.getAbsoluteFile() + " " + entry.getName());
                         if (entry.isDirectory()) {
                             if (!toWrite.exists()) {
@@ -144,7 +154,7 @@ public class ResourceHandler {
                             }
                         }
                         //System.out.println("bruh");
-                        //Log.logError(toWrite.getAbsolutePath());
+                        //LogP.logError(toWrite.getAbsolutePath());
 
                         InputStream in = new BufferedInputStream(jarFile.getInputStream(entry));
                         OutputStream out = new BufferedOutputStream(new FileOutputStream(toWrite));
@@ -163,18 +173,18 @@ public class ResourceHandler {
 
                         //System.out.println(entry.getName() + "wrote to " + toWrite.getAbsolutePath());
                     }
-                    //Log.logWarning(entry.getName());
+                    //LogP.logWarning(entry.getName());
 
                 }
             } catch (Exception ex) {
                 //System.out.println(ex);
-                logResourceHandlerWarning(Log.getFullExceptionMessage(ex));
+                LOGGER.log(Level.FINEST,null, ex);
                 //Logger.getLogger(ResourceHandler.class.getName()).log(Level.SEVERE, null, ex);
-                //Log.logMessage("no");
+                //LogP.logMessage("no");
                 return false;
 
             }
-            //Log.logMessage("yes");
+            //LogP.logMessage("yes");
             return true;
 
         } else if (Objects.equals(protocol, "file")) { //run in ide
@@ -185,7 +195,7 @@ public class ResourceHandler {
                 File dest = new File(destPath);
                 copyFolderReplaceOld(source, dest);
             } catch (Exception e) {
-                logResourceHandlerError("Cannot copy resources to Documents folder. Wrong path defined?\n" + Log.getFullExceptionMessage(e));
+                LOGGER.log(Level.SEVERE, "Cannot copy resources to Documents folder. Wrong path defined?",e);
                 return false;
             }
             return true;
@@ -218,7 +228,7 @@ public class ResourceHandler {
                     return;
                 }
             }
-            logResourceHandlerSystemMessage("ReWritting " + destination.getAbsolutePath());
+            LOGGER.log(Level.CONFIG, "ReWritting " + destination.getAbsolutePath());
             try {
                 in = new FileInputStream(source);
                 out = new FileOutputStream(destination);
@@ -248,18 +258,6 @@ public class ResourceHandler {
                 destination.setLastModified(source.lastModified());
             }
         }
-    }
-
-    private static void logResourceHandlerError(String message) {
-        Log.logError("[Resource Handler] " + message);
-    }
-
-    private static void logResourceHandlerWarning(String message) {
-        Log.logWarning("[Resource Handler] " + message);
-    }
-
-    private static void logResourceHandlerSystemMessage(String message) {
-        Log.logSystemMessage("[Resource Handler] " + message);
     }
 
 }

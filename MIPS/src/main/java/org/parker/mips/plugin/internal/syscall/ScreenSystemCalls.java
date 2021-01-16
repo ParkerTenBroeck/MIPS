@@ -88,17 +88,9 @@ public class ScreenSystemCalls extends SystemCallPlugin {
         //nothing
     }
 
-//    @Override
-//    public NamedActionListener[] getAllSystemCallFrameNamedActionListeners() {
-//        return new NamedActionListener[]{new NamedActionListener("Screen", (ae) -> {
-//            this.screen.setVisible(true);
-//            this.screen.requestFocus();
-//        })};
-//    }
     @Override
-    public boolean onUnload() {
-        logSystemCallPluginError("Cannot Unload Plugin as its Internal");
-        return false;
+    public void onUnload() {
+        throw new UnloadInternalSystemCallException();
     }
 
 }

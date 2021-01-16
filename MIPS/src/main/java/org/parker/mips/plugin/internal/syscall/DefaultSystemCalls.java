@@ -8,6 +8,8 @@ package org.parker.mips.plugin.internal.syscall;
 import org.parker.mips.OptionsHandler;
 import org.parker.mips.plugin.syscall.SystemCallPlugin;
 
+import java.util.logging.Level;
+
 /**
  *
  * @author parke
@@ -24,7 +26,6 @@ public class DefaultSystemCalls extends SystemCallPlugin {
                 } else {
                     stopProcessor();
                 }
-                logRunTimeSystemCallMessage("Halted Processor");
             }
         });
         registerSystemCall(new PRSystemCall("SYSTEM_RANDOM_NUM") {
@@ -80,9 +81,10 @@ public class DefaultSystemCalls extends SystemCallPlugin {
     }
 
     @Override
-    public boolean onUnload() {
-        logSystemCallPluginError("Cannot Unload Plugin as its Internal");
-        return false;
+    public void onUnload() {
+        throw new UnloadInternalSystemCallException();
+        //LOGGER.log(Level.SEVERE, "Cannot Unload Plugin as its Internal");
+        //return false;
     }
 
 }

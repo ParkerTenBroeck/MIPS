@@ -16,33 +16,31 @@ import java.nio.ByteBuffer;
  */
 public class StringToOpcode {
 
-    private static int currentOpCodeLine;
+    //private static int currentOpCodeLine;
+    private static UserLine currentLine;
     private static int currentByteIndex;
-    
-    
+
     public static final String[] INSTRUCTIONS = new String[]{"add", "addu", "addi", "addiu", "and", "andi", "div", "divu", "mult", "multu", "nor", "or", "ori", "sll", "sllv", "sra", "srav", "srl", "srlv", "sub", "subu", "xor", "xori", "lhi", "llo", "slt", "sltu", "slti", "sltiu", "beq", "bgtz", "ble", "bne", "j", "jal", "jalr", "jr", "lb", "lbu", "lh", "lhu", "lw", "sb", "sh", "sw", "mfhi", "mflo", "mthi", "mtlo", "trap"};
 
-    public static byte[] stringToOpcode(CompileTimeUserLine ctul) {
+    public static byte[] stringToOpcode(CompileTimeUserLine ctul) throws InvalidOpCodeException, InvalidArgumentsException {
 
         String instruction = ctul.ul.line;
-        currentOpCodeLine = ctul.ul.realLineNumber;
+        currentLine = ctul.ul;
         currentByteIndex = ctul.startingByteAddress;
 
         String opCodeString = "";
         String[] parameter = null;
 
         if (instruction == null || instruction.equals("")) {
-            ASMCompiler.OpCodeError("instruction null", ctul.ul.realLineNumber);
+            throw new InvalidOpCodeException("Instruction null?", ctul.ul);
         } else {
             opCodeString = instruction.split(" ")[0];
             
             if(opCodeString.length() == -1 || instruction.length() == -1){
-                ASMCompiler.OpCodeError("opCode/instruction Length is -1? invalid opCode / character", ctul.ul.realLineNumber);
-                return null;
+                throw new InvalidOpCodeException( "opCode/instruction Length is -1? invalid opCode / character", ctul.ul);
             }
             if(opCodeString.length() == instruction.length()){
-                ASMCompiler.OpCodeError("opCode is same length as instruction? invalid character or no parameters given", ctul.ul.realLineNumber);
-                return null;
+                throw new InvalidOpCodeException("opCode is same length as instruction? invalid character or no parameters given", ctul.ul);
             }
 
             if (instruction.endsWith(")")) {
@@ -53,10 +51,9 @@ public class StringToOpcode {
             opCodeString = opCodeString.trim();
         }
         if (getNumberOfArguments(new UserLine(opCodeString, ctul.ul.realLineNumber)) != parameter.length) {
-            ASMCompiler.OpCodeError("Wrong number of arguments used for (" + opCodeString + ") needed "
+            throw new org.parker.mips.compiler.InvalidArgumentsException("Wrong number of arguments used for (" + opCodeString + ") needed "
                     + getNumberOfArguments(new UserLine(opCodeString, ctul.ul.realLineNumber))
-                    + " found " + parameter.length, currentOpCodeLine);
-            return new byte[0];
+                    + " found " + parameter.length, currentLine);
         }
 
         switch (opCodeString) {
@@ -376,8 +373,7 @@ public class StringToOpcode {
                 return jumpEncoding(0B011010, decodeImmediateValue(parameter[0]));
 
             default:
-                ASMCompiler.OpCodeError("Invalid opcode", ctul.ul.realLineNumber);
-                return new byte[0];
+                throw new InvalidOpCodeException(ctul.ul);
         }
         //return -1;
     }
@@ -413,28 +409,26 @@ public class StringToOpcode {
         return ByteBuffer.allocate(4).putInt(temp).array();
     }
 
-    private static int decodeRegister(String parameter) {
+    private static int decodeRegister(String parameter) throws InvalidArgumentsException {
         if (!parameter.contains("$")) {
-            ASMCompiler.ArgumentError("Invalid register", currentOpCodeLine);
-            return 0;
+            throw new org.parker.mips.compiler.InvalidArgumentsException("Invalid register does not contain $", currentLine);
         }
         try {
             return ASMCompiler.parseInt(parameter.replace("$", ""));
         } catch (Exception e) {
-            ASMCompiler.ArgumentError("Invalid register number", currentOpCodeLine);
+            throw new org.parker.mips.compiler.InvalidArgumentsException("Invalid register number", currentLine, e);
+            //ASMCompiler.ArgumentError("Invalid register number", currentOpCodeLine);
         }
-        return 0;
     }
 
-    private static int decodeImmediateValue(String parameter) {
+    private static int decodeImmediateValue(String parameter) throws InvalidArgumentsException {
         try {
             return ASMCompiler.parseInt(parameter);
         } catch (Exception e) {
 
-            int num = ASMCompiler.getByteIndexOfMemoryLable(parameter.trim(), currentOpCodeLine);
+            int num = ASMCompiler.getByteIndexOfMemoryLable(parameter.trim(), currentLine.realLineNumber);
             if (num == -1) {
-                ASMCompiler.ArgumentError("Invalid immediate value", currentOpCodeLine);
-                return 0;
+                throw new org.parker.mips.compiler.InvalidArgumentsException("Invalid register number", currentLine, e);
             }
             return num;
         }
@@ -448,10 +442,10 @@ public class StringToOpcode {
         } catch (Exception e) {
             
         }
-        return ((ASMCompiler.getByteIndexOfMemoryLable(parameter.trim(), currentOpCodeLine) - currentByteIndex) >> 2) - 1;
+        return ((ASMCompiler.getByteIndexOfMemoryLable(parameter.trim(), currentLine.realLineNumber) - currentByteIndex) >> 2) - 1;
     }
 
-    private static int decodeMemoryOpPointerAddress(String parameter) {
+    private static int decodeMemoryOpPointerAddress(String parameter) throws InvalidArgumentsException {
 
         try {
             int temp = ASMCompiler.parseInt(parameter);
@@ -461,27 +455,25 @@ public class StringToOpcode {
         }
 
         try {
-            return (ASMCompiler.getByteIndexOfMemoryLable(parameter, currentOpCodeLine));
+            return (ASMCompiler.getByteIndexOfMemoryLable(parameter, currentLine.realLineNumber));
         } catch (Exception e) {
-            ASMCompiler.ArgumentError("Invalid Memory Pointer", currentOpCodeLine);
+            throw new org.parker.mips.compiler.InvalidArgumentsException("Invalid Memory Pointer", currentLine, e);
         }
-        return 0;
     }
 
-    private static int decodeMemoryOpRegister(String parameter) {
+    private static int decodeMemoryOpRegister(String parameter) throws InvalidArgumentsException {
         try {
             return decodeRegister(parameter);
         } catch (Exception e) {
-            ASMCompiler.ArgumentError("Brackets not closed or Invalid Register", currentOpCodeLine);
+            throw new InvalidArgumentsException("Brackets not closed or Invalid Register", currentLine, e);
         }
-        return 0;
     }
 
     public static int getInstructionSize(UserLine ul) { //to be implemented
         return 4;
     }
 
-    public static int getNumberOfArguments(UserLine ul) {
+    public static int getNumberOfArguments(UserLine ul) throws InvalidOpCodeException {
         switch (ul.line) {
 
             //arithmetic and logical instructions
@@ -642,8 +634,7 @@ public class StringToOpcode {
                 return 1;
 
             default:
-                ASMCompiler.OpCodeError("Invalid opcode", ul.realLineNumber);
-                return 0;
+                throw new InvalidOpCodeException(ul);
         }
     }
 }

@@ -8,10 +8,7 @@ package org.parker.mips;
 import org.parker.mips.gui.MainGUI;
 
 import javax.swing.*;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,58 +21,72 @@ import java.util.logging.Logger;
  *
  * @author parke
  */
-public class FileHandler {
+public class FileUtils {
 
     public static final char FILE_SEPARATOR = File.separatorChar;
     public static final char EXTENSION_SEPARATOR = '.';
     //platform spesific
+    @Deprecated
     private static final char UNIX_SEPARATOR = '/';
+    @Deprecated
     private static final char WINDOWS_SEPARATOR = '\\';
 
+    private final static Logger LOGGER = Logger.getLogger(FileUtils.class.getName());
 
-    public static boolean saveStringToFile(File file, String string) {
+
+    public static void saveStringToFileSafe(File file, String string) {
         if (file == null) {
-            return true;
+            return;
         }
         file.delete();
-
+        FileWriter f2 = null;
         try {
-            FileWriter f2 = new FileWriter(file, false);
+            f2 = new FileWriter(file, false);
             f2.write(string);
             f2.close();
-            return true;
+            LOGGER.log(Level.FINE, "Saved file to: " + file.getAbsolutePath());
         } catch (Exception e) {
-            logFileHandlerError("unable to write ASM File: \n" + Log.getFullExceptionMessage(e));
-            return false;
+            LOGGER.log(Level.SEVERE, "unable to write String to File: " + ((file!= null) ? "" : file.getAbsolutePath()), e);
+        }finally {
+            try {
+                f2.flush();
+            }catch(Exception e){
+
+            }
+            try {
+                f2.close();
+            }catch(Exception e){
+
+            }
         }
 
     }
 
-    public static byte[] loadFileAsByteArray(File file) {
+    public static byte[] loadFileAsByteArraySafe(File file) {
         try {
             Path path = file.toPath();
             return Files.readAllBytes(path);
         } catch (Exception e) {
             if (file != null) {
-                logFileHandlerError("Failed to load Binary File: " + file.getAbsoluteFile() + " \n" + Log.getFullExceptionMessage(e));
+                LOGGER.log(Level.SEVERE,"Failed to load Binary File: " +((file!= null) ? "" : file.getAbsolutePath()), e);
             } else {
-                logFileHandlerError("Failed to load Binary File: \n" + Log.getFullExceptionMessage(e));
+                LOGGER.log(Level.SEVERE,"Failed to load Binary File: " + ((file!= null) ? "" : file.getAbsolutePath()), e);
             }
             return new byte[]{};
         }
     }
 
-    public static boolean saveByteArrayToFile(byte[] byteArray, File file) {
+    public static boolean saveByteArrayToFileSafe(byte[] byteArray, File file) {
         try {
             if (!file.exists()) {
                 file.createNewFile();
             }
             Path path = file.toPath();
             Files.write(path, byteArray);
-            logFileHandlerMessage("Saved file to: " + file.getAbsolutePath());
+            LOGGER.log(Level.FINE, "Saved file to: " + file.getAbsolutePath());
             return true;
         } catch (Exception e) {
-            logFileHandlerError("Cannot save File\n" + Log.getFullExceptionMessage(e));
+            LOGGER.log(Level.SEVERE, "Cannot save File: " + ((file!= null) ? "" : file.getAbsolutePath()), e);
         }
         return false;
     }
@@ -95,11 +106,11 @@ public class FileHandler {
                 tempBytes[(i * 4) + 3] = (byte) num;
 
             }
-
+            LOGGER.log(Level.FINE, "Imported MXN File: " + file.getAbsolutePath());
             return tempBytes;
 
         } catch (Exception e) {
-            logFileHandlerError("Failed to import MX File: \n" + Log.getFullExceptionMessage(e));
+            LOGGER.log(Level.SEVERE, "Failed to import MX File: " + ((file!= null) ? "" : file.getAbsolutePath()),e);
         }
         return new byte[0];
     }
@@ -124,7 +135,7 @@ public class FileHandler {
         try {
             return Files.readAllBytes(file.toPath());
         } catch (Exception ex) {
-            Logger.getLogger(FileHandler.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null, ex);
         }
         return new byte[0];
     }
@@ -133,13 +144,12 @@ public class FileHandler {
         try {
             Path path = file.toPath();
             List<String> list = Files.readAllLines(path);
-            return new ArrayList(list);
+            ArrayList<String> returnVal = new ArrayList(list);
+            LOGGER.log(Level.FINE, "Loaded File: " + file.getAbsolutePath());
+            return returnVal;
         } catch (Exception e) {
-            if (file != null) {
-                logFileHandlerError("Failed to load Text File: " + file.getAbsoluteFile() + " \n" + Log.getFullExceptionMessage(e));
-            } else {
-                logFileHandlerError("Failed to load Text File: \n" + Log.getFullExceptionMessage(e));
-            }
+
+            LOGGER.log(Level.SEVERE, "Failed to load Text File: " + ((file!= null) ? "" : file.getAbsolutePath()),e);
             return null;
         }
     }
@@ -148,31 +158,17 @@ public class FileHandler {
         try {
             Path path = file.toPath();
             byte[] bytes = Files.readAllBytes(path);
-            return byteArrayToString(bytes);
+            String returnVal = byteArrayToString(bytes);
+            LOGGER.log(Level.FINE, "Loaded File: " + file.getAbsolutePath());
+            return returnVal;
         } catch (Exception e) {
-            if (file != null) {
-                logFileHandlerError("Failed to load Text File: " + file.getAbsoluteFile() + " \n" + Log.getFullExceptionMessage(e));
-            } else {
-                logFileHandlerError("Failed to load Text File: \n" + Log.getFullExceptionMessage(e));
-            }
+            LOGGER.log(Level.SEVERE, "Failed to load Text File: " + ((file!= null) ? "" : file.getAbsolutePath()),e);
             return null;
         }
     }
 
     public static String byteArrayToString(byte[] bytes) {
         return new String(bytes, StandardCharsets.UTF_8);
-    }
-
-    private static void logFileHandlerError(String message) {
-        Log.logError("[FileHandler] " + message);
-    }
-
-    private static void logFileHandlerWarning(String message) {
-        Log.logWarning("[FileHandler] " + message);
-    }
-
-    private static void logFileHandlerMessage(String message) {
-        Log.logMessage("[FileHandler] " + message);
     }
 
     public static String getExtension(String fileName) {
@@ -241,10 +237,11 @@ public class FileHandler {
             // write bytes from the buffer into output stream
             os.write(buffer, 0, len);
         }
- 
-        return os.toByteArray();
+        byte[] data = os.toByteArray();
+        LOGGER.log(Level.FINE, "Loaded Stream");
+        return data;
 		}catch(Exception e) {
-			logFileHandlerError("Failed to load stream:\n" + Log.getFullExceptionMessage(e));
+			LOGGER.log(Level.SEVERE, "Failed to load stream", e);
 		}
 		return null;
 	}

@@ -6,6 +6,7 @@
 package org.parker.mips.plugin.internal.syscall;
 
 import org.parker.mips.plugin.syscall.SystemCallPlugin;
+import org.parker.mips.plugin.syscall.SystemCallRunTimeExcpetion;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -60,7 +61,7 @@ public class UserIOSystemCalls extends SystemCallPlugin {
                 }
 
                 if (i >= max) {
-                    logRunTimeSystemCallError("Trap 4 reached limit of " + max + " while printing string possibly non terminated string");
+                    throw new SystemCallRunTimeExcpetion("Trap 4 reached limit of " + max + " while printing string possibly non terminated string");
                 }
             }
         });
@@ -134,8 +135,7 @@ public class UserIOSystemCalls extends SystemCallPlugin {
 //    }
 
     @Override
-    public boolean onUnload() {
-        logSystemCallPluginError("Cannot Unload Plugin as its Internal");
-        return false;
+    public void onUnload() {
+        throw new UnloadInternalSystemCallException();
     }
 }

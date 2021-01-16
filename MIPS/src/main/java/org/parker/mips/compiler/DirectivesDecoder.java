@@ -5,7 +5,6 @@
  */
 package org.parker.mips.compiler;
 
-import org.parker.mips.Log;
 import org.parker.mips.compiler.data.UserLine;
 
 import java.util.regex.Matcher;
@@ -16,16 +15,8 @@ import java.util.regex.Pattern;
  * @author parke
  */
 public class DirectivesDecoder {
-
-//    public static boolean isDotData(String string) { //should not be used
-//        if (string.contains(".ascii") || string.contains(".byte") || string.contains(".hword") || string.contains(".word") || string.contains(".space")) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
     
-    public static byte[] getDirectivesData(UserLine line) {
+    public static byte[] getDirectivesData(UserLine line) throws DirectiveException {
 
         String string = line.line;
 
@@ -40,8 +31,7 @@ public class DirectivesDecoder {
             while (m.find()) {
                 return m.group(1).getBytes();
             }
-            ASMCompiler.DirectivesDecoderError("Invalid string", line.realLineNumber);
-            return new byte[0];
+            throw new DirectiveException("Invalid String", line);
 
         } else if (string.contains(".byte")) {
 
@@ -57,8 +47,7 @@ public class DirectivesDecoder {
 
                 return tempByte;
             } catch (Exception e) {
-                ASMCompiler.DirectivesDecoderError("Invalid byte:\n" + Log.getFullExceptionMessage(e) , line.realLineNumber);
-                return new byte[0];
+                throw new DirectiveException("Invalid byte", line, e);
             }
 
         } else if (string.contains(".hword")) {
@@ -77,8 +66,7 @@ public class DirectivesDecoder {
 
                 return tempByte;
             } catch (Exception e) {
-                ASMCompiler.DirectivesDecoderError("Invalid half word\n" + Log.getFullExceptionMessage(e), line.realLineNumber);
-                return new byte[0];
+                throw new DirectiveException("Invalid half word", line, e);
             }
 
         } else if (string.contains(".word")) {
@@ -99,13 +87,11 @@ public class DirectivesDecoder {
 
                 return tempByte;
             } catch (Exception e) {
-                ASMCompiler.DirectivesDecoderError("Invalid word:\n" + Log.getFullExceptionMessage(e), line.realLineNumber);
-                return new byte[0];
+                throw new DirectiveException("Invalid word", line, e);
             }
 
         }
-        ASMCompiler.DirectivesDecoderError("invalid dotCode", line.realLineNumber);
-        return new byte[0];
+        throw new DirectiveException("Invalid Directive", line);
     }
     
         public static final byte[] intTo4ByteArray(int value) {

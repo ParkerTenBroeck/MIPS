@@ -29,7 +29,7 @@ public class PluginClassLoader extends URLClassLoader {
     public final File FILE;
     public final Plugin plugin;
 
-    public PluginClassLoader(final File file, final Map<String, Object> yaml, ClassLoader parent) throws MalformedURLException, InvalidPluginException, NoSuchFieldException, InvalidDescriptionException {
+    public PluginClassLoader(final File file, final Map<String, Object> yaml, ClassLoader parent) throws MalformedURLException, InvalidPluginException, InvalidDescriptionException {
         super(new URL[]{file.toURI().toURL()}, Thread.currentThread().getContextClassLoader());
 
         PLUGIN_YAML = yaml;
@@ -40,7 +40,6 @@ public class PluginClassLoader extends URLClassLoader {
         }
         this.FILE = file;
 
-        //new DefaultSystemCalls();
         try {
             Class<?> jarClass;
             try {
@@ -62,7 +61,7 @@ public class PluginClassLoader extends URLClassLoader {
 
             plugin = pluginClass.newInstance();
         } catch (IllegalAccessException ex) {
-            throw new InvalidPluginException("No public constructor", ex);
+            throw new InvalidPluginException("No Valid public constructor", ex);
         } catch (InstantiationException ex) {
             throw new InvalidPluginException("Abnormal plugin type", ex);
         }

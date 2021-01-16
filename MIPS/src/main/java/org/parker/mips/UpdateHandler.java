@@ -19,6 +19,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -30,6 +32,8 @@ public class UpdateHandler {
     private static String latestVersionLink = "";
     private static boolean isUpToDate = false;
     private static JsonObject latestJsonRequest = null;
+
+    private static final Logger LOGGER = Logger.getLogger(UpdateHandler.class.getName());
 
     public static void checkForUpdates() {
         try {
@@ -46,30 +50,31 @@ public class UpdateHandler {
             VersionComparison vc = new VersionComparison(latestTag, MIPS.VERSION);
 
 //            if(vc.v2PreReleseFlag){
-//                Log.logWarning("You are using a PreRelese there may be bugs or unexpected behavior");
+//                LogP.logWarning("You are using a PreRelese there may be bugs or unexpected behavior");
 //            }
             if (vc.isV1EqualToV2()) {
                 if (vc.v2PreReleseFlag) {
-                    Log.logWarning("You are using a PreRelese. Features may contain bugs or unexpected behavior, to upgrade to the latest goto Options>Update");
+                    //LogP.logWarning("You are using a PreRelese. Features may contain bugs or unexpected behavior, to upgrade to the latest goto Options>Update");
+                    LOGGER.log(Level.WARNING, "You are using a PreRelese. Features may contain bugs or unexpected behavior, to upgrade to the latest goto Options>Update");
                 } else {
                     isUpToDate = true;
                 }
             } else if (vc.isV1GreaterThanV2()) {
                 if (vc.v2PreReleseFlag) {
-                    Log.logWarning("You are using an outdated PreRelese. Features may be outdated and may contain bugs or unexpected behavior, to upgrade to the latest goto Options>Update");
+                    LOGGER.log(Level.WARNING,"You are using an outdated PreRelese. Features may be outdated and may contain bugs or unexpected behavior, to upgrade to the latest goto Options>Update");
                 } else {
-                    Log.logWarning("There is a new Version available. To upgrade goto Options>Update");
+                    LOGGER.log(Level.WARNING,"There is a new Version available. To upgrade goto Options>Update");
                 }
             } else if (vc.isV1LessThanV2()) {
                 if (vc.v2PreReleseFlag) {
-                    Log.logWarning("You are using an unrelesed PreRelese there may be bugs or unexpected behavior goto. to upgrade to the latest stable version goto Options>Update");
+                    LOGGER.log(Level.WARNING,"You are using an unrelesed PreRelese there may be bugs or unexpected behavior goto. to upgrade to the latest stable version goto Options>Update");
                 } else {
-                    Log.logWarning("You are using a inrelesed full relese there may be bugs and unexpected behavior goto Options>Update to get the latest stable relese");
+                    LOGGER.log(Level.WARNING,"You are using a inrelesed full relese there may be bugs and unexpected behavior goto Options>Update to get the latest stable relese");
                 }
             }
 
             if (vc.v1PreReleseFlag) {
-                Log.logWarning("The latest version is a PreReslese?. This could be a bug please report");
+                LOGGER.log(Level.WARNING,"The latest version is a PreReslese?. This could be a bug please report");
             }
 
             latestVersionLink = latestJsonRequest.getAsJsonArray("assets").get(0).getAsJsonObject().get("browser_download_url").getAsString();
@@ -77,9 +82,9 @@ public class UpdateHandler {
             //System.out.println(sb.toString());
             //return sb.toString();
         } catch (MalformedURLException ex) {
-            Log.logError("Error While Updating\n" + Log.getFullExceptionMessage(ex));
+            LOGGER.log(Level.SEVERE,"Error While Updating", ex);
         } catch (IOException ex) {
-            Log.logError("Error While Updating\n" + Log.getFullExceptionMessage(ex));
+            LOGGER.log(Level.SEVERE,"Error While Updating", ex);
         }
     }
 
@@ -87,11 +92,11 @@ public class UpdateHandler {
 
         String protocol = ResourceHandler.class.getResource("").getProtocol();
         if (!Objects.equals(protocol, "jar")) { //run in jar
-            Log.logError("Cannot Update from IDE? can only update from JAR");
+            LOGGER.log(Level.SEVERE,"Cannot Update from IDE? can only update from JAR");
             return;
         }
         if (isUpToDate) {
-            Log.logMessage("Already Up to Date");
+            LOGGER.log(Level.INFO,"Already Up to Date");
             return;
         }
 
@@ -110,13 +115,13 @@ public class UpdateHandler {
             }
         }
 
-        String[] run = {"java", "-jar", ResourceHandler.DEFAULT_PATH + FileHandler.FILE_SEPARATOR + "updater.jar", MIPS.JAR_PATH, latestVersionLink};
+        String[] run = {"java", "-jar", ResourceHandler.DEFAULT_PATH + FileUtils.FILE_SEPARATOR + "updater.jar", MIPS.JAR_PATH, latestVersionLink};
         try {
             Runtime.getRuntime().exec(run);
+            System.exit(0);
         } catch (Exception ex) {
-            Log.logError(Log.getFullExceptionMessage(ex));
+            LOGGER.log(Level.SEVERE, "Failed to Launch Updater", ex);
         }
-        System.exit(0);
 
         //return false;
     }

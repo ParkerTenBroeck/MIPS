@@ -16,11 +16,11 @@ import static org.parker.mips.processor.Registers.*;
 
 public class InstructionDecode {
 
-	private static final instruction[] instructionLookUp = new instruction[64];
-	private static final instruction[] regInstructionLookUp = new instruction[64];
+	private static final Instruction[] InstructionLookUp = new Instruction[64];
+	private static final Instruction[] regInstructionLookUp = new Instruction[64];
 
 	static {
-		instructionLookUp[0B000000] = new instruction() { // Register
+		InstructionLookUp[0B000000] = new Instruction() { // Register
 			@Override
 			final void runInstruction(int opCode) {
 				int f = opCode & 0B111111;
@@ -29,7 +29,7 @@ public class InstructionDecode {
 		};
 
 		// Jump Encoding
-		instructionLookUp[0B000010] = new instruction() {
+		InstructionLookUp[0B000010] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int i = (opCode << 6) >> 6;
@@ -37,7 +37,7 @@ public class InstructionDecode {
 				setPc(getPc() + (i << 2));
 			}
 		};
-		instructionLookUp[0B000011] = new instruction() {
+		InstructionLookUp[0B000011] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int i = (opCode << 6) >> 6;
@@ -46,7 +46,7 @@ public class InstructionDecode {
 				setPc(getPc() + (i << 2));
 			}
 		};
-		instructionLookUp[0B011010] = new instruction() {
+		InstructionLookUp[0B011010] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int i = (opCode << 6) >> 6;
@@ -57,7 +57,7 @@ public class InstructionDecode {
 		// Immediate Encoding
 
 		// arthmetic
-		instructionLookUp[0B001000] = new instruction() {
+		InstructionLookUp[0B001000] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >>> 21) & 0B11111;
@@ -68,7 +68,7 @@ public class InstructionDecode {
 			}
 		};
 
-		instructionLookUp[0B001001] = new instruction() {
+		InstructionLookUp[0B001001] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >>> 21) & 0B11111;
@@ -79,7 +79,7 @@ public class InstructionDecode {
 			}
 		};
 
-		instructionLookUp[0B001100] = new instruction() {
+		InstructionLookUp[0B001100] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >>> 21) & 0B11111;
@@ -90,7 +90,7 @@ public class InstructionDecode {
 			}
 		};
 
-		instructionLookUp[0B001101] = new instruction() {
+		InstructionLookUp[0B001101] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >>> 21) & 0B11111;
@@ -101,7 +101,7 @@ public class InstructionDecode {
 			}
 		};
 
-		instructionLookUp[0B001110] = new instruction() {
+		InstructionLookUp[0B001110] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >>> 21) & 0B11111;
@@ -113,7 +113,7 @@ public class InstructionDecode {
 		};
 
 		// constant manupulating inctructions
-		instructionLookUp[0B011001] = new instruction() {
+		InstructionLookUp[0B011001] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int t = (opCode >>> 16) & 0B11111;
@@ -123,7 +123,7 @@ public class InstructionDecode {
 			}
 		};
 
-		instructionLookUp[0B011000] = new instruction() {
+		InstructionLookUp[0B011000] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int t = (opCode >>> 16) & 0B11111;
@@ -133,8 +133,8 @@ public class InstructionDecode {
 			}
 		};
 
-		// comparison instructions
-		instructionLookUp[0B001010] = new instruction() {
+		// comparison Instructions
+		InstructionLookUp[0B001010] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >>> 21) & 0B11111;
@@ -145,7 +145,7 @@ public class InstructionDecode {
 			}
 		};
 
-//        instructionLookUp[0B001001] = new instruction() {
+//        InstructionLookUp[0B001001] = new Instruction() {
 //            @Override
 //            final void runInstruction(int opCode) {
 //                int s = (opCode >>> 21) & 0B11111;
@@ -155,8 +155,8 @@ public class InstructionDecode {
 //                setRegister(t, (int) (getUnsignedInt(SEi) - getUnsignedInt(getRegister(s))));   //conflict with addiu
 //            }
 //        };
-		// branch instructions
-		instructionLookUp[0B000100] = new instruction() {
+		// branch Instructions
+		InstructionLookUp[0B000100] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >>> 21) & 0B11111;
@@ -169,7 +169,7 @@ public class InstructionDecode {
 			}
 		};
 
-		instructionLookUp[0B000111] = new instruction() {
+		InstructionLookUp[0B000111] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >>> 21) & 0B11111;
@@ -181,7 +181,7 @@ public class InstructionDecode {
 			}
 		};
 
-		instructionLookUp[0B000110] = new instruction() {
+		InstructionLookUp[0B000110] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >>> 21) & 0B11111;
@@ -193,7 +193,7 @@ public class InstructionDecode {
 			}
 		};
 
-		instructionLookUp[0B000101] = new instruction() {
+		InstructionLookUp[0B000101] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >>> 21) & 0B11111;
@@ -207,7 +207,7 @@ public class InstructionDecode {
 		};
 
 		// load instrictions
-		instructionLookUp[0B100000] = new instruction() {
+		InstructionLookUp[0B100000] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >>> 21) & 0B11111;
@@ -218,7 +218,7 @@ public class InstructionDecode {
 			}
 		};
 
-		instructionLookUp[0B100100] = new instruction() {
+		InstructionLookUp[0B100100] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >>> 21) & 0B11111;
@@ -229,7 +229,7 @@ public class InstructionDecode {
 			}
 		};
 
-		instructionLookUp[0B100001] = new instruction() {
+		InstructionLookUp[0B100001] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >>> 21) & 0B11111;
@@ -240,7 +240,7 @@ public class InstructionDecode {
 			}
 		};
 
-		instructionLookUp[0B100101] = new instruction() {
+		InstructionLookUp[0B100101] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >>> 21) & 0B11111;
@@ -251,7 +251,7 @@ public class InstructionDecode {
 			}
 		};
 
-		instructionLookUp[0B100011] = new instruction() {
+		InstructionLookUp[0B100011] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >>> 21) & 0B11111;
@@ -263,7 +263,7 @@ public class InstructionDecode {
 		};
 
 		// store instrictions
-		instructionLookUp[0B101000] = new instruction() {
+		InstructionLookUp[0B101000] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >>> 21) & 0B11111;
@@ -274,7 +274,7 @@ public class InstructionDecode {
 			}
 		};
 
-		instructionLookUp[0B101001] = new instruction() {
+		InstructionLookUp[0B101001] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >>> 21) & 0B11111;
@@ -285,7 +285,7 @@ public class InstructionDecode {
 			}
 		};
 
-		instructionLookUp[0B101011] = new instruction() {
+		InstructionLookUp[0B101011] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >>> 21) & 0B11111;
@@ -298,7 +298,7 @@ public class InstructionDecode {
 
 		// registerEncoding
 		// arithmatic
-		regInstructionLookUp[0B100000] = new instruction() {
+		regInstructionLookUp[0B100000] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				// add
@@ -308,7 +308,7 @@ public class InstructionDecode {
 				setRegister(d, getRegister(s) + getRegister(t));
 			}
 		};
-		regInstructionLookUp[0B100000] = new instruction() {
+		regInstructionLookUp[0B100000] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >> 21) & 0B11111;
@@ -318,7 +318,7 @@ public class InstructionDecode {
 				setRegister(d, (int) (getUnsignedInt(getRegister(s)) + getUnsignedInt(getRegister(t))));
 			}
 		};
-		regInstructionLookUp[0B100100] = new instruction() {
+		regInstructionLookUp[0B100100] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >> 21) & 0B11111;
@@ -329,7 +329,7 @@ public class InstructionDecode {
 			}
 		};
 
-		regInstructionLookUp[0B011010] = new instruction() {
+		regInstructionLookUp[0B011010] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >> 21) & 0B11111;
@@ -340,7 +340,7 @@ public class InstructionDecode {
 			}
 		};
 
-		regInstructionLookUp[0B011011] = new instruction() {
+		regInstructionLookUp[0B011011] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >> 21) & 0B11111;
@@ -351,7 +351,7 @@ public class InstructionDecode {
 			}
 		};
 
-		regInstructionLookUp[0B011000] = new instruction() {
+		regInstructionLookUp[0B011000] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >> 21) & 0B11111;
@@ -362,7 +362,7 @@ public class InstructionDecode {
 			}
 		};
 
-		regInstructionLookUp[0B011001] = new instruction() {
+		regInstructionLookUp[0B011001] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >> 21) & 0B11111;
@@ -374,7 +374,7 @@ public class InstructionDecode {
 			}
 		};
 
-		regInstructionLookUp[0B100111] = new instruction() {
+		regInstructionLookUp[0B100111] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >> 21) & 0B11111;
@@ -385,7 +385,7 @@ public class InstructionDecode {
 			}
 		};
 
-		regInstructionLookUp[0B100101] = new instruction() {
+		regInstructionLookUp[0B100101] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >> 21) & 0B11111;
@@ -396,7 +396,7 @@ public class InstructionDecode {
 			}
 		};
 
-		regInstructionLookUp[0B000000] = new instruction() {
+		regInstructionLookUp[0B000000] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int t = (opCode >> 16) & 0B11111;
@@ -407,7 +407,7 @@ public class InstructionDecode {
 			}
 		};
 
-		regInstructionLookUp[0B000100] = new instruction() {
+		regInstructionLookUp[0B000100] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >> 21) & 0B11111;
@@ -418,7 +418,7 @@ public class InstructionDecode {
 			}
 		};
 
-		regInstructionLookUp[0B000011] = new instruction() {
+		regInstructionLookUp[0B000011] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int t = (opCode >> 16) & 0B11111;
@@ -429,7 +429,7 @@ public class InstructionDecode {
 			}
 		};
 
-		regInstructionLookUp[0B000111] = new instruction() {
+		regInstructionLookUp[0B000111] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >> 21) & 0B11111;
@@ -440,7 +440,7 @@ public class InstructionDecode {
 			}
 		};
 
-		regInstructionLookUp[0B000010] = new instruction() {
+		regInstructionLookUp[0B000010] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int t = (opCode >> 16) & 0B11111;
@@ -451,7 +451,7 @@ public class InstructionDecode {
 			}
 		};
 
-		regInstructionLookUp[0B000110] = new instruction() {
+		regInstructionLookUp[0B000110] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >> 21) & 0B11111;
@@ -462,7 +462,7 @@ public class InstructionDecode {
 			}
 		};
 
-		regInstructionLookUp[0B100010] = new instruction() {
+		regInstructionLookUp[0B100010] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >> 21) & 0B11111;
@@ -473,7 +473,7 @@ public class InstructionDecode {
 			}
 		};
 
-		regInstructionLookUp[0B100011] = new instruction() {
+		regInstructionLookUp[0B100011] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >> 21) & 0B11111;
@@ -484,7 +484,7 @@ public class InstructionDecode {
 			}
 		};
 
-		regInstructionLookUp[0B100110] = new instruction() {
+		regInstructionLookUp[0B100110] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >> 21) & 0B11111;
@@ -496,7 +496,7 @@ public class InstructionDecode {
 		};
 
 		// comparasin
-		regInstructionLookUp[0B101010] = new instruction() {
+		regInstructionLookUp[0B101010] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >> 21) & 0B11111;
@@ -507,7 +507,7 @@ public class InstructionDecode {
 			}
 		};
 
-		regInstructionLookUp[0B101001] = new instruction() {
+		regInstructionLookUp[0B101001] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >> 21) & 0B11111;
@@ -519,7 +519,7 @@ public class InstructionDecode {
 		};
 
 		// jump
-		regInstructionLookUp[0B001001] = new instruction() {
+		regInstructionLookUp[0B001001] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >> 21) & 0B11111;
@@ -529,7 +529,7 @@ public class InstructionDecode {
 			}
 		};
 
-		regInstructionLookUp[0B001000] = new instruction() {
+		regInstructionLookUp[0B001000] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >> 21) & 0B11111;
@@ -539,7 +539,7 @@ public class InstructionDecode {
 		};
 
 		// dataMovement
-		regInstructionLookUp[0B010000] = new instruction() {
+		regInstructionLookUp[0B010000] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int d = (opCode >> 11) & 0B11111;
@@ -548,7 +548,7 @@ public class InstructionDecode {
 			}
 		};
 
-		regInstructionLookUp[0B010010] = new instruction() {
+		regInstructionLookUp[0B010010] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int d = (opCode >> 11) & 0B11111;
@@ -557,7 +557,7 @@ public class InstructionDecode {
 			}
 		};
 
-		regInstructionLookUp[0B010001] = new instruction() {
+		regInstructionLookUp[0B010001] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >> 21) & 0B11111;
@@ -566,7 +566,7 @@ public class InstructionDecode {
 			}
 		};
 
-		regInstructionLookUp[0B010011] = new instruction() {
+		regInstructionLookUp[0B010011] = new Instruction() {
 			@Override
 			final void runInstruction(int opCode) {
 				int s = (opCode >> 21) & 0B11111;
@@ -576,29 +576,26 @@ public class InstructionDecode {
 		};
 
 	}
-	//@CompileStatic
+
 	private static void incPc() {
 		setPc(getPc() + 4);
 	}
 
-	//@CompileStatic
-	public static boolean runInstruction(int opCode) {
+	public static void runInstruction(int opCode) throws InvalidOpCodeException {
 		int o = (opCode >>> 26) & 0B111111;
 		incPc();
 		try {
-			instructionLookUp[o].runInstruction(opCode);
-		} catch (Exception e) {
-			return false;
+			InstructionLookUp[o].runInstruction(opCode);
+		}catch(ArrayIndexOutOfBoundsException e){
+			throw new InvalidOpCodeException();
 		}
-		return true;
 	}
-	//@CompileStatic
+	
 	public static long getUnsignedInt(int x) {
 		return x & 0x00000000ffffffffL;
 	}
 }
 
-//@CompileStatic
-abstract class instruction {
+abstract class Instruction {
 	abstract void runInstruction(int opCode);
 }

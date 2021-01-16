@@ -45,14 +45,10 @@ public abstract class SystemCall {
         this.HOST_PLUGIN = hostPlugin;
 
         if (DATA.SYSTEM_CALL_NAME.contains(" ")) {
-            PluginLoader.logPluginLoaderError("System Call Name: "
-                    + DATA.SYSTEM_CALL_DISCRIPTION + " Cannot contain any space characters");
             throw new IllegalArgumentException("System Call Name: "
                     + DATA.SYSTEM_CALL_DISCRIPTION + " Cannot contain any space characters");
         }
         if (!this.DATA.SYSTEM_CALL_NAME.equals(systemCallName)) {
-            PluginLoader.logPluginLoaderError("Loaded System Call Data Name: "
-                    + this.DATA.SYSTEM_CALL_NAME + " DOES NOT match Entered System Call Name: " + systemCallName);
             throw new IllegalArgumentException("Loaded System Call Data Name: "
                     + this.DATA.SYSTEM_CALL_NAME + " DOES NOT match Entered System Call Name: " + systemCallName);
         }

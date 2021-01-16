@@ -11,8 +11,8 @@ import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.folding.FoldParserManager;
 import org.fife.ui.rtextarea.RTextScrollPane;
-import org.parker.mips.FileHandler;
-import org.parker.mips.Log;
+import org.parker.mips.FileUtils;
+import org.parker.mips.LogFrame;
 import org.parker.mips.OptionsHandler;
 import org.parker.mips.ResourceHandler;
 import org.parker.mips.gui.editor.Editor;
@@ -26,6 +26,8 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
 
@@ -34,6 +36,8 @@ import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
  * @author parke
  */
 public class FormattedTextEditor extends Editor {
+
+    private static final Logger LOGGER = Logger.getLogger(FormattedTextEditor.class.getName());
 
     public FormattedTextEditor(File file) {
         super(file);
@@ -60,7 +64,7 @@ public class FormattedTextEditor extends Editor {
         }
 
         if (file != null) {
-            this.textArea.setText(FileHandler.loadFileAsString(file));
+            this.textArea.setText(FileUtils.loadFileAsString(file));
         }
     }
 
@@ -75,11 +79,11 @@ public class FormattedTextEditor extends Editor {
 
     public final void setTheme(String name) {
         try {
-            InputStream in = new FileInputStream(new File(ResourceHandler.EDITOR_THEMES + FileHandler.FILE_SEPARATOR + name + ".xml"));
+            InputStream in = new FileInputStream(new File(ResourceHandler.EDITOR_THEMES + FileUtils.FILE_SEPARATOR + name + ".xml"));
             Theme theme = Theme.load(in);
             theme.apply(textArea);
         } catch (Exception e) {
-            Log.logError("Error loading SyntaxText area Theme " + name + ".xml:\n" + Log.getFullExceptionMessage(e));
+            LOGGER.log(Level.SEVERE, "Error loading Editor Theme " + name, e);
         }
     }
 
@@ -97,7 +101,7 @@ public class FormattedTextEditor extends Editor {
 
         String ext = "";
         if (currentFile != null && currentFile.exists()) {
-            ext = FileHandler.getExtension(currentFile);
+            ext = FileUtils.getExtension(currentFile);
         }
 
         switch (ext) {
@@ -160,7 +164,7 @@ public class FormattedTextEditor extends Editor {
             return currentFile;
         } else {
             File temp = createTempFile("untitles", ".asm");
-            FileHandler.saveByteArrayToFile(textArea.getText().getBytes(), temp);
+            FileUtils.saveByteArrayToFileSafe(textArea.getText().getBytes(), temp);
             return temp;
         }
     }

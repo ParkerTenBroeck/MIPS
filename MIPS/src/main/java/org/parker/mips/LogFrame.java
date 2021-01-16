@@ -18,91 +18,97 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 /**
  *
  * @author parke
  */
-public class Log extends javax.swing.JPanel {
+public class LogFrame extends javax.swing.JPanel {
 
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
+	//private static final Logger LOGGER = Logger.getLogger(LogFrame.class.getName());
 	
 	static {
-        Log.initComponents();
+        LogFrame.initComponents();
     }
 
-    public static void clearDisplay() {
-        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n");
+    private static void clearDisplay() {
+        //System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n");
         //Log.appendMessageToVirtualConsoleLog("\n\n\n\n\n\n\n\n\n\n\n\n\n", null);
-        Log.jTextPane1.setText("");
+        LogFrame.jTextPane1.setText("");
     }
 
-    public static void logError(String message) {
+    private static void logError(String message) {
         if (!OptionsHandler.logErrors.val()) {
             return;
         }
-        System.err.println("[Error] " + message);
+        //System.err.println("[Error] " + message);
 
         SimpleAttributeSet att = new SimpleAttributeSet();
         StyleConstants.setForeground(att, Color.RED);
         StyleConstants.setBold(att, false);
-        Log.appendMessageToVirtualConsoleLog("[Error] " + message, att);
+        LogFrame.appendMessageToVirtualConsoleLog("[Error] " + message, att);
     }
 
-    public static void logWarning(String message) {
+    private static void logWarning(String message) {
         if (!OptionsHandler.logWarnings.val()) {
             return;
         }
-        System.out.println("[Warning] " + message);
+        //System.out.println("[Warning] " + message);
 
         SimpleAttributeSet att = new SimpleAttributeSet();
         StyleConstants.setForeground(att, Color.YELLOW);
         StyleConstants.setBold(att, false);
-        Log.appendMessageToVirtualConsoleLog("[Warning] " + message, att);
+        LogFrame.appendMessageToVirtualConsoleLog("[Warning] " + message, att);
     }
 
-    public static void logSystemMessage(String message) {
+    private static void logSystemMessage(String message) {
         if (!OptionsHandler.logSystemMessages.val()) {
             return;
         }
-        System.out.println("[System Message] " + message);
+        //
+        // System.out.println("[System Message] " + message);
 
         SimpleAttributeSet att = new SimpleAttributeSet();
         StyleConstants.setForeground(att, Color.LIGHT_GRAY);
         StyleConstants.setBold(att, false);
-        Log.appendMessageToVirtualConsoleLog("[System Message] " + message, att);
+        LogFrame.appendMessageToVirtualConsoleLog("[System Message] " + message, att);
     }
 
-    public static void logMessage(String message) {
+    private static void logMessage(String message) {
         if (!OptionsHandler.logMessages.val()) {
             return;
         }
-        System.out.println("[Message] " + message);
+        //System.out.println("[Message] " + message);
 
         SimpleAttributeSet att = new SimpleAttributeSet();
         StyleConstants.setForeground(att, Color.LIGHT_GRAY);
         StyleConstants.setBold(att, false);
-        Log.appendMessageToVirtualConsoleLog("[Message] " + message, att);
+        LogFrame.appendMessageToVirtualConsoleLog("[Message] " + message, att);
     }
 
-    public static void logCustomMessage(String message, SimpleAttributeSet att) {
+    private static void logCustomMessage(String message, SimpleAttributeSet att) {
         if (!OptionsHandler.logMessages.val()) {
             return;
         }
-        System.out.println("[Message] " + message);
+        //System.out.println("[Message] " + message);
 
-        Log.appendMessageToVirtualConsoleLog("[Message] " + message, att);
+        LogFrame.appendMessageToVirtualConsoleLog("[Message] " + message, att);
     }
 
-    public static void logCustomMessage(String message, boolean bold, boolean italic, boolean underline, Color color, String font) {
+    private static void logCustomMessage(String message, boolean bold, boolean italic, boolean underline, Color color, String font) {
         if (!OptionsHandler.logMessages.val()) {
             return;
         }
-        System.out.println("[Message] " + message);
+        //System.out.println("[Message] " + message);
 
         SimpleAttributeSet att = new SimpleAttributeSet();
         StyleConstants.setForeground(att, color);
@@ -112,20 +118,20 @@ public class Log extends javax.swing.JPanel {
         if (font != null) {
             StyleConstants.setFontFamily(att, font);
         }
-        Log.appendMessageToVirtualConsoleLog("[Message] " + message, att);
+        LogFrame.appendMessageToVirtualConsoleLog("[Message] " + message, att);
     }
 
     private static void appendMessageToVirtualConsoleLog(String message, SimpleAttributeSet att) {
-        Document doc = Log.jTextPane1.getStyledDocument();
+        Document doc = LogFrame.jTextPane1.getStyledDocument();
         try {
             doc.insertString(doc.getLength(), message + "\n", att);
         } catch (Exception exc) {
-            Log.logError(Log.getFullExceptionMessage(exc));
+            //LogFrame.logError(LogFrame.getFullExceptionMessage(exc));
         }
 
     }
 
-    public Log() {
+    public LogFrame() {
         initLayout();
         this.setVisible(true);
     }
@@ -197,26 +203,46 @@ public class Log extends javax.swing.JPanel {
             }
         });
 
-    }// </editor-fold>    
-
-    public static String getFullErrorMessage(Error e) {
-        StringWriter sw = new StringWriter();
-        e.printStackTrace(new PrintWriter(sw));
-        String exceptionAsString = sw.toString();
-        return exceptionAsString;
-    }
-
-    public static String getFullExceptionMessage(Exception e) {
-        StringWriter sw = new StringWriter();
-        e.printStackTrace(new PrintWriter(sw));
-        String exceptionAsString = sw.toString();
-        System.out.println(exceptionAsString);
-        return exceptionAsString;
-    }
+    }// </editor-fold>
 
     // Variables declaration - do not modify                     
     private static javax.swing.JScrollPane jScrollPane1;
     private static javax.swing.JTextPane jTextPane1;
     // End of variables declaration                   
 
+    public static class LogFrameHandler extends Handler {
+
+        @Override
+        public void publish(LogRecord record) {
+
+            String message = "[" + String.join("] [", record.getSourceClassName().replaceFirst("org.parker.mips.", "").split("\\.")) + "] " + record.getMessage();
+
+            SimpleAttributeSet sas = new SimpleAttributeSet();
+
+            if(record.getLevel() == Level.INFO){
+                //LogFrame.logMessage(message);
+            }else if(record.getLevel() == Level.WARNING){
+                //LogFrame.logWarning(message);
+            }else if(record.getLevel() == Level.SEVERE){
+                //LogFrame.logError(message);
+            }else{
+
+            }record.getSourceClassName();
+
+            LogFrame.appendMessageToVirtualConsoleLog("[" + record.getLevel().getName() + "]" + message,sas);
+
+            return;
+
+        }
+
+        @Override
+        public void flush() {
+
+        }
+
+        @Override
+        public void close() throws SecurityException {
+
+        }
+    }
 }

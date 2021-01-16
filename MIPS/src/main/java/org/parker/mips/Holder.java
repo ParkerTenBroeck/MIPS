@@ -37,7 +37,6 @@ public class Holder<T> extends Observable {
         this.setChanged();
         this.notifyObservers(val);
         this.clearChanged();
-        System.out.println(this.countObservers());
     }
     
     public static class ValueEvent {

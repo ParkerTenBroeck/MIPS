@@ -5,11 +5,13 @@
  */
 package org.parker.mips.compiler.preprocessor.statements;
 
-import org.parker.mips.compiler.PreProcessor;
+import org.parker.mips.compiler.CompilationLevel;
+import org.parker.mips.compiler.CompilationLogger;
 import org.parker.mips.compiler.data.AbstractArgumentList;
 import org.parker.mips.compiler.data.UserLine;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,6 +20,8 @@ import java.util.ArrayList;
 public class DEFINE extends Statement {
 
     public final String arg;
+
+    private final static CompilationLogger LOGGER = new CompilationLogger(DEFINE.class.getName());
 
     public DEFINE() {
         arg = null;
@@ -29,7 +33,7 @@ public class DEFINE extends Statement {
         input.line = input.line.trim();
         String[] nameAndValue = input.line.split(" ");
         if (nameAndValue.length != 1 && nameAndValue.length != 2) {
-            PreProcessor.logPreProcessorError("Cannot add Define too many/little arguments or Name has Space", input.realLineNumber);
+            LOGGER.log(CompilationLevel.COMPILATION_ERROR,"Cannot add Define too many/little arguments or Name has Space", input.realLineNumber);
         }
         if (nameAndValue.length > 1) {
             arg = nameAndValue[1].trim();

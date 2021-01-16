@@ -17,6 +17,8 @@ import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -63,6 +65,8 @@ public class OptionsHandler {
     public static final Holder<Font> currentGUIFont = new Holder(new Font("Segoe UI", 0, 15));
     public static final Holder<Font> currentEditorFont = new Holder(new Font("Segoe UI", 0, 15));
 
+    private static final Logger LOGGER = Logger.getLogger(OptionsHandler.class.getName());
+
     public static void readOptionsFromDefaultFile() {
         readOptionsFromFile(ResourceHandler.DEFAULT_OPTIONS_FILE);
     }
@@ -71,7 +75,7 @@ public class OptionsHandler {
         if (name != null) {
             name = name.split("\\.")[0];
         }
-        readOptionsFromFile(ResourceHandler.USER_SAVED_CONFIG_PATH + FileHandler.FILE_SEPARATOR + name + "\\.json");
+        readOptionsFromFile(ResourceHandler.USER_SAVED_CONFIG_PATH + FileUtils.FILE_SEPARATOR + name + "\\.json");
     }
 
     public static void readOptionsFromCustomFile(File file) {
@@ -88,7 +92,7 @@ public class OptionsHandler {
         if (name != null) {
             name = name.split("\\.")[0];
         }
-        saveOptionsToFile(ResourceHandler.USER_SAVED_CONFIG_PATH + FileHandler.FILE_SEPARATOR + name + "\\.json");
+        saveOptionsToFile(ResourceHandler.USER_SAVED_CONFIG_PATH + FileUtils.FILE_SEPARATOR + name + "\\.json");
     }
 
     public static void saveOptionsToCustomFile(File file) {
@@ -132,13 +136,16 @@ public class OptionsHandler {
                     }
 
                 } catch (Exception e) {
-                    logOptionsHandlerError("Error Field invalid " + entry.getKey() + ":\n" + Log.getFullExceptionMessage(e));
+                    LOGGER.log(Level.WARNING, "Field invalid " + entry.getKey() + " Ignoring and continuing", e);
+                    //logOptionsHandlerError("Error Field invalid " + entry.getKey() + ":\n" + LogFrame.getFullExceptionMessage(e));
                 }
 
             });
-            logOptionsHandlerSystemMessage("Successfully loaded " + file.getName() + "\n\n");
+            LOGGER.log(Level.CONFIG, "Successfully loaded " + file.getName());
+            //logOptionsHandlerSystemMessage("Successfully loaded " + file.getName() + "\n\n");
         } catch (Exception e) {
-            logOptionsHandlerError("Failed to read Options file:\n" + Log.getFullExceptionMessage(e));
+            LOGGER.log(Level.SEVERE, "Failed to read Options file", e);
+            //logOptionsHandlerError("Failed to read Options file:\n" + LogFrame.getFullExceptionMessage(e));
         } finally {
             try {
                 reader.close();
@@ -168,9 +175,9 @@ public class OptionsHandler {
             //System.err.println("asdasd");
             gson.toJson(new OptionsHandler(), writer);
 
-            logOptionsHandlerSystemMessage("Successfully saved " + file.getName() + "\n\n");
+            LOGGER.log(Level.INFO, "Successfully saved " + file.getName() );
         } catch (Exception e) {
-            logOptionsHandlerError("Failed to write Options file:\n" + Log.getFullExceptionMessage(e));
+            LOGGER.log(Level.INFO, "Failed to write Options file", e);
         } finally {
             try {
                 writer.close();
@@ -178,18 +185,6 @@ public class OptionsHandler {
 
             }
         }
-    }
-
-    private static void logOptionsHandlerError(String message) {
-        Log.logError("[Options Handler] " + message);
-    }
-
-    private static void logOptionsHandlerWarning(String message) {
-        Log.logWarning("[Options Handler] " + message);
-    }
-
-    private static void logOptionsHandlerSystemMessage(String message) {
-        Log.logSystemMessage("[Options Handler] " + message);
     }
 
 }

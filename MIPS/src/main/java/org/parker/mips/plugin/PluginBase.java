@@ -5,9 +5,12 @@
  */
 package org.parker.mips.plugin;
 
+import org.parker.mips.plugin.syscall.SystemCallPlugin;
+
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,6 +21,8 @@ public abstract class PluginBase implements Plugin {
     public final PluginDescription DESCRIPTION;
     final public File PLUGIN_FILE;
     final protected ClassLoader CLASS_LOADER;
+
+    protected final Logger LOGGER;
 
     //private boolean isEnabled = false;
     public PluginBase() {
@@ -32,6 +37,8 @@ public abstract class PluginBase implements Plugin {
 
         this.DESCRIPTION = classLoader.DESCRIPTION;
         this.PLUGIN_FILE = classLoader.FILE;
+
+        this.LOGGER = new PluginLogger(this);
     }
 
     protected final URL getResources(String string) {

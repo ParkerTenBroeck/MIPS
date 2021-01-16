@@ -13,7 +13,7 @@ public interface Plugin {
     
     void onLoad();
     
-    boolean onUnload();
+    void onUnload();
     
     void onEnable();
     

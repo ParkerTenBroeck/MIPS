@@ -5,9 +5,12 @@
  */
 package org.parker.mips.processor;
 
-import org.parker.mips.Log;
+import org.parker.mips.LogFrame;
 import org.parker.mips.OptionsHandler;
 import org.parker.mips.gui.MainGUI;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.parker.mips.processor.InstructionDecode.runInstruction;
 import static org.parker.mips.processor.Memory.getWord;
@@ -23,6 +26,8 @@ public class Processor implements Runnable {
     private static long instructionsRan = 0;
     private static long delay;
 
+    private final static Logger LOGGER = Logger.getLogger(Processor.class.getName());
+
     public static long getInstructionsRan() {
         return instructionsRan;
     }
@@ -30,6 +35,7 @@ public class Processor implements Runnable {
     public static synchronized void stop() {
         isRunning = false;
         MainGUI.stopAutoUpdate();
+        LOGGER.log(Level.INFO, "Processor Halted");
     }
 
     public static void reset() {
@@ -111,10 +117,17 @@ public class Processor implements Runnable {
 //            return;
 //        }
 
-        if (!runInstruction(getOpCode())) {
-
-            logRunTimeError("invalid OpCode at " + Registers.getPc());
+        try {
+            runInstruction(getOpCode());
+        }catch(Exception e){
+            LOGGER.log(Level.SEVERE, "Runtime Error", e);
+            if(OptionsHandler.breakOnRunTimeError.val()){
+                Processor.stop();
+            }
         }
+
+//            logRunTimeError("invalid OpCode at " + Registers.getPc());
+
 //        if (instructionsRan == 100000000) {
 //            endTime = System.nanoTime();
 //            duration = (endTime - startTime);
@@ -149,20 +162,28 @@ public class Processor implements Runnable {
 //
 //    static long duration = (endTime - startTime);  //divide by 1000000 to get milliseconds.
 
+    @Deprecated
     public static void logRunTimeError(String message) {
         if (OptionsHandler.breakOnRunTimeError.val()) {
             Processor.stop();
             MainGUI.refreshAll();
         }
-        Log.logError("[RunTime] " + message);
+        LOGGER.log(Level.SEVERE, message);
+        //LogFrame.logError("[RunTime] " + message);
     }
 
+    @Deprecated
     public static void logRunTimeWarning(String message) {
-        Log.logWarning("[RunTime] " + message);
+
+        LOGGER.log(Level.WARNING, message);
+        //LogFrame.logWarning("[RunTime] " + message);
     }
 
+    @Deprecated
     public static void logRunTimeMessage(String message) {
-        Log.logMessage("[RunTime] " + message);
+
+        LOGGER.log(Level.INFO, message);
+        //LogFrame.logMessage("[RunTime] " + message);
     }
 
 }

@@ -5,9 +5,9 @@
  */
 package org.parker.mips.compiler.preprocessor.statements;
 
-import org.parker.mips.FileHandler;
-import org.parker.mips.Log;
-import org.parker.mips.compiler.PreProcessor;
+import org.parker.mips.FileUtils;
+import org.parker.mips.compiler.CompilationLevel;
+import org.parker.mips.compiler.CompilationLogger;
 import org.parker.mips.compiler.data.UserLine;
 import org.parker.mips.gui.editor.EditorHandler;
 
@@ -21,6 +21,8 @@ import static org.parker.mips.compiler.PreProcessor.loadFile;
  * @author parke
  */
 public class INCLUDE extends Statement {
+
+    private static final CompilationLogger LOGGER = new CompilationLogger(INCLUDE.class.getName());
 
     ArrayList<UserLine> generatedDataToAdd;
 
@@ -37,7 +39,7 @@ public class INCLUDE extends Statement {
 
         } else {
             File file = EditorHandler.getFalseFileFromLastFocused();
-            path = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf(FileHandler.FILE_SEPARATOR) + 1) + path;
+            path = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf(FileUtils.FILE_SEPARATOR) + 1) + path;
         }
 
         try {
@@ -45,7 +47,7 @@ public class INCLUDE extends Statement {
             String fileExtention = path.split("\\.")[1];
             if (fileExtention.equals("mxn") || fileExtention.equals("bin")) {
                 generatedDataToAdd = new ArrayList<UserLine>();
-                byte[] temp = FileHandler.loadFileAsByteArray(new File(path));
+                byte[] temp = FileUtils.loadFileAsByteArraySafe(new File(path));
                 String data = ".byte ";
                 for (int i = 0; i < temp.length; i++) {
                     data = data + temp[i];
@@ -56,10 +58,10 @@ public class INCLUDE extends Statement {
                 //System.out.println(data);
                 generatedDataToAdd.add(new UserLine(data, line.realLineNumber));
             } else {
-                generatedDataToAdd = loadFile(path, line.realLineNumber);
+                generatedDataToAdd = loadFile(path, line);
             }
         } catch (Exception e) {
-            PreProcessor.logPreProcessorError("Failed to load included File:\n" + Log.getFullExceptionMessage(e), line.realLineNumber);
+            LOGGER.log(CompilationLevel.COMPILATION_ERROR,"Failed to load included File", line, e);
         }
 
     }

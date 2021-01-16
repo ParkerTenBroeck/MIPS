@@ -9,6 +9,7 @@ import org.parker.mips.processor.Processor;
 
 import javax.swing.*;
 import java.net.URL;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,6 +18,8 @@ import java.net.URL;
 public class SystemCallPluginFrame extends JFrame {
 
     public final String FRAME_NAME;
+
+    protected final static Logger LOGGER = Logger.getLogger(SystemCallPluginFrame.class.getName());
 
     public SystemCallPluginFrame(String name) {
         this.FRAME_NAME = name;
@@ -27,32 +30,6 @@ public class SystemCallPluginFrame extends JFrame {
         } catch (Exception e) {
 
         }
-    }
-
-    /**
-     * WARNING errors can halt the program if enabled use Warning if program can
-     * continue
-     *
-     * @param message the message that will be logged as a warning
-     */
-    protected final void logRunTimeSystemCallError(String message) {
-        SystemCallPluginHandler.logRunTimeSystemCallError(message);
-    }
-
-    /**
-     *
-     * @param message the message that will be logged as a warning
-     */
-    protected final void logRunTimeSystemCallWarning(String message) {
-        SystemCallPluginHandler.logRunTimeSystemCallWarning(message);
-    }
-
-    /**
-     *
-     * @param message the message that will be logged
-     */
-    protected final void logRunTimeSystemCallMessage(String message) {
-        SystemCallPluginHandler.logRunTimeSystemCallMessage(message);
     }
 
     /**

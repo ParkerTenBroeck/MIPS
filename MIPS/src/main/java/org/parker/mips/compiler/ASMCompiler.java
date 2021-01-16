@@ -5,8 +5,7 @@
  */
 package org.parker.mips.compiler;
 
-import org.parker.mips.FileHandler;
-import org.parker.mips.Log;
+import org.parker.mips.FileUtils;
 import org.parker.mips.OptionsHandler;
 import org.parker.mips.ResourceHandler;
 import org.parker.mips.compiler.data.MemoryLable;
@@ -19,6 +18,8 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 class ByteP {
 
@@ -49,7 +50,7 @@ abstract class CompileTimeUserLine {
         return this.bytes.length;
     }
 
-    public abstract void finalCompilePass();
+    public abstract void finalCompilePass() throws CompilationException;
 };
 
 class Directive extends CompileTimeUserLine {//must have instruction and data preented at the time of creation
@@ -78,17 +79,15 @@ class asmInstruction extends CompileTimeUserLine {
     }
 
     @Override
-    public void finalCompilePass() {
+    public void finalCompilePass() throws CompilationException{
         byte[] temp = StringToOpcode.stringToOpcode(this);
 
         if (temp == null) {
-            //error
-            return;
+            throw new CompilationException();
         }
 
         if (bytes.length != temp.length) {
-            //error
-            return;
+            throw new CompilationException();
         }
 
         for (int i = 0; i < temp.length; i++) {
@@ -102,23 +101,26 @@ class MemoryChunk {
 
     final int byteAlignment;
     final MemoryLable startLable;
-    final ArrayList<CompileTimeUserLine> chunkData;
+    final ArrayList<CompileTimeUserLine> chunkData = new ArrayList<CompileTimeUserLine>();
 
     public MemoryChunk(MemoryLable lable) {
         this.startLable = lable;
-        this.chunkData = new ArrayList<CompileTimeUserLine>();
         this.byteAlignment = 0;
+    }
+
+    public MemoryChunk(int byteAlignment, MemoryLable lable){
+        this.byteAlignment = byteAlignment;
+        this.startLable = lable;
     }
 
     public MemoryChunk(UserLine line) {
         this.startLable = null;
-        this.chunkData = new ArrayList<CompileTimeUserLine>();
 
         int tempAll = ASMCompiler.parseInt(line.line.split(" ")[1]);
 
         if (tempAll < 0) {
-            ASMCompiler.DirectivesDecoderError("Alignment cannot be less than zero", line.realLineNumber);
             this.byteAlignment = 0;
+            throw new DirectiveException("Alignment cannot be lass than zero", line);
         } else {
             this.byteAlignment = (int) Math.pow(2, tempAll);
         }
@@ -164,6 +166,8 @@ public class ASMCompiler {
     static private ArrayList<Origin> origins = new ArrayList<Origin>();
     static private ArrayList<ByteP> memoryByteList = new ArrayList<ByteP>();
 
+    private static final CompilationLogger LOGGER = new CompilationLogger(ASMCompiler.class.getName());
+
     public static void compile(File file) {
 
         memoryLables = new ArrayList<MemoryLable>();
@@ -171,19 +175,20 @@ public class ASMCompiler {
         origins = new ArrayList<Origin>();
 
         if (file == null) {
-            logCompilerError("File is null");
+            LOGGER.log(Level.SEVERE, "File is null");
             return;
         }
         if (!file.exists() || file.isDirectory()) {
-            logCompilerError("File does not exist or is a directory: " + file.getAbsolutePath());
+            LOGGER.log(Level.SEVERE, "File does not exist or is a directory: " + file.getAbsolutePath());
+            return;
         }
 
-        if (!FileHandler.getExtension(file).equals("asm")) {
-            logCompilerWarning("This file is not an assembly file tyring to compile it may result in errors");
+        if (!FileUtils.getExtension(file).equals("asm")) {
+            LOGGER.log(Level.WARNING, "This file is not an assembly file trying to compile it may result in errors");
         }
 
-        Log.clearDisplay();
-        ASMCompiler.logCompilerMessage("Started Compilation of file: " + file.getAbsolutePath());
+        //LogFrame.clearDisplay();
+        LOGGER.log(Level.INFO, "Started Compilated of file: " + file.getAbsolutePath());
 
         ArrayList<UserLine> temp = getInstructions(file);
 
@@ -234,7 +239,7 @@ public class ASMCompiler {
         }
         maxSizeInstruction++;
 
-        File file = new File(ResourceHandler.COMPILER_PATH + FileHandler.FILE_SEPARATOR + "CompilationInfo.txt");
+        File file = new File(ResourceHandler.COMPILER_PATH + FileUtils.FILE_SEPARATOR + "CompilationInfo.txt");
 
         try (PrintWriter out = new PrintWriter(file)) {
 
@@ -285,10 +290,11 @@ public class ASMCompiler {
 
             }
 
-            ASMCompiler.logCompilerMessage("Compilation Info File Wrote to: " + file.getAbsolutePath());
+//            ASMCompiler.logCompilerMessage("Compilation Info File Wrote to: " + file.getAbsolutePath());
+//            LOGGER.log(Level.CONFIG, "Compilation Info ");
             out.flush();
         } catch (Exception e) {
-            ASMCompiler.logCompilerError("Unable to write Pre Processed File to: " + file.getAbsolutePath() + "\n" + Log.getFullExceptionMessage(e));
+            //ASMCompiler.logCompilerError("Unable to write Pre Processed File to: " + file.getAbsolutePath() + "\n" + LogFrame.getFullExceptionMessage(e));
         }
     }
 
@@ -324,7 +330,8 @@ public class ASMCompiler {
                 }
             }
         }
-        ASMCompiler.MemoryLableError("Memory Lable does not exist", realLineNumberOfOpCode);
+        LOGGER.log(CompilationLevel.COMPILATION_ERROR, "Memory Lable does not exist line: " + realLineNumberOfOpCode);
+        //ASMCompiler.MemoryLableError("Memory Lable does not exist", realLineNumberOfOpCode);
         return -1;
     }
 
@@ -332,7 +339,11 @@ public class ASMCompiler {
         for (Origin org : origins) {
             for (MemoryChunk mc : org.memoryChunks) {
                 for (CompileTimeUserLine ctul : mc.chunkData) {
-                    ctul.finalCompilePass();
+                    try {
+                        ctul.finalCompilePass();
+                    }catch(CompilationException e){
+
+                    }
                 }
             }
         }
@@ -432,8 +443,12 @@ public class ASMCompiler {
                 addMemoryLable(ml);
                 memoryLableIndex++;
             } else if (currentLine.line.startsWith(".align")) {
-                org.addMemoryChunk(mc);
-                mc = new MemoryChunk(currentLine);
+                try {
+                    MemoryChunk temp = new MemoryChunk(currentLine);
+                    org.addMemoryChunk(mc);
+                    mc = temp;
+                }catch(Exception e){
+                }
             } else if (currentLine.line.startsWith(".org")) { //adds origin to list of origins and 
                 org.addMemoryChunk(mc);
                 addOrigin(org);
@@ -455,7 +470,8 @@ public class ASMCompiler {
 
         for (int i = 0; i < memoryLables.size(); i++) {
             if (ml.name.equals(memoryLables.get(i).name)) {
-                ASMCompiler.MemoryLableError("Cannot have Duplicate Memory Lables", ml.line.realLineNumber);
+                LOGGER.log(CompilationLevel.COMPILATION_ERROR, null, new MemoryLableException("Cannot have duplicate memory lables", ml.line));
+                //ASMCompiler.MemoryLableError("Cannot have Duplicate Memory Lables", ml.line.realLineNumber);
                 return;
             }
         }
@@ -465,7 +481,12 @@ public class ASMCompiler {
     private static CompileTimeUserLine userLineToCompileTimeUserLine(UserLine line) {
 
         if (line.line.startsWith(".")) {
-            return new Directive(line, DirectivesDecoder.getDirectivesData(line)); //
+            try {
+                return new Directive(line, DirectivesDecoder.getDirectivesData(line)); //
+            }catch(Exception e){
+                //LOGGER.log()
+                return new Directive(line, new byte[0]);
+            }
         } else {
             return new asmInstruction(line);
         }
@@ -475,41 +496,13 @@ public class ASMCompiler {
         int lineNumber = 0;
 
         ArrayList<UserLine> loadedFile = new ArrayList<UserLine>();
-        List<String> temp = FileHandler.loadFileAsStringList(file);
+        List<String> temp = FileUtils.loadFileAsStringList(file);
 
         for (String line : temp) {
             loadedFile.add(new UserLine(line, lineNumber + 1));
             lineNumber++;
         }
         return loadedFile;
-    }
-
-    public static void DirectivesDecoderError(String message, int line) {
-        logCompilerError("[Directives]: on line " + line + " " + message);
-    }
-
-    public static void OpCodeError(String message, int line) {
-        logCompilerError("[OpCode]: on line " + line + " " + message);
-    }
-
-    public static void MemoryLableError(String message, int line) {
-        logCompilerError("[MemoryLable]: on line " + line + " " + message);
-    }
-
-    public static void ArgumentError(String message, int line) {
-        logCompilerError("[Argument]: on line " + line + " " + message);
-    }
-
-    public static void logCompilerError(String message) {
-        Log.logError("[Compiler] " + message);
-    }
-
-    public static void logCompilerMessage(String message) {
-        Log.logMessage("[Compiler] " + message);
-    }
-
-    public static void logCompilerWarning(String message) {
-        Log.logWarning("[Compiler] " + message);
     }
 
     public static int parseInt(String string) { //to add functionality later

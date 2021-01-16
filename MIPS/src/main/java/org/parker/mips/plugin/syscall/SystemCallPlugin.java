@@ -5,8 +5,7 @@
  */
 package org.parker.mips.plugin.syscall;
 
-import org.parker.mips.FileHandler;
-import org.parker.mips.Log;
+import org.parker.mips.FileUtils;
 import org.parker.mips.gui.MainGUI;
 import org.parker.mips.gui.editor.rsyntax.FormattedTextEditor;
 import org.parker.mips.plugin.PluginBase;
@@ -22,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 
 /**
  *
@@ -193,7 +193,7 @@ public abstract class SystemCallPlugin extends PluginBase {
         public void actionPerformed(ActionEvent ae) {
             try {
             	InputStream stream = CLASS_LOADER.getResourceAsStream(resources);
-            	byte[] bytes = FileHandler.loadStreamAsByteArray(stream);
+            	byte[] bytes = FileUtils.loadStreamAsByteArray(stream);
             	String text = new String(bytes);
             	new FormattedTextEditor(text);
             //FileHandler.loadASMExampleFromStream(CLASS_LOADER.getResourceAsStream(resources));
@@ -212,8 +212,7 @@ public abstract class SystemCallPlugin extends PluginBase {
     }
 
     @Override
-    public boolean onUnload() {
-        return true;
+    public void onUnload() {
     }
 
     @Override
@@ -306,61 +305,6 @@ public abstract class SystemCallPlugin extends PluginBase {
     }
 
     /**
-     * Used for when a SystemCall encounters some error during runtime
-     *
-     * WARNING errors can halt the program if enabled use Warning if program can
-     * continue
-     *
-     * @param message the message that will be logged as a warning
-     */
-    protected final void logRunTimeSystemCallError(String message) {
-        SystemCallPluginHandler.logRunTimeSystemCallError(message);
-    }
-
-    /**
-     * Used for when a SystemCall has some error but can handle it and continue
-     * to run
-     *
-     * @param message the message that will be logged as a warning
-     */
-    protected final void logRunTimeSystemCallWarning(String message) {
-        SystemCallPluginHandler.logRunTimeSystemCallWarning(message);
-    }
-
-    /**
-     * Used for when a SystemCall is needed to log a message
-     *
-     * @param message the message that will be logged
-     */
-    protected final void logRunTimeSystemCallMessage(String message) {
-        SystemCallPluginHandler.logRunTimeSystemCallMessage(message);
-    }
-
-    /**
-     *
-     * @param message message to be loged
-     */
-    protected final void logSystemCallPluginError(String message) {
-        Log.logError("[System Call Plugin] " + message);
-    }
-
-    /**
-     *
-     * @param message message to be loged
-     */
-    protected final void logSystemCallPluginWarning(String message) {
-        Log.logWarning("[System Call Plugin] " + message);
-    }
-
-    /**
-     *
-     * @param message message to be loged
-     */
-    protected final void logSystemCallPluginMessage(String message) {
-        Log.logMessage("[System Call Plugin] " + message);
-    }
-
-    /**
      *
      * @return
      */
@@ -368,7 +312,7 @@ public abstract class SystemCallPlugin extends PluginBase {
 
         if (MainGUI.canBreak()) {
             stopProcessor();
-            logRunTimeSystemCallMessage("Program has reached a breakpoint");
+            LOGGER.log(Level.INFO, "Program has reached a breakpoint");
         }
 
         return MainGUI.canBreak();
@@ -387,6 +331,7 @@ public abstract class SystemCallPlugin extends PluginBase {
      * memory if options is set
      */
     protected final void resetProcessor() {
+        Processor.stop();
         Processor.reset();
     }
 

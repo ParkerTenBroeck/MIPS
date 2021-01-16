@@ -5,8 +5,7 @@
  */
 package org.parker.mips.compiler;
 
-import org.parker.mips.FileHandler;
-import org.parker.mips.Log;
+import org.parker.mips.FileUtils;
 import org.parker.mips.OptionsHandler;
 import org.parker.mips.ResourceHandler;
 import org.parker.mips.compiler.data.UserLine;
@@ -17,6 +16,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  *
@@ -28,12 +28,9 @@ public class PreProcessor {
 
     private static ArrayList<Statement> statements;
 
-//    private static ArrayList<UserLine> importFile(UserLine line) {
-//        line.line = line.line.replaceFirst("#include ", "");
-//        line.line = line.line.trim();
-//        return loadFile(line.line, line.realLineNumber);
-//    }
-    public static ArrayList<UserLine> loadFile(String filePath, int realLineOfFilePath) {
+    private static final CompilationLogger LOGGER = new CompilationLogger(PreProcessor.class.getName());
+
+    public static ArrayList<UserLine> loadFile(String filePath, UserLine us) {
         BufferedReader reader;
 
         filePath = filePath.replaceAll("\"", "");
@@ -45,12 +42,12 @@ public class PreProcessor {
             reader = new BufferedReader(new FileReader(tempFile));
             String line = reader.readLine();
             while (line != null) {
-                file.add(new UserLine(line, realLineOfFilePath));
+                file.add(new UserLine(line, us.realLineNumber));
                 line = reader.readLine();
             }
-            PreProcessor.logPreProcessorMessage("[Pre Processor] Loaded File: " + tempFile.getAbsolutePath());
+            LOGGER.log(CompilationLevel.COMPILATION_MESSAGE, "Loaded File: " + tempFile.getAbsolutePath());
         } catch (Exception e) {
-            PreProcessor.logPreProcessorError("Cannot read file Specified" + "\n" + Log.getFullExceptionMessage(e), realLineOfFilePath);
+            LOGGER.log(CompilationLevel.COMPILATION_ERROR,"Cannot read file Specified", us, e);
         }
         return file;
     }
@@ -68,7 +65,7 @@ public class PreProcessor {
                     for (int i = 0; i < statements.size(); i++) {
                         if (statements.get(i).IDENTIFIRE.equals(temp.IDENTIFIRE)) {
                             statements.remove(i);
-                            PreProcessor.logPreProcessorWarning(temp.IDENTIFIRE + " Has already been defined use undef to undefine the value before creating a new value overwritting existing value", currentLine.realLineNumber);
+                            LOGGER.log(CompilationLevel.COMPILATION_WARNING,temp.IDENTIFIRE + " Has already been defined use undef to undefine the value before creating a new value overwritting existing value",  currentLine);
                         }
                     }
 
@@ -78,7 +75,7 @@ public class PreProcessor {
                 return temp;
             }
         }
-        PreProcessor.logPreProcessorError("Not a valid Statement", currentLine.realLineNumber);
+        LOGGER.log(CompilationLevel.COMPILATION_ERROR,"Not a valid Statement", currentLine);
         return null;
     }
 
@@ -183,11 +180,11 @@ public class PreProcessor {
         if (file != null) {
             if (OptionsHandler.includeRegDef.val()) {
                 file.add(0, new UserLine("#include \"" + ResourceHandler.REG_DEF_HEADER_FILE + "\"", -2));
-                logPreProcessorMessage("Included regdef.asm");
+                LOGGER.log(CompilationLevel.COMPILATION_MESSAGE,"Included regdef.asm");
             }
             if (OptionsHandler.includeSysCallDef.val()) {
                 file.add(0, new UserLine("#include \"" + ResourceHandler.SYS_CALL_DEF_HEADER_FILE + "\"", -3));
-                logPreProcessorMessage("Included syscalldef.asm");
+                LOGGER.log(CompilationLevel.COMPILATION_MESSAGE,"Included syscalldef.asm");
             }
         }
 
@@ -216,7 +213,7 @@ public class PreProcessor {
             try {
                 currentLine.line = cleanLine(currentLine.line);
             } catch (Exception e) {
-                PreProcessor.logPreProcessorError("Cannot Clean Line:\n" + Log.getFullExceptionMessage(e), currentLine.realLineNumber); //cleans the line (fixes spacing and removes comments)
+                LOGGER.log(CompilationLevel.COMPILATION_ERROR, "Cannot Clean Line: " + currentLine, e); //cleans the line (fixes spacing and removes comments)
             }
 
             if (currentLine.line.equals("") || currentLine.line.equals("/n")) { //if line is empty delete it and move on
@@ -255,12 +252,12 @@ public class PreProcessor {
     }
 
     private static void writePreProcessedFile(ArrayList<UserLine> fileInfo) {
-        File file = new File(ResourceHandler.COMPILER_PATH + FileHandler.FILE_SEPARATOR + "PreProcessedFile.asm");
+        File file = new File(ResourceHandler.COMPILER_PATH + FileUtils.FILE_SEPARATOR + "PreProcessedFile.asm");
         writeArrayListOfUserLinesToFile(fileInfo, file);
     }
 
     private static void writeCleanedFile(ArrayList<UserLine> fileInfo) {
-        File file = new File(ResourceHandler.COMPILER_PATH + FileHandler.FILE_SEPARATOR + "CleanedFile.asm");
+        File file = new File(ResourceHandler.COMPILER_PATH + FileUtils.FILE_SEPARATOR + "CleanedFile.asm");
         writeArrayListOfUserLinesToFile(fileInfo, file);
     }
 
@@ -275,10 +272,10 @@ public class PreProcessor {
 
                 out.println(data.get(i).line);
             }
-            PreProcessor.logPreProcessorMessage(file.getName() + " File Wrote to:" + file.getAbsolutePath());
+            LOGGER.log(CompilationLevel.COMPILATION_MESSAGE, file.getName() + " File Wrote to:" + file.getAbsolutePath());
             out.flush();
         } catch (Exception e) {
-            PreProcessor.logPreProcessorError("Unable to write " + file.getName() + " File to:" + file.getAbsolutePath() + "\n" + Log.getFullExceptionMessage(e));
+            LOGGER.log(CompilationLevel.COMPILATION_ERROR, "Unable to write " + file.getName() + " File to:" + file.getAbsolutePath(), e);
         } finally {
             try {
 
@@ -292,35 +289,5 @@ public class PreProcessor {
 
             }
         }
-    }
-
-    public static void logPreProcessorError(String message, int line) {
-
-        ASMCompiler.logCompilerError("[PreProcessor]: on line " + line + " " + message);
-    }
-
-    public static void logPreProcessorWarning(String message, int line) {
-
-        ASMCompiler.logCompilerWarning("[PreProcessor]: on line " + line + " " + message);
-    }
-
-    public static void logPreProcessorMessage(String message, int line) {
-
-        ASMCompiler.logCompilerMessage("[PreProcessor]: on line " + line + " " + message);
-    }
-
-    public static void logPreProcessorError(String message) {
-
-        ASMCompiler.logCompilerError("[PreProcessor]: " + message);
-    }
-
-    public static void logPreProcessorWarning(String message) {
-
-        ASMCompiler.logCompilerWarning("[PreProcessor]: " + message);
-    }
-
-    public static void logPreProcessorMessage(String message) {
-
-        ASMCompiler.logCompilerMessage("[PreProcessor]: " + message);
     }
 }

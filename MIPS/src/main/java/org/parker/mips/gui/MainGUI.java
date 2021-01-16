@@ -28,6 +28,8 @@ import java.awt.event.WindowListener;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -38,6 +40,8 @@ public class MainGUI extends javax.swing.JFrame {
     private static Thread autoUpdateThread;
     private static boolean autoUpdate;
     private static MainGUI instance;
+
+    private static final Logger LOGGER = Logger.getLogger(MainGUI.class.getName());
 
     public static synchronized boolean isRunning() {
         return autoUpdate;
@@ -103,7 +107,7 @@ public class MainGUI extends javax.swing.JFrame {
             aboutButton.setIcon(new FlatSVGIcon("images/informationDialog.svg", (int) (aboutButton.getWidth() / 1.5), (int) (aboutButton.getHeight() / 1.5)));
             //aboutLinkedFile.setIcon(new FlatSVGIcon("images/informationDialog.svg", (int) (aboutLinkedFile.getWidth() / 1.5), (int) (aboutLinkedFile.getHeight() / 1.5)));
         } catch (Exception e) {
-            Log.logError(Log.getFullExceptionMessage(e));
+            LOGGER.log(Level.SEVERE, "Failed to load Icon", e);
         }
 
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -193,7 +197,7 @@ public class MainGUI extends javax.swing.JFrame {
                     Processor.stop();
                     Processor.reset();
                     //if (FileHandler.loadExampleFile(new File(((ThemedJMenuItem) evt.getSource()).getName()))) {
-                    new FormattedTextEditor(FileHandler.loadFileAsString(new File(((javax.swing.JMenuItem) evt.getSource()).getName())));
+                    new FormattedTextEditor(FileUtils.loadFileAsString(new File(((javax.swing.JMenuItem) evt.getSource()).getName())));
                     ASMCompiler.compileDefault();
                     //}
                 }
@@ -386,7 +390,7 @@ public class MainGUI extends javax.swing.JFrame {
         delaySlider = new javax.swing.JSlider();
         delayLable = new javax.swing.JLabel();
         bottomPanel = new javax.swing.JPanel();
-        logFrame = new org.parker.mips.Log();
+        logFrame = new LogFrame();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuButton = new javax.swing.JMenuItem();
@@ -871,7 +875,7 @@ public class MainGUI extends javax.swing.JFrame {
     	JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
         int returnVal = fc.showOpenDialog(MainGUI.getFrame());
         if (returnVal == fc.FILES_ONLY) {
-            FileHandler.saveByteArrayToFile(Memory.getMemory(), fc.getSelectedFile());
+            FileUtils.saveByteArrayToFileSafe(Memory.getMemory(), fc.getSelectedFile());
         }
     }
     
@@ -879,7 +883,7 @@ public class MainGUI extends javax.swing.JFrame {
     	JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
         int returnVal = fc.showOpenDialog(MainGUI.getFrame());
         if (returnVal == fc.FILES_ONLY) {
-            Memory.setMemory(FileHandler.loadFileAsByteArray(fc.getSelectedFile()));
+            Memory.setMemory(FileUtils.loadFileAsByteArraySafe(fc.getSelectedFile()));
         }
         Processor.stop();
         Processor.reset();
@@ -895,7 +899,8 @@ public class MainGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_asciiChartButtonActionPerformed
 
     private void aboutLinkedFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutLinkedFileActionPerformed
-        Log.logCustomMessage("Linked Files can only be read by this program and are loaded from the file every time compiled. This is usful is another text editor is being used", true, false, true, Color.BLUE, null);
+        LOGGER.log(Level.INFO, "Linked Files can only be read by this program and are loaded from the file every time compiled. This is usful is another text editor is being used");
+        //LogFrame.logCustomMessage(, true, false, true, Color.BLUE, null);
         //infoBox("Message", "Linked Files can only be read by this program \n and are loaded from the file every time compiled. \n This is usful is another text editor is being used");
     }//GEN-LAST:event_aboutLinkedFileActionPerformed
 
@@ -909,7 +914,7 @@ public class MainGUI extends javax.swing.JFrame {
 
     private void documentationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_documentationButtonActionPerformed
         try {
-            DesktopBrowser.openLinkInBrowser(ResourceHandler.DOCUMENTATION_PATH + FileHandler.FILE_SEPARATOR + "index.html");
+            DesktopBrowser.openLinkInBrowser(ResourceHandler.DOCUMENTATION_PATH + FileUtils.FILE_SEPARATOR + "index.html");
         } catch (Exception ex) {
         }
     }//GEN-LAST:event_documentationButtonActionPerformed
@@ -1039,7 +1044,7 @@ public class MainGUI extends javax.swing.JFrame {
     //private static javax.swing.JCheckBox linkedButton;
     private static javax.swing.JMenuItem loadPluginJMenuItem;
     private static javax.swing.JCheckBoxMenuItem logErrorsButton;
-    private static org.parker.mips.Log logFrame;
+    private static LogFrame logFrame;
     private static javax.swing.JCheckBoxMenuItem logMessagesButton;
     private static javax.swing.JCheckBoxMenuItem logSystemMessagesButton;
     private static javax.swing.JCheckBoxMenuItem logWarningsButton;

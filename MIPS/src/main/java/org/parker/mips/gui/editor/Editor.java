@@ -5,7 +5,7 @@
  */
 package org.parker.mips.gui.editor;
 
-import org.parker.mips.FileHandler;
+import org.parker.mips.FileUtils;
 import org.parker.mips.ResourceHandler;
 import org.parker.mips.gui.EditorTabbedPane;
 import org.parker.mips.gui.MainGUI;
@@ -181,7 +181,7 @@ public abstract class Editor extends javax.swing.JPanel {
             isSaved = false;
             return false;
         }
-        isSaved = FileHandler.saveByteArrayToFile(getDataAsBytes(), currentFile);
+        isSaved = FileUtils.saveByteArrayToFileSafe(getDataAsBytes(), currentFile);
         return isSaved;
 
     }
@@ -195,7 +195,7 @@ public abstract class Editor extends javax.swing.JPanel {
         if (returnVal == JFileChooser.FILES_ONLY) {
             currentFile = fc.getSelectedFile();
             if (currentFile != null) {
-                isSaved = FileHandler.saveByteArrayToFile(getDataAsBytes(), currentFile);
+                isSaved = FileUtils.saveByteArrayToFileSafe(getDataAsBytes(), currentFile);
                 return isSaved;
             }
         }

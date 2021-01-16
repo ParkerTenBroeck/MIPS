@@ -5,12 +5,13 @@
  */
 package org.parker.mips.plugin.syscall;
 
-import org.parker.mips.Log;
 import org.parker.mips.ResourceHandler;
 import org.parker.mips.gui.MainGUI;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.parker.mips.processor.Processor.*;
 
@@ -25,13 +26,15 @@ public class SystemCallPluginHandler {
 
     private static SystemCall[] idrkWhat = new SystemCall[500];
 
+    private final static Logger LOGGER = Logger.getLogger(SystemCallPluginHandler.class.getName());
+
     public static void registerSystemCallPlugin(SystemCallPlugin scp) {
 
         if (scp == null) {
             return;
         }
         if (scp.getSystemCalls() == null) {
-            logSystemCallPluginHandlerError("System Calls is null in" + scp.DESCRIPTION.NAME + " skipping for now");
+            LOGGER.log(Level.SEVERE, "System Calls is null in" + scp.DESCRIPTION.NAME + " skipping for now");
             return;
         }
 
@@ -42,7 +45,7 @@ public class SystemCallPluginHandler {
         for (SystemCall sc : scl) {
             if (sc == null) {
                 totalConflicts++;
-                logSystemCallPluginHandlerError("System Call in " + scp.DESCRIPTION.NAME + " is null skipping for now");
+                LOGGER.log(Level.SEVERE,"System Call in " + scp.DESCRIPTION.NAME + " is null skipping for now");
                 continue;
             }
             boolean conflict = false;
@@ -50,7 +53,7 @@ public class SystemCallPluginHandler {
                 if ((sc.DATA.SYSTEM_CALL_NAME.equals(rsc.DATA.SYSTEM_CALL_NAME)) || (sc.DATA.SYSTEM_CALL_NUMBER == rsc.DATA.SYSTEM_CALL_NUMBER && sc.DATA.SYSTEM_CALL_NUMBER >= 0)) {
                     conflict = true;
                     totalConflicts++;
-                    logSystemCallPluginHandlerError("System Call Conflict " + sc.DATA.SYSTEM_CALL_NAME + ":" + sc.DATA.SYSTEM_CALL_NUMBER
+                    LOGGER.log(Level.SEVERE,"System Call Conflict " + sc.DATA.SYSTEM_CALL_NAME + ":" + sc.DATA.SYSTEM_CALL_NUMBER
                             + " was not registered because " + rsc.DATA.SYSTEM_CALL_NAME + ":" + rsc.DATA.SYSTEM_CALL_NUMBER + " was already reigstered");
                     break;
                 }
@@ -63,21 +66,21 @@ public class SystemCallPluginHandler {
                     while (idrkWhat[i] != null) {
                         i++;
                     }
-                    logSystemCallPluginHandlerSystemMessage("SystemCall: " + sc.DATA.SYSTEM_CALL_NAME + " From Plugin: " + scp.DESCRIPTION.NAME + " was registered with the System_Call_Number: " + i);
+                    LOGGER.log(Level.INFO,"SystemCall: " + sc.DATA.SYSTEM_CALL_NAME + " From Plugin: " + scp.DESCRIPTION.NAME + " was registered with the System_Call_Number: " + i);
                     idrkWhat[i] = sc;
                 }
                 registeredSystemCalls.add(sc);
-                logSystemCallPluginHandlerSystemMessage("System Call " + sc.DATA.SYSTEM_CALL_NAME + ":" + sc.DATA.SYSTEM_CALL_NUMBER + " was successfully registered");
+                LOGGER.log(Level.CONFIG,"System Call " + sc.DATA.SYSTEM_CALL_NAME + ":" + sc.DATA.SYSTEM_CALL_NUMBER + " was successfully registered");
             } else {
-                logSystemCallPluginHandlerWarning("System Call " + sc.DATA.SYSTEM_CALL_NAME + ":" + sc.DATA.SYSTEM_CALL_NUMBER + "was not registered because of a conflict");
+                LOGGER.log(Level.WARNING,"System Call " + sc.DATA.SYSTEM_CALL_NAME + ":" + sc.DATA.SYSTEM_CALL_NUMBER + "was not registered because of a conflict");
                 //warning system call (name and number) was not registered
             }
         }
         registeredSystemCallPlugins.add(scp);
         if (totalConflicts > 0) {
-            logSystemCallPluginHandlerWarning("SystemCall plugin: " + scp.DESCRIPTION.NAME + " was reigstered with " + totalConflicts + " conflicts");
+            LOGGER.log(Level.WARNING, "SystemCall plugin: " + scp.DESCRIPTION.NAME + " was reigstered with " + totalConflicts + " conflicts");
         } else {
-            logSystemCallPluginHandlerSystemMessage("SystemCall plugin: " + scp.DESCRIPTION.NAME + " was reigstered with " + totalConflicts + " conflicts" + "\n");
+            LOGGER.log(Level.CONFIG, "SystemCall plugin: " + scp.DESCRIPTION.NAME + " was reigstered with " + totalConflicts + " conflicts" + "\n");
         }
         
         MainGUI.reloadSystemCallPluginLists();
@@ -101,7 +104,7 @@ public class SystemCallPluginHandler {
         try {
             sc = idrkWhat[id];
         } catch (IndexOutOfBoundsException e) {
-            logRunTimeSystemCallError("Invalid System Call either does not exist or was not registered ID: " + id);
+            throw new InvalidSystemCallException("Invalid System Call: " + id);
         } catch (Exception e) {
 
         }
@@ -109,11 +112,13 @@ public class SystemCallPluginHandler {
             try {
                 sc.handleSystemCall();
             } catch (Exception e) {
-                logRunTimeSystemCallError("System Call: " + sc.DATA.SYSTEM_CALL_NAME
-                        + " from plugin: " + sc.HOST_PLUGIN.DESCRIPTION.NAME + "\n" + Log.getFullExceptionMessage(e));
+                throw new SystemCallRunTimeExcpetion("System Call: " + sc.DATA.SYSTEM_CALL_NAME
+                        + " from plugin: " + sc.HOST_PLUGIN.DESCRIPTION.NAME, e);
+                //logRunTimeSystemCallError("System Call: " + sc.DATA.SYSTEM_CALL_NAME
+                //        + " from plugin: " + sc.HOST_PLUGIN.DESCRIPTION.NAME + "\n" + LogFrame.getFullExceptionMessage(e));
             }
         } else {
-            logRunTimeSystemCallError("Invalid System Call either does not exist or was not registered ID: " + id);
+            throw new InvalidSystemCallException("Invalid System Call: " + id);
         }
     }
 
@@ -122,7 +127,9 @@ public class SystemCallPluginHandler {
         boolean wasError = false;
 
         if (plugin != null) {
-            if (plugin.onUnload()) {
+            try {
+                plugin.onUnload();
+
                 registeredSystemCallPlugins.remove(plugin);
                 for (SystemCall sc : plugin.getSystemCalls()) {
                     try {
@@ -135,23 +142,24 @@ public class SystemCallPluginHandler {
                             }
                         }
                     } catch (Exception e) {
-                        logSystemCallPluginHandlerError("Could not unregister SystemCall" + sc.DATA.SYSTEM_CALL_NAME + " \n" + Log.getFullExceptionMessage(e));
+                        LOGGER.log(Level.SEVERE, "Could not unregister SystemCall" + sc.DATA.SYSTEM_CALL_NAME, e);
                         wasError = true;
                     }
                 }
                 if (!wasError) {
-                    logSystemCallPluginHandlerSystemMessage("Succcessfully unloaded and unregistered: " + plugin.DESCRIPTION.NAME);
+                    LOGGER.log(Level.INFO, "Succcessfully unloaded and unregistered: " + plugin.DESCRIPTION.NAME);
                 } else {
-                    logSystemCallPluginHandlerWarning("Succcessfully unloaded and unregistered: " + plugin.DESCRIPTION.NAME + " With some Errors");
+                    LOGGER.log(Level.WARNING, "Unloaded and unregistered: " + plugin.DESCRIPTION.NAME + " With some Errors");
                 }
                 MainGUI.reloadSystemCallPluginLists();
                 regenerateStandardSysCallHeaderFile();
-            } else {
-                logSystemCallPluginHandlerError("There was an error unloading the plugin");
+            } catch(Exception e) {
+                LOGGER.log(Level.SEVERE, "There was an error unloading the plugin", e);
             }
         }
     }
 
+    /*
     //runtime systemcall
     public static void logRunTimeSystemCallError(String message) {
         logRunTimeError("[System Call] " + message);
@@ -167,29 +175,30 @@ public class SystemCallPluginHandler {
 
     //system call
     public static void logSystemCallError(String message) {
-        Log.logError("[System Call] " + message);
+        LogFrame.logError("[System Call] " + message);
     }
 
     public static void logSystemCallWarning(String message) {
-        Log.logWarning("[System Call] " + message);
+        LogFrame.logWarning("[System Call] " + message);
     }
 
     public static void logSystemCallSystemMessage(String message) {
-        Log.logSystemMessage("[System Call] " + message);
+        LogFrame.logSystemMessage("[System Call] " + message);
     }
 
     //handler
     public static void logSystemCallPluginHandlerError(String message) {
-        Log.logError("[Plugin Handler] " + message);
+        LogFrame.logError("[Plugin Handler] " + message);
     }
 
     public static void logSystemCallPluginHandlerWarning(String message) {
-        Log.logWarning("[Plugin Handler] " + message);
+        LogFrame.logWarning("[Plugin Handler] " + message);
     }
 
     public static void logSystemCallPluginHandlerSystemMessage(String message) {
-        Log.logSystemMessage("[Plugin Handler] " + message);
+        LogFrame.logSystemMessage("[Plugin Handler] " + message);
     }
+*/
 
     public static void regenerateStandardSysCallHeaderFile() {
         PrintWriter writer = null;
@@ -244,9 +253,9 @@ public class SystemCallPluginHandler {
                 writer.println();
                 writer.println();
             }
-            logSystemCallSystemMessage("Successfully wrote Standard System Call Header file to: " + ResourceHandler.SYS_CALL_DEF_HEADER_FILE + "\n\n");
+            LOGGER.log(Level.INFO, "Successfully wrote Standard System Call Header file to: " + ResourceHandler.SYS_CALL_DEF_HEADER_FILE + "\n\n");
         } catch (Exception e) {
-            logSystemCallError("There was some Exception e:" + e + " While writting the Standard System Call Header File to: " + ResourceHandler.SYS_CALL_DEF_HEADER_FILE + "\n\n");
+            LOGGER.log(Level.SEVERE, "Error While writting the Standard System Call Header File to: " + ResourceHandler.SYS_CALL_DEF_HEADER_FILE + "\n\n", e);
         }
         try {
             writer.close();

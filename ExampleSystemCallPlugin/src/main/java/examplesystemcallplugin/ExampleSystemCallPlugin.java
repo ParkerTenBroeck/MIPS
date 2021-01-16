@@ -9,6 +9,7 @@ import org.parker.mips.plugin.syscall.SystemCallPlugin;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
 
 /**
  *
@@ -76,18 +77,18 @@ public class ExampleSystemCallPlugin extends SystemCallPlugin {
         registerGeneralListeners(new Node("Root",
                 new Node[]{
                     new Node("Example 1", (ActionListener) (ActionEvent ae) -> {
-                        logSystemCallPluginMessage("Example 1");
+                        LOGGER.log(Level.INFO, "Example 1");
                     }),
                     new Node("Example SubFolder",
                             new Node[]{
                                 new Node("Example 3", (ActionListener) (ActionEvent ae) -> {
-                                    logSystemCallPluginMessage("[Example SubFolder] Example 3");
+                                    LOGGER.log(Level.INFO,"[Example SubFolder] Example 3");
                                 }),
                                 new Node("Example 4", (ActionListener) (ActionEvent ae) -> {
-                                    logSystemCallPluginMessage("[Example SubFolder] Example 4");
+                                    LOGGER.log(Level.INFO,"[Example SubFolder] Example 4");
                                 })}),
                     new Node("Example 2", (ActionListener) (ActionEvent ae) -> {
-                        logSystemCallPluginWarning("Example 2");
+                        LOGGER.log(Level.INFO,"Example 2");
                     })}));
     }
 
@@ -97,10 +98,8 @@ public class ExampleSystemCallPlugin extends SystemCallPlugin {
     }
 
     @Override
-    public boolean onUnload() {
-        //nessisary code to unload the plugin
+    public void onUnload() {
 
         exampleFrame.dispose();
-        return true; //return false if there was an error
     }
 }

@@ -29,4 +29,9 @@ public class UserLine {
 
     public UserLine() {
     }
+
+    @Override
+    public String toString() {
+        return realLineNumber + ":" + line;
+    }
 }
