@@ -15,7 +15,12 @@ public class CompilationLogger extends  Logger{
     public void log(Level level, String message, UserLine ul){
         super.log(level, "On line: " + ul + " " + message);
     }
+
     public void log(Level level, String message, UserLine ul, Throwable cause){
         super.log(level, "On line: " + ul + " " + message, cause);
+    }
+
+    public void log(Level level, CompilationException cause){
+        super.log(level, "", cause);
     }
 }

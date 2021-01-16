@@ -26,6 +26,8 @@ public class Configurer {
             initt = true;
         }
 
+        Thread.setDefaultUncaughtExceptionHandler((t, e) -> LOGGER.log(Level.SEVERE, t + " Uncaught Excpetion at: ", e));
+
         {
             Logger mipsLogger = Logger.getLogger("org.parker.mips");
             {

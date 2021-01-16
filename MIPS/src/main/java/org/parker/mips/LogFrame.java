@@ -6,6 +6,7 @@
 package org.parker.mips;
 
 
+import org.parker.mips.compiler.CompilationLevel;
 import org.parker.mips.gui.theme.lookandfeel.ModernScrollPane;
 
 import javax.swing.*;
@@ -215,7 +216,7 @@ public class LogFrame extends javax.swing.JPanel {
         @Override
         public void publish(LogRecord record) {
 
-            String message = "[" + String.join("] [", record.getSourceClassName().replaceFirst("org.parker.mips.", "").split("\\.")) + "] " + record.getMessage();
+            String message = "[" + String.join("] [", record.getSourceClassName().replaceFirst("org.parker.mips.", "").split("\\.")) + "] " + (record.getMessage() == null ? "": record.getMessage());
 
             SimpleAttributeSet sas = new SimpleAttributeSet();
 
@@ -225,9 +226,14 @@ public class LogFrame extends javax.swing.JPanel {
                 //LogFrame.logWarning(message);
             }else if(record.getLevel() == Level.SEVERE){
                 //LogFrame.logError(message);
-            }else{
+            }else if(record.getLevel() == CompilationLevel.COMPILATION_MESSAGE){
 
-            }record.getSourceClassName();
+            }else if(record.getLevel() == CompilationLevel.COMPILATION_WARNING){
+
+            }else if(record.getLevel() == CompilationLevel.COMPILATION_ERROR){
+                message += " " + (record.getThrown() == null ? "" : record.getThrown().getMessage());
+            }
+            record.getSourceClassName();
 
             LogFrame.appendMessageToVirtualConsoleLog("[" + record.getLevel().getName() + "]" + message,sas);
 

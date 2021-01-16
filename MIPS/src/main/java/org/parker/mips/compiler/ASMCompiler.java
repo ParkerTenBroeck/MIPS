@@ -342,7 +342,7 @@ public class ASMCompiler {
                     try {
                         ctul.finalCompilePass();
                     }catch(CompilationException e){
-
+                        LOGGER.log(CompilationLevel.COMPILATION_ERROR, e);
                     }
                 }
             }

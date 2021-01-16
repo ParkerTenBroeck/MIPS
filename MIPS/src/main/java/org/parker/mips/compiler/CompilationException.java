@@ -2,6 +2,9 @@ package org.parker.mips.compiler;
 
 import org.parker.mips.compiler.data.UserLine;
 
+import java.io.PrintStream;
+import java.io.PrintWriter;
+
 public class CompilationException extends Throwable{
     UserLine line;
 
@@ -23,6 +26,24 @@ public class CompilationException extends Throwable{
 
     @Override
     public String getMessage(){
-        return "On Line: " + line + " " + super.getMessage();
+        String temp = "On Line " + line + ": ";
+        temp  += (super.getMessage() == null ? "" : super.getMessage()) ;
+        temp += (super.getCause() == null ? "" : super.getCause().getMessage());
+        return temp;
+    }
+
+    @Override
+    public void printStackTrace() {
+        //super.printStackTrace();
+    }
+
+    @Override
+    public void printStackTrace(PrintStream s) {
+        //super.printStackTrace(s);
+    }
+
+    @Override
+    public void printStackTrace(PrintWriter s) {
+        //super.printStackTrace(s);
     }
 }
