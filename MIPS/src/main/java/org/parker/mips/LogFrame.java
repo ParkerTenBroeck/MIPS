@@ -30,78 +30,14 @@ import java.util.logging.Logger;
  */
 public class LogFrame extends javax.swing.JPanel {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	//private static final Logger LOGGER = Logger.getLogger(LogFrame.class.getName());
-	
 	static {
         LogFrame.initComponents();
-    }
-
-    private static void clearDisplay() {
-        //System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n");
-        //Log.appendMessageToVirtualConsoleLog("\n\n\n\n\n\n\n\n\n\n\n\n\n", null);
-        LogFrame.jTextPane1.setText("");
-    }
-
-    private static void logError(String message) {
-        if (!OptionsHandler.logErrors.val()) {
-            return;
-        }
-        //System.err.println("[Error] " + message);
-
-        SimpleAttributeSet att = new SimpleAttributeSet();
-        StyleConstants.setForeground(att, Color.RED);
-        StyleConstants.setBold(att, false);
-        LogFrame.appendMessageToVirtualConsoleLog("[Error] " + message, att);
-    }
-
-    private static void logWarning(String message) {
-        if (!OptionsHandler.logWarnings.val()) {
-            return;
-        }
-        //System.out.println("[Warning] " + message);
-
-        SimpleAttributeSet att = new SimpleAttributeSet();
-        StyleConstants.setForeground(att, Color.YELLOW);
-        StyleConstants.setBold(att, false);
-        LogFrame.appendMessageToVirtualConsoleLog("[Warning] " + message, att);
-    }
-
-    private static void logSystemMessage(String message) {
-        if (!OptionsHandler.logSystemMessages.val()) {
-            return;
-        }
-        //
-        // System.out.println("[System Message] " + message);
-
-        SimpleAttributeSet att = new SimpleAttributeSet();
-        StyleConstants.setForeground(att, Color.LIGHT_GRAY);
-        StyleConstants.setBold(att, false);
-        LogFrame.appendMessageToVirtualConsoleLog("[System Message] " + message, att);
-    }
-
-    private static void logMessage(String message) {
-        if (!OptionsHandler.logMessages.val()) {
-            return;
-        }
-        //System.out.println("[Message] " + message);
-
-        SimpleAttributeSet att = new SimpleAttributeSet();
-        StyleConstants.setForeground(att, Color.LIGHT_GRAY);
-        StyleConstants.setBold(att, false);
-        LogFrame.appendMessageToVirtualConsoleLog("[Message] " + message, att);
     }
 
     private static void logCustomMessage(String message, SimpleAttributeSet att) {
         if (!OptionsHandler.logMessages.val()) {
             return;
         }
-        //System.out.println("[Message] " + message);
-
         LogFrame.appendMessageToVirtualConsoleLog("[Message] " + message, att);
     }
 
@@ -221,21 +157,39 @@ public class LogFrame extends javax.swing.JPanel {
             SimpleAttributeSet sas = new SimpleAttributeSet();
 
             if(record.getLevel() == Level.INFO){
-                //LogFrame.logMessage(message);
+
+                SimpleAttributeSet att = new SimpleAttributeSet();
+                StyleConstants.setForeground(att, Color.LIGHT_GRAY);
+                StyleConstants.setBold(att, false);
+
             }else if(record.getLevel() == Level.WARNING){
-                //LogFrame.logWarning(message);
+
+                StyleConstants.setForeground(sas, Color.YELLOW);
+                StyleConstants.setBold(sas, false);
+
             }else if(record.getLevel() == Level.SEVERE){
-                //LogFrame.logError(message);
+
+                StyleConstants.setForeground(sas, Color.RED);
+                StyleConstants.setBold(sas, false);
+
             }else if(record.getLevel() == CompilationLevel.COMPILATION_MESSAGE){
+
+                StyleConstants.setForeground(sas, Color.LIGHT_GRAY);
+                StyleConstants.setBold(sas, false);
 
             }else if(record.getLevel() == CompilationLevel.COMPILATION_WARNING){
 
+                StyleConstants.setForeground(sas, Color.YELLOW);
+                StyleConstants.setBold(sas, false);
+
             }else if(record.getLevel() == CompilationLevel.COMPILATION_ERROR){
+
+                StyleConstants.setForeground(sas, Color.RED);
+                StyleConstants.setBold(sas, false);
                 message += " " + (record.getThrown() == null ? "" : record.getThrown().getMessage());
             }
-            record.getSourceClassName();
 
-            LogFrame.appendMessageToVirtualConsoleLog("[" + record.getLevel().getName() + "]" + message,sas);
+            LogFrame.appendMessageToVirtualConsoleLog("[" + record.getLevel().getName() + "] " + message,sas);
 
             return;
 

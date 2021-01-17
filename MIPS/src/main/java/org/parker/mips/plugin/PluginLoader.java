@@ -140,6 +140,7 @@ public class PluginLoader {
                         LOGGER.log(Level.SEVERE, "Failed to load External Plugin: " + f.getAbsolutePath(), e);
                     }
                 }
+                SystemCallPluginHandler.regenerateStandardSysCallHeaderFile();
             }
 
         } catch (Exception e) {

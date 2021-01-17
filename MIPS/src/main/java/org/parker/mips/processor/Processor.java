@@ -120,7 +120,7 @@ public class Processor implements Runnable {
         try {
             runInstruction(getOpCode());
         }catch(Exception e){
-            LOGGER.log(Level.SEVERE, "Runtime Error", e);
+            LOGGER.log(Level.SEVERE, "Runtime Error: " + e.getMessage(), e);
             if(OptionsHandler.breakOnRunTimeError.val()){
                 Processor.stop();
             }

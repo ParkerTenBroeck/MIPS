@@ -82,9 +82,9 @@ public class ResourceHandler {
         temp &= extractResourceToFolder(THEME_PATH, "Themes");
 
         if (temp) {
-            LOGGER.log(Level.CONFIG, "Extracted all resourced with 0 errors");
+            LOGGER.log(Level.CONFIG, "Extracted all resourced with 0 errors\n");
         } else {
-            LOGGER.log(Level.WARNING, "Extracted resources with errors");
+            LOGGER.log(Level.WARNING, "Extracted resources with errors\n");
         }
         return temp;
     }

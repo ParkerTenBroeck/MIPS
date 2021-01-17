@@ -128,13 +128,14 @@ public class MainGUI extends javax.swing.JFrame {
         OptionsHandler.logErrors.LinkJButton(logErrorsButton);
 
         addCompileButtonListener((ae) -> {
-            Processor.stop();
+            LOGGER.log(Level.FINER, "Compile Button Action Preformed");
             Processor.reset();
             EditorHandler.saveAll();
             ASMCompiler.compileDefault();
         });
 
         addStartButtonListener((ae) -> {
+            LOGGER.log(Level.FINER, "Start Processor Button Action Preformed");
             if (startButton.isSelected()) {
                 Processor.start();
                 MainGUI.startAutoUpdate();
@@ -144,10 +145,12 @@ public class MainGUI extends javax.swing.JFrame {
         });
 
         addStopButtonListener((ae) -> {
+            LOGGER.log(Level.FINER, "Stop Processor Button Action Preformed");
             Processor.stop();
         });
 
         addSingleStepButtonListener((ae) -> {
+            LOGGER.log(Level.FINER, "Single Step Processor Button Action Preformed");
             if (!startButton.isSelected()) {
                 Processor.runSingleStep();
             }
@@ -155,7 +158,7 @@ public class MainGUI extends javax.swing.JFrame {
         });
 
         addResetButtonListener((ae) -> {
-            Processor.stop();
+            LOGGER.log(Level.FINER, "Reset Processor Button Action Preformed");
             Processor.reset();
         });
 
@@ -163,6 +166,7 @@ public class MainGUI extends javax.swing.JFrame {
 
             @Override
             public void windowClosing(WindowEvent e) {
+        LOGGER.log(Level.FINER, "Main Window Exit Action Preformed");
 
                 if (!EditorHandler.isAllSaved()) {
                     int confirm = createWarningQuestion("Exit Confirmation", "You have unsaved work would you like to save before continuing?");
@@ -190,6 +194,7 @@ public class MainGUI extends javax.swing.JFrame {
         };
         this.addWindowListener(exitListener);
 
+        //Generates examples
         try {
 
             ActionListener al = new java.awt.event.ActionListener() {
@@ -872,6 +877,7 @@ public class MainGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_saveAsMenuButtonActionPerformed
     
     private void saveMemoryButtonActionPreformed(java.awt.event.ActionEvent evt) {
+        Processor.stop();
     	JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
         int returnVal = fc.showOpenDialog(MainGUI.getFrame());
         if (returnVal == fc.FILES_ONLY) {
@@ -886,7 +892,6 @@ public class MainGUI extends javax.swing.JFrame {
             Memory.setMemory(FileUtils.loadFileAsByteArraySafe(fc.getSelectedFile()));
         }
         Processor.stop();
-        Processor.reset();
         refreshAll();
     }
 
@@ -1022,7 +1027,6 @@ public class MainGUI extends javax.swing.JFrame {
     private static javax.swing.JLabel InstructionsRan;
     private static org.parker.mips.gui.EditorTabbedPane aSM_GUI1;
     private static javax.swing.JButton aboutButton;
-    //private static javax.swing.JButton aboutLinkedFile;
     private static javax.swing.JCheckBoxMenuItem adaptiveMemoryMenuButton;
     private static javax.swing.JMenuItem asciiChartButton;
     private static javax.swing.JPanel bottomPanel;

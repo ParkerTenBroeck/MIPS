@@ -24,7 +24,11 @@ public class InstructionDecode {
 			@Override
 			final void runInstruction(int opCode) {
 				int f = opCode & 0B111111;
-				regInstructionLookUp[f].runInstruction(opCode);
+				try {
+					regInstructionLookUp[f].runInstruction(opCode);
+				}catch(ArrayIndexOutOfBoundsException | NullPointerException e){
+					throw new InvalidOpCodeException("Invalid (Register) OpCode: " + Integer.toHexString(f));
+				}
 			}
 		};
 
@@ -586,8 +590,8 @@ public class InstructionDecode {
 		incPc();
 		try {
 			InstructionLookUp[o].runInstruction(opCode);
-		}catch(ArrayIndexOutOfBoundsException e){
-			throw new InvalidOpCodeException();
+		}catch(ArrayIndexOutOfBoundsException | NullPointerException e){
+			throw new InvalidOpCodeException("Invalid (Immediate) OpCode: 0x" + Integer.toHexString(o));
 		}
 	}
 	

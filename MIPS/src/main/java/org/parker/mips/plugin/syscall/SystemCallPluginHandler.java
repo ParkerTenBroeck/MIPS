@@ -61,12 +61,13 @@ public class SystemCallPluginHandler {
             if (!conflict) {
                 if (sc.DATA.SYSTEM_CALL_NUMBER >= 0) {
                     idrkWhat[sc.DATA.SYSTEM_CALL_NUMBER] = sc; //number of system call is known
+                    LOGGER.log(Level.CONFIG,"SystemCall: " + sc.DATA.SYSTEM_CALL_NAME + " From Plugin: " + scp.DESCRIPTION.NAME + " was registered with the System_Call_Number: " + sc.DATA.SYSTEM_CALL_NUMBER);
                 } else {
                     int i = 0; //number of system call is generated on load
                     while (idrkWhat[i] != null) {
                         i++;
                     }
-                    LOGGER.log(Level.INFO,"SystemCall: " + sc.DATA.SYSTEM_CALL_NAME + " From Plugin: " + scp.DESCRIPTION.NAME + " was registered with the System_Call_Number: " + i);
+                    LOGGER.log(Level.INFO,"SystemCall: " + sc.DATA.SYSTEM_CALL_NAME + " From Plugin: " + scp.DESCRIPTION.NAME + " was registered with the artificial System_Call_Number: " + i);
                     idrkWhat[i] = sc;
                 }
                 registeredSystemCalls.add(sc);
@@ -113,9 +114,7 @@ public class SystemCallPluginHandler {
                 sc.handleSystemCall();
             } catch (Exception e) {
                 throw new SystemCallRunTimeExcpetion("System Call: " + sc.DATA.SYSTEM_CALL_NAME
-                        + " from plugin: " + sc.HOST_PLUGIN.DESCRIPTION.NAME, e);
-                //logRunTimeSystemCallError("System Call: " + sc.DATA.SYSTEM_CALL_NAME
-                //        + " from plugin: " + sc.HOST_PLUGIN.DESCRIPTION.NAME + "\n" + LogFrame.getFullExceptionMessage(e));
+                        + " from plugin: " + sc.HOST_PLUGIN.DESCRIPTION.NAME + ": " + e.getMessage(), e);
             }
         } else {
             throw new InvalidSystemCallException("Invalid System Call: " + id);
@@ -158,47 +157,6 @@ public class SystemCallPluginHandler {
             }
         }
     }
-
-    /*
-    //runtime systemcall
-    public static void logRunTimeSystemCallError(String message) {
-        logRunTimeError("[System Call] " + message);
-    }
-
-    public static void logRunTimeSystemCallWarning(String message) {
-        logRunTimeWarning("[System Call] " + message);
-    }
-
-    public static void logRunTimeSystemCallMessage(String message) {
-        logRunTimeMessage("[System Call] " + message);
-    }
-
-    //system call
-    public static void logSystemCallError(String message) {
-        LogFrame.logError("[System Call] " + message);
-    }
-
-    public static void logSystemCallWarning(String message) {
-        LogFrame.logWarning("[System Call] " + message);
-    }
-
-    public static void logSystemCallSystemMessage(String message) {
-        LogFrame.logSystemMessage("[System Call] " + message);
-    }
-
-    //handler
-    public static void logSystemCallPluginHandlerError(String message) {
-        LogFrame.logError("[Plugin Handler] " + message);
-    }
-
-    public static void logSystemCallPluginHandlerWarning(String message) {
-        LogFrame.logWarning("[Plugin Handler] " + message);
-    }
-
-    public static void logSystemCallPluginHandlerSystemMessage(String message) {
-        LogFrame.logSystemMessage("[Plugin Handler] " + message);
-    }
-*/
 
     public static void regenerateStandardSysCallHeaderFile() {
         PrintWriter writer = null;
@@ -253,9 +211,9 @@ public class SystemCallPluginHandler {
                 writer.println();
                 writer.println();
             }
-            LOGGER.log(Level.INFO, "Successfully wrote Standard System Call Header file to: " + ResourceHandler.SYS_CALL_DEF_HEADER_FILE + "\n\n");
+            LOGGER.log(Level.CONFIG, "Successfully wrote Standard System Call Header file to: " + ResourceHandler.SYS_CALL_DEF_HEADER_FILE + "\n");
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error While writting the Standard System Call Header File to: " + ResourceHandler.SYS_CALL_DEF_HEADER_FILE + "\n\n", e);
+            LOGGER.log(Level.SEVERE, "Error While writting the Standard System Call Header File to: " + ResourceHandler.SYS_CALL_DEF_HEADER_FILE + "\n", e);
         }
         try {
             writer.close();

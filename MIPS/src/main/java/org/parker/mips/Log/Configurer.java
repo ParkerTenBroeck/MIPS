@@ -4,6 +4,7 @@ import org.parker.mips.FileUtils;
 import org.parker.mips.LogFrame;
 import org.parker.mips.ResourceHandler;
 
+import java.io.Console;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import java.util.zip.ZipOutputStream;
 public class Configurer {
 
     public final static Logger LOGGER = Logger.getLogger(Configurer.class.getName());
+    public final static Logger BASE_LOGGER = Logger.getLogger("org.parker.mips");
 
     private static boolean initt = false;
     public static void init(){
@@ -26,10 +28,12 @@ public class Configurer {
             initt = true;
         }
 
-        Thread.setDefaultUncaughtExceptionHandler((t, e) -> LOGGER.log(Level.SEVERE, t + " Uncaught Excpetion at: ", e));
+        Logger java = Logger.getLogger("");
+        java.setLevel(Level.OFF);
+
+        Thread.setDefaultUncaughtExceptionHandler((t, e) -> BASE_LOGGER.log(Level.SEVERE, t + " Uncaught Excpetion at: ", e));
 
         {
-            Logger mipsLogger = Logger.getLogger("org.parker.mips");
             {
                 FileOutputStream fos = null;
                 ZipOutputStream zo = null;
@@ -76,17 +80,21 @@ public class Configurer {
                 }
                 Handler fh = new FileHandler(file.getAbsolutePath());
                 fh.setLevel(Level.ALL);
-                mipsLogger.addHandler(fh);
+                BASE_LOGGER.addHandler(fh);
             } catch (IOException e) {
                 LOGGER.log(Level.SEVERE, "Failed to load Log File", e);
             }
 
-            Handler ch = new LogFrame.LogFrameHandler();
+            Handler ch = new ConsoleHandler();
             ch.setLevel(Level.ALL);
-            mipsLogger.addHandler(ch);
+            BASE_LOGGER.addHandler(ch);
+
+            Handler vh = new LogFrame.LogFrameHandler();
+            vh.setLevel(Level.ALL);
+            BASE_LOGGER.addHandler(vh);
 
 
-            mipsLogger.setLevel(Level.ALL);
+            BASE_LOGGER.setLevel(Level.ALL);
         }
 
 

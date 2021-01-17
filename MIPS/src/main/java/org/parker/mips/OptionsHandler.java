@@ -137,15 +137,12 @@ public class OptionsHandler {
 
                 } catch (Exception e) {
                     LOGGER.log(Level.WARNING, "Field invalid " + entry.getKey() + " Ignoring and continuing", e);
-                    //logOptionsHandlerError("Error Field invalid " + entry.getKey() + ":\n" + LogFrame.getFullExceptionMessage(e));
                 }
 
             });
-            LOGGER.log(Level.CONFIG, "Successfully loaded " + file.getName());
-            //logOptionsHandlerSystemMessage("Successfully loaded " + file.getName() + "\n\n");
+            LOGGER.log(Level.CONFIG, "Successfully loaded " + file.getName() + "\n");
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Failed to read Options file", e);
-            //logOptionsHandlerError("Failed to read Options file:\n" + LogFrame.getFullExceptionMessage(e));
+            LOGGER.log(Level.SEVERE, "Failed to read Options file\n", e);
         } finally {
             try {
                 reader.close();
@@ -170,14 +167,12 @@ public class OptionsHandler {
         Writer writer = null;
         File file = new File(filePath);
         try {
-            //System.out.println("asdasdasd");
             writer = Files.newBufferedWriter(file.toPath());
-            //System.err.println("asdasd");
             gson.toJson(new OptionsHandler(), writer);
 
-            LOGGER.log(Level.INFO, "Successfully saved " + file.getName() );
+            LOGGER.log(Level.CONFIG, "Successfully saved " + file.getName() );
         } catch (Exception e) {
-            LOGGER.log(Level.INFO, "Failed to write Options file", e);
+            LOGGER.log(Level.SEVERE, "Failed to write Options file", e);
         } finally {
             try {
                 writer.close();

@@ -19,7 +19,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 class ByteP {
 
@@ -213,6 +212,8 @@ public class ASMCompiler {
         origins.clear();
 
         MainGUI.refreshAll();
+
+        LOGGER.log(CompilationLevel.COMPILATION_MESSAGE, "Compilation of file: " + file.getAbsolutePath() + " has finished\n");
     }
 
     public static void saveOriginsToFile(String compiledFileName) {

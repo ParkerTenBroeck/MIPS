@@ -7,7 +7,6 @@ package org.parker.mips.compiler.preprocessor.statements;
 
 import org.parker.mips.compiler.CompilationLevel;
 import org.parker.mips.compiler.CompilationLogger;
-import org.parker.mips.compiler.PreProcessor;
 import org.parker.mips.compiler.data.UserLine;
 
 import java.util.ArrayList;
