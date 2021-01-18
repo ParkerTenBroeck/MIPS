@@ -20,9 +20,10 @@ import org.parker.mips.gui.theme.ThemeHandler;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.util.*;
@@ -49,40 +50,51 @@ public class OptionsGUI extends javax.swing.JFrame {
 
 		}
 
+		Object reference = this;
+		WindowListener exitListener = new WindowAdapter() {
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				OptionsHandler.removeAllObserversLinkedToObject(reference);
+			}
+		};
+
+		this.addWindowListener(exitListener);
+
 		// Add icon
 		// linking all of the components to the linked OPTIONS
 		// General
 		// logging
-		OptionsHandler.logSystemMessages.LinkJButton(this.logSystemMessagesButton);
-		OptionsHandler.logMessages.LinkJButton(this.logMessagesButton);
-		OptionsHandler.logWarnings.LinkJButton(this.logWarningsButton);
-		OptionsHandler.logErrors.LinkJButton(this.logErrorsButton);
+		//OptionsHandler.logSystemMessages.LinkJButton(this, this.logSystemMessagesButton);
+		//OptionsHandler.logMessages.LinkJButton(this, this.logMessagesButton);
+		//OptionsHandler.logWarnings.LinkJButton(this, this.logWarningsButton);
+		//OptionsHandler.logErrors.LinkJButton(this, this.logErrorsButton);
 
 		// GUI options
-		OptionsHandler.enableGUIAutoUpdateWhileRunning.LinkJButton(this.enableAutoGUIUpdatesWhileRuning);
-		OptionsHandler.GUIAutoUpdateRefreshTime.LinkJSlider(this.guiUpdateTimeSlider);
+		OptionsHandler.enableGUIAutoUpdateWhileRunning.LinkJButton(this, this.enableAutoGUIUpdatesWhileRuning);
+		OptionsHandler.GUIAutoUpdateRefreshTime.LinkJSlider(this, this.guiUpdateTimeSlider);
 
 		// Compiler
-		OptionsHandler.saveCleanedFile.LinkJButton(this.saveCleanedFileButton);
-		OptionsHandler.savePreProcessedFile.LinkJButton(this.savePreProcessorFileButton);
-		OptionsHandler.saveCompilationInfo.LinkJButton(this.saveCompilerInfoFileButton);
+		OptionsHandler.saveCleanedFile.LinkJButton(this, this.saveCleanedFileButton);
+		OptionsHandler.savePreProcessedFile.LinkJButton(this, this.savePreProcessorFileButton);
+		OptionsHandler.saveCompilationInfo.LinkJButton(this, this.saveCompilerInfoFileButton);
 
 		// PreProcessor
-		OptionsHandler.includeRegDef.LinkJButton(this.includeRegDefButton);
-		OptionsHandler.includeSysCallDef.LinkJButton(this.includeSysCallDefButton);
+		OptionsHandler.includeRegDef.LinkJButton(this, this.includeRegDefButton);
+		OptionsHandler.includeSysCallDef.LinkJButton(this, this.includeSysCallDefButton);
 
 		// Processor
 		// Run Time
-		OptionsHandler.breakOnRunTimeError.LinkJButton(this.breakOnRunTimeErrorButton);
-		OptionsHandler.adaptiveMemory.LinkJButton(this.adaptiveMemoryButton);
-		OptionsHandler.enableBreakPoints.LinkJButton(this.enableBreakPointsButton);
+		OptionsHandler.breakOnRunTimeError.LinkJButton(this, this.breakOnRunTimeErrorButton);
+		OptionsHandler.adaptiveMemory.LinkJButton(this, this.adaptiveMemoryButton);
+		OptionsHandler.enableBreakPoints.LinkJButton(this, this.enableBreakPointsButton);
 
 		// Non RunTime
-		OptionsHandler.reloadMemoryOnReset.LinkJButton(this.reloadMemoryOnResetButton);
+		OptionsHandler.reloadMemoryOnReset.LinkJButton(this, this.reloadMemoryOnResetButton);
 
 		// System Calls
-		OptionsHandler.logSystemCallMessages.LinkJButton(this.logSystemCallMessagesButton);
-		OptionsHandler.resetProcessorOnTrap0.LinkJButton(this.resetProcessorOnTrap0Button);
+		OptionsHandler.logSystemCallMessages.LinkJButton(this, this.logSystemCallMessagesButton);
+		OptionsHandler.resetProcessorOnTrap0.LinkJButton(this, this.resetProcessorOnTrap0Button);
 
 		// Others
 		this.loadOptionsButton.addActionListener((ae) -> {
@@ -113,9 +125,9 @@ public class OptionsGUI extends javax.swing.JFrame {
 		String currentFamily = currentFont.getFamily();
 		String currentSize = Integer.toString(currentFont.getSize());
 
-		ArrayList<String> families = new ArrayList<>(Arrays.asList("Arial", "Cantarell", "Comic Sans MS", "Courier New",
-				"DejaVu Sans", "Dialog", "Liberation Sans", "Monospaced", "Noto Sans", "Roboto", "SansSerif",
-				"Segoe UI", "Serif", "Tahoma", "Ubuntu", "Verdana"));
+		String[] allSystemFonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+
+		ArrayList<String> families = new ArrayList<>(Arrays.asList(allSystemFonts));
 		if (!families.contains(currentFamily)) {
 			families.add(currentFamily);
 		}
@@ -138,7 +150,7 @@ public class OptionsGUI extends javax.swing.JFrame {
 			OptionsHandler.currentGUIFont.val(
 					ThemeHandler.changeFontFamily(OptionsHandler.currentGUIFont.val(), guiFontList.getSelectedValue()));
 		});
-		OptionsHandler.currentGUIFont.addObserver(new Observer() {
+		OptionsHandler.currentGUIFont.addLikedObserver(this, new Observer() {
 			@Override
 			public void update(Observable o, Object arg) {
 				String current = OptionsHandler.currentGUIFont.val().getFontName();
@@ -175,7 +187,7 @@ public class OptionsGUI extends javax.swing.JFrame {
 			OptionsHandler.currentGUIFont.val(ThemeHandler.changeFontSize(OptionsHandler.currentGUIFont.val(), val));
 		});
 
-		OptionsHandler.currentGUIFont.addObserver((e, a) -> {
+		OptionsHandler.currentGUIFont.addLikedObserver(this, (e, a) -> {
 			String current = Integer.toString(OptionsHandler.currentGUIFont.val().getSize());
 			if (!current.equals(guiFontList.getSelectedValue())) {
 				guiFontList.setSelectedValue(current, true);
@@ -187,7 +199,7 @@ public class OptionsGUI extends javax.swing.JFrame {
 
 			guiThemeList.setSelectedValue(OptionsHandler.currentGUITheme.val(), true);
 
-			OptionsHandler.currentGUITheme.addObserver((o,v) -> {
+			OptionsHandler.currentGUITheme.addLikedObserver(this, (o,v) -> {
 				if (!guiThemeList.getSelectedValue().equals(v))
 					guiThemeList.setSelectedValue(v, true);
 			});
@@ -322,9 +334,8 @@ public class OptionsGUI extends javax.swing.JFrame {
 		String currentFamily = currentFont.getFamily();
 		String currentSize = Integer.toString(currentFont.getSize());
 
-		ArrayList<String> families = new ArrayList<>(Arrays.asList("Arial", "Cantarell", "Comic Sans MS", "Courier New",
-				"DejaVu Sans", "Dialog", "Liberation Sans", "Monospaced", "Noto Sans", "Roboto", "SansSerif",
-				"Segoe UI", "Serif", "Tahoma", "Ubuntu", "Verdana"));
+		String[] allSystemFonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+		ArrayList<String> families = new ArrayList<>(Arrays.asList(allSystemFonts));
 		if (!families.contains(currentFamily)) {
 			families.add(currentFamily);
 		}
@@ -348,7 +359,7 @@ public class OptionsGUI extends javax.swing.JFrame {
 					editorFontList.getSelectedValue()));
 		});
 
-		OptionsHandler.currentEditorFont.addObserver((o,v) -> {
+		OptionsHandler.currentEditorFont.addLikedObserver(this, (o,v) -> {
 			String current = OptionsHandler.currentEditorFont.val().getFontName();
 			if (!current.equals(editorFontList.getSelectedValue())) {
 				editorFontList.setSelectedValue(current, true);
@@ -384,7 +395,7 @@ public class OptionsGUI extends javax.swing.JFrame {
 
 		});
 
-		OptionsHandler.currentEditorFont.addObserver((o,v) -> {
+		OptionsHandler.currentEditorFont.addLikedObserver(this, (o,v) -> {
 			String current = Integer.toString(OptionsHandler.currentEditorFont.val().getSize());
 			if (!current.equals(editorFontList.getSelectedValue())) {
 				editorFontList.setSelectedValue(current, true);
@@ -431,10 +442,10 @@ public class OptionsGUI extends javax.swing.JFrame {
 		themedJTabbedPane1 = new javax.swing.JTabbedPane();
 		themedJPanel11 = new javax.swing.JPanel();
 		themedJLabel2 = new javax.swing.JLabel();
-		logSystemMessagesButton = new javax.swing.JCheckBox();
-		logMessagesButton = new javax.swing.JCheckBox();
-		logWarningsButton = new javax.swing.JCheckBox();
-		logErrorsButton = new javax.swing.JCheckBox();
+		//logSystemMessagesButton = new javax.swing.JCheckBox();
+		//logMessagesButton = new javax.swing.JCheckBox();
+		//logWarningsButton = new javax.swing.JCheckBox();
+		//logErrorsButton = new javax.swing.JCheckBox();
 		themedJLabel3 = new javax.swing.JLabel();
 		enableAutoGUIUpdatesWhileRuning = new javax.swing.JCheckBox();
 		themedJLabel5 = new javax.swing.JLabel();
@@ -491,13 +502,13 @@ public class OptionsGUI extends javax.swing.JFrame {
 
 		themedJLabel2.setText("Log Options");
 
-		logSystemMessagesButton.setText("Log System Messages");
+		//logSystemMessagesButton.setText("Log System Messages");
 
-		logMessagesButton.setText("Log Messages");
+		//logMessagesButton.setText("Log Messages");
 
-		logWarningsButton.setText("Log Warnigs");
+		//logWarningsButton.setText("Log Warnigs");
 
-		logErrorsButton.setText("Log Errors");
+		//logErrorsButton.setText("Log Errors");
 
 		themedJLabel3.setText("GUI Options");
 
@@ -518,7 +529,7 @@ public class OptionsGUI extends javax.swing.JFrame {
 
 		themedJLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 		themedJLabel8.setText("Update Time: " + OptionsHandler.GUIAutoUpdateRefreshTime.val() + " ms");
-		OptionsHandler.GUIAutoUpdateRefreshTime.addObserver((o,v) -> {
+		OptionsHandler.GUIAutoUpdateRefreshTime.addLikedObserver(this, (o,v) -> {
 			themedJLabel8.setText("Update Time: " + OptionsHandler.GUIAutoUpdateRefreshTime.val() + " ms");
 		});
 
@@ -531,14 +542,14 @@ public class OptionsGUI extends javax.swing.JFrame {
 								.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
 								.addComponent(themedJLabel2, javax.swing.GroupLayout.PREFERRED_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(logSystemMessagesButton, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(logErrorsButton, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(logWarningsButton, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(logMessagesButton, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+								//.addComponent(logSystemMessagesButton, javax.swing.GroupLayout.PREFERRED_SIZE,
+								//		javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+								//.addComponent(logErrorsButton, javax.swing.GroupLayout.PREFERRED_SIZE,
+								//		javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+								//.addComponent(logWarningsButton, javax.swing.GroupLayout.PREFERRED_SIZE,
+								//		javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+								//.addComponent(logMessagesButton, javax.swing.GroupLayout.PREFERRED_SIZE,
+								//		javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
 								.addComponent(themedJLabel3, javax.swing.GroupLayout.PREFERRED_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
 								.addComponent(enableAutoGUIUpdatesWhileRuning, javax.swing.GroupLayout.DEFAULT_SIZE,
@@ -571,21 +582,21 @@ public class OptionsGUI extends javax.swing.JFrame {
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 						.addGroup(themedJPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 								.addGroup(themedJPanel11Layout.createSequentialGroup()
-										.addComponent(logSystemMessagesButton, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(logMessagesButton, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(logWarningsButton, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(logErrorsButton, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
+										//.addComponent(logSystemMessagesButton, javax.swing.GroupLayout.PREFERRED_SIZE,
+										//		javax.swing.GroupLayout.DEFAULT_SIZE,
+										//		javax.swing.GroupLayout.PREFERRED_SIZE)
+										//.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										//.addComponent(logMessagesButton, javax.swing.GroupLayout.PREFERRED_SIZE,
+										//		javax.swing.GroupLayout.DEFAULT_SIZE,
+										//		javax.swing.GroupLayout.PREFERRED_SIZE)
+										//.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										//.addComponent(logWarningsButton, javax.swing.GroupLayout.PREFERRED_SIZE,
+										//		javax.swing.GroupLayout.DEFAULT_SIZE,
+										//		javax.swing.GroupLayout.PREFERRED_SIZE)
+										//.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										//.addComponent(logErrorsButton, javax.swing.GroupLayout.PREFERRED_SIZE,
+										//		javax.swing.GroupLayout.DEFAULT_SIZE,
+										//		javax.swing.GroupLayout.PREFERRED_SIZE)
 										.addGap(18, 18, 18)
 										.addComponent(themedJLabel3, javax.swing.GroupLayout.PREFERRED_SIZE,
 												javax.swing.GroupLayout.DEFAULT_SIZE,
@@ -1011,11 +1022,11 @@ public class OptionsGUI extends javax.swing.JFrame {
 	private javax.swing.JSeparator jSeparator3;
 	private javax.swing.JTabbedPane jTabbedPane1;
 	private javax.swing.JButton loadOptionsButton;
-	private javax.swing.JCheckBox logErrorsButton;
-	private javax.swing.JCheckBox logMessagesButton;
+	//private javax.swing.JCheckBox logErrorsButton;
+	//private javax.swing.JCheckBox logMessagesButton;
 	private javax.swing.JCheckBox logSystemCallMessagesButton;
-	private javax.swing.JCheckBox logSystemMessagesButton;
-	private javax.swing.JCheckBox logWarningsButton;
+	//private javax.swing.JCheckBox logSystemMessagesButton;
+	//private javax.swing.JCheckBox logWarningsButton;
 	private javax.swing.JCheckBox reloadMemoryOnResetButton;
 	private javax.swing.JCheckBox resetProcessorOnTrap0Button;
 	private javax.swing.JCheckBox saveCleanedFileButton;

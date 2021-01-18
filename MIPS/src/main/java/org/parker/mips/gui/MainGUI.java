@@ -112,20 +112,20 @@ public class MainGUI extends javax.swing.JFrame {
 
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        OptionsHandler.enableBreakPoints.LinkJButton(enableBreak);
-        //OptionsHandler.linkedFile.LinkJButton(linkedButton);
+        OptionsHandler.enableBreakPoints.LinkJButton(this, enableBreak);
+        //OptionsHandler.linkedFile.LinkJButton(this, linkedButton);
 
-        OptionsHandler.saveCompilationInfo.LinkJButton(saveCompileInformationButton);
-        OptionsHandler.savePreProcessedFile.LinkJButton(savePreProcessedFileButton);
+        OptionsHandler.saveCompilationInfo.LinkJButton(this, saveCompileInformationButton);
+        OptionsHandler.savePreProcessedFile.LinkJButton(this, savePreProcessedFileButton);
 
-        OptionsHandler.breakOnRunTimeError.LinkJButton(breakProgramOnRTEButton);
-        OptionsHandler.adaptiveMemory.LinkJButton(adaptiveMemoryMenuButton);
+        OptionsHandler.breakOnRunTimeError.LinkJButton(this, breakProgramOnRTEButton);
+        OptionsHandler.adaptiveMemory.LinkJButton(this, adaptiveMemoryMenuButton);
 
-        OptionsHandler.enableGUIAutoUpdateWhileRunning.LinkJButton(enableGUIUpdatingWhileRunningButton);
-        OptionsHandler.logSystemMessages.LinkJButton(logSystemMessagesButton);
-        OptionsHandler.logMessages.LinkJButton(logMessagesButton);
-        OptionsHandler.logWarnings.LinkJButton(logWarningsButton);
-        OptionsHandler.logErrors.LinkJButton(logErrorsButton);
+        OptionsHandler.enableGUIAutoUpdateWhileRunning.LinkJButton(this,enableGUIUpdatingWhileRunningButton);
+        //OptionsHandler.logSystemMessages.LinkJButton(this, logSystemMessagesButton);
+        //OptionsHandler.logMessages.LinkJButton(this, logMessagesButton);
+        //OptionsHandler.logWarnings.LinkJButton(this, logWarningsButton);
+        //OptionsHandler.logErrors.LinkJButton(this, logErrorsButton);
 
         addCompileButtonListener((ae) -> {
             LOGGER.log(Level.FINER, "Compile Button Action Preformed");
@@ -407,10 +407,10 @@ public class MainGUI extends javax.swing.JFrame {
         optionsMenu = new javax.swing.JMenu();
         checkForUpdates = new javax.swing.JMenuItem();
         enableGUIUpdatingWhileRunningButton = new javax.swing.JCheckBoxMenuItem();
-        logSystemMessagesButton = new javax.swing.JCheckBoxMenuItem();
-        logMessagesButton = new javax.swing.JCheckBoxMenuItem();
-        logWarningsButton = new javax.swing.JCheckBoxMenuItem();
-        logErrorsButton = new javax.swing.JCheckBoxMenuItem();
+        //logSystemMessagesButton = new javax.swing.JCheckBoxMenuItem();
+        //logMessagesButton = new javax.swing.JCheckBoxMenuItem();
+        //logWarningsButton = new javax.swing.JCheckBoxMenuItem();
+        //logErrorsButton = new javax.swing.JCheckBoxMenuItem();
         optionsButton = new javax.swing.JMenuItem();
         compilerMenu = new javax.swing.JMenu();
         asciiChartButton = new javax.swing.JMenuItem();
@@ -720,6 +720,14 @@ public class MainGUI extends javax.swing.JFrame {
 
         optionsMenu.setText("Options");
 
+        optionsButton.setText("Options");
+        optionsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                optionsButtonActionPerformed(evt);
+            }
+        });
+        optionsMenu.add(optionsButton);
+
         checkForUpdates.setText("Update");
         checkForUpdates.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -731,31 +739,6 @@ public class MainGUI extends javax.swing.JFrame {
         enableGUIUpdatingWhileRunningButton.setSelected(true);
         enableGUIUpdatingWhileRunningButton.setText("Enable GUI Updating While Running");
         optionsMenu.add(enableGUIUpdatingWhileRunningButton);
-
-        logSystemMessagesButton.setSelected(true);
-        logSystemMessagesButton.setText("Log System Messages");
-        optionsMenu.add(logSystemMessagesButton);
-
-        logMessagesButton.setSelected(true);
-        logMessagesButton.setText("Log Messages");
-        optionsMenu.add(logMessagesButton);
-
-        logWarningsButton.setSelected(true);
-        logWarningsButton.setText("Log Warnings");
-        logWarningsButton.setToolTipText("");
-        optionsMenu.add(logWarningsButton);
-
-        logErrorsButton.setSelected(true);
-        logErrorsButton.setText("Log Errors");
-        optionsMenu.add(logErrorsButton);
-
-        optionsButton.setText("Options");
-        optionsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                optionsButtonActionPerformed(evt);
-            }
-        });
-        optionsMenu.add(optionsButton);
 
         menuBar.add(optionsMenu);
 
@@ -1047,11 +1030,11 @@ public class MainGUI extends javax.swing.JFrame {
     private static javax.swing.JSplitPane jSplitPane1;
     //private static javax.swing.JCheckBox linkedButton;
     private static javax.swing.JMenuItem loadPluginJMenuItem;
-    private static javax.swing.JCheckBoxMenuItem logErrorsButton;
+    //private static javax.swing.JCheckBoxMenuItem logErrorsButton;
     private static LogFrame logFrame;
-    private static javax.swing.JCheckBoxMenuItem logMessagesButton;
-    private static javax.swing.JCheckBoxMenuItem logSystemMessagesButton;
-    private static javax.swing.JCheckBoxMenuItem logWarningsButton;
+    //private static javax.swing.JCheckBoxMenuItem logMessagesButton;
+    //private static javax.swing.JCheckBoxMenuItem logSystemMessagesButton;
+    //private static javax.swing.JCheckBoxMenuItem logWarningsButton;
     private static javax.swing.JPanel lowerContentPanel;
     private static javax.swing.JPanel mainPanel;
     private static javax.swing.JButton memoryButton;

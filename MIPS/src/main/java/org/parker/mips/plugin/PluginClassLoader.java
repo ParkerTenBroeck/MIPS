@@ -89,10 +89,12 @@ public class PluginClassLoader extends URLClassLoader {
             }
         } catch (IOException ex) {
             try {
+                if(j != null)
                 j.close();
             } catch (Exception e) {
             }
             try {
+                if(i != null)
                 i.close();
             } catch (Exception e) {
 

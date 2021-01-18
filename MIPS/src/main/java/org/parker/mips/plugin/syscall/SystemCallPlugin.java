@@ -221,7 +221,7 @@ public abstract class SystemCallPlugin extends PluginBase {
     }
 
     @Override
-    public void onDissable() {
+    public void onDisable() {
 
     }
 

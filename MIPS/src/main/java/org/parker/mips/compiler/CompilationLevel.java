@@ -11,4 +11,5 @@ public class CompilationLevel extends Level {
     private CompilationLevel(String name, int level) {
         super(name, level);
     }
+
 }

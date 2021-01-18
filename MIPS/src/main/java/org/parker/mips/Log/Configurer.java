@@ -4,7 +4,6 @@ import org.parker.mips.FileUtils;
 import org.parker.mips.LogFrame;
 import org.parker.mips.ResourceHandler;
 
-import java.io.Console;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -31,13 +30,13 @@ public class Configurer {
         Logger java = Logger.getLogger("");
         java.setLevel(Level.OFF);
 
-        Thread.setDefaultUncaughtExceptionHandler((t, e) -> BASE_LOGGER.log(Level.SEVERE, t + " Uncaught Excpetion at: ", e));
+        Thread.setDefaultUncaughtExceptionHandler((t, e) -> BASE_LOGGER.log(Level.SEVERE, t + " Uncaught Exception at: ", e));
 
         {
             {
                 FileOutputStream fos = null;
                 ZipOutputStream zo = null;
-                ZipEntry ze = null;
+                ZipEntry ze;
                 try {
                     File file = new File(ResourceHandler.LASTES_LOG);
                     if (file.exists()) {
@@ -58,17 +57,19 @@ public class Configurer {
                     LOGGER.log(Level.SEVERE, "Failed to Compress Last Log", e);
                 }finally {
                     try{
-                        zo.flush();
-                        zo.closeEntry();
-                        zo.close();
+                        if(zo != null) {
+                            zo.flush();
+                            zo.closeEntry();
+                            zo.close();
+                        }
                     }catch(Exception e){
-
                     }
                     try{
-                        fos.flush();
-                        fos.close();
+                        if(fos != null) {
+                            fos.flush();
+                            fos.close();
+                        }
                     }catch(Exception e){
-
                     }
                 }
             }
@@ -79,6 +80,7 @@ public class Configurer {
                     file.createNewFile();
                 }
                 Handler fh = new FileHandler(file.getAbsolutePath());
+                //fh.setFormatter(new XMLFormatter());
                 fh.setLevel(Level.ALL);
                 BASE_LOGGER.addHandler(fh);
             } catch (IOException e) {
@@ -86,6 +88,7 @@ public class Configurer {
             }
 
             Handler ch = new ConsoleHandler();
+            ch.setFormatter(new ConsoleFormatter());
             ch.setLevel(Level.ALL);
             BASE_LOGGER.addHandler(ch);
 

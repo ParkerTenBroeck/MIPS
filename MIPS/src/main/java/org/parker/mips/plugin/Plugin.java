@@ -17,5 +17,5 @@ public interface Plugin {
     
     void onEnable();
     
-    void onDissable();
+    void onDisable();
 }

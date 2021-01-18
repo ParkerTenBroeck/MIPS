@@ -5,8 +5,6 @@
  */
 package org.parker.mips.plugin;
 
-import org.parker.mips.plugin.syscall.SystemCallPlugin;
-
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;

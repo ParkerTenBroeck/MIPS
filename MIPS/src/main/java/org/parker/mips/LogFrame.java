@@ -19,10 +19,7 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
+import java.util.logging.*;
 
 /**
  *
@@ -35,19 +32,11 @@ public class LogFrame extends javax.swing.JPanel {
     }
 
     private static void logCustomMessage(String message, SimpleAttributeSet att) {
-        if (!OptionsHandler.logMessages.val()) {
-            return;
-        }
         LogFrame.appendMessageToVirtualConsoleLog("[Message] " + message, att);
     }
 
     private static void logCustomMessage(String message, boolean bold, boolean italic, boolean underline, Color color, String font) {
-        if (!OptionsHandler.logMessages.val()) {
-            return;
-        }
-        //System.out.println("[Message] " + message);
-
-        SimpleAttributeSet att = new SimpleAttributeSet();
+	    SimpleAttributeSet att = new SimpleAttributeSet();
         StyleConstants.setForeground(att, color);
         StyleConstants.setBold(att, bold);
         StyleConstants.setItalic(att, italic);
@@ -66,6 +55,15 @@ public class LogFrame extends javax.swing.JPanel {
             //LogFrame.logError(LogFrame.getFullExceptionMessage(exc));
         }
 
+    }
+
+    private static void appendMessageToVirtualConsoleLog(String message){
+	    Document doc = LogFrame.jTextPane1.getStyledDocument();
+	    try{
+            doc.insertString(doc.getLength(), message + "\n", null);
+        }catch(Exception e){
+
+        }
     }
 
     public LogFrame() {
@@ -149,47 +147,97 @@ public class LogFrame extends javax.swing.JPanel {
 
     public static class LogFrameHandler extends Handler {
 
+        private static Level systemLevel;
+        private static Level assemblerLevel;
+
+        static{
+            OptionsHandler.systemLogLevel.addObserver((o, v) -> {
+                systemLevel = Level.parse((String) v);
+            });
+            OptionsHandler.assemblerLogLevel.addObserver((o, v) -> {
+                assemblerLevel = Level.parse((String) v);
+            });
+            systemLevel = Level.parse(OptionsHandler.systemLogLevel.val());
+            assemblerLevel = Level.parse(OptionsHandler.assemblerLogLevel.val());
+        }
+
         @Override
         public void publish(LogRecord record) {
 
-            String message = "[" + String.join("] [", record.getSourceClassName().replaceFirst("org.parker.mips.", "").split("\\.")) + "] " + (record.getMessage() == null ? "": record.getMessage());
+            String message = "";
+
+            if (OptionsHandler.showCallerClass.val()) {
+                message += record.getSourceClassName();
+            }
+            if (OptionsHandler.showCallerMethod.val()) {
+                if (OptionsHandler.showCallerClass.val()) {
+                    message += " ";
+                }
+                message += record.getSourceMethodName() + ":\n";
+            } else {
+                if (OptionsHandler.showCallerClass.val()) {
+                    message += ":\n";
+                }
+            }
+
+            message = "[" + record.getLevel().getName() + "] "
+                    + "[" + String.join("] [", record.getSourceClassName().replaceFirst("org.parker.mips.", "").split("\\.")) + "] "
+                    + (record.getMessage() == null ? "" : record.getMessage());
 
             SimpleAttributeSet sas = new SimpleAttributeSet();
 
-            if(record.getLevel() == Level.INFO){
+
+            if (record.getLevel() == CompilationLevel.COMPILATION_MESSAGE) {
+
+                StyleConstants.setForeground(sas, Color.LIGHT_GRAY);
+                StyleConstants.setBold(sas, false);
+
+            } else if (record.getLevel() == CompilationLevel.COMPILATION_WARNING) {
+
+                StyleConstants.setForeground(sas, Color.YELLOW);
+                StyleConstants.setBold(sas, false);
+
+            } else if (record.getLevel() == CompilationLevel.COMPILATION_ERROR) {
+
+                StyleConstants.setForeground(sas, Color.RED);
+                StyleConstants.setBold(sas, false);
+                message += " " + (record.getThrown() == null ? "" : record.getThrown().getMessage());
+            } else {
+
+                //if(systemLevel.intValue() < record.getLevel().intValue()){//ignore
+                //    return;
+                //}
+                if (record.getLevel().intValue() < systemLevel.intValue() ) {
+                    return;
+                }
+
+            if (record.getLevel() == Level.INFO) {
 
                 SimpleAttributeSet att = new SimpleAttributeSet();
                 StyleConstants.setForeground(att, Color.LIGHT_GRAY);
                 StyleConstants.setBold(att, false);
 
-            }else if(record.getLevel() == Level.WARNING){
+            } else if (record.getLevel() == Level.WARNING) {
 
                 StyleConstants.setForeground(sas, Color.YELLOW);
                 StyleConstants.setBold(sas, false);
 
-            }else if(record.getLevel() == Level.SEVERE){
+            } else if (record.getLevel() == Level.SEVERE) {
 
                 StyleConstants.setForeground(sas, Color.RED);
                 StyleConstants.setBold(sas, false);
 
-            }else if(record.getLevel() == CompilationLevel.COMPILATION_MESSAGE){
+                if (OptionsHandler.showStackTrace.val() && record.getThrown() != null) {
+                    StringWriter sw = new StringWriter();
+                    PrintWriter pw = new PrintWriter(sw);
+                    record.getThrown().printStackTrace(pw);
+                    message += ":\n" + sw.toString();
+                }
 
-                StyleConstants.setForeground(sas, Color.LIGHT_GRAY);
-                StyleConstants.setBold(sas, false);
-
-            }else if(record.getLevel() == CompilationLevel.COMPILATION_WARNING){
-
-                StyleConstants.setForeground(sas, Color.YELLOW);
-                StyleConstants.setBold(sas, false);
-
-            }else if(record.getLevel() == CompilationLevel.COMPILATION_ERROR){
-
-                StyleConstants.setForeground(sas, Color.RED);
-                StyleConstants.setBold(sas, false);
-                message += " " + (record.getThrown() == null ? "" : record.getThrown().getMessage());
             }
+        }
 
-            LogFrame.appendMessageToVirtualConsoleLog("[" + record.getLevel().getName() + "] " + message,sas);
+            LogFrame.appendMessageToVirtualConsoleLog(message,sas);
 
             return;
 

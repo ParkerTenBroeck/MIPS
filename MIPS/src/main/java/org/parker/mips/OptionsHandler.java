@@ -6,70 +6,79 @@
 package org.parker.mips;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import com.google.common.collect.HashMultimap;
 import com.google.gson.*;
+import org.parker.mips.compiler.CompilationLevel;
 import org.parker.mips.gui.theme.IJThemeInfo;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 /**
  *
  * @author parke
  */
 public class OptionsHandler {
 
+    private static HashMultimap<Object, Option> map = HashMultimap.create();
+
     //General
-    //logging
-    public static final Holder<Boolean> logSystemMessages = new Holder(true);
-    public static final Holder<Boolean> logMessages = new Holder(true);
-    public static final Holder<Boolean> logWarnings = new Holder(true);
-    public static final Holder<Boolean> logErrors = new Holder(true);
+
+    //Virtual Log
+    //System
+    public static final Option<Boolean> showStackTrace = new Option(false);
+    public static final Option<Boolean> showCallerClass = new Option(false);
+    public static final Option<Boolean> showCallerMethod = new Option(false);
+    public static final Option<String> systemLogLevel = new Option(Level.INFO.getName());
+    //Assembler
+    public static final Option<String> assemblerLogLevel = new Option(CompilationLevel.COMPILATION_MESSAGE.getName());
 
     //GUI options
-    public static final Holder<Boolean> enableGUIAutoUpdateWhileRunning = new Holder(true);
-    public static final Holder<Integer> GUIAutoUpdateRefreshTime = new Holder(100);
+    public static final Option<Boolean> enableGUIAutoUpdateWhileRunning = new Option(true);
+    public static final Option<Integer> GUIAutoUpdateRefreshTime = new Option(100);
 
     //Compiler
-    public static final Holder<Boolean> saveCleanedFile = new Holder(false);
-    public static final Holder<Boolean> savePreProcessedFile = new Holder(false);
-    public static final Holder<Boolean> saveCompilationInfo = new Holder(false);
+    public static final Option<Boolean> saveCleanedFile = new Option(false);
+    public static final Option<Boolean> savePreProcessedFile = new Option(false);
+    public static final Option<Boolean> saveCompilationInfo = new Option(false);
 
     //PreProcessor
-    public static final Holder<Boolean> includeRegDef = new Holder(true);
-    public static final Holder<Boolean> includeSysCallDef = new Holder(true);
+    public static final Option<Boolean> includeRegDef = new Option(true);
+    public static final Option<Boolean> includeSysCallDef = new Option(true);
 
     //Processor
     //Run Time
-    public static final Holder<Boolean> breakOnRunTimeError = new Holder(true);
-    public static final Holder<Boolean> adaptiveMemory = new Holder(false);
-    public static final Holder<Boolean> enableBreakPoints = new Holder(true);
+    public static final Option<Boolean> breakOnRunTimeError = new Option(true);
+    public static final Option<Boolean> adaptiveMemory = new Option(false);
+    public static final Option<Boolean> enableBreakPoints = new Option(true);
 
     //Non RunTime
-    public static final Holder<Boolean> reloadMemoryOnReset = new Holder(true);
+    public static final Option<Boolean> reloadMemoryOnReset = new Option(true);
 
     //System Calls
-    public static final Holder<Boolean> logSystemCallMessages = new Holder(true);
-    public static final Holder<Boolean> resetProcessorOnTrap0 = new Holder(false);
+    public static final Option<Boolean> logSystemCallMessages = new Option(true);
+    public static final Option<Boolean> resetProcessorOnTrap0 = new Option(false);
 
     //Theme Handler
-    public static final Holder<IJThemeInfo> currentGUITheme = new Holder(new IJThemeInfo( "Flat Dark", null, true, null, null, null, null, null, FlatDarkLaf.class.getName() ));
-    public static final Holder<String> currentEditorTheme = new Holder("Dark");
-    public static final Holder<Font> currentGUIFont = new Holder(new Font("Segoe UI", 0, 15));
-    public static final Holder<Font> currentEditorFont = new Holder(new Font("Segoe UI", 0, 15));
+    public static final Option<IJThemeInfo> currentGUITheme = new Option(new IJThemeInfo( "Flat Dark", null, true, null, null, null, null, null, FlatDarkLaf.class.getName() ));
+    public static final Option<String> currentEditorTheme = new Option("Dark");
+    public static final Option<Font> currentGUIFont = new Option(new Font("Segoe UI", 0, 15));
+    public static final Option<Font> currentEditorFont = new Option(new Font("Segoe UI", 0, 15));
 
     private static final Logger LOGGER = Logger.getLogger(OptionsHandler.class.getName());
 
     public static void readOptionsFromDefaultFile() {
         readOptionsFromFile(ResourceHandler.DEFAULT_OPTIONS_FILE);
     }
+
+    private static final HashMultimap<Object, Option> optionLinkedObject = HashMultimap.create();
 
     public static void readOptionsFromCustomFile(String name) {
         if (name != null) {
@@ -126,13 +135,13 @@ public class OptionsHandler {
 
                 try {
                     Field field = OptionsHandler.class.getDeclaredField(entry.getKey()); //gets the field from field name
-                    Holder holder = (Holder) field.get(OptionsHandler.class); //gets the instance of the FINAL holder 
+                    Option option = (Option) field.get(OptionsHandler.class); //gets the instance of the FINAL holder
 
                     JsonElement tempJE = jo.getAsJsonObject(entry.getKey()).get("value");
-                    Class<?> clazz = holder.val().getClass();
+                    Class<?> clazz = option.val().getClass();
                     Object as = gson.fromJson(tempJE, clazz);
                     if (as != null) {
-                        holder.val(as);
+                        option.val(as);
                     }
 
                 } catch (Exception e) {
@@ -182,4 +191,89 @@ public class OptionsHandler {
         }
     }
 
+    public static void removeAllObserversLinkedToObject(Object object) {
+        LOGGER.log(Level.FINER, "Removing all linked observers from all options from link: " + object);
+        for(Option o : optionLinkedObject.get(object)){
+            o.removeAllObserversFromLink(object);
+        }
+        optionLinkedObject.removeAll(object);
+    }
+
+    /**
+     *
+     * @author parke
+     * @param <T>
+     */
+    public static class Option<T> extends Observable {
+
+        private static final Logger LOGGER = Logger.getLogger(Option.class.getName());
+
+        private HashMultimap<Object, Observer> observerLinkedObject = HashMultimap.create();
+
+        protected T value;
+
+        public Option() {
+        }
+
+        public Option(T value) {
+            this.value = value;
+        }
+
+        public T val() {
+            return value;
+        }
+
+        public void val(T val) {
+            LOGGER.log(Level.FINER, "Changed Value of Holder");
+            this.value = val;
+            this.setChanged();
+            this.notifyObservers(val);
+            this.clearChanged();
+        }
+
+        public void addLikedObserver(Object link, Observer observer){
+            LOGGER.log(Level.FINER, "Added Linked: " + link +  " Observer to Option");
+            observerLinkedObject.put(link, observer);
+            optionLinkedObject.put(link, this);
+            this.addObserver(observer);
+        }
+        public void removeAllObserversFromLink(Object link){
+            LOGGER.log(Level.FINER, "Removed all Linked Observer from Option from link: " + link);
+            Set<Observer> set = observerLinkedObject.get(link);
+            for(Observer o: set){
+                this.deleteObserver(o);
+            }
+            observerLinkedObject.removeAll(link);
+        }
+
+        public void LinkJButton(Object link, AbstractButton but) {
+            but.setSelected((Boolean) value);
+            but.addActionListener((ae) -> {
+                if (but.isSelected() != (Boolean) value) {
+                    this.val((T) (Boolean) (but.isSelected()));
+                }
+            });
+            this.addLikedObserver(link, (o, v) -> {
+                if (but.isSelected() != (Boolean) v) {
+                    but.setSelected((Boolean) v);
+                }
+            });
+        }
+
+        public void LinkJSlider(Object link, JSlider slide) {
+            slide.setValue((Integer) value);
+            slide.addChangeListener((ex) ->{
+                    if (slide.getValue() != (Integer) value) {
+                        val((T) (Integer) (slide.getValue()));
+                    }
+                });
+
+            this.addLikedObserver(link, (o,v) -> {
+                if (slide.getValue() != (Integer) v) {
+                    slide.setValue((Integer) v);
+                }
+            });
+        }
+
+    }
 }
