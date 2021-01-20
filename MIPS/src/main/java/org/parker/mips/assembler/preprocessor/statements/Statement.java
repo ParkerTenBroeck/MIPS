@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.compiler.preprocessor.statements;
+package org.parker.mips.assembler.preprocessor.statements;
 
-import org.parker.mips.compiler.data.UserLine;
+import org.parker.mips.assembler.data.UserLine;
 
 import java.util.ArrayList;
 

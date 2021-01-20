@@ -12,11 +12,12 @@ import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.folding.FoldParserManager;
 import org.fife.ui.rtextarea.RTextScrollPane;
 import org.parker.mips.FileUtils;
-import org.parker.mips.LogFrame;
 import org.parker.mips.OptionsHandler;
 import org.parker.mips.ResourceHandler;
 import org.parker.mips.gui.editor.Editor;
 
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
 import java.awt.*;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
@@ -24,8 +25,6 @@ import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,8 +38,10 @@ public class FormattedTextEditor extends Editor {
 
     private static final Logger LOGGER = Logger.getLogger(FormattedTextEditor.class.getName());
 
-    public FormattedTextEditor(File file) {
-        super(file);
+    private static final DefaultHighlighter.DefaultHighlightPainter errorHighlight = new DefaultHighlighter.DefaultHighlightPainter(new Color(255,0,0,128));
+
+    public FormattedTextEditor(File file, String name) {
+        super(file, name);
         initComponents();
 
         textArea.addKeyListener(new KeyListener() {
@@ -48,6 +49,16 @@ public class FormattedTextEditor extends Editor {
             public void keyTyped(KeyEvent ke) {
                 setSaved(false);
                 updateDisplayTitle();
+
+                try {
+                    for(int i = 0; i < 20; i ++) {
+                        textArea.addLineHighlight(i, textArea.getCurrentLineHighlightColor());
+                    }
+                    textArea.getHighlighter().addHighlight(20,100,errorHighlight);
+
+                } catch (BadLocationException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -68,18 +79,23 @@ public class FormattedTextEditor extends Editor {
         }
     }
 
-    public FormattedTextEditor(String string) {
-        this((File) null);
-        this.textArea.setText(string);
+    public FormattedTextEditor(String textBody) {
+        this( (File)null, "");
+        this.textArea.setText(textBody);
+    }
+
+    public FormattedTextEditor(String textBody, String name){
+        this( (File)null, name);
+        this.textArea.setText(textBody);
     }
 
     public FormattedTextEditor() {
-        this((File) null);
+        this( (File)null, "");
     }
 
     public final void setTheme(String name) {
         try {
-            InputStream in = new FileInputStream(new File(ResourceHandler.EDITOR_THEMES + FileUtils.FILE_SEPARATOR + name + ".xml"));
+            InputStream in = new FileInputStream(ResourceHandler.EDITOR_THEMES + FileUtils.FILE_SEPARATOR + name + ".xml");
             Theme theme = Theme.load(in);
             theme.apply(textArea);
         } catch (Exception e) {
@@ -121,23 +137,17 @@ public class FormattedTextEditor extends Editor {
         this.setLayout(new BorderLayout());
         this.add(scrollPane, BorderLayout.CENTER);
 
-        OptionsHandler.currentEditorTheme.addObserver(new Observer() {
-            @Override
-            public void update(Observable o, Object arg) {
-                if (textArea != null) {
-                    FormattedTextEditor.this.setTheme(OptionsHandler.currentEditorTheme.val());
-                    FormattedTextEditor.this.setAllFont(OptionsHandler.currentEditorFont.val());
-                }
+        OptionsHandler.currentEditorTheme.addLikedObserver(this, (o, arg) -> {
+            if (textArea != null) {
+                FormattedTextEditor.this.setTheme(OptionsHandler.currentEditorTheme.val());
+                FormattedTextEditor.this.setAllFont(OptionsHandler.currentEditorFont.val());
             }
         });
         setTheme(OptionsHandler.currentEditorTheme.val());
 
-        OptionsHandler.currentEditorFont.addObserver(new Observer() {
-            @Override
-            public void update(Observable o, Object arg) {
-                if (textArea != null) {
-                    FormattedTextEditor.this.setAllFont(OptionsHandler.currentEditorFont.val());
-                }
+        OptionsHandler.currentEditorFont.addLikedObserver(this, (o, arg) -> {
+            if (textArea != null) {
+                FormattedTextEditor.this.setAllFont(OptionsHandler.currentEditorFont.val());
             }
         });
         setAllFont(OptionsHandler.currentEditorFont.val());
@@ -163,9 +173,14 @@ public class FormattedTextEditor extends Editor {
         if (currentFile != null) {
             return currentFile;
         } else {
-            File temp = createTempFile("untitles", ".asm");
+            File temp = createTempFile(getName(), ".asm");
             FileUtils.saveByteArrayToFileSafe(textArea.getText().getBytes(), temp);
             return temp;
         }
+    }
+
+    @Override
+    public void closeS() {
+        OptionsHandler.removeAllObserversLinkedToObject(this);
     }
 }

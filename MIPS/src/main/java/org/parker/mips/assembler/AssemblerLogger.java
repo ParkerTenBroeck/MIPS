@@ -1,13 +1,13 @@
-package org.parker.mips.compiler;
+package org.parker.mips.assembler;
 
-import org.parker.mips.compiler.data.UserLine;
+import org.parker.mips.assembler.data.UserLine;
 
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-public class CompilationLogger extends  Logger{
-    public CompilationLogger(String name){
+public class AssemblerLogger extends  Logger{
+    public AssemblerLogger(String name){
         super(name, null);
         LogManager.getLogManager().addLogger(this);
     }
@@ -36,7 +36,7 @@ public class CompilationLogger extends  Logger{
                 "On line: " + ul + " " + message, cause);
     }
 
-    public void log(Level level, CompilationException cause){
+    public void log(Level level, AssemblerException cause){
         if (!isLoggable(level)) {
             return;
         }

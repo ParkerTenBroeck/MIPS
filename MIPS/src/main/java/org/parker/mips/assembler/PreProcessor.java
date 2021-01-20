@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.compiler;
+package org.parker.mips.assembler;
 
 import org.parker.mips.FileUtils;
 import org.parker.mips.OptionsHandler;
 import org.parker.mips.ResourceHandler;
-import org.parker.mips.compiler.data.UserLine;
-import org.parker.mips.compiler.preprocessor.statements.*;
+import org.parker.mips.assembler.data.UserLine;
+import org.parker.mips.assembler.preprocessor.statements.*;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -27,7 +27,7 @@ public class PreProcessor {
 
     private static ArrayList<Statement> statements;
 
-    private static final CompilationLogger LOGGER = new CompilationLogger(PreProcessor.class.getName());
+    private static final AssemblerLogger LOGGER = new AssemblerLogger(PreProcessor.class.getName());
 
     public static ArrayList<UserLine> loadFile(String filePath, UserLine us) {
         BufferedReader reader;
@@ -44,9 +44,9 @@ public class PreProcessor {
                 file.add(new UserLine(line, us.realLineNumber));
                 line = reader.readLine();
             }
-            LOGGER.log(CompilationLevel.COMPILATION_MESSAGE, "Loaded File: " + tempFile.getAbsolutePath());
+            LOGGER.log(AssemblerLevel.COMPILATION_MESSAGE, "Loaded File: " + tempFile.getAbsolutePath());
         } catch (Exception e) {
-            LOGGER.log(CompilationLevel.COMPILATION_ERROR,"Cannot read file Specified", us, e);
+            LOGGER.log(AssemblerLevel.COMPILATION_ERROR,"Cannot read file Specified", us, e);
         }
         return file;
     }
@@ -64,7 +64,7 @@ public class PreProcessor {
                     for (int i = 0; i < statements.size(); i++) {
                         if (statements.get(i).IDENTIFIRE.equals(temp.IDENTIFIRE)) {
                             statements.remove(i);
-                            LOGGER.log(CompilationLevel.COMPILATION_WARNING,temp.IDENTIFIRE + " Has already been defined use undef to undefine the value before creating a new value overwritting existing value",  currentLine);
+                            LOGGER.log(AssemblerLevel.COMPILATION_WARNING,temp.IDENTIFIRE + " Has already been defined use undef to undefine the value before creating a new value overwritting existing value",  currentLine);
                         }
                     }
 
@@ -74,7 +74,7 @@ public class PreProcessor {
                 return temp;
             }
         }
-        LOGGER.log(CompilationLevel.COMPILATION_ERROR,"Not a valid Statement", currentLine);
+        LOGGER.log(AssemblerLevel.COMPILATION_ERROR,"Not a valid Statement", currentLine);
         return null;
     }
 
@@ -179,11 +179,11 @@ public class PreProcessor {
         if (file != null) {
             if (OptionsHandler.includeRegDef.val()) {
                 file.add(0, new UserLine("#include \"" + ResourceHandler.REG_DEF_HEADER_FILE + "\"", -2));
-                LOGGER.log(CompilationLevel.COMPILATION_MESSAGE,"Included regdef.asm");
+                LOGGER.log(AssemblerLevel.COMPILATION_MESSAGE,"Included regdef.asm");
             }
             if (OptionsHandler.includeSysCallDef.val()) {
                 file.add(0, new UserLine("#include \"" + ResourceHandler.SYS_CALL_DEF_HEADER_FILE + "\"", -3));
-                LOGGER.log(CompilationLevel.COMPILATION_MESSAGE,"Included syscalldef.asm");
+                LOGGER.log(AssemblerLevel.COMPILATION_MESSAGE,"Included syscalldef.asm");
             }
         }
 
@@ -212,7 +212,7 @@ public class PreProcessor {
             try {
                 currentLine.line = cleanLine(currentLine.line);
             } catch (Exception e) {
-                LOGGER.log(CompilationLevel.COMPILATION_ERROR, "Cannot Clean Line: " + currentLine, e); //cleans the line (fixes spacing and removes comments)
+                LOGGER.log(AssemblerLevel.COMPILATION_ERROR, "Cannot Clean Line: " + currentLine, e); //cleans the line (fixes spacing and removes comments)
             }
 
             if (currentLine.line.equals("") || currentLine.line.equals("/n")) { //if line is empty delete it and move on
@@ -271,10 +271,10 @@ public class PreProcessor {
 
                 out.println(data.get(i).line);
             }
-            LOGGER.log(CompilationLevel.COMPILATION_MESSAGE, file.getName() + " File Wrote to:" + file.getAbsolutePath());
+            LOGGER.log(AssemblerLevel.COMPILATION_MESSAGE, file.getName() + " File Wrote to:" + file.getAbsolutePath());
             out.flush();
         } catch (Exception e) {
-            LOGGER.log(CompilationLevel.COMPILATION_ERROR, "Unable to write " + file.getName() + " File to:" + file.getAbsolutePath(), e);
+            LOGGER.log(AssemblerLevel.COMPILATION_ERROR, "Unable to write " + file.getName() + " File to:" + file.getAbsolutePath(), e);
         } finally {
             try {
 

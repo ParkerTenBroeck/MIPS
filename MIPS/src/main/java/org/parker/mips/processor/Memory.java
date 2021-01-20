@@ -7,7 +7,7 @@ package org.parker.mips.processor;
 
 import org.parker.mips.OptionsHandler;
 
-import static org.parker.mips.processor.Processor.logRunTimeError;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,6 +17,8 @@ public class Memory {
 
     private static byte[] savedMemory;
     private static byte[] memory = new byte[0];
+
+    private static Logger LOGGER = Logger.getLogger(Memory.class.getName());
 
     public static void setMemory(byte[] memory) {
         if (memory == null) {
@@ -33,7 +35,8 @@ public class Memory {
 
     public static int getWord(int index) {
         if ((index & 3) != 0) {
-            logRunTimeError("getWord must be alligned to 4 error at index:" + index);
+            Processor.createRunTimeError();
+            LOGGER.log(RunTimeLevel.RUN_TIME_ERROR, "getWord must be alligned to 4 error at index:" + index);
         }
         if (index + 3 > Memory.memory.length) {
             memoryOutOfBoundsEvent("getWord Memory out of bounds", index);
@@ -46,7 +49,8 @@ public class Memory {
 
     public static int getHalfWord(int index) {
         if ((index & 1) != 0) {
-            logRunTimeError("getHalfWord must be alligned to 2 error at index:" + index);
+            Processor.createRunTimeError();
+            LOGGER.log(RunTimeLevel.RUN_TIME_ERROR,"getHalfWord must be alligned to 2 error at index:" + index);
         }
         if (index + 1 > memory.length) {
             memoryOutOfBoundsEvent("getHalfWord Memory out of bounds", index);
@@ -111,7 +115,8 @@ public class Memory {
 
     public static boolean setWord(int index, int val) {
         if ((index & 3) != 0) {
-            logRunTimeError("setWord must be alligned to 4 error at index:" + index);
+            Processor.createRunTimeError();
+            LOGGER.log(RunTimeLevel.RUN_TIME_ERROR,"setWord must be alligned to 4 error at index:" + index);
         }
         if (index + 3 > Memory.memory.length || index < -1) {
             memoryOutOfBoundsEvent("setWord Memory out of bounds", index);
@@ -134,7 +139,8 @@ public class Memory {
 
     public static boolean setHalfWord(int index, int val) {
         if ((index & 1) != 0) {
-            logRunTimeError("setHalfWord must be alligned to 2 error at index:" + index);
+            Processor.createRunTimeError();
+            LOGGER.log(RunTimeLevel.RUN_TIME_ERROR,"setHalfWord must be alligned to 2 error at index:" + index);
         }
         if (index + 1 > Memory.memory.length || index < -1) {
             Processor.stop();
@@ -174,7 +180,8 @@ public class Memory {
             System.arraycopy(memory, 0, temp, 0, memory.length);
             memory = temp;
         } else {
-            logRunTimeError(message + " " + currentIndex);
+            Processor.createRunTimeError();
+            LOGGER.log(RunTimeLevel.RUN_TIME_ERROR,message + " " + currentIndex);
         }
     }
 

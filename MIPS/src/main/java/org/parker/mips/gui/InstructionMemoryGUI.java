@@ -9,7 +9,7 @@ import org.parker.mips.processor.Memory;
 
 import javax.swing.*;
 
-import static org.parker.mips.compiler.InstructionToString.instructionToString;
+import static org.parker.mips.assembler.InstructionToString.instructionToString;
 import static org.parker.mips.processor.Memory.superGetWord;
 import static org.parker.mips.processor.Registers.getPc;
 

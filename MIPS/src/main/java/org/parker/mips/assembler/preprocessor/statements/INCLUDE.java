@@ -3,18 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.compiler.preprocessor.statements;
+package org.parker.mips.assembler.preprocessor.statements;
 
 import org.parker.mips.FileUtils;
-import org.parker.mips.compiler.CompilationLevel;
-import org.parker.mips.compiler.CompilationLogger;
-import org.parker.mips.compiler.data.UserLine;
+import org.parker.mips.assembler.AssemblerLevel;
+import org.parker.mips.assembler.AssemblerLogger;
+import org.parker.mips.assembler.data.UserLine;
 import org.parker.mips.gui.editor.EditorHandler;
 
 import java.io.File;
 import java.util.ArrayList;
 
-import static org.parker.mips.compiler.PreProcessor.loadFile;
+import static org.parker.mips.assembler.PreProcessor.loadFile;
 
 /**
  *
@@ -22,7 +22,7 @@ import static org.parker.mips.compiler.PreProcessor.loadFile;
  */
 public class INCLUDE extends Statement {
 
-    private static final CompilationLogger LOGGER = new CompilationLogger(INCLUDE.class.getName());
+    private static final AssemblerLogger LOGGER = new AssemblerLogger(INCLUDE.class.getName());
 
     ArrayList<UserLine> generatedDataToAdd;
 
@@ -61,7 +61,7 @@ public class INCLUDE extends Statement {
                 generatedDataToAdd = loadFile(path, line);
             }
         } catch (Exception e) {
-            LOGGER.log(CompilationLevel.COMPILATION_ERROR,"Failed to load included File", line, e);
+            LOGGER.log(AssemblerLevel.COMPILATION_ERROR,"Failed to load included File", line, e);
         }
 
     }

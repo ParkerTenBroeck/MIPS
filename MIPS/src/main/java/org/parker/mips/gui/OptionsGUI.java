@@ -441,7 +441,7 @@ public class OptionsGUI extends javax.swing.JFrame {
 
 		themedJTabbedPane1 = new javax.swing.JTabbedPane();
 		themedJPanel11 = new javax.swing.JPanel();
-		themedJLabel2 = new javax.swing.JLabel();
+		//themedJLabel2 = new javax.swing.JLabel();
 		//logSystemMessagesButton = new javax.swing.JCheckBox();
 		//logMessagesButton = new javax.swing.JCheckBox();
 		//logWarningsButton = new javax.swing.JCheckBox();
@@ -498,9 +498,17 @@ public class OptionsGUI extends javax.swing.JFrame {
 		editorFontList = new javax.swing.JList<>();
 		themedJLabel15 = new javax.swing.JLabel();
 
+		logPanel = new javax.swing.JPanel();
+		systemLogLevel = new javax.swing.JList<String>();
+		assemblerLogLevel = new javax.swing.JList<String>();
+		runtimeLogLevel = new javax.swing.JList<String>();
+		showStackTrace = new javax.swing.JCheckBox();
+		showCallerMethodName = new javax.swing.JCheckBox();
+		showCallerClassName = new javax.swing.JCheckBox();
+
 		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-		themedJLabel2.setText("Log Options");
+		//themedJLabel2.setText("Log Options");
 
 		//logSystemMessagesButton.setText("Log System Messages");
 
@@ -540,8 +548,8 @@ public class OptionsGUI extends javax.swing.JFrame {
 				.addGroup(themedJPanel11Layout.createSequentialGroup().addContainerGap()
 						.addGroup(themedJPanel11Layout
 								.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-								.addComponent(themedJLabel2, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+								//.addComponent(themedJLabel2, javax.swing.GroupLayout.PREFERRED_SIZE,
+								//		javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
 								//.addComponent(logSystemMessagesButton, javax.swing.GroupLayout.PREFERRED_SIZE,
 								//		javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
 								//.addComponent(logErrorsButton, javax.swing.GroupLayout.PREFERRED_SIZE,
@@ -575,11 +583,11 @@ public class OptionsGUI extends javax.swing.JFrame {
 				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(themedJPanel11Layout.createSequentialGroup().addContainerGap().addGroup(themedJPanel11Layout
 						.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addComponent(themedJLabel2, javax.swing.GroupLayout.PREFERRED_SIZE,
+						.addComponent(themedJLabel3, javax.swing.GroupLayout.PREFERRED_SIZE,
 								javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
 						.addComponent(themedJLabel5, javax.swing.GroupLayout.PREFERRED_SIZE,
 								javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+						//.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 						.addGroup(themedJPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 								.addGroup(themedJPanel11Layout.createSequentialGroup()
 										//.addComponent(logSystemMessagesButton, javax.swing.GroupLayout.PREFERRED_SIZE,
@@ -597,16 +605,17 @@ public class OptionsGUI extends javax.swing.JFrame {
 										//.addComponent(logErrorsButton, javax.swing.GroupLayout.PREFERRED_SIZE,
 										//		javax.swing.GroupLayout.DEFAULT_SIZE,
 										//		javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addGap(18, 18, 18)
-										.addComponent(themedJLabel3, javax.swing.GroupLayout.PREFERRED_SIZE,
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												javax.swing.GroupLayout.PREFERRED_SIZE)
+										//.addGap(18, 18, 18)
+										//.addComponent(themedJLabel3, javax.swing.GroupLayout.PREFERRED_SIZE,
+										//		javax.swing.GroupLayout.DEFAULT_SIZE,
+										//		javax.swing.GroupLayout.PREFERRED_SIZE)
 										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 										.addComponent(enableAutoGUIUpdatesWhileRuning,
 												javax.swing.GroupLayout.PREFERRED_SIZE,
 												javax.swing.GroupLayout.DEFAULT_SIZE,
 												javax.swing.GroupLayout.PREFERRED_SIZE))
 								.addGroup(themedJPanel11Layout.createSequentialGroup()
+										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 										.addComponent(loadOptionsButton, javax.swing.GroupLayout.PREFERRED_SIZE,
 												javax.swing.GroupLayout.DEFAULT_SIZE,
 												javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -957,6 +966,18 @@ public class OptionsGUI extends javax.swing.JFrame {
 
 		themedJTabbedPane1.addTab("Theme", themedJPanel14);
 
+
+
+		systemLogLevel.setListData(new String[] {"SEVERE, WARNING, INFO, CONFIG, FINE, FINER, FINEST"});
+		assemblerLogLevel.setListData(new String[] {"ASSEMBLER_ERROR", "ASSEMBLER_WARNING", "ASSEMBLER_MESSAGE"});
+		runtimeLogLevel.setListData(new String[] {"RUN_TIME_ERROR", "RUN_TIME_WARNING", "RUN_TIME_MESSAGE"});
+		showStackTrace.setText("Show Stack Traces On System Errors");
+		showCallerMethodName.setText("Show Caller Method Names");
+		showCallerClassName.setText("Show Caller Class Name");
+
+
+		themedJTabbedPane1.addTab("Logging", logPanel);
+
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
 		layout.setHorizontalGroup(
@@ -1040,7 +1061,7 @@ public class OptionsGUI extends javax.swing.JFrame {
 	private javax.swing.JLabel themedJLabel13;
 	private javax.swing.JLabel themedJLabel14;
 	private javax.swing.JLabel themedJLabel15;
-	private javax.swing.JLabel themedJLabel2;
+	//private javax.swing.JLabel themedJLabel2;
 	private javax.swing.JLabel themedJLabel3;
 	private javax.swing.JLabel themedJLabel4;
 	private javax.swing.JLabel themedJLabel5;
@@ -1054,7 +1075,16 @@ public class OptionsGUI extends javax.swing.JFrame {
 	private javax.swing.JPanel themedJPanel14;
 	private javax.swing.JPanel themedJPanel15;
 	private javax.swing.JTabbedPane themedJTabbedPane1;
+	//log options tab
+	private javax.swing.JPanel logPanel;
+	private javax.swing.JList<String> systemLogLevel;
+	private javax.swing.JList<String> assemblerLogLevel;
+	private javax.swing.JList<String> runtimeLogLevel;
+	private javax.swing.JCheckBox showStackTrace;
+	private javax.swing.JCheckBox showCallerMethodName;
+	private javax.swing.JCheckBox showCallerClassName;
 	// End of variables declaration//GEN-END:variables
+
 }
 
 class ListCellTitledBorder implements Border {

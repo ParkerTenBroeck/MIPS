@@ -1,6 +1,6 @@
-package org.parker.mips.compiler;
+package org.parker.mips.assembler;
 
-import org.parker.mips.compiler.data.UserLine;
+import org.parker.mips.assembler.data.UserLine;
 
 public class DirectiveException extends RuntimeException{
     private UserLine line = null;

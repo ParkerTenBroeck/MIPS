@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.compiler.preprocessor.statements;
+package org.parker.mips.assembler.preprocessor.statements;
 
-import org.parker.mips.compiler.CompilationLevel;
-import org.parker.mips.compiler.CompilationLogger;
-import org.parker.mips.compiler.data.AbstractArgumentList;
-import org.parker.mips.compiler.data.UserLine;
+import org.parker.mips.assembler.AssemblerLevel;
+import org.parker.mips.assembler.AssemblerLogger;
+import org.parker.mips.assembler.data.AbstractArgumentList;
+import org.parker.mips.assembler.data.UserLine;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +19,7 @@ import java.util.Arrays;
  */
 public class DEFINLINE extends Statement {
 
-    private static final CompilationLogger LOGGER = new CompilationLogger(DEFINLINE.class.getName());
+    private static final AssemblerLogger LOGGER = new AssemblerLogger(DEFINLINE.class.getName());
 
     private int sizeOfStatement;
     private ArrayList<UserLine> inlineUserLines = new ArrayList<UserLine>();
@@ -42,7 +42,7 @@ public class DEFINLINE extends Statement {
         args = Arrays.copyOf(aal.args, aal.args.length);
         for (int i = 0; i < args.length; i++) {
             if (args[i].trim().contains(" ")) {
-                LOGGER.log(CompilationLevel.COMPILATION_ERROR, "Argument Place holders cannot contain spaces", input);
+                LOGGER.log(AssemblerLevel.COMPILATION_ERROR, "Argument Place holders cannot contain spaces", input);
             }
         }
 
@@ -66,7 +66,7 @@ public class DEFINLINE extends Statement {
                 inlineUserLines.add(file.get(i));
             }
             if (i == file.size() - 1) {
-                LOGGER.log(CompilationLevel.COMPILATION_ERROR,"Reached end of file #definline never terminated use #endinline", file.get(i));
+                LOGGER.log(AssemblerLevel.COMPILATION_ERROR,"Reached end of file #definline never terminated use #endinline", file.get(i));
             }
         }
     }
@@ -82,12 +82,12 @@ public class DEFINLINE extends Statement {
 
             for (int i = 0; i < args.length; i++) {
                 if (args[i].trim().contains(" ")) {
-                    LOGGER.log(CompilationLevel.COMPILATION_ERROR,"Arguments cannot contain spaces", input);
+                    LOGGER.log(AssemblerLevel.COMPILATION_ERROR,"Arguments cannot contain spaces", input);
                 }
             }
 
             if (inputAal.args.length != this.args.length) {
-                LOGGER.log(CompilationLevel.COMPILATION_ERROR,"number of arguments do not match", input);
+                LOGGER.log(AssemblerLevel.COMPILATION_ERROR,"number of arguments do not match", input);
             }
 
             for (int i = 0; i < inlineUserLines.size(); i++) {

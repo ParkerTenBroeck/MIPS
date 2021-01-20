@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.compiler.preprocessor.statements;
+package org.parker.mips.assembler.preprocessor.statements;
 
-import org.parker.mips.compiler.CompilationLevel;
-import org.parker.mips.compiler.CompilationLogger;
-import org.parker.mips.compiler.data.UserLine;
+import org.parker.mips.assembler.AssemblerLevel;
+import org.parker.mips.assembler.AssemblerLogger;
+import org.parker.mips.assembler.data.UserLine;
 
 import java.util.ArrayList;
 
@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class UNDEF extends Statement {
 
-    private static final CompilationLogger LOGGER = new CompilationLogger(UNDEF.class.getName());
+    private static final AssemblerLogger LOGGER = new AssemblerLogger(UNDEF.class.getName());
 
     public UNDEF() {
 
@@ -29,7 +29,7 @@ public class UNDEF extends Statement {
         line.line = line.line.trim();
         String identifire = line.line.trim();
         if (identifire.contains(" ")) {
-            LOGGER.log(CompilationLevel.COMPILATION_ERROR, "Cannot Have Spaces In Name", line);
+            LOGGER.log(AssemblerLevel.COMPILATION_ERROR, "Cannot Have Spaces In Name", line);
         } else {
             for (int i = 0; i < statements.size(); i++) {
                 if ((statements.get(i)).IDENTIFIRE.equals(identifire)) {
@@ -37,7 +37,7 @@ public class UNDEF extends Statement {
                     return;
                 }
             }
-            LOGGER.log(CompilationLevel.COMPILATION_ERROR,this.IDENTIFIRE + " does not exist", line);
+            LOGGER.log(AssemblerLevel.COMPILATION_ERROR,this.IDENTIFIRE + " does not exist", line);
         }
     }
 

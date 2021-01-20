@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.compiler.preprocessor.statements;
+package org.parker.mips.assembler.preprocessor.statements;
 
-import org.parker.mips.compiler.CompilationLevel;
-import org.parker.mips.compiler.CompilationLogger;
-import org.parker.mips.compiler.data.AbstractArgumentList;
-import org.parker.mips.compiler.data.UserLine;
+import org.parker.mips.assembler.AssemblerLevel;
+import org.parker.mips.assembler.AssemblerLogger;
+import org.parker.mips.assembler.data.AbstractArgumentList;
+import org.parker.mips.assembler.data.UserLine;
 
 import java.util.ArrayList;
 
@@ -20,7 +20,7 @@ public class DEFINE extends Statement {
 
     public final String arg;
 
-    private final static CompilationLogger LOGGER = new CompilationLogger(DEFINE.class.getName());
+    private final static AssemblerLogger LOGGER = new AssemblerLogger(DEFINE.class.getName());
 
     public DEFINE() {
         arg = null;
@@ -32,7 +32,7 @@ public class DEFINE extends Statement {
         input.line = input.line.trim();
         String[] nameAndValue = input.line.split(" ");
         if (nameAndValue.length != 1 && nameAndValue.length != 2) {
-            LOGGER.log(CompilationLevel.COMPILATION_ERROR,"Cannot add Define too many/little arguments or Name has Space", input.realLineNumber);
+            LOGGER.log(AssemblerLevel.COMPILATION_ERROR,"Cannot add Define too many/little arguments or Name has Space", input.realLineNumber);
         }
         if (nameAndValue.length > 1) {
             arg = nameAndValue[1].trim();

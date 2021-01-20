@@ -17,6 +17,8 @@ import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -27,6 +29,11 @@ public abstract class Editor extends javax.swing.JPanel {
     private JLabel title;
     protected File currentFile;
     private boolean isSaved;
+
+    //Only used if file is null
+    protected final String name;
+
+    private static final Logger LOGGER = Logger.getLogger(Editor.class.getName());
 
     public static void loadFileIntoEditor(File file) {
         if (file == null) {
@@ -47,18 +54,34 @@ public abstract class Editor extends javax.swing.JPanel {
     }
 
     private static void createEditorFromFile(File file) {
-        Editor editor = new FormattedTextEditor(file);
+        new FormattedTextEditor(file, "");
     }
 
     protected Editor() {
-        this(null);
+        this(null, null);
     }
 
-    protected Editor(File file) {
+    protected Editor(File file, String name) {
         this.currentFile = file;
+        if(file == null){
+            if(name == null){
+                this.name = "";
+            }else {
+                this.name = name;
+            }
+        }else{
+            this.name = "";
+        }
         isSaved = true;
         this.addFocusListener(new asd(this));
         EditorHandler.addEditor(this);
+    }
+    protected Editor(File file){
+        this(file, null);
+    }
+
+    protected Editor(String name){
+        this(null, name);
     }
 
     private class asd implements FocusListener {
@@ -85,11 +108,19 @@ public abstract class Editor extends javax.swing.JPanel {
         updateDisplayTitle();
     }
 
-    public String getDisplayName() {
+    public final String getDisplayName() {
         if (currentFile != null) {
             return currentFile.getName() + (isSaved ? "" : " *");
         } else {
-            return "untitled" + (isSaved ? "" : " *");
+            return (name.equals("") ? "untitled" : name) + (isSaved ? "" : " *");
+        }
+    }
+
+    public final String getName() {
+        if (currentFile != null) {
+            return currentFile.getName();
+        } else {
+            return (name.equals("") ? "untitled" : name);
         }
     }
 
@@ -105,7 +136,7 @@ public abstract class Editor extends javax.swing.JPanel {
         isSaved = val;
     }
 
-    public boolean close() {
+    public final boolean close() {
 
         if (isSaved) {
             EditorHandler.removeEditor(this);
@@ -122,12 +153,14 @@ public abstract class Editor extends javax.swing.JPanel {
             case JOptionPane.YES_OPTION:
                 if (save()) {
                     EditorHandler.removeEditor(this);
+                    closeS();
                     return true;
                 } else {
                     return false;
                 }
             case JOptionPane.NO_OPTION:
                 EditorHandler.removeEditor(this);
+                closeS();
                 return true;
             case JOptionPane.CANCEL_OPTION:
                 return false;
@@ -149,7 +182,7 @@ public abstract class Editor extends javax.swing.JPanel {
         try {
             return Files.createTempFile(prefix, suffix).toFile();
         } catch (IOException ex) {
-            //Logger.getLogger(Editor.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, "Failed to create temporary file", ex);
         }
         return null;
     }
@@ -201,6 +234,8 @@ public abstract class Editor extends javax.swing.JPanel {
         }
         return false;
     }
+
+    public void closeS(){};
 
     public abstract byte[] getDataAsBytes();
 

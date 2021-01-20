@@ -7,7 +7,7 @@ package org.parker.mips.gui;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.parker.mips.*;
-import org.parker.mips.compiler.ASMCompiler;
+import org.parker.mips.assembler.Assembler;
 import org.parker.mips.gui.editor.Editor;
 import org.parker.mips.gui.editor.EditorHandler;
 import org.parker.mips.gui.editor.rsyntax.FormattedTextEditor;
@@ -131,7 +131,7 @@ public class MainGUI extends javax.swing.JFrame {
             LOGGER.log(Level.FINER, "Compile Button Action Preformed");
             Processor.reset();
             EditorHandler.saveAll();
-            ASMCompiler.compileDefault();
+            Assembler.compileDefault();
         });
 
         addStartButtonListener((ae) -> {
@@ -203,7 +203,7 @@ public class MainGUI extends javax.swing.JFrame {
                     Processor.reset();
                     //if (FileHandler.loadExampleFile(new File(((ThemedJMenuItem) evt.getSource()).getName()))) {
                     new FormattedTextEditor(FileUtils.loadFileAsString(new File(((javax.swing.JMenuItem) evt.getSource()).getName())));
-                    ASMCompiler.compileDefault();
+                    Assembler.compileDefault();
                     //}
                 }
             };

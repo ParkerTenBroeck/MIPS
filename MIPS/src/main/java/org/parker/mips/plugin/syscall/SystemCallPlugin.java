@@ -199,7 +199,7 @@ public abstract class SystemCallPlugin extends PluginBase {
             //FileHandler.loadASMExampleFromStream(CLASS_LOADER.getResourceAsStream(resources));
             //ASM_GUI.setTextAreaFromASMFile();
           
-            //ASMCompiler.compileDefault();
+            //Assembler.compileDefault();
             }catch(Exception e) {
             	
             }

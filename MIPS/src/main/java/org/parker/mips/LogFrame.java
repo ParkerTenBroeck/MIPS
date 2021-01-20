@@ -6,8 +6,9 @@
 package org.parker.mips;
 
 
-import org.parker.mips.compiler.CompilationLevel;
+import org.parker.mips.assembler.AssemblerLevel;
 import org.parker.mips.gui.theme.lookandfeel.ModernScrollPane;
+import org.parker.mips.processor.RunTimeLevel;
 
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
@@ -187,17 +188,17 @@ public class LogFrame extends javax.swing.JPanel {
             SimpleAttributeSet sas = new SimpleAttributeSet();
 
 
-            if (record.getLevel() == CompilationLevel.COMPILATION_MESSAGE) {
+            if (record.getLevel() == AssemblerLevel.COMPILATION_MESSAGE || record.getLevel() == RunTimeLevel.RUN_TIME_MESSAGE) {
 
                 StyleConstants.setForeground(sas, Color.LIGHT_GRAY);
                 StyleConstants.setBold(sas, false);
 
-            } else if (record.getLevel() == CompilationLevel.COMPILATION_WARNING) {
+            } else if (record.getLevel() == AssemblerLevel.COMPILATION_WARNING || record.getLevel() == RunTimeLevel.RUN_TIME_WARNING) {
 
                 StyleConstants.setForeground(sas, Color.YELLOW);
                 StyleConstants.setBold(sas, false);
 
-            } else if (record.getLevel() == CompilationLevel.COMPILATION_ERROR) {
+            } else if (record.getLevel() == AssemblerLevel.COMPILATION_ERROR || record.getLevel() == RunTimeLevel.RUN_TIME_ERROR) {
 
                 StyleConstants.setForeground(sas, Color.RED);
                 StyleConstants.setBold(sas, false);

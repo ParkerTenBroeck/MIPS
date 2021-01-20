@@ -1,26 +1,26 @@
-package org.parker.mips.compiler;
+package org.parker.mips.assembler;
 
-import org.parker.mips.compiler.data.UserLine;
+import org.parker.mips.assembler.data.UserLine;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
-public class CompilationException extends Throwable{
+public class AssemblerException extends Throwable{
     UserLine line;
 
-    CompilationException(String message, UserLine line){
+    AssemblerException(String message, UserLine line){
         super(message);
         this.line = line;
     }
-    CompilationException(String message, UserLine line, Throwable cause){
+    AssemblerException(String message, UserLine line, Throwable cause){
         super(message, cause);
         this.line = line;
     }
-    CompilationException(UserLine line){
+    AssemblerException(UserLine line){
         super();
         this.line = line;
     }
-    CompilationException(){
+    AssemblerException(){
         super();
     }
 

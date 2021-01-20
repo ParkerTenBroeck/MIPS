@@ -8,8 +8,9 @@ package org.parker.mips;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.google.common.collect.HashMultimap;
 import com.google.gson.*;
-import org.parker.mips.compiler.CompilationLevel;
+import org.parker.mips.assembler.AssemblerLevel;
 import org.parker.mips.gui.theme.IJThemeInfo;
+import org.parker.mips.processor.RunTimeLevel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,7 +39,8 @@ public class OptionsHandler {
     public static final Option<Boolean> showCallerMethod = new Option(false);
     public static final Option<String> systemLogLevel = new Option(Level.INFO.getName());
     //Assembler
-    public static final Option<String> assemblerLogLevel = new Option(CompilationLevel.COMPILATION_MESSAGE.getName());
+    public static final Option<String> assemblerLogLevel = new Option(AssemblerLevel.COMPILATION_MESSAGE.getName());
+    public static final Option<String> runtimeLogLevel = new Option(RunTimeLevel.RUN_TIME_MESSAGE.getName());
 
     //GUI options
     public static final Option<Boolean> enableGUIAutoUpdateWhileRunning = new Option(true);
@@ -57,6 +59,7 @@ public class OptionsHandler {
     //Run Time
     public static final Option<Boolean> breakOnRunTimeError = new Option(true);
     public static final Option<Boolean> adaptiveMemory = new Option(false);
+    public static final Option<Boolean> checkMemoryAlignment = new Option(false);
     public static final Option<Boolean> enableBreakPoints = new Option(true);
 
     //Non RunTime

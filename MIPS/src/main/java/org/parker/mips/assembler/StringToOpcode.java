@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.compiler;
+package org.parker.mips.assembler;
 
-import org.parker.mips.compiler.data.AbstractArgumentList;
-import org.parker.mips.compiler.data.UserLine;
+import org.parker.mips.assembler.data.AbstractArgumentList;
+import org.parker.mips.assembler.data.UserLine;
 
 import java.nio.ByteBuffer;
 
@@ -22,7 +22,7 @@ public class StringToOpcode {
 
     public static final String[] INSTRUCTIONS = new String[]{"add", "addu", "addi", "addiu", "and", "andi", "div", "divu", "mult", "multu", "nor", "or", "ori", "sll", "sllv", "sra", "srav", "srl", "srlv", "sub", "subu", "xor", "xori", "lhi", "llo", "slt", "sltu", "slti", "sltiu", "beq", "bgtz", "ble", "bne", "j", "jal", "jalr", "jr", "lb", "lbu", "lh", "lhu", "lw", "sb", "sh", "sw", "mfhi", "mflo", "mthi", "mtlo", "trap"};
 
-    public static byte[] stringToOpcode(CompileTimeUserLine ctul) throws InvalidOpCodeException, InvalidArgumentsException {
+    public static byte[] stringToOpcode(AssembleTimeUserLine ctul) throws InvalidOpCodeException, InvalidArgumentsException {
 
         String instruction = ctul.ul.line;
         currentLine = ctul.ul;
@@ -51,7 +51,7 @@ public class StringToOpcode {
             opCodeString = opCodeString.trim();
         }
         if (getNumberOfArguments(new UserLine(opCodeString, ctul.ul.realLineNumber)) != parameter.length) {
-            throw new org.parker.mips.compiler.InvalidArgumentsException("Wrong number of arguments used for (" + opCodeString + ") needed "
+            throw new org.parker.mips.assembler.InvalidArgumentsException("Wrong number of arguments used for (" + opCodeString + ") needed "
                     + getNumberOfArguments(new UserLine(opCodeString, ctul.ul.realLineNumber))
                     + " found " + parameter.length, currentLine);
         }
@@ -411,24 +411,24 @@ public class StringToOpcode {
 
     private static int decodeRegister(String parameter) throws InvalidArgumentsException {
         if (!parameter.contains("$")) {
-            throw new org.parker.mips.compiler.InvalidArgumentsException("Invalid register does not contain $", currentLine);
+            throw new org.parker.mips.assembler.InvalidArgumentsException("Invalid register does not contain $", currentLine);
         }
         try {
-            return ASMCompiler.parseInt(parameter.replace("$", ""));
+            return Assembler.parseInt(parameter.replace("$", ""));
         } catch (Exception e) {
-            throw new org.parker.mips.compiler.InvalidArgumentsException("Invalid register number", currentLine, e);
-            //ASMCompiler.ArgumentError("Invalid register number", currentOpCodeLine);
+            throw new org.parker.mips.assembler.InvalidArgumentsException("Invalid register number", currentLine, e);
+            //Assembler.ArgumentError("Invalid register number", currentOpCodeLine);
         }
     }
 
     private static int decodeImmediateValue(String parameter) throws InvalidArgumentsException {
         try {
-            return ASMCompiler.parseInt(parameter);
+            return Assembler.parseInt(parameter);
         } catch (Exception e) {
 
-            int num = ASMCompiler.getByteIndexOfMemoryLable(parameter.trim(), currentLine.realLineNumber);
+            int num = Assembler.getByteIndexOfMemoryLable(parameter.trim(), currentLine.realLineNumber);
             if (num == -1) {
-                throw new org.parker.mips.compiler.InvalidArgumentsException("Invalid register number", currentLine, e);
+                throw new org.parker.mips.assembler.InvalidArgumentsException("Invalid register number", currentLine, e);
             }
             return num;
         }
@@ -437,27 +437,27 @@ public class StringToOpcode {
     private static int decodeMemoryPointerJump(String parameter) {
 
         try {
-            int temp = ASMCompiler.parseInt(parameter);
+            int temp = Assembler.parseInt(parameter);
             return temp;
         } catch (Exception e) {
             
         }
-        return ((ASMCompiler.getByteIndexOfMemoryLable(parameter.trim(), currentLine.realLineNumber) - currentByteIndex) >> 2) - 1;
+        return ((Assembler.getByteIndexOfMemoryLable(parameter.trim(), currentLine.realLineNumber) - currentByteIndex) >> 2) - 1;
     }
 
     private static int decodeMemoryOpPointerAddress(String parameter) throws InvalidArgumentsException {
 
         try {
-            int temp = ASMCompiler.parseInt(parameter);
+            int temp = Assembler.parseInt(parameter);
             return temp;
         } catch (Exception e) {
 
         }
 
         try {
-            return (ASMCompiler.getByteIndexOfMemoryLable(parameter, currentLine.realLineNumber));
+            return (Assembler.getByteIndexOfMemoryLable(parameter, currentLine.realLineNumber));
         } catch (Exception e) {
-            throw new org.parker.mips.compiler.InvalidArgumentsException("Invalid Memory Pointer", currentLine, e);
+            throw new org.parker.mips.assembler.InvalidArgumentsException("Invalid Memory Pointer", currentLine, e);
         }
     }
 

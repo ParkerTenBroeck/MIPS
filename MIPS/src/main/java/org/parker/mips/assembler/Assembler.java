@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.compiler;
+package org.parker.mips.assembler;
 
 import org.parker.mips.FileUtils;
 import org.parker.mips.OptionsHandler;
 import org.parker.mips.ResourceHandler;
-import org.parker.mips.compiler.data.MemoryLable;
-import org.parker.mips.compiler.data.UserLine;
+import org.parker.mips.assembler.data.MemoryLable;
+import org.parker.mips.assembler.data.UserLine;
 import org.parker.mips.gui.MainGUI;
 import org.parker.mips.gui.editor.EditorHandler;
 import org.parker.mips.processor.Memory;
@@ -34,13 +34,13 @@ class ByteP {
 
 };
 
-abstract class CompileTimeUserLine {
+abstract class AssembleTimeUserLine {
 
     public final UserLine ul;
     public final ByteP bytes[];
     int startingByteAddress;
 
-    protected CompileTimeUserLine(UserLine ul, ByteP[] bytes) {
+    protected AssembleTimeUserLine(UserLine ul, ByteP[] bytes) {
         this.ul = ul;
         this.bytes = bytes;
     }
@@ -49,10 +49,10 @@ abstract class CompileTimeUserLine {
         return this.bytes.length;
     }
 
-    public abstract void finalCompilePass() throws CompilationException;
+    public abstract void finalAssemblyPass() throws AssemblerException;
 };
 
-class Directive extends CompileTimeUserLine {//must have instruction and data preented at the time of creation
+class Directive extends AssembleTimeUserLine {//must have instruction and data preented at the time of creation
 
     public Directive(UserLine ul, byte[] _bytes) {
         super(ul, new ByteP[_bytes.length]);
@@ -62,13 +62,13 @@ class Directive extends CompileTimeUserLine {//must have instruction and data pr
     }
 
     @Override
-    public void finalCompilePass() { //possibly add error checking 
+    public void finalAssemblyPass() { //possibly add error checking
 
     }
 
 };
 
-class asmInstruction extends CompileTimeUserLine {
+class asmInstruction extends AssembleTimeUserLine {
 
     public asmInstruction(UserLine ul) {
         super(ul, new ByteP[StringToOpcode.getInstructionSize(ul)]);
@@ -78,15 +78,15 @@ class asmInstruction extends CompileTimeUserLine {
     }
 
     @Override
-    public void finalCompilePass() throws CompilationException{
+    public void finalAssemblyPass() throws AssemblerException {
         byte[] temp = StringToOpcode.stringToOpcode(this);
 
         if (temp == null) {
-            throw new CompilationException();
+            throw new AssemblerException();
         }
 
         if (bytes.length != temp.length) {
-            throw new CompilationException();
+            throw new AssemblerException();
         }
 
         for (int i = 0; i < temp.length; i++) {
@@ -100,7 +100,7 @@ class MemoryChunk {
 
     final int byteAlignment;
     final MemoryLable startLable;
-    final ArrayList<CompileTimeUserLine> chunkData = new ArrayList<CompileTimeUserLine>();
+    final ArrayList<AssembleTimeUserLine> chunkData = new ArrayList<AssembleTimeUserLine>();
 
     public MemoryChunk(MemoryLable lable) {
         this.startLable = lable;
@@ -115,7 +115,7 @@ class MemoryChunk {
     public MemoryChunk(UserLine line) {
         this.startLable = null;
 
-        int tempAll = ASMCompiler.parseInt(line.line.split(" ")[1]);
+        int tempAll = Assembler.parseInt(line.line.split(" ")[1]);
 
         if (tempAll < 0) {
             this.byteAlignment = 0;
@@ -125,7 +125,7 @@ class MemoryChunk {
         }
     }
 
-    public void addData(CompileTimeUserLine ctul) {
+    public void addData(AssembleTimeUserLine ctul) {
         this.chunkData.add(ctul);
     }
 
@@ -150,7 +150,7 @@ class Origin {
     }
 
     public Origin(UserLine line) {
-        this.byteOrigin = ASMCompiler.parseInt(line.line.split(" ")[1]);
+        this.byteOrigin = Assembler.parseInt(line.line.split(" ")[1]);
         memoryChunks = new ArrayList<MemoryChunk>();
     }
 
@@ -159,15 +159,15 @@ class Origin {
     }
 };
 
-public class ASMCompiler {
+public class Assembler {
 
     static private ArrayList<MemoryLable> memoryLables = new ArrayList<MemoryLable>();
     static private ArrayList<Origin> origins = new ArrayList<Origin>();
     static private ArrayList<ByteP> memoryByteList = new ArrayList<ByteP>();
 
-    private static final CompilationLogger LOGGER = new CompilationLogger(ASMCompiler.class.getName());
+    private static final AssemblerLogger LOGGER = new AssemblerLogger(Assembler.class.getName());
 
-    public static void compile(File file) {
+    public static void assemble(File file) {
 
         memoryLables = new ArrayList<MemoryLable>();
         memoryByteList = new ArrayList<ByteP>();
@@ -183,7 +183,7 @@ public class ASMCompiler {
         }
 
         if (!FileUtils.getExtension(file).equals("asm")) {
-            LOGGER.log(Level.WARNING, "This file is not an assembly file trying to compile it may result in errors");
+            LOGGER.log(Level.WARNING, "This file is not an assembly file trying to assemble it may result in errors");
         }
 
         //LogFrame.clearDisplay();
@@ -197,7 +197,7 @@ public class ASMCompiler {
 
         addOriginsToByteList(); //adds instructions to bytelist in order according to file and origins and sets the respecting addresses of memory lables
 
-        runFinalCompilePass(); //compiles code once memory lable locations are known
+        runFinalAssemblyPass(); //compiles code once memory lable locations are known
 
         byte[] memByteArray = createByteArrayFromByteList();
 
@@ -213,7 +213,7 @@ public class ASMCompiler {
 
         MainGUI.refreshAll();
 
-        LOGGER.log(CompilationLevel.COMPILATION_MESSAGE, "Compilation of file: " + file.getAbsolutePath() + " has finished\n");
+        LOGGER.log(AssemblerLevel.COMPILATION_MESSAGE, "Compilation of file: " + file.getAbsolutePath() + " has finished\n");
     }
 
     public static void saveOriginsToFile(String compiledFileName) {
@@ -230,7 +230,7 @@ public class ASMCompiler {
 
         for (Origin org : origins) {
             for (MemoryChunk mc : org.memoryChunks) {
-                for (CompileTimeUserLine ctul : mc.chunkData) {
+                for (AssembleTimeUserLine ctul : mc.chunkData) {
                     if (ctul.ul.line.length() > maxSizeInstruction) {
                         maxSizeInstruction = ctul.ul.line.length();
                     }
@@ -244,7 +244,7 @@ public class ASMCompiler {
 
         try (PrintWriter out = new PrintWriter(file)) {
 
-            out.println("Compilation Info of File: " + compiledFileName);
+            out.println("Assembly Info of File: " + compiledFileName);
             out.println();
 
             for (Origin org : origins) {
@@ -272,7 +272,7 @@ public class ASMCompiler {
                     out.print("   " + "Aligned to: " + mc.byteAlignment);
                     out.println();
 
-                    for (CompileTimeUserLine ctul : mc.chunkData) {
+                    for (AssembleTimeUserLine ctul : mc.chunkData) {
 
                         out.print("       " + "Instruction/Data: "
                                 + String.format("%-" + maxSizeInstruction + "s", ctul.ul.line)
@@ -291,11 +291,11 @@ public class ASMCompiler {
 
             }
 
-//            ASMCompiler.logCompilerMessage("Compilation Info File Wrote to: " + file.getAbsolutePath());
+//            Assembler.logCompilerMessage("Compilation Info File Wrote to: " + file.getAbsolutePath());
 //            LOGGER.log(Level.CONFIG, "Compilation Info ");
             out.flush();
         } catch (Exception e) {
-            //ASMCompiler.logCompilerError("Unable to write Pre Processed File to: " + file.getAbsolutePath() + "\n" + LogFrame.getFullExceptionMessage(e));
+            //Assembler.logCompilerError("Unable to write Pre Processed File to: " + file.getAbsolutePath() + "\n" + LogFrame.getFullExceptionMessage(e));
         }
     }
 
@@ -325,25 +325,25 @@ public class ASMCompiler {
             if (memoryLables.get(i).name.equals(memoryLable)) {
                 int val = memoryLables.get(i).getByteAddress();
                 if (!sig.isEmpty()) {
-                    return ASMCompiler.handleUserGeneratedSignificants(val, sig);
+                    return Assembler.handleUserGeneratedSignificants(val, sig);
                 } else {
                     return val;
                 }
             }
         }
-        LOGGER.log(CompilationLevel.COMPILATION_ERROR, "Memory Lable does not exist line: " + realLineNumberOfOpCode);
-        //ASMCompiler.MemoryLableError("Memory Lable does not exist", realLineNumberOfOpCode);
+        LOGGER.log(AssemblerLevel.COMPILATION_ERROR, "Memory Lable does not exist line: " + realLineNumberOfOpCode);
+        //Assembler.MemoryLableError("Memory Lable does not exist", realLineNumberOfOpCode);
         return -1;
     }
 
-    private static void runFinalCompilePass() { //for every CompileTimeUserLine (instruction) run the final compilation pass 
+    private static void runFinalAssemblyPass() { //for every CompileTimeUserLine (instruction) run the final compilation pass
         for (Origin org : origins) {
             for (MemoryChunk mc : org.memoryChunks) {
-                for (CompileTimeUserLine ctul : mc.chunkData) {
+                for (AssembleTimeUserLine ctul : mc.chunkData) {
                     try {
-                        ctul.finalCompilePass();
-                    }catch(CompilationException e){
-                        LOGGER.log(CompilationLevel.COMPILATION_ERROR, e);
+                        ctul.finalAssemblyPass();
+                    }catch(AssemblerException e){
+                        LOGGER.log(AssemblerLevel.COMPILATION_ERROR, e);
                     }
                 }
             }
@@ -374,7 +374,7 @@ public class ASMCompiler {
                     mc.startLable.setByteAddress(currentByteIndex); //sets the byte address of the chunks memory lable
                 }
 
-                for (CompileTimeUserLine ctul : mc.chunkData) {
+                for (AssembleTimeUserLine ctul : mc.chunkData) {
 
                     try {
                         while (memoryByteList.get(currentByteIndex) != null) { //keeps looking for a new locaiton
@@ -456,7 +456,7 @@ public class ASMCompiler {
                 org = new Origin(currentLine);
                 mc = new MemoryChunk(new MemoryLable(new UserLine("", -1), -1));
             } else {
-                mc.addData(userLineToCompileTimeUserLine(currentLine));
+                mc.addData(userLineToAssembleTimeUserLine(currentLine));
             }
         }
         org.addMemoryChunk(mc); //adds last data
@@ -471,15 +471,15 @@ public class ASMCompiler {
 
         for (int i = 0; i < memoryLables.size(); i++) {
             if (ml.name.equals(memoryLables.get(i).name)) {
-                LOGGER.log(CompilationLevel.COMPILATION_ERROR, null, new MemoryLableException("Cannot have duplicate memory lables", ml.line));
-                //ASMCompiler.MemoryLableError("Cannot have Duplicate Memory Lables", ml.line.realLineNumber);
+                LOGGER.log(AssemblerLevel.COMPILATION_ERROR, null, new MemoryLableException("Cannot have duplicate memory lables", ml.line));
+                //Assembler.MemoryLableError("Cannot have Duplicate Memory Lables", ml.line.realLineNumber);
                 return;
             }
         }
         memoryLables.add(ml);
     }
 
-    private static CompileTimeUserLine userLineToCompileTimeUserLine(UserLine line) {
+    private static AssembleTimeUserLine userLineToAssembleTimeUserLine(UserLine line) {
 
         if (line.line.startsWith(".")) {
             try {
@@ -551,6 +551,6 @@ public class ASMCompiler {
     }
 
     public static void compileDefault() {
-        compile(EditorHandler.getFalseFileFromLastFocused());
+        assemble(EditorHandler.getFalseFileFromLastFocused());
     }
 }

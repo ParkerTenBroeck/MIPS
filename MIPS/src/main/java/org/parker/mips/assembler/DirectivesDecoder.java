@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.compiler;
+package org.parker.mips.assembler;
 
-import org.parker.mips.compiler.data.UserLine;
+import org.parker.mips.assembler.data.UserLine;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,7 +22,7 @@ public class DirectivesDecoder {
 
         if (string.contains(".space")) {
 
-            return new byte[ASMCompiler.parseInt(string.split(" ")[1])];
+            return new byte[Assembler.parseInt(string.split(" ")[1])];
 
         } else if (string.contains(".ascii")) {
 
@@ -42,7 +42,7 @@ public class DirectivesDecoder {
                 byte[] tempByte = new byte[temp.length];
 
                 for (int i = 0; i < temp.length; i++) {
-                    tempByte[i] = intTo1ByteArray(ASMCompiler.parseInt(temp[i].trim()))[0];
+                    tempByte[i] = intTo1ByteArray(Assembler.parseInt(temp[i].trim()))[0];
                 }
 
                 return tempByte;
@@ -58,7 +58,7 @@ public class DirectivesDecoder {
                 byte[] tempByte = new byte[temp.length * 2];
 
                 for (int i = 0; i < temp.length; i++) {
-                    byte[] tempTempByte = intTo2ByteArray(ASMCompiler.parseInt(temp[i].trim()));
+                    byte[] tempTempByte = intTo2ByteArray(Assembler.parseInt(temp[i].trim()));
                     tempByte[(i * 2)] = tempTempByte[0];
                     tempByte[(i * 2) + 1] = tempTempByte[1];
 
@@ -77,7 +77,7 @@ public class DirectivesDecoder {
                 byte[] tempByte = new byte[temp.length * 4];
 
                 for (int i = 0; i < temp.length; i++) {
-                    byte[] tempTempByte = intTo4ByteArray(ASMCompiler.parseInt(temp[i].trim()));
+                    byte[] tempTempByte = intTo4ByteArray(Assembler.parseInt(temp[i].trim()));
                     tempByte[(i * 4)] = tempTempByte[0];
                     tempByte[(i * 4) + 1] = tempTempByte[1];
                     tempByte[(i * 4) + 2] = tempTempByte[2];

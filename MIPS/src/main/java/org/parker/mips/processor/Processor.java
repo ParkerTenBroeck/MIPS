@@ -5,7 +5,6 @@
  */
 package org.parker.mips.processor;
 
-import org.parker.mips.LogFrame;
 import org.parker.mips.OptionsHandler;
 import org.parker.mips.gui.MainGUI;
 
@@ -33,9 +32,11 @@ public class Processor implements Runnable {
     }
 
     public static synchronized void stop() {
-        isRunning = false;
-        MainGUI.stopAutoUpdate();
-        LOGGER.log(Level.INFO, "Processor Halted");
+        if(isRunning){
+            LOGGER.log(Level.INFO, "Processor Halted");
+            isRunning = false;
+            MainGUI.stopAutoUpdate();
+        }
     }
 
     public static void reset() {
@@ -120,7 +121,7 @@ public class Processor implements Runnable {
         try {
             runInstruction(getOpCode());
         }catch(Exception e){
-            LOGGER.log(Level.SEVERE, "Runtime Error: " + e.getMessage(), e);
+            LOGGER.log(RunTimeLevel.RUN_TIME_ERROR, "Runtime Error: " + e.getMessage(), e);
             if(OptionsHandler.breakOnRunTimeError.val()){
                 Processor.stop();
             }
@@ -162,28 +163,11 @@ public class Processor implements Runnable {
 //
 //    static long duration = (endTime - startTime);  //divide by 1000000 to get milliseconds.
 
-    @Deprecated
-    public static void logRunTimeError(String message) {
+    public static void createRunTimeError() {
         if (OptionsHandler.breakOnRunTimeError.val()) {
             Processor.stop();
             MainGUI.refreshAll();
         }
-        LOGGER.log(Level.SEVERE, message);
-        //LogFrame.logError("[RunTime] " + message);
-    }
-
-    @Deprecated
-    public static void logRunTimeWarning(String message) {
-
-        LOGGER.log(Level.WARNING, message);
-        //LogFrame.logWarning("[RunTime] " + message);
-    }
-
-    @Deprecated
-    public static void logRunTimeMessage(String message) {
-
-        LOGGER.log(Level.INFO, message);
-        //LogFrame.logMessage("[RunTime] " + message);
     }
 
 }

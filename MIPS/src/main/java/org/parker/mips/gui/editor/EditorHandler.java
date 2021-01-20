@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public class EditorHandler {
 
-    private static final ArrayList<Editor> editors = new ArrayList();
+    private static final ArrayList<Editor> editors = new ArrayList<Editor>();
     private static Editor lastFoucsed;
 
     public static boolean isAllSaved() {
@@ -80,6 +80,15 @@ public class EditorHandler {
     public static final void addEditor(Editor editor) {
         if(editors.contains(editor)){
             return;
+        }
+        if(editor.getFile() != null) {
+            String afp = editor.getFile().getAbsolutePath();
+            for (Editor e : editors) {
+                if (e.getFile().getAbsolutePath().equals(afp)) {
+                    //editor.close();
+                    return;
+                }
+            }
         }
         editors.add(editor);
         EditorTabbedPane.addEditor(editor);

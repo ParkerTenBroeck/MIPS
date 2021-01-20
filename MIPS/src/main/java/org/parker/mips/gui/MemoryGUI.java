@@ -5,8 +5,8 @@
  */
 package org.parker.mips.gui;
 
-import org.parker.mips.compiler.ASMCompiler;
-import org.parker.mips.compiler.data.MemoryLable;
+import org.parker.mips.assembler.Assembler;
+import org.parker.mips.assembler.data.MemoryLable;
 import org.parker.mips.gui.theme.lookandfeel.ModernScrollPane;
 import org.parker.mips.processor.Memory;
 
@@ -26,7 +26,7 @@ public class MemoryGUI extends javax.swing.JFrame {
         initComponents();
         memoryPositionScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         memoryPositionScrollPane.getVerticalScrollBar().setModel(valsScrollPane.getVerticalScrollBar().getModel());
-        ArrayList<MemoryLable> memoryLablesAL =  ASMCompiler.getMemoryLables();
+        ArrayList<MemoryLable> memoryLablesAL =  Assembler.getMemoryLables();
         cbs = new ComboBoxSearchable(memoryLables, memoryLablesAL);
         updateMemoryValues();
         this.show(true);
@@ -346,7 +346,7 @@ public class MemoryGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_autoUpdateButtonActionPerformed
 
     private void memoryLablesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_memoryLablesActionPerformed
-        startingPosition.setText(Integer.toString(ASMCompiler.getByteIndexOfMemoryLable(cbs.getEnteredText(), -1)));
+        startingPosition.setText(Integer.toString(Assembler.getByteIndexOfMemoryLable(cbs.getEnteredText(), -1)));
         updateMemoryValues();
     }//GEN-LAST:event_memoryLablesActionPerformed
 
