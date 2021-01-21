@@ -40,6 +40,9 @@ public class OptionsGUI extends javax.swing.JFrame {
 	public OptionsGUI() {
 		initComponents();
 
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+
 		initGUIThemeComponents();
 		initEditorThemeComponents();
 
@@ -65,19 +68,21 @@ public class OptionsGUI extends javax.swing.JFrame {
 		// linking all of the components to the linked OPTIONS
 		// General
 		// logging
-		//OptionsHandler.logSystemMessages.LinkJButton(this, this.logSystemMessagesButton);
-		//OptionsHandler.logMessages.LinkJButton(this, this.logMessagesButton);
-		//OptionsHandler.logWarnings.LinkJButton(this, this.logWarningsButton);
-		//OptionsHandler.logErrors.LinkJButton(this, this.logErrorsButton);
+		OptionsHandler.showStackTrace.LinkJButton(this, this.showStackTraceJCheckBox);
+		OptionsHandler.showCallerClass.LinkJButton(this, this.showCallerClassNameJCheckBox);
+		OptionsHandler.showCallerMethod.LinkJButton(this, this.showCallerMethodNameJCheckBox);
+		OptionsHandler.systemLogLevel.LinkJList(this, this.systemLogLevelJList);
+		OptionsHandler.assemblerLogLevel.LinkJList(this, this.assemblerLogLevelJList);
+		OptionsHandler.runtimeLogLevel.LinkJList(this, this.runtimeLogLevelJList);
 
 		// GUI options
 		OptionsHandler.enableGUIAutoUpdateWhileRunning.LinkJButton(this, this.enableAutoGUIUpdatesWhileRuning);
 		OptionsHandler.GUIAutoUpdateRefreshTime.LinkJSlider(this, this.guiUpdateTimeSlider);
 
-		// Compiler
+		// Assembler
 		OptionsHandler.saveCleanedFile.LinkJButton(this, this.saveCleanedFileButton);
 		OptionsHandler.savePreProcessedFile.LinkJButton(this, this.savePreProcessorFileButton);
-		OptionsHandler.saveCompilationInfo.LinkJButton(this, this.saveCompilerInfoFileButton);
+		OptionsHandler.saveCompilationInfo.LinkJButton(this, this.saveAssemblerInfoFileButton);
 
 		// PreProcessor
 		OptionsHandler.includeRegDef.LinkJButton(this, this.includeRegDefButton);
@@ -465,7 +470,7 @@ public class OptionsGUI extends javax.swing.JFrame {
 		themedJPanel13 = new javax.swing.JPanel();
 		themedJLabel6 = new javax.swing.JLabel();
 		savePreProcessorFileButton = new javax.swing.JCheckBox();
-		saveCompilerInfoFileButton = new javax.swing.JCheckBox();
+		saveAssemblerInfoFileButton = new javax.swing.JCheckBox();
 		saveCleanedFileButton = new javax.swing.JCheckBox();
 		jSeparator2 = new javax.swing.JSeparator();
 		themedJLabel9 = new javax.swing.JLabel();
@@ -499,12 +504,12 @@ public class OptionsGUI extends javax.swing.JFrame {
 		themedJLabel15 = new javax.swing.JLabel();
 
 		logPanel = new javax.swing.JPanel();
-		systemLogLevel = new javax.swing.JList<String>();
-		assemblerLogLevel = new javax.swing.JList<String>();
-		runtimeLogLevel = new javax.swing.JList<String>();
-		showStackTrace = new javax.swing.JCheckBox();
-		showCallerMethodName = new javax.swing.JCheckBox();
-		showCallerClassName = new javax.swing.JCheckBox();
+		systemLogLevelJList = new javax.swing.JList<String>();
+		assemblerLogLevelJList = new javax.swing.JList<String>();
+		runtimeLogLevelJList = new javax.swing.JList<String>();
+		showStackTraceJCheckBox = new javax.swing.JCheckBox();
+		showCallerMethodNameJCheckBox = new javax.swing.JCheckBox();
+		showCallerClassNameJCheckBox = new javax.swing.JCheckBox();
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -698,11 +703,11 @@ public class OptionsGUI extends javax.swing.JFrame {
 
 		themedJTabbedPane1.addTab("Processor", themedJPanel12);
 
-		themedJLabel6.setText("Compiler Options");
+		themedJLabel6.setText("Assembler Options");
 
 		savePreProcessorFileButton.setText("Save PreProcessed File");
 
-		saveCompilerInfoFileButton.setText("Save Compiler Info File");
+		saveAssemblerInfoFileButton.setText("Save Assembler Info File");
 
 		saveCleanedFileButton.setText("Save Cleaned File");
 
@@ -727,7 +732,7 @@ public class OptionsGUI extends javax.swing.JFrame {
 										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
 								.addComponent(savePreProcessorFileButton, javax.swing.GroupLayout.PREFERRED_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(saveCompilerInfoFileButton, javax.swing.GroupLayout.PREFERRED_SIZE,
+								.addComponent(saveAssemblerInfoFileButton, javax.swing.GroupLayout.PREFERRED_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
 						// .addComponent(linkedFileButton, javax.swing.GroupLayout.PREFERRED_SIZE,
 						// javax.swing.GroupLayout.DEFAULT_SIZE,
@@ -759,7 +764,7 @@ public class OptionsGUI extends javax.swing.JFrame {
 								.addComponent(savePreProcessorFileButton, javax.swing.GroupLayout.PREFERRED_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
 								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-								.addComponent(saveCompilerInfoFileButton, javax.swing.GroupLayout.PREFERRED_SIZE,
+								.addComponent(saveAssemblerInfoFileButton, javax.swing.GroupLayout.PREFERRED_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
 						.addGroup(themedJPanel13Layout.createSequentialGroup()
 								.addComponent(themedJLabel9, javax.swing.GroupLayout.PREFERRED_SIZE,
@@ -775,7 +780,7 @@ public class OptionsGUI extends javax.swing.JFrame {
 						// javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
 						.addContainerGap(244, Short.MAX_VALUE)));
 
-		themedJTabbedPane1.addTab("Compiler", themedJPanel13);
+		themedJTabbedPane1.addTab("Assembler", themedJPanel13);
 
 		themedJLabel7.setText("SystemCall Options");
 
@@ -842,19 +847,17 @@ public class OptionsGUI extends javax.swing.JFrame {
 				.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
 						.addContainerGap()
 						.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-								.addComponent(themedJLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+								.addComponent(themedJLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
 								.addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 						.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-								.addComponent(themedJLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, 150,
-										Short.MAX_VALUE)
-								.addComponent(jScrollPane3))
+								.addComponent(themedJLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+								.addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 						.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-								.addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-								.addComponent(themedJLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, 150,
-										Short.MAX_VALUE))
-						.addContainerGap(137, Short.MAX_VALUE)));
+								.addComponent(themedJLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, 150,Short.MAX_VALUE)
+								.addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+						.addContainerGap(0, Short.MAX_VALUE)));
 		jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(jPanel1Layout.createSequentialGroup().addContainerGap()
 						.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -920,21 +923,21 @@ public class OptionsGUI extends javax.swing.JFrame {
 		jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(jPanel2Layout.createSequentialGroup().addContainerGap()
 						.addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-								.addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+								.addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
 								.addComponent(themedJLabel11, javax.swing.GroupLayout.DEFAULT_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 						.addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
 								.addComponent(themedJLabel14, javax.swing.GroupLayout.DEFAULT_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 150,
+								.addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 200,
 										javax.swing.GroupLayout.PREFERRED_SIZE))
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 						.addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
 								.addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
 								.addComponent(themedJLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 150,
 										javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addContainerGap(137, Short.MAX_VALUE)));
+						.addContainerGap(0, Short.MAX_VALUE)));
 		jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(jPanel2Layout.createSequentialGroup().addContainerGap().addGroup(jPanel2Layout
 						.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -957,26 +960,107 @@ public class OptionsGUI extends javax.swing.JFrame {
 
 		jTabbedPane1.addTab("Editor", jPanel2);
 
+		themedJTabbedPane1.addTab("Theme", themedJPanel14);
+
+		{//logging panel
+
+			javax.swing.JScrollPane bruhScroll1 = new javax.swing.JScrollPane();
+			javax.swing.JLabel systemLevelsLogJLable = new javax.swing.JLabel();
+			javax.swing.JLabel runtimeLevelsLogJLable = new javax.swing.JLabel();
+			javax.swing.JScrollPane bruhScroll2 = new javax.swing.JScrollPane();
+			javax.swing.JLabel assemblerLevelsLogJLable = new javax.swing.JLabel();
+			javax.swing.JScrollPane bruhScroll3 = new javax.swing.JScrollPane();
+
+			systemLogLevelJList.setModel(new javax.swing.AbstractListModel<String>() {
+				String[] strings = { "OFF", "SEVERE", "WARNING", "INFO", "CONFIG", "FINE", "FINER", "FINEST" };
+				public int getSize() { return strings.length; }
+				public String getElementAt(int i) { return strings[i]; }
+			});
+			bruhScroll1.setViewportView(systemLogLevelJList);
+
+			systemLevelsLogJLable.setText("System Levels");
+
+			runtimeLevelsLogJLable.setText("RunTime Levels");
+
+			runtimeLogLevelJList.setModel(new javax.swing.AbstractListModel<String>() {
+				String[] strings = { "OFF", "RUN_TIME_ERROR", "RUN_TIME_WARNING", "RUN_TIME_MESSAGE" };
+				public int getSize() { return strings.length; }
+				public String getElementAt(int i) { return strings[i]; }
+			});
+			bruhScroll2.setViewportView(runtimeLogLevelJList);
+
+			assemblerLevelsLogJLable.setText("Assembler Levels");
+
+			assemblerLogLevelJList.setModel(new javax.swing.AbstractListModel<String>() {
+				String[] strings = { "OFF", "ASSEMBLER_ERROR", "ASSEMBLER_WARNING", "ASSEMBLER_MESSAGE" };
+				public int getSize() { return strings.length; }
+				public String getElementAt(int i) { return strings[i]; }
+			});
+			bruhScroll3.setViewportView(assemblerLogLevelJList);
+
+			showCallerMethodNameJCheckBox.setText("Show Caller Method Name");
+
+			showStackTraceJCheckBox.setText("Show Stack Trace On Error");
+
+			showCallerClassNameJCheckBox.setText("Show Caller Class Name");
+
+			javax.swing.GroupLayout loggerLayout = new javax.swing.GroupLayout(logPanel);
+			logPanel.setLayout(loggerLayout);
+			loggerLayout.setHorizontalGroup(
+					loggerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+							.addGroup(loggerLayout.createSequentialGroup()
+									.addContainerGap()
+									.addGroup(loggerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+											.addComponent(bruhScroll1)
+											.addComponent(systemLevelsLogJLable, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
+									.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+									.addGroup(loggerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+											.addComponent(bruhScroll2)
+											.addComponent(runtimeLevelsLogJLable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+											.addComponent(bruhScroll3, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+											.addComponent(assemblerLevelsLogJLable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+									.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+									.addGroup(loggerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+											.addComponent(showCallerMethodNameJCheckBox)
+											.addComponent(showCallerClassNameJCheckBox)
+											.addComponent(showStackTraceJCheckBox))
+									.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+			);
+			loggerLayout.setVerticalGroup(
+					loggerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+							.addGroup(loggerLayout.createSequentialGroup()
+									.addContainerGap()
+									.addGroup(loggerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+											.addComponent(systemLevelsLogJLable)
+											.addComponent(assemblerLevelsLogJLable))
+									.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+									.addGroup(loggerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+											.addComponent(bruhScroll1, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
+											.addGroup(loggerLayout.createSequentialGroup()
+													.addGroup(loggerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+															.addGroup(loggerLayout.createSequentialGroup()
+																	.addComponent(showCallerMethodNameJCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+																	.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+																	.addComponent(showCallerClassNameJCheckBox)
+																	.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+																	.addComponent(showStackTraceJCheckBox))
+															.addComponent(bruhScroll3, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+													.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+													.addComponent(runtimeLevelsLogJLable)
+													.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+													.addComponent(bruhScroll2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+									.addContainerGap())
+			);
+
+			themedJTabbedPane1.addTab("Logging", logPanel);
+		}
+
 		javax.swing.GroupLayout themedJPanel14Layout = new javax.swing.GroupLayout(themedJPanel14);
 		themedJPanel14.setLayout(themedJPanel14Layout);
 		themedJPanel14Layout.setHorizontalGroup(themedJPanel14Layout
 				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(jTabbedPane1));
 		themedJPanel14Layout.setVerticalGroup(themedJPanel14Layout
 				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(jTabbedPane1));
-
-		themedJTabbedPane1.addTab("Theme", themedJPanel14);
-
-
-
-		systemLogLevel.setListData(new String[] {"SEVERE, WARNING, INFO, CONFIG, FINE, FINER, FINEST"});
-		assemblerLogLevel.setListData(new String[] {"ASSEMBLER_ERROR", "ASSEMBLER_WARNING", "ASSEMBLER_MESSAGE"});
-		runtimeLogLevel.setListData(new String[] {"RUN_TIME_ERROR", "RUN_TIME_WARNING", "RUN_TIME_MESSAGE"});
-		showStackTrace.setText("Show Stack Traces On System Errors");
-		showCallerMethodName.setText("Show Caller Method Names");
-		showCallerClassName.setText("Show Caller Class Name");
-
-
-		themedJTabbedPane1.addTab("Logging", logPanel);
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
@@ -1051,7 +1135,7 @@ public class OptionsGUI extends javax.swing.JFrame {
 	private javax.swing.JCheckBox reloadMemoryOnResetButton;
 	private javax.swing.JCheckBox resetProcessorOnTrap0Button;
 	private javax.swing.JCheckBox saveCleanedFileButton;
-	private javax.swing.JCheckBox saveCompilerInfoFileButton;
+	private javax.swing.JCheckBox saveAssemblerInfoFileButton;
 	private javax.swing.JButton saveCurrentOptionsButton;
 	private javax.swing.JCheckBox savePreProcessorFileButton;
 	private javax.swing.JLabel themedJLabel1;
@@ -1077,12 +1161,12 @@ public class OptionsGUI extends javax.swing.JFrame {
 	private javax.swing.JTabbedPane themedJTabbedPane1;
 	//log options tab
 	private javax.swing.JPanel logPanel;
-	private javax.swing.JList<String> systemLogLevel;
-	private javax.swing.JList<String> assemblerLogLevel;
-	private javax.swing.JList<String> runtimeLogLevel;
-	private javax.swing.JCheckBox showStackTrace;
-	private javax.swing.JCheckBox showCallerMethodName;
-	private javax.swing.JCheckBox showCallerClassName;
+	private javax.swing.JList<String> systemLogLevelJList;
+	private javax.swing.JList<String> assemblerLogLevelJList;
+	private javax.swing.JList<String> runtimeLogLevelJList;
+	private javax.swing.JCheckBox showStackTraceJCheckBox;
+	private javax.swing.JCheckBox showCallerMethodNameJCheckBox;
+	private javax.swing.JCheckBox showCallerClassNameJCheckBox;
 	// End of variables declaration//GEN-END:variables
 
 }

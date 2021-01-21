@@ -150,6 +150,7 @@ public class LogFrame extends javax.swing.JPanel {
 
         private static Level systemLevel;
         private static Level assemblerLevel;
+        private static Level runtimeLevel;
 
         static{
             OptionsHandler.systemLogLevel.addObserver((o, v) -> {
@@ -158,8 +159,12 @@ public class LogFrame extends javax.swing.JPanel {
             OptionsHandler.assemblerLogLevel.addObserver((o, v) -> {
                 assemblerLevel = Level.parse((String) v);
             });
+            OptionsHandler.runtimeLogLevel.addObserver((o,v) -> {
+                runtimeLevel = Level.parse((String) v);
+            });
             systemLevel = Level.parse(OptionsHandler.systemLogLevel.val());
             assemblerLevel = Level.parse(OptionsHandler.assemblerLogLevel.val());
+            runtimeLevel = Level.parse(OptionsHandler.runtimeLogLevel.val());
         }
 
         @Override
@@ -181,29 +186,41 @@ public class LogFrame extends javax.swing.JPanel {
                 }
             }
 
-            message = "[" + record.getLevel().getName() + "] "
+            message += "[" + record.getLevel().getName() + "] "
                     + "[" + String.join("] [", record.getSourceClassName().replaceFirst("org.parker.mips.", "").split("\\.")) + "] "
                     + (record.getMessage() == null ? "" : record.getMessage());
 
             SimpleAttributeSet sas = new SimpleAttributeSet();
 
+            int value = record.getLevel().intValue();
 
-            if (record.getLevel() == AssemblerLevel.COMPILATION_MESSAGE || record.getLevel() == RunTimeLevel.RUN_TIME_MESSAGE) {
+
+            if (value == AssemblerLevel.ASSEMBLER_MESSAGE.intValue()) {
 
                 StyleConstants.setForeground(sas, Color.LIGHT_GRAY);
                 StyleConstants.setBold(sas, false);
 
-            } else if (record.getLevel() == AssemblerLevel.COMPILATION_WARNING || record.getLevel() == RunTimeLevel.RUN_TIME_WARNING) {
+            } else if (value == AssemblerLevel.ASSEMBLER_WARNING.intValue()) {
 
                 StyleConstants.setForeground(sas, Color.YELLOW);
                 StyleConstants.setBold(sas, false);
 
-            } else if (record.getLevel() == AssemblerLevel.COMPILATION_ERROR || record.getLevel() == RunTimeLevel.RUN_TIME_ERROR) {
+            } else if (value == AssemblerLevel.ASSEMBLER_ERROR.intValue()) {
 
                 StyleConstants.setForeground(sas, Color.RED);
                 StyleConstants.setBold(sas, false);
                 message += " " + (record.getThrown() == null ? "" : record.getThrown().getMessage());
-            } else {
+            }
+
+            if(record.getLevel().getName().contains("ASSEMBLER_")){
+                if (record.getLevel().intValue() < assemblerLevel.intValue() ) {
+                    return;
+                }
+            }else if(record.getLevel().getName().contains("RUN_TIME_")){
+                if (record.getLevel().intValue() < runtimeLevel.intValue() ) {
+                    return;
+                }
+            }else {
 
                 //if(systemLevel.intValue() < record.getLevel().intValue()){//ignore
                 //    return;

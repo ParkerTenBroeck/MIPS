@@ -39,7 +39,7 @@ public class OptionsHandler {
     public static final Option<Boolean> showCallerMethod = new Option(false);
     public static final Option<String> systemLogLevel = new Option(Level.INFO.getName());
     //Assembler
-    public static final Option<String> assemblerLogLevel = new Option(AssemblerLevel.COMPILATION_MESSAGE.getName());
+    public static final Option<String> assemblerLogLevel = new Option(AssemblerLevel.ASSEMBLER_MESSAGE.getName());
     public static final Option<String> runtimeLogLevel = new Option(RunTimeLevel.RUN_TIME_MESSAGE.getName());
 
     //GUI options
@@ -276,6 +276,22 @@ public class OptionsHandler {
                     slide.setValue((Integer) v);
                 }
             });
+        }
+
+        public void LinkJList(Object link, JList<T> list) {
+            list.setSelectedValue(this.val(), true);
+
+            list.addListSelectionListener(e -> {
+                if(!this.val().equals(list.getSelectedValue())){
+                    this.val(list.getSelectedValue());
+                }
+            });
+            OptionsHandler.systemLogLevel.addLikedObserver(link, (o, arg) -> {
+                if(!this.val().equals(list.getSelectedValue())){
+                    list.setSelectedValue(this.val(), true);
+                }
+            });
+
         }
 
     }

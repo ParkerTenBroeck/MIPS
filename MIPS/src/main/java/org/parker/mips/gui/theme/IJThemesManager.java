@@ -40,7 +40,7 @@ public class IJThemesManager
 		for( Map.Entry<String, Object> e : json.entrySet() ) {
 			String resourceName = e.getKey();
 			Map<String, String> value = (Map<String, String>) e.getValue();
-			String name = value.get( "name" );
+			String name = value.get( "name" ).replace("Material Theme UI Lite / ", "");
 			boolean dark = Boolean.parseBoolean( value.get( "dark" ) );
 			String license = value.get( "license" );
 			String licenseFile = value.get( "licenseFile" );

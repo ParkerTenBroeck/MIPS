@@ -61,7 +61,7 @@ public class INCLUDE extends Statement {
                 generatedDataToAdd = loadFile(path, line);
             }
         } catch (Exception e) {
-            LOGGER.log(AssemblerLevel.COMPILATION_ERROR,"Failed to load included File", line, e);
+            LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR,"Failed to load included File", line, e);
         }
 
     }

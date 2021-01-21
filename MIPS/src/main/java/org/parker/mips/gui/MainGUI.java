@@ -412,7 +412,7 @@ public class MainGUI extends javax.swing.JFrame {
         //logWarningsButton = new javax.swing.JCheckBoxMenuItem();
         //logErrorsButton = new javax.swing.JCheckBoxMenuItem();
         optionsButton = new javax.swing.JMenuItem();
-        compilerMenu = new javax.swing.JMenu();
+        assemblerMenu = new javax.swing.JMenu();
         asciiChartButton = new javax.swing.JMenuItem();
         documentationButton = new javax.swing.JMenuItem();
         savePreProcessedFileButton = new javax.swing.JCheckBoxMenuItem();
@@ -742,7 +742,7 @@ public class MainGUI extends javax.swing.JFrame {
 
         menuBar.add(optionsMenu);
 
-        compilerMenu.setText("Compiler");
+        assemblerMenu.setText("Assembler");
 
         asciiChartButton.setText("Ascii chart");
         asciiChartButton.addActionListener(new java.awt.event.ActionListener() {
@@ -750,7 +750,7 @@ public class MainGUI extends javax.swing.JFrame {
                 asciiChartButtonActionPerformed(evt);
             }
         });
-        compilerMenu.add(asciiChartButton);
+        assemblerMenu.add(asciiChartButton);
 
         documentationButton.setText("Documentation");
         documentationButton.addActionListener(new java.awt.event.ActionListener() {
@@ -758,17 +758,17 @@ public class MainGUI extends javax.swing.JFrame {
                 documentationButtonActionPerformed(evt);
             }
         });
-        compilerMenu.add(documentationButton);
+        assemblerMenu.add(documentationButton);
 
         savePreProcessedFileButton.setSelected(true);
         savePreProcessedFileButton.setText("Save PreProcessed File");
-        compilerMenu.add(savePreProcessedFileButton);
+        assemblerMenu.add(savePreProcessedFileButton);
 
         saveCompileInformationButton.setSelected(true);
         saveCompileInformationButton.setText("Save CompileInformation");
-        compilerMenu.add(saveCompileInformationButton);
+        assemblerMenu.add(saveCompileInformationButton);
 
-        menuBar.add(compilerMenu);
+        menuBar.add(assemblerMenu);
 
         processorMenu.setText("Processor");
 
@@ -1016,7 +1016,7 @@ public class MainGUI extends javax.swing.JFrame {
     private static javax.swing.JCheckBoxMenuItem breakProgramOnRTEButton;
     private static javax.swing.JMenuItem checkForUpdates;
     private static javax.swing.JButton compileButton;
-    private static javax.swing.JMenu compilerMenu;
+    private static javax.swing.JMenu assemblerMenu;
     private static javax.swing.JLabel delayLable;
     private static javax.swing.JSlider delaySlider;
     private static javax.swing.JMenuItem documentationButton;

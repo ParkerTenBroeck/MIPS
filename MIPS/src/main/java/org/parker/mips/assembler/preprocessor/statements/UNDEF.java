@@ -29,7 +29,7 @@ public class UNDEF extends Statement {
         line.line = line.line.trim();
         String identifire = line.line.trim();
         if (identifire.contains(" ")) {
-            LOGGER.log(AssemblerLevel.COMPILATION_ERROR, "Cannot Have Spaces In Name", line);
+            LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR, "Cannot Have Spaces In Name", line);
         } else {
             for (int i = 0; i < statements.size(); i++) {
                 if ((statements.get(i)).IDENTIFIRE.equals(identifire)) {
@@ -37,7 +37,7 @@ public class UNDEF extends Statement {
                     return;
                 }
             }
-            LOGGER.log(AssemblerLevel.COMPILATION_ERROR,this.IDENTIFIRE + " does not exist", line);
+            LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR,this.IDENTIFIRE + " does not exist", line);
         }
     }
 

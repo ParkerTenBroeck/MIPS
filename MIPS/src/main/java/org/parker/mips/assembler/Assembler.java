@@ -197,7 +197,7 @@ public class Assembler {
 
         addOriginsToByteList(); //adds instructions to bytelist in order according to file and origins and sets the respecting addresses of memory lables
 
-        runFinalAssemblyPass(); //compiles code once memory lable locations are known
+        runFinalAssemblyPass(); //Assemble code once memory lable locations are known
 
         byte[] memByteArray = createByteArrayFromByteList();
 
@@ -213,7 +213,7 @@ public class Assembler {
 
         MainGUI.refreshAll();
 
-        LOGGER.log(AssemblerLevel.COMPILATION_MESSAGE, "Compilation of file: " + file.getAbsolutePath() + " has finished\n");
+        LOGGER.log(AssemblerLevel.ASSEMBLER_MESSAGE, "Compilation of file: " + file.getAbsolutePath() + " has finished\n");
     }
 
     public static void saveOriginsToFile(String compiledFileName) {
@@ -331,7 +331,7 @@ public class Assembler {
                 }
             }
         }
-        LOGGER.log(AssemblerLevel.COMPILATION_ERROR, "Memory Lable does not exist line: " + realLineNumberOfOpCode);
+        LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR, "Memory Lable does not exist line: " + realLineNumberOfOpCode);
         //Assembler.MemoryLableError("Memory Lable does not exist", realLineNumberOfOpCode);
         return -1;
     }
@@ -343,7 +343,7 @@ public class Assembler {
                     try {
                         ctul.finalAssemblyPass();
                     }catch(AssemblerException e){
-                        LOGGER.log(AssemblerLevel.COMPILATION_ERROR, e);
+                        LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR, e);
                     }
                 }
             }
@@ -471,7 +471,7 @@ public class Assembler {
 
         for (int i = 0; i < memoryLables.size(); i++) {
             if (ml.name.equals(memoryLables.get(i).name)) {
-                LOGGER.log(AssemblerLevel.COMPILATION_ERROR, null, new MemoryLableException("Cannot have duplicate memory lables", ml.line));
+                LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR, null, new MemoryLableException("Cannot have duplicate memory lables", ml.line));
                 //Assembler.MemoryLableError("Cannot have Duplicate Memory Lables", ml.line.realLineNumber);
                 return;
             }
