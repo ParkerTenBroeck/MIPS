@@ -88,16 +88,16 @@ system_calls:
         MEMORY_READ_FROM: false
         MEMORY_WRITTEN_TO: false
 
-    USERIO_LAST_USER_CHAR:
-        SYSTEM_CALL_NUMBER: 103 
-        SYSTEM_CALL_DISCRIPTION: Returns into $2 the last character the user entered into the console in $2 if empty returns 0
-        REGISTERS_READ_FROM: []
-        REGISTERS_WRITTEN_TO: [2]
-        PC_REG_READ_FROM: false
-        PC_REG_WRITTEN_TO: false
-        HIGH_REG_READ_FROM: false
-        HIGH_REG_WRITTEN_TO: false
-        LOW_REG_READ_FROM: false
-        LOW_REG_WRITTEN_TO: false
-        MEMORY_READ_FROM: false
-        MEMORY_WRITTEN_TO: false
+#    USERIO_LAST_USER_CHAR:
+#        SYSTEM_CALL_NUMBER: 103
+#        SYSTEM_CALL_DISCRIPTION: Returns into $2 the last character the user entered into the console in $2 if empty returns 0
+#        REGISTERS_READ_FROM: []
+#        REGISTERS_WRITTEN_TO: [2]
+#        PC_REG_READ_FROM: false
+#        PC_REG_WRITTEN_TO: false
+#        HIGH_REG_READ_FROM: false
+#        HIGH_REG_WRITTEN_TO: false
+#        LOW_REG_READ_FROM: false
+#        LOW_REG_WRITTEN_TO: false
+#        MEMORY_READ_FROM: false
+#        MEMORY_WRITTEN_TO: false

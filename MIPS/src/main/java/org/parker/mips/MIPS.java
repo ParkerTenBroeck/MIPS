@@ -21,7 +21,7 @@ import static org.parker.mips.UpdateHandler.checkForUpdates;
  */
 public class MIPS {
 
-    public static final String VERSION = "0.9.8.2";
+    public static final String VERSION = "0.9.8.2.1";
     public static final String JAR_PATH;
 
     static {

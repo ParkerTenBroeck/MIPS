@@ -21,7 +21,6 @@ public class DefaultSystemCalls extends SystemCallPlugin {
         registerSystemCall(new PRSystemCall("SYSTEM_HALT_PROGRAM") {
             @Override
             public void handleSystemCall() {
-                int i = 0/0;
                 if (OptionsHandler.resetProcessorOnTrap0.val()) {
                     resetProcessor();
                 } else {

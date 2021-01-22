@@ -7,13 +7,21 @@ package org.parker.mips.plugin.internal.syscall;
 
 import org.parker.mips.plugin.syscall.SystemCallPluginFrame;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.*;
+import java.util.Scanner;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.logging.Level;
+
 /**
  *
  * @author parke
  */
 public class UserIO extends SystemCallPluginFrame {
 
-    private static String enteredText;
+    private static PrintStream out;
+    private static DocInputStream in;
 
     public void openUserIO() {
         if (!isVisible()) {
@@ -22,99 +30,53 @@ public class UserIO extends SystemCallPluginFrame {
     }
 
     public static int getInt() {
-        while (!UserIO.hasChar()) {
-            try {
-                Thread.sleep(100);
-            } catch (Exception e) {
-
-            }
-        }
-
-        try {
-            int i = Integer.parseInt(enteredText.substring(0, enteredText.length() - 1));
-            enteredText = "";
-            return i;
-        } catch (Exception e) {
-            enteredText = "";
-        } finally {
-            enteredText = "";
-        }
-        return -1;
+        Scanner inScan = new Scanner(in);
+        return inScan.nextInt();
     }
 
     public static void clearOutput() {
         outputTextArea.setText("");
     }
 
-    public static int lastChar() {
-        String tempText = inputTextFeild.getText();
-        inputTextFeild.setText("");
-        if (tempText.length() > 0) {
-            return tempText.charAt(tempText.length() - 1);
-        } else {
-            return 0;
+    public static String getString(){
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            return br.readLine();
+        }catch(Exception e){
+            return "";
         }
-    }
-
-    public static boolean waitForEnter() {
-        while (enteredText.charAt(enteredText.length() - 1) == '\n') {
-            try {
-                Thread.sleep(100);
-            } catch (Exception e) {
-                return false;
-            }
-        }
-        return true;
     }
 
     public UserIO() {
         super("UserIO");
         this.setTitle("UserIO");
         initComponents();
-    }
-
-    public static void checkTextOutput() {
-        if (outputTextArea.getText().length() > 1000) {
-
-            String test = outputTextArea.getText();
-
-            outputTextArea.setText(test.substring(test.length() - 1000, test.length()));
-        }
+        out = new PrintStream(new OutputStream() {
+            @Override
+            public void write(int b) {
+                outputTextArea.append(String.valueOf((char) b));
+            }
+        });
+        DocInputStream dis = new DocInputStream();
+        in = dis;
+        inputTextFeild.addKeyListener(dis);
     }
 
     public static void outputUnicode(int c) {
-        checkTextOutput();
-        outputTextArea.append(String.valueOf((char) c));
-        outputTextArea.setCaretPosition(outputTextArea.getDocument().getLength());
-        try {
-            Thread.sleep(1);
-        } catch (Exception e) {
+        out.print((char)c);
+    }
 
-        }
+    public static void outputString(String message){
+        out.print(message);
     }
 
     public static void outputNumber(int val) {
-        checkTextOutput();
-        outputTextArea.append(String.valueOf(val));
-        outputTextArea.setCaretPosition(outputTextArea.getDocument().getLength());
-        try {
-            Thread.sleep(1);
-        } catch (Exception e) {
-
-        }
-    }
-
-    public static boolean hasChar() {
-
-        if (enteredText == null) {
-            return false;
-        }
-        return enteredText.length() > 0;
+        out.print(val);
     }
 
     public static char getNextChar() {
 
-        while (!UserIO.hasChar()) {
+        while (in.available() == 0) {
             try {
                 Thread.sleep(100);
             } catch (Exception e) {
@@ -122,9 +84,11 @@ public class UserIO extends SystemCallPluginFrame {
             }
         }
 
-        char temp = enteredText.charAt(0);
-        enteredText = enteredText.substring(1);
-        return temp;
+        try {
+            return (char) in.read();
+        } catch (IOException e) {
+            return 0;
+        }
     }
 
     /**
@@ -223,6 +187,8 @@ public class UserIO extends SystemCallPluginFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void themedJButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_themedJButton1ActionPerformed
+        out.flush();
+        in.clear();
         clearOutput();
     }//GEN-LAST:event_themedJButton1ActionPerformed
 
@@ -237,4 +203,92 @@ public class UserIO extends SystemCallPluginFrame {
     private static javax.swing.JTextArea outputTextArea;
     private javax.swing.JButton themedJButton1;
     // End of variables declaration//GEN-END:variables
+
+
+
+    private class DocInputStream extends InputStream implements KeyListener {
+
+        ArrayBlockingQueue<Integer> queue;
+
+        public DocInputStream(){
+            queue=new ArrayBlockingQueue<Integer>(1024);
+        }
+
+        @Override
+        public int read() throws IOException {
+            Integer i=null;
+            try {
+                i = queue.take();
+            } catch (InterruptedException ex) {
+                LOGGER.log(Level.SEVERE, null, ex);
+            }
+            if(i!=null)
+                return i;
+            return -1;
+        }
+        public void clear(){
+            queue.clear();
+        }
+
+        @Override
+        public int read(byte[] b, int off, int len) throws IOException {
+            if (b == null) {
+                throw new NullPointerException();
+            } else if (off < 0 || len < 0 || len > b.length - off) {
+                throw new IndexOutOfBoundsException();
+            } else if (len == 0) {
+                return 0;
+            }
+            int c = read();
+            if (c == -1) {
+                return -1;
+            }
+            b[off] = (byte)c;
+
+            int i = 1;
+            try {
+                for (; i < len && available() > 0 ; i++) {
+                    c = read();
+                    if (c == -1) {
+                        break;
+                    }
+                    b[off + i] = (byte)c;
+                }
+            } catch (IOException ee) {
+            }
+            return i;
+
+        }
+
+
+
+        @Override
+        public int available(){
+            return queue.size();
+        }
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+            int c = e.getKeyChar();
+            try {
+                queue.put(c);
+            } catch (InterruptedException ex) {
+                LOGGER.log(Level.SEVERE, "", ex);
+            }
+            if(e.getKeyChar() == '\n'){
+                out.println(inputTextFeild.getText());
+                inputTextFeild.setText("");
+            }
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+        }
+
+    }
 }

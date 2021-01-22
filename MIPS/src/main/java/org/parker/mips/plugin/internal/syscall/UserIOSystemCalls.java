@@ -10,6 +10,8 @@ import org.parker.mips.plugin.syscall.SystemCallRunTimeExcpetion;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 /**
  *
@@ -77,14 +79,16 @@ public class UserIOSystemCalls extends SystemCallPlugin {
             public void handleSystemCall() {
                 int bufferSize = getRegister(5);
                 int memoryOffset = getRegister(4);
+
+                String input = UserIO.getString();
+                ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
                 int i = 0;
-                if (UserIO.waitForEnter()) {
-                    return;
+
+                while (in.available() > 0 && i < bufferSize) {
+                   setWord(memoryOffset + i * 4, in.read());
+                   i++;
                 }
-                while (UserIO.hasChar() && i < bufferSize) {
-                    setWord(memoryOffset + i * 4, UserIO.getNextChar());
-                    i++;
-                }
+
                 setWord(memoryOffset + (i + 1) * 4, 0); //terminating zero
             }
         });
@@ -102,13 +106,13 @@ public class UserIOSystemCalls extends SystemCallPlugin {
                 setRegister(2, userIO.getNextChar());
             }
         });
-        registerSystemCall(new PRSystemCall("USERIO_LAST_USER_CHAR") {
-            @Override
-            public void handleSystemCall() {
-                userIO.openUserIO();
-                setRegister(2, userIO.lastChar());
-            }
-        });
+        //registerSystemCall(new PRSystemCall("USERIO_LAST_USER_CHAR") {
+        //    @Override
+        //    public void handleSystemCall() {
+        //        userIO.openUserIO();
+        //        setRegister(2, userIO.lastChar());
+        //    }
+        //});
 
         registerFrameListeners(new Node("Root",
                 new Node[]{
