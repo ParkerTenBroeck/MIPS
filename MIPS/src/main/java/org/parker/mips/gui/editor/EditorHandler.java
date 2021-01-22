@@ -81,15 +81,19 @@ public class EditorHandler {
         if(editors.contains(editor)){
             return;
         }
+        /*
         if(editor.getFile() != null) {
             String afp = editor.getFile().getAbsolutePath();
             for (Editor e : editors) {
-                if (e.getFile().getAbsolutePath().equals(afp)) {
-                    //editor.close();
-                    return;
+                if(e.getFile() != null) {
+                    if (e.getFile().getAbsolutePath().equals(afp)) {
+                        //editor.close();
+                        return;
+                    }
                 }
             }
         }
+        */
         editors.add(editor);
         EditorTabbedPane.addEditor(editor);
         lastFoucsed = editor;
