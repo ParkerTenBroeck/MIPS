@@ -6,6 +6,7 @@
 package org.parker.mips.plugin.internal.syscall;
 
 import org.parker.mips.plugin.syscall.SystemCallPluginFrame;
+import org.parker.mips.plugin.syscall.SystemCallRunTimeExcpetion;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -31,7 +32,11 @@ public class UserIO extends SystemCallPluginFrame {
 
     public static int getInt() {
         Scanner inScan = new Scanner(in);
-        return inScan.nextInt();
+        try {
+            return inScan.nextInt();
+        }catch(Exception e){
+            throw new SystemCallRunTimeExcpetion("Invalid Input, Possible causes number is floating point?, invalid characters used?");
+        }
     }
 
     public static void clearOutput() {

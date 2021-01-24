@@ -21,7 +21,7 @@ import static org.parker.mips.UpdateHandler.checkForUpdates;
  */
 public class MIPS {
 
-    public static final String VERSION = "0.9.8.2.2";
+    public static final String VERSION = "0.9.8.2.3";
     public static final String JAR_PATH;
 
     static {
@@ -43,7 +43,6 @@ public class MIPS {
 
         if (args.length != 0) {
             if (args[0].equals("Updated")) {
-                //LogP.logSystemMessage("Successful Updated to: " + VERSION);
                 LOGGER.log(Level.INFO, "Successfuly Updated to: " + VERSION);
             }
         }

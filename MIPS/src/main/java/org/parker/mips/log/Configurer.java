@@ -88,7 +88,7 @@ public class Configurer {
             }
 
             Handler ch = new ConsoleHandler();
-            ch.setFormatter(new ConsoleFormatter());
+            ch.setFormatter(new org.parker.mips.log.ConsoleFormatter());
             ch.setLevel(Level.ALL);
             BASE_LOGGER.addHandler(ch);
 

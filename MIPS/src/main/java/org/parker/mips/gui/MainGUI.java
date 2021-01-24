@@ -202,7 +202,9 @@ public class MainGUI extends javax.swing.JFrame {
                     Processor.stop();
                     Processor.reset();
                     //if (FileHandler.loadExampleFile(new File(((ThemedJMenuItem) evt.getSource()).getName()))) {
-                    new FormattedTextEditor(FileUtils.loadFileAsString(new File(((javax.swing.JMenuItem) evt.getSource()).getName())));
+                    //new FormattedTextEditor();
+                    File file = new File(((javax.swing.JMenuItem) evt.getSource()).getName());
+                    Editor.createEditor(FileUtils.loadFileAsByteArraySafe(file), FileUtils.removeExtension(file.getName()), FormattedTextEditor.class);
                     Assembler.compileDefault();
                     //}
                 }
@@ -879,7 +881,8 @@ public class MainGUI extends javax.swing.JFrame {
     }
 
     private void newMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newMenuButtonActionPerformed
-        new FormattedTextEditor();
+        //new FormattedTextEditor();
+        Editor.createEditor();
     }//GEN-LAST:event_newMenuButtonActionPerformed
 
     private void asciiChartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asciiChartButtonActionPerformed

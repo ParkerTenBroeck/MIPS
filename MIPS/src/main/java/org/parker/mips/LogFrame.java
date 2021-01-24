@@ -209,7 +209,11 @@ public class LogFrame extends javax.swing.JPanel {
 
                 StyleConstants.setForeground(sas, Color.RED);
                 StyleConstants.setBold(sas, false);
-                message += " " + (record.getThrown() == null ? "" : record.getThrown().getMessage());
+                Throwable tmp = record.getThrown();
+                while(tmp != null) {
+                    message += ": " + tmp.getMessage();
+                    tmp = tmp.getCause();
+                }
             }
 
             if(record.getLevel().getName().contains("ASSEMBLER_")){

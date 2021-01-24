@@ -16,9 +16,9 @@ import java.util.logging.Logger;
 public class Memory {
 
     private static byte[] savedMemory;
-    private static byte[] memory = new byte[0];
+    protected static volatile byte[] memory = new byte[0];
 
-    private static Logger LOGGER = Logger.getLogger(Memory.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Memory.class.getName());
 
     public static void setMemory(byte[] memory) {
         if (memory == null) {
@@ -35,11 +35,10 @@ public class Memory {
 
     public static int getWord(int index) {
         if ((index & 3) != 0) {
-            Processor.createRunTimeError();
-            LOGGER.log(RunTimeLevel.RUN_TIME_ERROR, "getWord must be alligned to 4 error at index:" + index);
+            throw new RunTimeMemoryException("getWord must be alligned to 4 error at index:" + index);
         }
         if (index + 3 > Memory.memory.length) {
-            memoryOutOfBoundsEvent("getWord Memory out of bounds", index);
+            memoryOutOfBoundsEvent(index);
             return -1;
         } else {
 
@@ -49,11 +48,10 @@ public class Memory {
 
     public static int getHalfWord(int index) {
         if ((index & 1) != 0) {
-            Processor.createRunTimeError();
-            LOGGER.log(RunTimeLevel.RUN_TIME_ERROR,"getHalfWord must be alligned to 2 error at index:" + index);
+            throw new RunTimeMemoryException("getHalfWord must be alligned to 2 error at index:" + index);
         }
         if (index + 1 > memory.length) {
-            memoryOutOfBoundsEvent("getHalfWord Memory out of bounds", index);
+            memoryOutOfBoundsEvent(index);
             return -1;
         } else {
 
@@ -63,7 +61,7 @@ public class Memory {
 
     public static int getByte(int index) {
         if (index > Memory.memory.length - 1) {
-            memoryOutOfBoundsEvent("getByte Memory out of bounds", index);
+            memoryOutOfBoundsEvent(index);
             return -1;
         } else {
             return superGetByte(index);
@@ -115,11 +113,10 @@ public class Memory {
 
     public static boolean setWord(int index, int val) {
         if ((index & 3) != 0) {
-            Processor.createRunTimeError();
-            LOGGER.log(RunTimeLevel.RUN_TIME_ERROR,"setWord must be alligned to 4 error at index:" + index);
+            throw new RunTimeMemoryException("setWord must be alligned to 4 error at index:" + index);
         }
         if (index + 3 > Memory.memory.length || index < -1) {
-            memoryOutOfBoundsEvent("setWord Memory out of bounds", index);
+            memoryOutOfBoundsEvent(index);
             return false;
         } else {
 
@@ -139,12 +136,11 @@ public class Memory {
 
     public static boolean setHalfWord(int index, int val) {
         if ((index & 1) != 0) {
-            Processor.createRunTimeError();
-            LOGGER.log(RunTimeLevel.RUN_TIME_ERROR,"setHalfWord must be alligned to 2 error at index:" + index);
+            throw new RunTimeMemoryException("setHalfWord must be alligned to 2 error at index:" + index);
         }
         if (index + 1 > Memory.memory.length || index < -1) {
             Processor.stop();
-            memoryOutOfBoundsEvent("setHalfWord Memory out of bounds", index);
+            memoryOutOfBoundsEvent(index);
             return false;
         } else {
 
@@ -161,7 +157,7 @@ public class Memory {
     public static boolean setByte(int index, int val) {
         if (index > Memory.memory.length - 1 || index < -1) {
             Processor.stop();
-            memoryOutOfBoundsEvent("setByte Memory out of bounds", index);
+            memoryOutOfBoundsEvent(index);
             return false;
         } else {
             memory[index] = (byte) val;
@@ -169,7 +165,7 @@ public class Memory {
         }
     }
 
-    private static void memoryOutOfBoundsEvent(String message, int currentIndex) {
+    private static void memoryOutOfBoundsEvent(int currentIndex) {
         if (OptionsHandler.adaptiveMemory.val()) {
             byte[] temp;
             if (currentIndex >= memory.length * 2) {
@@ -180,8 +176,7 @@ public class Memory {
             System.arraycopy(memory, 0, temp, 0, memory.length);
             memory = temp;
         } else {
-            Processor.createRunTimeError();
-            LOGGER.log(RunTimeLevel.RUN_TIME_ERROR,message + " " + currentIndex);
+           throw new RunTimeMemoryException("Memory out of bounds at: " + currentIndex);
         }
     }
 

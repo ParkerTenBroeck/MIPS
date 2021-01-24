@@ -11,12 +11,12 @@ package org.parker.mips.processor;
  */
 public class Registers {
 
-    private static int[] registers = new int[31];
+    protected volatile static int[] registers = new int[32];
 
-    private static int low;
-    private static int high;
+    protected volatile static int low;
+    protected volatile static int high;
 
-    private static int pc;
+    protected volatile static int pc;
 
     public static int getRegister(int register) {
         if (register == 0) {
@@ -24,7 +24,7 @@ public class Registers {
         } else if (register > 32) {
             return -1;
         } else {
-            return Registers.registers[register - 1];
+            return Registers.registers[register];
         }
     }
 
@@ -46,7 +46,7 @@ public class Registers {
         } else if (register > 32) {
             return false;
         } else {
-            Registers.registers[register - 1] = val;
+            Registers.registers[register] = val;
             return true;
         }
     }
@@ -64,7 +64,7 @@ public class Registers {
     }
 
     static void reset() {
-        registers = new int[31];
+        registers = new int[32];
         low = 0;
         high = 0;
         pc = 0;

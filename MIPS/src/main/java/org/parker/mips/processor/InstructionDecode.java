@@ -16,8 +16,8 @@ import static org.parker.mips.processor.Registers.*;
 
 public class InstructionDecode {
 
-	private static final Instruction[] immediateInstructionLookUp = new Instruction[64];
-	private static final Instruction[] registerInstructionLookUp = new Instruction[64];
+	protected static final Instruction[] immediateInstructionLookUp = new Instruction[64];
+	protected static final Instruction[] registerInstructionLookUp = new Instruction[64];
 
 	static {
 		immediateInstructionLookUp[0B000000] = new Instruction() { // Register
@@ -581,13 +581,11 @@ public class InstructionDecode {
 
 	}
 
-	private static void incPc() {
-		setPc(getPc() + 4);
-	}
-
 	public static void runInstruction(int opCode) throws InvalidOpCodeException {
 		int o = (opCode >>> 26) & 0B111111;
-		incPc();
+
+		Registers.pc += 4;
+
 		try {
 			immediateInstructionLookUp[o].runInstruction(opCode);
 		}catch(ArrayIndexOutOfBoundsException | NullPointerException e){
@@ -598,8 +596,8 @@ public class InstructionDecode {
 	public static long getUnsignedInt(int x) {
 		return x & 0x00000000ffffffffL;
 	}
-}
 
-abstract class Instruction {
-	abstract void runInstruction(int opCode);
+	public static abstract class Instruction {
+		abstract void runInstruction(int opCode);
+	}
 }

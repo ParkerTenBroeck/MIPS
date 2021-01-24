@@ -50,7 +50,7 @@ public class ResourceHandler {
 
     //Logging
     public static final String LOG_PATH = DEFAULT_PATH + FILE_SEPARATOR + "Log";
-    public static final String LASTES_LOG = LOG_PATH + FILE_SEPARATOR + "latest.log";
+    public static final String LASTES_LOG = LOG_PATH + FILE_SEPARATOR + "latest.xml";
 
     private final static Logger LOGGER = Logger.getLogger(ResourceHandler.class.getName());
 

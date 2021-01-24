@@ -81,22 +81,23 @@ public class EditorHandler {
         if(editors.contains(editor)){
             return;
         }
-        /*
-        if(editor.getFile() != null) {
-            String afp = editor.getFile().getAbsolutePath();
+        editors.add(editor);
+        EditorTabbedPane.addEditor(editor);
+        lastFoucsed = editor;
+    }
+
+    public static final boolean isFileOpen(File file){
+        if(file != null) {
+            String afp = file.getAbsolutePath();
             for (Editor e : editors) {
                 if(e.getFile() != null) {
                     if (e.getFile().getAbsolutePath().equals(afp)) {
-                        //editor.close();
-                        return;
+                        return true;
                     }
                 }
             }
         }
-        */
-        editors.add(editor);
-        EditorTabbedPane.addEditor(editor);
-        lastFoucsed = editor;
+        return false;
     }
 
     public static final void removeEditor(Editor editor) {
@@ -107,4 +108,17 @@ public class EditorHandler {
         }
     }
 
+    public static void switchCurrentViewToFile(File file) {
+        if(isFileOpen(file)){
+            String afp = file.getAbsolutePath();
+            for(Editor e: editors){
+                if(e.getFile() != null){
+                    if(e.getFile().getAbsolutePath().equals(afp)){
+                        setLastFocused(e);
+                        EditorTabbedPane.setSelectedTab(e);
+                    }
+                }
+            }
+        }
+    }
 }

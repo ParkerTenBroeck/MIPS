@@ -6,6 +6,7 @@
 package org.parker.mips.gui.editor;
 
 import org.parker.mips.FileUtils;
+import org.parker.mips.OptionsHandler;
 import org.parker.mips.ResourceHandler;
 import org.parker.mips.gui.EditorTabbedPane;
 import org.parker.mips.gui.MainGUI;
@@ -16,7 +17,10 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,10 +34,110 @@ public abstract class Editor extends javax.swing.JPanel {
     protected File currentFile;
     private boolean isSaved;
 
+    private final static HashMap<String, Class<?>> defaultFileExtensionEditor = new HashMap<String, Class<?>>();
+    private final static ArrayList<Object> availableEditors = new ArrayList<>();
+
     //Only used if file is null
     protected final String name;
 
+
     private static final Logger LOGGER = Logger.getLogger(Editor.class.getName());
+
+    //these are just the system editors idc that its hard coded eat me
+    static{
+        Editor.registerEditorWithDefaultExtensions(FormattedTextEditor.class, new String[]{"txt", "asm"});
+        //SwingUtilities.invokeLater(new UI$1(new String[]{}));
+    }
+
+
+    private static void registerEditor(Editor editor){
+        EditorHandler.addEditor(editor);
+    }
+
+    /**
+     *
+     * @param file the file that the editor will "edit"
+     */
+    public static void createEditor(File file){
+        String extension = FileUtils.getExtension(file);
+        Class<?> clazz = defaultFileExtensionEditor.getOrDefault(extension, FormattedTextEditor.class);
+       createEditor(file, clazz);
+    }
+
+    /** creates an editor with no association to a file
+     *
+     * @param data the data to be loaded into the editor, each editor will load the data as it sees fit
+     * @param name the title of the editor, since there is no accociated file this name will be used until the user decides to save the information to a file
+     * @parma extension the type of file the data would be stored in
+     */
+    public static void createEditor(byte[] data, String name, String extension){
+        Class<?> clazz = defaultFileExtensionEditor.getOrDefault(extension, FormattedTextEditor.class);
+        createEditor(data, name, clazz);
+    }
+
+    /**
+     *
+     * @param data
+     * @param name the name of the
+     * @param clazz the editor to use
+     */
+    public static void createEditor(byte[] data, String name, Class<?> clazz){
+        try {
+            Constructor constructor = clazz.getDeclaredConstructor(byte[].class, String.class);
+            constructor.setAccessible(true);
+            Editor editor = (Editor)constructor.newInstance(data, name);
+            registerEditor(editor);
+
+        }catch(Exception e){
+            LOGGER.log(Level.SEVERE, "Cannot create editor", e);
+        }
+    }
+
+    public static void createEditor(File file, Class<?> clazz){
+        if(EditorHandler.isFileOpen(file)){
+            EditorHandler.switchCurrentViewToFile(file);
+            return;
+        }
+        try {
+            Constructor constructor = clazz.getDeclaredConstructor(File.class);
+            constructor.setAccessible(true);
+            Editor editor = (Editor)constructor.newInstance(file);
+            registerEditor(editor);
+
+        }catch(Exception e){
+            LOGGER.log(Level.SEVERE, "Cannot create editor", e);
+        }
+    }
+
+    public static void createEditor(){
+        Class<?> clazz = FormattedTextEditor.class;
+
+        try {
+            Constructor constructor = clazz.getDeclaredConstructor();
+            constructor.setAccessible(true);
+            Editor editor = (Editor)constructor.newInstance();
+            EditorHandler.addEditor(editor);
+
+        }catch(Exception e){
+            LOGGER.log(Level.SEVERE, "Cannot create editor", e);
+        }
+    }
+
+    protected static void registerEditorWithDefaultExtensions(Class<?> clazz, String[] accociatedExctentions){
+        for(String ext: accociatedExctentions){
+            defaultFileExtensionEditor.put(ext, clazz);
+        }
+        //temp
+       registerEditorWithoutDefaultExtensions(new Object());
+    }
+
+    protected static void registerEditorWithoutDefaultExtensions(Object object){
+        if(availableEditors.contains(object)){
+            return;
+        }else {
+            availableEditors.add(object);
+        }
+    }
 
     public static void loadFileIntoEditor(File file) {
         if (file == null) {
@@ -46,18 +150,14 @@ public abstract class Editor extends javax.swing.JPanel {
             File[] files = file.listFiles();
             for (File f : files) {
                 if (f.exists() && f.isFile()) {
-                    createEditorFromFile(f);
+                    createEditor(f);
                 }
             }
         }
-        createEditorFromFile(file);
+        createEditor(file);
     }
 
-    private static void createEditorFromFile(File file) {
-        new FormattedTextEditor(file, "");
-    }
-
-    protected Editor() {
+    private Editor() {
         this(null, null);
     }
 
@@ -74,7 +174,6 @@ public abstract class Editor extends javax.swing.JPanel {
         }
         isSaved = true;
         this.addFocusListener(new asd(this));
-        EditorHandler.addEditor(this);
     }
     protected Editor(File file){
         this(file, null);
@@ -153,6 +252,7 @@ public abstract class Editor extends javax.swing.JPanel {
             case JOptionPane.YES_OPTION:
                 if (save()) {
                     EditorHandler.removeEditor(this);
+                    OptionsHandler.removeAllObserversLinkedToObject(this);
                     closeS();
                     return true;
                 } else {
@@ -160,6 +260,7 @@ public abstract class Editor extends javax.swing.JPanel {
                 }
             case JOptionPane.NO_OPTION:
                 EditorHandler.removeEditor(this);
+                OptionsHandler.removeAllObserversLinkedToObject(this);
                 closeS();
                 return true;
             case JOptionPane.CANCEL_OPTION:
@@ -176,11 +277,21 @@ public abstract class Editor extends javax.swing.JPanel {
         return null;
     }
 
-    public abstract File getFalseFile();
+    public File getFalseFile() {
+        if (currentFile != null) {
+            return currentFile;
+        } else {
+            File temp = createTempFile(getName(), ".asm");
+            FileUtils.saveByteArrayToFileSafe(getDataAsBytes(), temp);
+            return temp;
+        }
+    }
 
     protected final File createTempFile(String prefix, String suffix) {
         try {
-            return Files.createTempFile(prefix, suffix).toFile();
+            File file = Files.createTempFile(prefix, suffix).toFile();
+            file.deleteOnExit();
+            return file;
         } catch (IOException ex) {
             LOGGER.log(Level.SEVERE, "Failed to create temporary file", ex);
         }

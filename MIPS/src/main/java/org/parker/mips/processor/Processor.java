@@ -73,21 +73,27 @@ public class Processor implements Runnable {
 
     @Override
     public void run() {
-        while (isRunning()) {
-            singleStep();
-            delayNano(getDelay());
-        }
-    }
-
-    private static void delayNano(long time) {
-        if (time == 0) {
-            return;
-        }
-        long start = System.nanoTime();
-        long end = 0;
         do {
-            end = System.nanoTime();
-        } while (start + time >= end);
+            try {
+                runInstruction(Memory.getWord(Registers.pc));
+            }catch(Exception e){
+                LOGGER.log(RunTimeLevel.RUN_TIME_ERROR, e.getMessage(), e.getCause());
+                if (OptionsHandler.breakOnRunTimeError.val()) {
+                    Processor.stop();
+                    MainGUI.refreshAll();
+                }
+            }
+            instructionsRan++;
+
+            if(delay != 0){
+                long start = System.nanoTime();
+                long end = 0;
+                do {
+                    end = System.nanoTime();
+                } while (start + delay >= end);
+            }
+
+        } while (isRunning);
     }
 
     public static int getOpCode() {
@@ -98,76 +104,30 @@ public class Processor implements Runnable {
         if (isRunning) {
             return;
         }
+        Processor runnable = new Processor();
+        Thread thread = new Thread(runnable);
+        thread.setName("Processor");
+        isRunning = false;
+        thread.start();
 
+        /*
         isRunning = true;
         Thread thread = new Thread(() -> {
             singleStep();
             isRunning = false;
         });
         thread.start();
+         */
     }
 
     private static void singleStep() {
-//        if (InterruptHandler.hasInterrupt() && !InterruptHandler.isInInterrupt()) {
-//            int sp = 29;
-//            Memory.setWord(Registers.getRegister(sp), Registers.getPc());
-//            Registers.setRegister(sp, Registers.getRegister(sp) + 1);
-//
-//            Memory.setWord(Registers.getRegister(sp), Registers.getPc());
-//            Registers.setRegister(sp, Registers.getRegister(sp) + 1);
-//            return;
-//        }
 
-        try {
-            runInstruction(getOpCode());
-        }catch(Exception e){
-            LOGGER.log(RunTimeLevel.RUN_TIME_ERROR, "Runtime Error: " + e.getMessage(), e);
-            if(OptionsHandler.breakOnRunTimeError.val()){
-                Processor.stop();
-            }
-        }
 
-//            logRunTimeError("invalid OpCode at " + Registers.getPc());
-
-//        if (instructionsRan == 100000000) {
-//            endTime = System.nanoTime();
-//            duration = (endTime - startTime);
-//
-//            System.out.println("TotalTime: " + duration + " Av: " + duration / (double)instructionsRan + " ISP: " + (long)(100000000.0 / (double)duration * 1e+9));
-//            instructionsRan = 0;
-//            startTime = System.nanoTime();
-//        }
-
-//        if (index == temp.length) {
-//            index = 0;
-//            double av = 0;
-//            long highest = 0;
-//            long lowest = 999999999;
-//            for (int i = 0; temp.length > i; i++) {
-//                av += temp[i];
-//                if (highest < temp[i]) {
-//                    highest = temp[i];
-//                }
-//                if (lowest > temp[i]) {
-//                    lowest = temp[i];
-//                }
-//            }
-//            av = av / temp.length;
-//            System.out.println("Average: " + av + " Highest: " + highest + " Lowest: " + lowest);
-//        }
-        instructionsRan++;
     }
 
-//    static long startTime = System.nanoTime();
-//    static long endTime = System.nanoTime();
+    static long startTime = System.nanoTime();
+    static long endTime = System.nanoTime();
 //
-//    static long duration = (endTime - startTime);  //divide by 1000000 to get milliseconds.
-
-    public static void createRunTimeError() {
-        if (OptionsHandler.breakOnRunTimeError.val()) {
-            Processor.stop();
-            MainGUI.refreshAll();
-        }
-    }
+    static long duration = (endTime - startTime);  //divide by 1000000 to get milliseconds.
 
 }

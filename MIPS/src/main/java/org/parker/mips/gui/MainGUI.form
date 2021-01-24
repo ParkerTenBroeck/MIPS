@@ -615,7 +615,7 @@
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="org.parker.mips.Log" name="logFrame">
+                <Component class="org.parker.mips.log" name="logFrame">
                 </Component>
               </SubComponents>
             </Container>

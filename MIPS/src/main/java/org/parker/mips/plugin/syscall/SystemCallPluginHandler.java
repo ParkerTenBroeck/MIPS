@@ -113,8 +113,8 @@ public class SystemCallPluginHandler {
             try {
                 sc.handleSystemCall();
             } catch (Exception e) {
-                throw new SystemCallRunTimeExcpetion("System Call: " + sc.DATA.SYSTEM_CALL_NAME
-                        + " from plugin: " + sc.HOST_PLUGIN.DESCRIPTION.NAME + ": " + e.getMessage(), e);
+                throw new SystemCallRunTimeExcpetion("System Call (" + sc.DATA.SYSTEM_CALL_NAME
+                        + ") from plugin (" + sc.HOST_PLUGIN.DESCRIPTION.NAME + ")", e);
             }
         } else {
             throw new InvalidSystemCallException("Invalid System Call: " + id);

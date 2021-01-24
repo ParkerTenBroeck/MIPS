@@ -9,6 +9,7 @@ import org.fife.ui.rsyntaxtextarea.AbstractTokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
+import org.fife.ui.rsyntaxtextarea.folding.CurlyFoldParser;
 import org.fife.ui.rsyntaxtextarea.folding.FoldParserManager;
 import org.fife.ui.rtextarea.RTextScrollPane;
 import org.parker.mips.FileUtils;
@@ -40,16 +41,19 @@ public class FormattedTextEditor extends Editor {
 
     private static final DefaultHighlighter.DefaultHighlightPainter errorHighlight = new DefaultHighlighter.DefaultHighlightPainter(new Color(255,0,0,128));
 
-    public FormattedTextEditor(File file, String name) {
+    protected FormattedTextEditor(File file, String name) {
         super(file, name);
         initComponents();
 
         textArea.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent ke) {
-                setSaved(false);
-                updateDisplayTitle();
+                if(isSaved()){
+                    setSaved(false);
+                    updateDisplayTitle();
+                }
 
+                /*
                 try {
                     for(int i = 0; i < 20; i ++) {
                         textArea.addLineHighlight(i, textArea.getCurrentLineHighlightColor());
@@ -59,6 +63,7 @@ public class FormattedTextEditor extends Editor {
                 } catch (BadLocationException e) {
                     e.printStackTrace();
                 }
+                 */
             }
 
             @Override
@@ -78,18 +83,21 @@ public class FormattedTextEditor extends Editor {
             this.textArea.setText(FileUtils.loadFileAsString(file));
         }
     }
+    protected FormattedTextEditor(File file){
+        this(file, null);
+    }
 
-    public FormattedTextEditor(String textBody) {
+    protected FormattedTextEditor(byte[] textBody) {
         this( (File)null, "");
-        this.textArea.setText(textBody);
+        this.textArea.setText(new String(textBody));
     }
 
-    public FormattedTextEditor(String textBody, String name){
+    protected FormattedTextEditor(byte[] textBody, String name){
         this( (File)null, name);
-        this.textArea.setText(textBody);
+        this.textArea.setText(new String(textBody));
     }
 
-    public FormattedTextEditor() {
+    protected FormattedTextEditor() {
         this( (File)null, "");
     }
 
@@ -118,15 +126,25 @@ public class FormattedTextEditor extends Editor {
         String ext = "";
         if (currentFile != null && currentFile.exists()) {
             ext = FileUtils.getExtension(currentFile);
+        }else{
+            ext = "asm";
         }
 
         switch (ext) {
-            default:
+            case "asm":
                 AbstractTokenMakerFactory atmf = (AbstractTokenMakerFactory) TokenMakerFactory.getDefaultInstance();
                 atmf.putMapping("MIPS", "org.parker.mips.gui.editor.rsyntax.MIPSAbstractTokenMaker");
                 FoldParserManager.get().addFoldParserMapping("MIPS", new MIPSFoldParser());
 
                 textArea.setSyntaxEditingStyle("MIPS");
+                textArea.setCodeFoldingEnabled(true);
+                break;
+            default:
+                try {
+                    textArea.setSyntaxEditingStyle("text/" + ext);
+                }catch (Exception e){
+                    textArea.setSyntaxEditingStyle(RSyntaxTextArea.SYNTAX_STYLE_NONE);
+                }
                 textArea.setCodeFoldingEnabled(true);
                 break;
         }
@@ -166,21 +184,5 @@ public class FormattedTextEditor extends Editor {
     @Override
     public byte[] getDataAsBytes() {
         return textArea.getText().getBytes();
-    }
-
-    @Override
-    public File getFalseFile() {
-        if (currentFile != null) {
-            return currentFile;
-        } else {
-            File temp = createTempFile(getName(), ".asm");
-            FileUtils.saveByteArrayToFileSafe(textArea.getText().getBytes(), temp);
-            return temp;
-        }
-    }
-
-    @Override
-    public void closeS() {
-        OptionsHandler.removeAllObserversLinkedToObject(this);
     }
 }

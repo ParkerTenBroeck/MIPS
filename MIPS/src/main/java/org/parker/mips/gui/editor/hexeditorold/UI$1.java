@@ -3,12 +3,12 @@ package org.parker.mips.gui.editor.hexeditorold;
 import javax.swing.*;
 import java.awt.*;
 
-final class UI$1 implements Runnable {
+public final class UI$1 implements Runnable {
 
    private final String[] val$args;
 
 
-   UI$1(String[] var1) {
+   public UI$1(String[] var1) {
       this.val$args = var1;
    }
 

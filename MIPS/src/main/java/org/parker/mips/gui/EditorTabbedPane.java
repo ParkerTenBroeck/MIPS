@@ -60,7 +60,7 @@ public class EditorTabbedPane extends javax.swing.JPanel {
                     }
                 });
         
-        new FormattedTextEditor();
+        Editor.createEditor();
         
         jTabbedPane1.addChangeListener(new ChangeListener() {
             @Override
