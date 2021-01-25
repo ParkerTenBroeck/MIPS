@@ -93,6 +93,15 @@ public class Processor implements Runnable {
                 } while (start + delay >= end);
             }
 
+        if (instructionsRan == 100000000) {
+            endTime = System.nanoTime();
+            duration = (endTime - startTime);
+
+            System.out.println("TotalTime: " + duration + " Av: " + duration / (double)instructionsRan + " ISP: " + (long)(100000000.0 / (double)duration * 1e+9));
+            instructionsRan = 0;
+            startTime = System.nanoTime();
+        }
+
         } while (isRunning);
     }
 
@@ -109,20 +118,6 @@ public class Processor implements Runnable {
         thread.setName("Processor");
         isRunning = false;
         thread.start();
-
-        /*
-        isRunning = true;
-        Thread thread = new Thread(() -> {
-            singleStep();
-            isRunning = false;
-        });
-        thread.start();
-         */
-    }
-
-    private static void singleStep() {
-
-
     }
 
     static long startTime = System.nanoTime();

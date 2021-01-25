@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class Memory {
 
     private static byte[] savedMemory;
-    protected static volatile byte[] memory = new byte[0];
+    protected static byte[] memory = new byte[0];
 
     private static final Logger LOGGER = Logger.getLogger(Memory.class.getName());
 

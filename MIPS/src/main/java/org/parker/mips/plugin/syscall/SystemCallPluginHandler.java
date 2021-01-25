@@ -105,7 +105,7 @@ public class SystemCallPluginHandler {
         try {
             sc = idrkWhat[id];
         } catch (IndexOutOfBoundsException e) {
-            throw new InvalidSystemCallException("Invalid System Call: " + id);
+            throw new InvalidSystemCallException("Invalid System Call: " + id + " System Call not registered or is null");
         } catch (Exception e) {
 
         }
@@ -117,7 +117,7 @@ public class SystemCallPluginHandler {
                         + ") from plugin (" + sc.HOST_PLUGIN.DESCRIPTION.NAME + ")", e);
             }
         } else {
-            throw new InvalidSystemCallException("Invalid System Call: " + id);
+            throw new InvalidSystemCallException("Invalid System Call: " + id + " System Call not registered or is null");
         }
     }
 
