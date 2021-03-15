@@ -43,23 +43,8 @@ public class INCLUDE extends Statement {
         }
 
         try {
-            //System.out.println(path);
-            String fileExtention = path.split("\\.")[1];
-            if (fileExtention.equals("mxn") || fileExtention.equals("bin")) {
-                generatedDataToAdd = new ArrayList<UserLine>();
-                byte[] temp = FileUtils.loadFileAsByteArraySafe(new File(path));
-                String data = ".byte ";
-                for (int i = 0; i < temp.length; i++) {
-                    data = data + temp[i];
-                    if (i != temp.length - 1) {
-                        data = data + ",";
-                    }
-                }
-                //System.out.println(data);
-                generatedDataToAdd.add(new UserLine(data, line.realLineNumber));
-            } else {
+
                 generatedDataToAdd = loadFile(path, line);
-            }
         } catch (Exception e) {
             LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR,"Failed to load included File", line, e);
         }
