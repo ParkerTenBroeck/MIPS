@@ -30,6 +30,7 @@ public class Preferences {
             loadPreferencesFromFile(ResourceHandler.DEFAULT_PERFERENCE_FILE);
         }else{
             LOGGER.log(Level.WARNING, "Preferences file not found, default preferences will be used");
+            loadPreferencesFromInputStream(Preferences.class.getResourceAsStream("Config/DefaultPreferences.yml"));
         }
     }
 
@@ -80,17 +81,14 @@ public class Preferences {
 
     public static void loadPreferencesFromFile(File file) {
 
-        Yaml yaml = generateYaml();
+
 
         InputStream in = null;
 
         try {
             in = new FileInputStream(file);
 
-            yaml.setBeanAccess(BeanAccess.FIELD);
-            Map<String, Object> tempMap = (Map<String, Object>) yaml.load(in);
-
-            ROOT_NODE.importFromMap(tempMap);
+            loadPreferencesFromInputStream(in);
 
         }catch(Exception e){
             LOGGER.log(Level.SEVERE, "Failed to load/import preferences: ", e);
@@ -101,7 +99,12 @@ public class Preferences {
 
             }
         }
+    }
 
+    private static void loadPreferencesFromInputStream(InputStream stream){
+        Yaml yaml = generateYaml();
+        Map<String, Object> tempMap = (Map<String, Object>) yaml.load(stream);
+        ROOT_NODE.importFromMap(tempMap);
     }
 
 
