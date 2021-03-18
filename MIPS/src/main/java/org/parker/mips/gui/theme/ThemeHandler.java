@@ -12,10 +12,8 @@ import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
 import com.formdev.flatlaf.extras.FlatInspector;
 import com.formdev.flatlaf.util.StringUtils;
 import com.formdev.flatlaf.util.SystemInfo;
+import org.parker.mips.OptionsHandler;
 import org.parker.mips.ResourceHandler;
-import org.parker.mips.misc.SerializableFont;
-import org.parker.mips.preferences.Preference;
-import org.parker.mips.preferences.Preferences;
 
 import javax.swing.*;
 import javax.swing.text.StyleContext;
@@ -25,10 +23,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -40,22 +34,17 @@ public class ThemeHandler {
 
 	private static boolean asd = false;
 
-	private static final Preferences themePrefs = Preferences.ROOT_NODE.getNode("system/theme");
-	private static final Logger LOGGER = Logger.getLogger(ThemeHandler.class.toString());
-
 	public static void init() {
 		if (asd) {
 			return;
 		}
 		FlatInspector.install("ctrl shift alt X");
 
-		Preference<SerializableFont> currentGUIFont = themePrefs.getRawPreference("currentGUIFont", new SerializableFont("Segoe UI", 0, 15));
-
-		currentGUIFont.addObserver((o,v) -> {
-			UIManager.put("defaultFont", ((SerializableFont)v).toFont());
+		OptionsHandler.currentGUIFont.addObserver((o,v) -> {
+			UIManager.put("defaultFont", OptionsHandler.currentGUIFont.val());
 			smoothUpdateUI();
 		});
-		UIManager.put("defaultFont", currentGUIFont.val().toFont());// sets to current font
+		UIManager.put("defaultFont", OptionsHandler.currentGUIFont.val());// sets to current font
 
 //		OptionsHandler.currentGUITheme.addObserver((o,v) -> {
 //
@@ -77,11 +66,9 @@ public class ThemeHandler {
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		JDialog.setDefaultLookAndFeelDecorated(true);
 
-		Preference<String> currentGUITheme = themePrefs.getRawPreference("currentGUITheme", "Flat Dark");
-
-		setTheme(currentGUITheme.val());
-		currentGUITheme.addObserver((o,v) -> {
-			setTheme(currentGUITheme.val());
+		setTheme(OptionsHandler.currentGUITheme.val());
+		OptionsHandler.currentGUITheme.addObserver((o,v) -> {
+			setTheme(OptionsHandler.currentGUITheme.val());
 		});
 
 		asd = true;
@@ -106,15 +93,6 @@ public class ThemeHandler {
 
 	public static Font changeFontFamily(Font font, String newFontFamily) {
 		return StyleContext.getDefaultStyleContext().getFont(newFontFamily, font.getStyle(), font.getSize());
-	}
-
-	private static void setTheme(String themeName){
-		IJThemeInfo theme = IJThemesManager.getTheme(themeName);
-		if(theme != null) {
-			setTheme(theme);
-		}else{
-			LOGGER.log(Level.SEVERE, "GUI Theme: " + themeName + " does not exist");
-		}
 	}
 
 	private static void setTheme(IJThemeInfo themeInfo) {

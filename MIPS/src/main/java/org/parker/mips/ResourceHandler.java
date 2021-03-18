@@ -36,7 +36,7 @@ public class ResourceHandler {
     //Config and related resources
     public static final String CONFIG_PATH = DEFAULT_PATH + FILE_SEPARATOR + "Config";
     public static final String USER_SAVED_CONFIG_PATH = CONFIG_PATH + FILE_SEPARATOR + "UserSavedConfig";
-    public static final String DEFAULT_PERFERENCE_FILE = ResourceHandler.CONFIG_PATH + FILE_SEPARATOR + "Preferences.yml";
+    public static final String DEFAULT_OPTIONS_FILE = ResourceHandler.CONFIG_PATH + FILE_SEPARATOR + "Options.json";
 
     //Themes and realted resources
     public static final String THEME_PATH = DEFAULT_PATH + FILE_SEPARATOR + "Themes";

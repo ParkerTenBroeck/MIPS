@@ -8,7 +8,6 @@ package org.parker.mips;
 import org.parker.mips.gui.MainGUI;
 import org.parker.mips.gui.theme.ThemeHandler;
 import org.parker.mips.plugin.PluginLoader;
-import org.parker.mips.preferences.Preferences;
 
 import java.io.File;
 import java.util.logging.Level;
@@ -47,8 +46,8 @@ public class MIPS {
                 LOGGER.log(Level.INFO, "Successfuly Updated to: " + VERSION);
             }
         }
-
-        Preferences.readPreferencesFromDefaultFile(); //loads Options from file
+        
+        OptionsHandler.readOptionsFromDefaultFile(); //loads Options from file 
 
         ResourceHandler.extractResources(); //loads all resorces into documents folder
 

@@ -9,7 +9,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.parker.mips.gui.MainGUI;
 import org.parker.mips.gui.editor.EditorHandler;
-import org.parker.mips.preferences.Preferences;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -109,10 +108,10 @@ public class UpdateHandler {
             }
             if (confirm == JOptionPane.YES_OPTION) {
                 EditorHandler.saveAll();
-                Preferences.savePreferencesToDefaultFile();
+                OptionsHandler.saveOptionsToDefaultFile();
             }
             if (confirm == JOptionPane.NO_OPTION) {
-                Preferences.savePreferencesToDefaultFile();
+                OptionsHandler.saveOptionsToDefaultFile();
             }
         }
 

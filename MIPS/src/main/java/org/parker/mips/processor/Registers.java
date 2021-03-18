@@ -11,12 +11,12 @@ package org.parker.mips.processor;
  */
 public class Registers {
 
-    protected  static int[] registers = new int[32];
+    protected volatile static int[] registers = new int[32];
 
-    protected  static int low;
-    protected  static int high;
+    protected volatile static int low;
+    protected volatile static int high;
 
-    protected  static int pc;
+    protected volatile static int pc;
 
     public static int getRegister(int register) {
         if (register == 0) {

@@ -6,10 +6,10 @@
 package org.parker.mips.assembler;
 
 import org.parker.mips.FileUtils;
+import org.parker.mips.OptionsHandler;
 import org.parker.mips.ResourceHandler;
 import org.parker.mips.assembler.data.UserLine;
 import org.parker.mips.assembler.preprocessor.statements.*;
-import org.parker.mips.preferences.Preferences;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -28,8 +28,6 @@ public class PreProcessor {
     private static ArrayList<Statement> statements;
 
     private static final AssemblerLogger LOGGER = new AssemblerLogger(PreProcessor.class.getName());
-
-    private static final Preferences ppPref = Preferences.ROOT_NODE.getNode("system/assembler");
 
     public static ArrayList<UserLine> loadFile(String filePath, UserLine us) {
         BufferedReader reader;
@@ -179,11 +177,11 @@ public class PreProcessor {
     public static ArrayList<UserLine> preProcess(ArrayList<UserLine> file) {
 
         if (file != null) {
-            if ((Boolean)ppPref.getPreference("includeRegDef", true)) {
+            if (OptionsHandler.includeRegDef.val()) {
                 file.add(0, new UserLine("#include \"" + ResourceHandler.REG_DEF_HEADER_FILE + "\"", -2));
                 LOGGER.log(AssemblerLevel.ASSEMBLER_MESSAGE,"Included regdef.asm");
             }
-            if ((Boolean)ppPref.getPreference("includeSysCallDef", true)) {
+            if (OptionsHandler.includeSysCallDef.val()) {
                 file.add(0, new UserLine("#include \"" + ResourceHandler.SYS_CALL_DEF_HEADER_FILE + "\"", -3));
                 LOGGER.log(AssemblerLevel.ASSEMBLER_MESSAGE,"Included syscalldef.asm");
             }
@@ -224,7 +222,7 @@ public class PreProcessor {
             cleanedData.add(currentLine);
 
         }
-        if ((Boolean)ppPref.getPreference("saveCleanedFile", true) && firstLayer) {
+        if (OptionsHandler.saveCleanedFile.val() && firstLayer) {
             writeCleanedFile(cleanedData);
         }
 
@@ -245,7 +243,7 @@ public class PreProcessor {
             preProcessedData.addAll(preProcessLine(currentLine)); //preprocesses line and adds resulting line / lines to pre processed file
 
         }
-        if ((Boolean)ppPref.getPreference("savePreProcessedFile", true)) {
+        if (OptionsHandler.savePreProcessedFile.val()) {
             writePreProcessedFile(preProcessedData);
         }
 

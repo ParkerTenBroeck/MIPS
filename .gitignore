@@ -21,10 +21,6 @@
 !/ExampleSystemCallPlugin/src
 !/ExampleSystemCallPlugin/build.gradle
 
-!/Updater/
-/Updater/*
-!/Updater/src
-!/Updater/build.gradle
 
 #Github
 !/README.md

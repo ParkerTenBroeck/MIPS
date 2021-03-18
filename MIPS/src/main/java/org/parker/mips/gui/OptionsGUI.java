@@ -12,13 +12,11 @@ import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.ui.FlatUIUtils;
 import com.formdev.flatlaf.util.UIScale;
+import org.parker.mips.OptionsHandler;
 import org.parker.mips.ResourceHandler;
 import org.parker.mips.gui.theme.IJThemeInfo;
 import org.parker.mips.gui.theme.IJThemesManager;
 import org.parker.mips.gui.theme.ThemeHandler;
-import org.parker.mips.misc.SerializableFont;
-import org.parker.mips.preferences.Preference;
-import org.parker.mips.preferences.Preferences;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -29,7 +27,6 @@ import java.awt.event.WindowListener;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.util.*;
-import java.util.logging.Logger;
 
 /**
  *
@@ -37,17 +34,9 @@ import java.util.logging.Logger;
  */
 public class OptionsGUI extends javax.swing.JFrame {
 
-	private static final Logger LOGGER = Logger.getLogger(OptionsGUI.class.getName());
-
-	private static final Preferences systemPrefs = Preferences.ROOT_NODE.getNode("system");
-	private static final Preferences emulatorPrefs = systemPrefs.getNode("emulator");
-	private static final Preferences runtimePrefs = emulatorPrefs.getNode("runtime");
-	private static final Preferences loggerPrefs = systemPrefs.getNode("logger");
-	private static final Preferences assemblerPrefs = systemPrefs.getNode("assembler");
-	private static final Preferences defaultSysCllPluginPrefs = systemPrefs.getNode("plugins/systemCalls/Base");
-	private static final Preferences guiPrefs = systemPrefs.getNode("gui");
-	private static final Preferences themePrefs = systemPrefs.getNode("theme");
-
+	/**
+	 * Creates new form OptionsGUI
+	 */
 	public OptionsGUI() {
 		initComponents();
 
@@ -69,43 +58,48 @@ public class OptionsGUI extends javax.swing.JFrame {
 
 			@Override
 			public void windowClosing(WindowEvent e) {
-				Preference.removeAllObserversLinkedToObject(reference);
+				OptionsHandler.removeAllObserversLinkedToObject(reference);
 			}
 		};
 
 		this.addWindowListener(exitListener);
 
-		loggerPrefs.getRawPreference("showStackTrace", false).LinkJButton(this, this.showStackTraceJCheckBox);
-		loggerPrefs.getRawPreference("showCallerClass", false).LinkJButton(this, this.showCallerClassNameJCheckBox);
-		loggerPrefs.getRawPreference("showCallerMethod",false).LinkJButton(this, this.showCallerMethodNameJCheckBox);
-		loggerPrefs.getRawPreference("systemLogLevel","INFO").LinkJList(this, this.systemLogLevelJList);
-		loggerPrefs.getRawPreference("assemblerLogLevel","ASSEMBLER_MESSAGE").LinkJList(this, this.assemblerLogLevelJList);
-		loggerPrefs.getRawPreference("runtimeLogLevel","RUN_TIME_MESSAGE").LinkJList(this, this.runtimeLogLevelJList);
-		loggerPrefs.getRawPreference("logSystemCallMessages", true).LinkJButton(this, this.logSystemCallMessagesButton);
+		// Add icon
+		// linking all of the components to the linked OPTIONS
+		// General
+		// logging
+		OptionsHandler.showStackTrace.LinkJButton(this, this.showStackTraceJCheckBox);
+		OptionsHandler.showCallerClass.LinkJButton(this, this.showCallerClassNameJCheckBox);
+		OptionsHandler.showCallerMethod.LinkJButton(this, this.showCallerMethodNameJCheckBox);
+		OptionsHandler.systemLogLevel.LinkJList(this, this.systemLogLevelJList);
+		OptionsHandler.assemblerLogLevel.LinkJList(this, this.assemblerLogLevelJList);
+		OptionsHandler.runtimeLogLevel.LinkJList(this, this.runtimeLogLevelJList);
 
-		guiPrefs.getRawPreference("enableGUIAutoUpdateWhileRunning", true).LinkJButton(this, this.enableAutoGUIUpdatesWhileRuning);
-		guiPrefs.getRawPreference("GUIAutoUpdateRefreshTime", 100).LinkJSlider(this, this.guiUpdateTimeSlider);
+		// GUI options
+		OptionsHandler.enableGUIAutoUpdateWhileRunning.LinkJButton(this, this.enableAutoGUIUpdatesWhileRuning);
+		OptionsHandler.GUIAutoUpdateRefreshTime.LinkJSlider(this, this.guiUpdateTimeSlider);
 
 		// Assembler
-		assemblerPrefs.getRawPreference("saveCleanedFile", false).LinkJButton(this, this.saveCleanedFileButton);
-		assemblerPrefs.getRawPreference("savePreProcessedFile",false).LinkJButton(this, this.savePreProcessorFileButton);
-		assemblerPrefs.getRawPreference("saveCompilationInfo",false).LinkJButton(this, this.saveAssemblerInfoFileButton);
+		OptionsHandler.saveCleanedFile.LinkJButton(this, this.saveCleanedFileButton);
+		OptionsHandler.savePreProcessedFile.LinkJButton(this, this.savePreProcessorFileButton);
+		OptionsHandler.saveCompilationInfo.LinkJButton(this, this.saveAssemblerInfoFileButton);
 
 		// PreProcessor
-		assemblerPrefs.getRawPreference("includeRegDef", true).LinkJButton(this, this.includeRegDefButton);
-		assemblerPrefs.getRawPreference("includeSysCallDef", true).LinkJButton(this, this.includeSysCallDefButton);
+		OptionsHandler.includeRegDef.LinkJButton(this, this.includeRegDefButton);
+		OptionsHandler.includeSysCallDef.LinkJButton(this, this.includeSysCallDefButton);
 
 		// Processor
 		// Run Time
-		runtimePrefs.getRawPreference("breakOnRunTimeError", true).LinkJButton(this, this.breakOnRunTimeErrorButton);
-		runtimePrefs.getRawPreference("adaptiveMemory", false).LinkJButton(this, this.adaptiveMemoryButton);
-		runtimePrefs.getRawPreference("enableBreakPoints", true).LinkJButton(this, this.enableBreakPointsButton);
+		OptionsHandler.breakOnRunTimeError.LinkJButton(this, this.breakOnRunTimeErrorButton);
+		OptionsHandler.adaptiveMemory.LinkJButton(this, this.adaptiveMemoryButton);
+		OptionsHandler.enableBreakPoints.LinkJButton(this, this.enableBreakPointsButton);
 
 		// Non RunTime
-		emulatorPrefs.getRawPreference("reloadMemoryOnReset", true).LinkJButton(this, this.reloadMemoryOnResetButton);
+		OptionsHandler.reloadMemoryOnReset.LinkJButton(this, this.reloadMemoryOnResetButton);
 
 		// System Calls
-		defaultSysCllPluginPrefs.getRawPreference("resetProcessorOnTrap0", false).LinkJButton(this, this.resetProcessorOnTrap0Button);
+		OptionsHandler.logSystemCallMessages.LinkJButton(this, this.logSystemCallMessagesButton);
+		OptionsHandler.resetProcessorOnTrap0.LinkJButton(this, this.resetProcessorOnTrap0Button);
 
 		// Others
 		this.loadOptionsButton.addActionListener((ae) -> {
@@ -113,7 +107,7 @@ public class OptionsGUI extends javax.swing.JFrame {
 			int val = ResourceHandler.openFileChooser(fc);
 
 			if (JFileChooser.APPROVE_OPTION == val) {
-				Preferences.loadPreferencesFromFile(fc.getSelectedFile());
+				OptionsHandler.readOptionsFromCustomFile(fc.getSelectedFile());
 			}
 		});
 
@@ -122,7 +116,7 @@ public class OptionsGUI extends javax.swing.JFrame {
 			int val = ResourceHandler.openFileChooser(fc);
 
 			if (JFileChooser.APPROVE_OPTION == val) {
-				Preferences.savePreferencesToFile(fc.getSelectedFile());
+				OptionsHandler.saveOptionsToCustomFile(fc.getSelectedFile());
 			}
 		});
 
@@ -132,9 +126,9 @@ public class OptionsGUI extends javax.swing.JFrame {
 	private void initGUIThemeComponents() {
 		// add font families
 		// get current font
-		Preference<SerializableFont> currentGUIFont = themePrefs.getRawPreference("currentGUIFont",new SerializableFont("Segoe UI", 0, 15));
-		String currentFamily = currentGUIFont.val().getName();
-		String currentSize = Integer.toString(currentGUIFont.val().getSize());
+		Font currentFont = OptionsHandler.currentGUIFont.val();
+		String currentFamily = currentFont.getFamily();
+		String currentSize = Integer.toString(currentFont.getSize());
 
 		String[] allSystemFonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
 
@@ -158,14 +152,13 @@ public class OptionsGUI extends javax.swing.JFrame {
 		guiFontList.setSelectedValue(currentFamily, false);
 
 		guiFontList.addListSelectionListener((lse) -> {
-			SerializableFont temp = currentGUIFont.val();
-			temp.setName(guiFontList.getSelectedValue());
-			currentGUIFont.val(temp);
+			OptionsHandler.currentGUIFont.val(
+					ThemeHandler.changeFontFamily(OptionsHandler.currentGUIFont.val(), guiFontList.getSelectedValue()));
 		});
-		currentGUIFont.addLikedObserver(this, new Observer() {
+		OptionsHandler.currentGUIFont.addLikedObserver(this, new Observer() {
 			@Override
 			public void update(Observable o, Object arg) {
-				String current = currentGUIFont.val().getName();
+				String current = OptionsHandler.currentGUIFont.val().getFontName();
 				if (!current.equals(guiFontList.getSelectedValue())) {
 					guiFontList.setSelectedValue(current, true);
 				}
@@ -193,18 +186,14 @@ public class OptionsGUI extends javax.swing.JFrame {
 
 		guiFontSizeList.setSelectedValue(currentSize, false);
 
-
-
 		guiFontSizeList.addListSelectionListener((lse) -> {
 			String fontSize = guiFontSizeList.getSelectedValue();
 			int val = Integer.parseInt(fontSize);
-			SerializableFont temp = currentGUIFont.val();
-			temp.setSize(val);
-			currentGUIFont.val(temp);
+			OptionsHandler.currentGUIFont.val(ThemeHandler.changeFontSize(OptionsHandler.currentGUIFont.val(), val));
 		});
 
-		currentGUIFont.addLikedObserver(this, (e, a) -> {
-			String current = Integer.toString(currentGUIFont.val().getSize());
+		OptionsHandler.currentGUIFont.addLikedObserver(this, (e, a) -> {
+			String current = Integer.toString(OptionsHandler.currentGUIFont.val().getSize());
 			if (!current.equals(guiFontList.getSelectedValue())) {
 				guiFontList.setSelectedValue(current, true);
 			}
@@ -213,13 +202,11 @@ public class OptionsGUI extends javax.swing.JFrame {
 		{
 			updateThemesList();
 
-			Preference<String> currentGUITheme = themePrefs.getRawPreference("currentGUITheme","Flat Dark");
+			guiThemeList.setSelectedValue(OptionsHandler.currentGUITheme.val(), true);
 
-			guiThemeList.setSelectedValue(IJThemesManager.getTheme(currentGUITheme.val()), true);
-
-			currentGUITheme.addLikedObserver(this, (o,v) -> {
-				if (!guiThemeList.getSelectedValue().equals(IJThemesManager.getTheme((String)v)))
-					guiThemeList.setSelectedValue(IJThemesManager.getTheme((String)v), true);
+			OptionsHandler.currentGUITheme.addLikedObserver(this, (o,v) -> {
+				if (!guiThemeList.getSelectedValue().equals(v))
+					guiThemeList.setSelectedValue(v, true);
 			});
 
 			guiThemeList.addListSelectionListener((e) -> {
@@ -232,8 +219,8 @@ public class OptionsGUI extends javax.swing.JFrame {
 						return;
 					}
 
-					if (!val.name.equals(currentGUITheme.val())){
-						currentGUITheme.val(val.name);
+					if (!val.equals(OptionsHandler.currentGUITheme.val())){
+						OptionsHandler.currentGUITheme.val(val);
 					}
 				});
 
@@ -348,10 +335,9 @@ public class OptionsGUI extends javax.swing.JFrame {
 
 	private void initEditorThemeComponents() {
 
-		Preference<SerializableFont> currentEditorFont = themePrefs.getRawPreference("currentEditorFont",new SerializableFont("Segoe UI", 0, 15));
-		//Font currentFont = OptionsHandler.currentEditorFont.val();
-		String currentFamily = currentEditorFont.val().getName();
-		String currentSize = Integer.toString(currentEditorFont.val().getSize());
+		Font currentFont = OptionsHandler.currentEditorFont.val();
+		String currentFamily = currentFont.getFamily();
+		String currentSize = Integer.toString(currentFont.getSize());
 
 		String[] allSystemFonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
 		ArrayList<String> families = new ArrayList<>(Arrays.asList(allSystemFonts));
@@ -374,13 +360,12 @@ public class OptionsGUI extends javax.swing.JFrame {
 		editorFontList.setSelectedValue(currentFamily, false);
 
 		editorFontList.addListSelectionListener((lse) -> {
-			 SerializableFont temp = currentEditorFont.val();
-			 temp.setName(editorFontList.getSelectedValue());
-			currentEditorFont.val(temp);
+			OptionsHandler.currentEditorFont.val(ThemeHandler.changeFontFamily(OptionsHandler.currentEditorFont.val(),
+					editorFontList.getSelectedValue()));
 		});
 
-		currentEditorFont.addLikedObserver(this, (o,v) -> {
-			String current = currentEditorFont.val().getName();
+		OptionsHandler.currentEditorFont.addLikedObserver(this, (o,v) -> {
+			String current = OptionsHandler.currentEditorFont.val().getFontName();
 			if (!current.equals(editorFontList.getSelectedValue())) {
 				editorFontList.setSelectedValue(current, true);
 			}
@@ -410,21 +395,19 @@ public class OptionsGUI extends javax.swing.JFrame {
 		editorFontSizeList.addListSelectionListener((lse) -> {
 			String fontSize = editorFontSizeList.getSelectedValue();
 			int val = Integer.parseInt(fontSize);
-			SerializableFont temp = currentEditorFont.val();
-			temp.setSize(val);
-			currentEditorFont.val(temp);
+			OptionsHandler.currentEditorFont
+					.val(ThemeHandler.changeFontSize(OptionsHandler.currentEditorFont.val(), val));
+
 		});
 
-		currentEditorFont.addLikedObserver(this, (o,v) -> {
-			String current = Integer.toString(currentEditorFont.val().getSize());
+		OptionsHandler.currentEditorFont.addLikedObserver(this, (o,v) -> {
+			String current = Integer.toString(OptionsHandler.currentEditorFont.val().getSize());
 			if (!current.equals(editorFontList.getSelectedValue())) {
 				editorFontList.setSelectedValue(current, true);
 			}
 		});
 
 		{// loads list of available themes
-			Preference<String> currentEditorTheme = themePrefs.getRawPreference("currentEditorTheme","Dark");
-
 			File file = new File(ResourceHandler.EDITOR_THEMES);
 			File[] files = file.listFiles();
 			if (files != null) {
@@ -434,14 +417,14 @@ public class OptionsGUI extends javax.swing.JFrame {
 					names[i] = files[i].getName().split("\\.")[0];
 				}
 				this.editorThemeList.setModel(new DefaultComboBoxModel(names));
-				this.editorThemeList.setSelectedValue(currentEditorTheme.val(), true);
+				this.editorThemeList.setSelectedValue(OptionsHandler.currentEditorTheme.val(), true);
 
 				this.editorThemeList.addListSelectionListener((ae) -> {
 					// System.err.println("asdasdasdasdasda");
 					String name = (String) editorThemeList.getSelectedValue();
 
-					if (!name.equals(currentEditorTheme.val())) {
-						currentEditorTheme.val(name);
+					if (!name.equals(OptionsHandler.currentEditorTheme.val())) {
+						OptionsHandler.currentEditorTheme.val(name);
 						// ASM_GUI.loadCurrentTheme();
 					}
 					// ThemeHandler.readThemeFromThemeName();
@@ -558,10 +541,9 @@ public class OptionsGUI extends javax.swing.JFrame {
 		guiUpdateTimeSlider.setValue(100);
 
 		themedJLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		Preference<Integer> GUIAutoUpdateRefreshTime = guiPrefs.getRawPreference("GUIAutoUpdateRefreshTime", 100);
-		themedJLabel8.setText("Update Time: " + GUIAutoUpdateRefreshTime.val() + " ms");
-		GUIAutoUpdateRefreshTime.addLikedObserver(this, (o, v) -> {
-			themedJLabel8.setText("Update Time: " + v + " ms");
+		themedJLabel8.setText("Update Time: " + OptionsHandler.GUIAutoUpdateRefreshTime.val() + " ms");
+		OptionsHandler.GUIAutoUpdateRefreshTime.addLikedObserver(this, (o,v) -> {
+			themedJLabel8.setText("Update Time: " + OptionsHandler.GUIAutoUpdateRefreshTime.val() + " ms");
 		});
 
 		javax.swing.GroupLayout themedJPanel11Layout = new javax.swing.GroupLayout(themedJPanel11);
