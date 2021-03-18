@@ -10,7 +10,7 @@ import org.parker.mips.assembler.AssemblerLevel;
 import org.parker.mips.gui.theme.lookandfeel.ModernScrollPane;
 import org.parker.mips.preferences.Preference;
 import org.parker.mips.preferences.Preferences;
-import org.parker.mips.processor.RunTimeLevel;
+import org.parker.mips.emulator.RunTimeLevel;
 
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;

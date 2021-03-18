@@ -5,8 +5,12 @@
  */
 package org.parker.mips.assembler;
 
+import org.parker.mips.FileUtils;
 import org.parker.mips.assembler.data.UserLine;
 
+import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,7 +19,9 @@ import java.util.regex.Pattern;
  * @author parke
  */
 public class DirectivesDecoder {
-    
+
+    private  static final Logger LOGGER = Logger.getLogger(DirectivesDecoder.class.getName());
+
     public static byte[] getDirectivesData(UserLine line) throws DirectiveException {
 
         String string = line.line;
@@ -34,6 +40,21 @@ public class DirectivesDecoder {
             throw new DirectiveException("Invalid String", line);
 
         } else if (string.contains(".byte")) {
+
+            if(string.contains("\"")){
+                try{
+                    String filePath = string.substring(string.indexOf("\"") + 1, string.lastIndexOf("\""));
+
+                    LOGGER.log(Level.WARNING, filePath);
+
+                    byte[] data = FileUtils.loadFileAsByteArraySafe(new File(filePath));
+
+                    LOGGER.log(Level.WARNING, "Done loading file: " + filePath);
+                    return data;
+                }catch(Exception e){
+                    throw new DirectiveException("Invalid file descriptor", line, e);
+                }
+            }
 
             try {
 

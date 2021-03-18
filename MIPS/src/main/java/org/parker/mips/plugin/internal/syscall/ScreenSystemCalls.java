@@ -74,6 +74,18 @@ public class ScreenSystemCalls extends SystemCallPlugin {
                 Screen.fillScreen(getRegister(4));
             }
         });
+        registerSystemCall(new PRSystemCall("SCREEN_GET_PIXEL_X_Y_RGB") {
+            @Override
+            public void handleSystemCall() {
+                setRegister(2, screen.getPixelColor(getRegister(4), getRegister(5)));
+            }
+        });
+        registerSystemCall(new PRSystemCall("SCREEN_GET_PIXEL_INDEX_RGB") {
+            @Override
+            public void handleSystemCall() {
+                setRegister(2, screen.getPixelColor(getRegister(4)));
+            }
+        });
 
         registerFrameListeners(new Node("Root",
                 new Node[]{

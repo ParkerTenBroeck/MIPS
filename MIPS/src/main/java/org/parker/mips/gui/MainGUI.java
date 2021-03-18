@@ -18,8 +18,8 @@ import org.parker.mips.plugin.syscall.SystemCallPlugin.Node;
 import org.parker.mips.plugin.syscall.SystemCallPluginHandler;
 import org.parker.mips.preferences.Preference;
 import org.parker.mips.preferences.Preferences;
-import org.parker.mips.processor.Memory;
-import org.parker.mips.processor.Processor;
+import org.parker.mips.emulator.Memory;
+import org.parker.mips.emulator.Emulator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -137,37 +137,37 @@ public class MainGUI extends javax.swing.JFrame {
 
         addCompileButtonListener((ae) -> {
             LOGGER.log(Level.FINER, "Compile Button Action Preformed");
-            Processor.reset();
+            Emulator.reset();
             EditorHandler.saveAll();
-            Assembler.compileDefault();
+            Assembler.assembleDefault();
         });
 
         addStartButtonListener((ae) -> {
             LOGGER.log(Level.FINER, "Start Processor Button Action Preformed");
             if (startButton.isSelected()) {
-                Processor.start();
+                Emulator.start();
                 MainGUI.startAutoUpdate();
             } else {
-                Processor.stop();
+                Emulator.stop();
             }
         });
 
         addStopButtonListener((ae) -> {
             LOGGER.log(Level.FINER, "Stop Processor Button Action Preformed");
-            Processor.stop();
+            Emulator.stop();
         });
 
         addSingleStepButtonListener((ae) -> {
             LOGGER.log(Level.FINER, "Single Step Processor Button Action Preformed");
             if (!startButton.isSelected()) {
-                Processor.runSingleStep();
+                Emulator.runSingleStep();
             }
             refresh();
         });
 
         addResetButtonListener((ae) -> {
             LOGGER.log(Level.FINER, "Reset Processor Button Action Preformed");
-            Processor.reset();
+            Emulator.reset();
         });
 
         WindowListener exitListener = new WindowAdapter() {
@@ -207,13 +207,13 @@ public class MainGUI extends javax.swing.JFrame {
 
             ActionListener al = new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    Processor.stop();
-                    Processor.reset();
+                    Emulator.stop();
+                    Emulator.reset();
                     //if (FileHandler.loadExampleFile(new File(((ThemedJMenuItem) evt.getSource()).getName()))) {
                     //new FormattedTextEditor();
                     File file = new File(((javax.swing.JMenuItem) evt.getSource()).getName());
                     Editor.createEditor(FileUtils.loadFileAsByteArraySafe(file), FileUtils.removeExtension(file.getName()), FormattedTextEditor.class);
-                    Assembler.compileDefault();
+                    Assembler.assembleDefault();
                     //}
                 }
             };
@@ -368,7 +368,7 @@ public class MainGUI extends javax.swing.JFrame {
         javax.swing.SwingUtilities.invokeLater(() -> {
             register_GUI1.updateVals();
             InstructionMemoryGUI.refresh();
-            InstructionsRan.setText(Long.toString(Processor.getInstructionsRan()));
+            InstructionsRan.setText(Long.toString(Emulator.getInstructionsRan()));
         });
     }
 
@@ -595,7 +595,7 @@ public class MainGUI extends javax.swing.JFrame {
         delaySlider.addChangeListener(cl ->{
         	long trueValue = (long) Math.pow(delaySlider.getValue(), 3);
         	delayLable.setText("Instruction Delay: " + trueValue + "ns");	
-        	 Processor.setDelay(trueValue);
+        	 Emulator.setDelay(trueValue);
         });
 
         javax.swing.GroupLayout midButtonSliderPanelLayout = new javax.swing.GroupLayout(midButtonSliderPanel);
@@ -870,7 +870,7 @@ public class MainGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_saveAsMenuButtonActionPerformed
     
     private void saveMemoryButtonActionPreformed(java.awt.event.ActionEvent evt) {
-        Processor.stop();
+        Emulator.stop();
     	JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
         int returnVal = fc.showOpenDialog(MainGUI.getFrame());
         if (returnVal == fc.FILES_ONLY) {
@@ -884,7 +884,7 @@ public class MainGUI extends javax.swing.JFrame {
         if (returnVal == fc.FILES_ONLY) {
             Memory.setMemory(FileUtils.loadFileAsByteArraySafe(fc.getSelectedFile()));
         }
-        Processor.stop();
+        Emulator.stop();
         refreshAll();
     }
 

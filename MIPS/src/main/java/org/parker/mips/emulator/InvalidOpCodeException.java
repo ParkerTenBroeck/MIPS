@@ -1,4 +1,4 @@
-package org.parker.mips.processor;
+package org.parker.mips.emulator;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;

@@ -8,7 +8,7 @@ package org.parker.mips.gui;
 import org.parker.mips.assembler.Assembler;
 import org.parker.mips.assembler.data.MemoryLable;
 import org.parker.mips.gui.theme.lookandfeel.ModernScrollPane;
-import org.parker.mips.processor.Memory;
+import org.parker.mips.emulator.Memory;
 
 import javax.swing.*;
 import java.util.ArrayList;

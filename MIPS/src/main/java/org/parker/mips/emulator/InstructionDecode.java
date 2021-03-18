@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.processor;
+package org.parker.mips.emulator;
 
 import static org.parker.mips.plugin.syscall.SystemCallPluginHandler.SystemCall;
-import static org.parker.mips.processor.Memory.*;
-import static org.parker.mips.processor.Registers.*;
+import static org.parker.mips.emulator.Memory.*;
+import static org.parker.mips.emulator.Registers.*;
 
 /**
  *

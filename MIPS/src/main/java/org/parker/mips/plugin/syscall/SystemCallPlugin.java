@@ -11,9 +11,9 @@ import org.parker.mips.gui.editor.Editor;
 import org.parker.mips.gui.editor.rsyntax.FormattedTextEditor;
 import org.parker.mips.plugin.PluginBase;
 import org.parker.mips.plugin.PluginClassLoader;
-import org.parker.mips.processor.Memory;
-import org.parker.mips.processor.Processor;
-import org.parker.mips.processor.Registers;
+import org.parker.mips.emulator.Memory;
+import org.parker.mips.emulator.Emulator;
+import org.parker.mips.emulator.Registers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -325,7 +325,7 @@ public abstract class SystemCallPlugin extends PluginBase {
      *
      */
     protected final void stopProcessor() {
-        Processor.stop();
+        Emulator.stop();
     }
 
     /**
@@ -333,8 +333,8 @@ public abstract class SystemCallPlugin extends PluginBase {
      * memory if options is set
      */
     protected final void resetProcessor() {
-        Processor.stop();
-        Processor.reset();
+        Emulator.stop();
+        Emulator.reset();
     }
 
     /**

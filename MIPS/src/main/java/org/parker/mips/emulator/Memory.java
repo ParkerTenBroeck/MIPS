@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.processor;
+package org.parker.mips.emulator;
 
 import org.parker.mips.preferences.Preference;
 import org.parker.mips.preferences.Preferences;
@@ -142,7 +142,7 @@ public class Memory {
             throw new RunTimeMemoryException("setHalfWord must be alligned to 2 error at index:" + index);
         }
         if (index + 1 > Memory.memory.length || index < -1) {
-            Processor.stop();
+            Emulator.stop();
             memoryOutOfBoundsEvent(index);
             return false;
         } else {
@@ -159,7 +159,7 @@ public class Memory {
 
     public static boolean setByte(int index, int val) {
         if (index > Memory.memory.length - 1 || index < -1) {
-            Processor.stop();
+            Emulator.stop();
             memoryOutOfBoundsEvent(index);
             return false;
         } else {

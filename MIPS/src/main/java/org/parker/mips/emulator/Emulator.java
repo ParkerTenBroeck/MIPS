@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.processor;
+package org.parker.mips.emulator;
 
 import org.parker.mips.gui.MainGUI;
 import org.parker.mips.preferences.Preferences;
@@ -11,21 +11,21 @@ import org.parker.mips.preferences.Preferences;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.parker.mips.processor.InstructionDecode.runInstruction;
-import static org.parker.mips.processor.Memory.getWord;
-import static org.parker.mips.processor.Registers.getPc;
+import static org.parker.mips.emulator.InstructionDecode.runInstruction;
+import static org.parker.mips.emulator.Memory.getWord;
+import static org.parker.mips.emulator.Registers.getPc;
 
 /**
  *
  * @author parke
  */
-public class Processor implements Runnable {
+public class Emulator implements Runnable {
 
     private static boolean isRunning = false;
     private static long instructionsRan = 0;
     private static long delay;
 
-    private final static Logger LOGGER = Logger.getLogger(Processor.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(Emulator.class.getName());
 
     private final static Preferences processorPrefs = Preferences.ROOT_NODE.getNode("system/emulator");
 
@@ -52,7 +52,7 @@ public class Processor implements Runnable {
     }
 
     public static void setDelay(long delay) {
-        Processor.delay = delay;
+        Emulator.delay = delay;
     }
 
     public static synchronized long getDelay() {
@@ -65,7 +65,7 @@ public class Processor implements Runnable {
 
     public static synchronized void start() {
         if (!isRunning) {
-            Processor runnable = new Processor();
+            Emulator runnable = new Emulator();
             Thread thread = new Thread(runnable);
             thread.setName("Processor");
             isRunning = true;
@@ -81,7 +81,7 @@ public class Processor implements Runnable {
             }catch(Exception e){
                 LOGGER.log(RunTimeLevel.RUN_TIME_ERROR, e.getMessage(), e.getCause());
                 if ((Boolean)processorPrefs.getPreference("breakOnRunTimeError", true)) {
-                    Processor.stop();
+                    Emulator.stop();
                     MainGUI.refreshAll();
                 }
             }
@@ -115,7 +115,7 @@ public class Processor implements Runnable {
         if (isRunning) {
             return;
         }
-        Processor runnable = new Processor();
+        Emulator runnable = new Emulator();
         Thread thread = new Thread(runnable);
         thread.setName("Processor");
         isRunning = false;

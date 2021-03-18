@@ -12,7 +12,7 @@ import org.parker.mips.assembler.data.UserLine;
 import org.parker.mips.gui.MainGUI;
 import org.parker.mips.gui.editor.EditorHandler;
 import org.parker.mips.preferences.Preferences;
-import org.parker.mips.processor.Memory;
+import org.parker.mips.emulator.Memory;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -552,7 +552,11 @@ public class Assembler {
         }
     }
 
-    public static void compileDefault() {
-        assemble(EditorHandler.getFalseFileFromLastFocused());
+    public static void assembleDefault() {
+        Thread t1 = new Thread(() -> {
+            assemble(EditorHandler.getFalseFileFromLastFocused());
+        });
+        t1.setName("Assembler");
+        t1.start();
     }
 }

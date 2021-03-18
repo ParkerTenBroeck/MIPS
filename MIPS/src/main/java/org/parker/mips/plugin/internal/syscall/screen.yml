@@ -122,3 +122,31 @@ system_calls:
         LOW_REG_WRITTEN_TO: false
         MEMORY_READ_FROM: false
         MEMORY_WRITTEN_TO: false
+
+        SCREEN_GET_PIXEL_X_Y_RGB:
+            SYSTEM_CALL_NUMBER: 157
+            SYSTEM_CALL_DISCRIPTION: Gets the pixel color at $4 ->x $5 ->y and places the RGB int in register 2
+            REGISTERS_READ_FROM: [ 4,5 ]
+            REGISTERS_WRITTEN_TO: [ 2 ]
+            PC_REG_READ_FROM: false
+            PC_REG_WRITTEN_TO: false
+            HIGH_REG_READ_FROM: false
+            HIGH_REG_WRITTEN_TO: false
+            LOW_REG_READ_FROM: false
+            LOW_REG_WRITTEN_TO: false
+            MEMORY_READ_FROM: false
+            MEMORY_WRITTEN_TO: false
+
+
+        SCREEN_GET_PIXEL_INDEX_RGB:
+            SYSTEM_CALL_NUMBER: 158
+            SYSTEM_CALL_DISCRIPTION: Gets the pixel color at index of $4 and places the RGB int into register 2
+            REGISTERS_READ_FROM: [ 4 ]
+            REGISTERS_WRITTEN_TO: [ 2 ]
+            PC_REG_READ_FROM: false
+            PC_REG_WRITTEN_TO: false
+            HIGH_REG_READ_FROM: false
+            HIGH_REG_WRITTEN_TO: false
+            LOW_REG_READ_FROM: false
+            LOW_REG_WRITTEN_TO: false
+            MEMORY_READ_FROM: false

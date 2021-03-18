@@ -5,7 +5,7 @@
  */
 package org.parker.mips.plugin.syscall;
 
-import org.parker.mips.processor.Processor;
+import org.parker.mips.emulator.Emulator;
 
 import javax.swing.*;
 import java.net.URL;
@@ -37,7 +37,7 @@ public class SystemCallPluginFrame extends JFrame {
      *
      */
     protected final void stopProcessor() {
-        Processor.stop();
+        Emulator.stop();
     }
 
 }

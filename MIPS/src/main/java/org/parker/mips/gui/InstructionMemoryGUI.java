@@ -5,13 +5,13 @@
  */
 package org.parker.mips.gui;
 
-import org.parker.mips.processor.Memory;
+import org.parker.mips.emulator.Memory;
 
 import javax.swing.*;
 
 import static org.parker.mips.assembler.InstructionToString.instructionToString;
-import static org.parker.mips.processor.Memory.superGetWord;
-import static org.parker.mips.processor.Registers.getPc;
+import static org.parker.mips.emulator.Memory.superGetWord;
+import static org.parker.mips.emulator.Registers.getPc;
 
 /**
  *

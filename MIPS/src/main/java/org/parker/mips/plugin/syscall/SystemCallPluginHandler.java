@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.parker.mips.processor.Processor.*;
-
 /**
  *
  * @author parke
@@ -70,6 +68,7 @@ public class SystemCallPluginHandler {
                     LOGGER.log(Level.INFO,"SystemCall: " + sc.DATA.SYSTEM_CALL_NAME + " From Plugin: " + scp.DESCRIPTION.NAME + " was registered with the artificial System_Call_Number: " + i);
                     idrkWhat[i] = sc;
                 }
+                scp.onLoad();
                 registeredSystemCalls.add(sc);
                 LOGGER.log(Level.CONFIG,"System Call " + sc.DATA.SYSTEM_CALL_NAME + ":" + sc.DATA.SYSTEM_CALL_NUMBER + " was successfully registered");
             } else {
