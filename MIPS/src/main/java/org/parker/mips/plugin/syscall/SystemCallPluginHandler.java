@@ -77,7 +77,6 @@ public class SystemCallPluginHandler {
                 //warning system call (name and number) was not registered
             }
         }
-        scp.onLoad();
         registeredSystemCallPlugins.add(scp);
         if (totalConflicts > 0) {
             LOGGER.log(Level.WARNING, "SystemCall plugin: " + scp.DESCRIPTION.NAME + " was reigstered with " + totalConflicts + " conflicts");

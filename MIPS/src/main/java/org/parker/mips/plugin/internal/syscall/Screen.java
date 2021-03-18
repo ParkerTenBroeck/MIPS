@@ -118,22 +118,6 @@ public class Screen extends SystemCallPluginFrame {
         }
     }
 
-    public static int getPixelColor(int index) {
-        try {
-            return image.getRGB(index % image.getWidth(), index / image.getWidth()) & 0xFFFFFF;
-        } catch (Exception e) {
-            return 0;
-        }
-    }
-
-    public static int getPixelColor(int xPos, int yPos) {
-        try {
-            return image.getRGB(xPos, yPos) & 0xFFFFFF;
-        } catch (Exception e) {
-            return 0;
-        }
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

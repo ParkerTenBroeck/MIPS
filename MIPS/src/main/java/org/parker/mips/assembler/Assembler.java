@@ -553,12 +553,6 @@ public class Assembler {
     }
 
     public static void compileDefault() {
-        Thread t1 = new Thread(new Runnable() {
-            public void run()
-            {
-                assemble(EditorHandler.getFalseFileFromLastFocused());
-            }});
-        t1.setName("Assembler");
-        t1.start();
+        assemble(EditorHandler.getFalseFileFromLastFocused());
     }
 }
