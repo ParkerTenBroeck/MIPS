@@ -9,15 +9,15 @@ import org.fife.ui.rsyntaxtextarea.AbstractTokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
-import org.fife.ui.rsyntaxtextarea.folding.CurlyFoldParser;
 import org.fife.ui.rsyntaxtextarea.folding.FoldParserManager;
 import org.fife.ui.rtextarea.RTextScrollPane;
 import org.parker.mips.FileUtils;
-import org.parker.mips.OptionsHandler;
 import org.parker.mips.ResourceHandler;
 import org.parker.mips.gui.editor.Editor;
+import org.parker.mips.misc.SerializableFont;
+import org.parker.mips.preferences.Preference;
+import org.parker.mips.preferences.Preferences;
 
-import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import java.awt.*;
 import java.awt.event.FocusListener;
@@ -38,6 +38,7 @@ import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
 public class FormattedTextEditor extends Editor {
 
     private static final Logger LOGGER = Logger.getLogger(FormattedTextEditor.class.getName());
+    private static final Preferences themePrefs = Preferences.ROOT_NODE.getNode("system/theme");
 
     private static final DefaultHighlighter.DefaultHighlightPainter errorHighlight = new DefaultHighlighter.DefaultHighlightPainter(new Color(255,0,0,128));
 
@@ -155,20 +156,25 @@ public class FormattedTextEditor extends Editor {
         this.setLayout(new BorderLayout());
         this.add(scrollPane, BorderLayout.CENTER);
 
-        OptionsHandler.currentEditorTheme.addLikedObserver(this, (o, arg) -> {
-            if (textArea != null) {
-                FormattedTextEditor.this.setTheme(OptionsHandler.currentEditorTheme.val());
-                FormattedTextEditor.this.setAllFont(OptionsHandler.currentEditorFont.val());
-            }
-        });
-        setTheme(OptionsHandler.currentEditorTheme.val());
+        Preference<String> currentEditorTheme = themePrefs.getRawPreference("currentEditorTheme", "Dark");
+        Preference<SerializableFont> currentEditorFont = themePrefs.getRawPreference("currentEditorFont", new SerializableFont("Segoe UI", 0, 15));
 
-        OptionsHandler.currentEditorFont.addLikedObserver(this, (o, arg) -> {
+
+        currentEditorTheme.addLikedObserver(this, (o, arg) -> {
             if (textArea != null) {
-                FormattedTextEditor.this.setAllFont(OptionsHandler.currentEditorFont.val());
+                FormattedTextEditor.this.setTheme(currentEditorTheme.val());
+                FormattedTextEditor.this.setAllFont(currentEditorFont.val().toFont());
             }
         });
-        setAllFont(OptionsHandler.currentEditorFont.val());
+        setTheme(currentEditorTheme.val());
+
+        currentEditorFont.addLikedObserver(this, (o, arg) -> {
+            if (textArea != null) {
+                FormattedTextEditor.this.setAllFont(currentEditorFont.val().toFont());
+            }
+        });
+        setAllFont(currentEditorFont.val().toFont());
+        java.util.prefs.Preferences asd = java.util.prefs.Preferences.systemNodeForPackage(this.getClass());
     }
 
     @Override
