@@ -23,6 +23,8 @@ public class Memory {
 
     private static final Preference<Boolean> adaptiveMemory = Preferences.ROOT_NODE.getNode("system/emulator").getRawPreference("adaptiveMemory", false);
 
+    private static boolean littleEladin = false;
+
     public static void setMemory(byte[] memory) {
         if (memory == null) {
             Memory.savedMemory = new byte[0];
@@ -78,10 +80,17 @@ public class Memory {
         int mem2 = 0xCD;
         int mem1 = 0xCD;
         try {
-            mem4 = Memory.memory[index] & 0xFF;
-            mem3 = Memory.memory[index + 1] & 0xFF;
-            mem2 = Memory.memory[index + 2] & 0xFF;
-            mem1 = Memory.memory[index + 3] & 0xFF;
+            if(littleEladin){
+                mem4 = Memory.memory[index + 3] & 0xFF;
+                mem3 = Memory.memory[index + 2] & 0xFF;
+                mem2 = Memory.memory[index + 1] & 0xFF;
+                mem1 = Memory.memory[index + 0] & 0xFF;
+            }else {
+                mem4 = Memory.memory[index] & 0xFF;
+                mem3 = Memory.memory[index + 1] & 0xFF;
+                mem2 = Memory.memory[index + 2] & 0xFF;
+                mem1 = Memory.memory[index + 3] & 0xFF;
+            }
 
         } catch (Exception e) {
 
@@ -94,8 +103,13 @@ public class Memory {
         int mem1 = 0xCD;
         int mem2 = 0xCD;
         try {
-            mem2 = ((int) Memory.memory[index]);
-            mem1 = ((int) Memory.memory[index + 1]) & 0xFF;
+            if(true){
+                mem2 = ((int) Memory.memory[index + 1]);
+                mem1 = ((int) Memory.memory[index + 0]) & 0xFF;
+            }else{
+                mem2 = ((int) Memory.memory[index]);
+                mem1 = ((int) Memory.memory[index + 1]) & 0xFF;
+            }
         } catch (Exception e) {
 
         }
@@ -123,10 +137,22 @@ public class Memory {
             return false;
         } else {
 
-            byte mem1 = (byte) (val & 0xFF);
-            byte mem2 = (byte) ((val >>> 8) & 0xFF);
-            byte mem3 = (byte) ((val >>> 16) & 0xFF);
-            byte mem4 = (byte) ((val >>> 24) & 0xFF);
+            byte mem1;
+            byte mem2;
+            byte mem3;
+            byte mem4;
+
+            if(littleEladin){
+                 mem4 = (byte) (val & 0xFF);
+                 mem3 = (byte) ((val >>> 8) & 0xFF);
+                 mem2 = (byte) ((val >>> 16) & 0xFF);
+                 mem1 = (byte) ((val >>> 24) & 0xFF);
+            }else{
+                 mem1 = (byte) (val & 0xFF);
+                 mem2 = (byte) ((val >>> 8) & 0xFF);
+                 mem3 = (byte) ((val >>> 16) & 0xFF);
+                 mem4 = (byte) ((val >>> 24) & 0xFF);
+            }
 
             memory[index] = mem4;
             memory[index + 1] = mem3;
@@ -147,8 +173,16 @@ public class Memory {
             return false;
         } else {
 
-            byte mem1 = (byte) (val & 255);
-            byte mem2 = (byte) ((val >> 8) & 255);
+            byte mem1;
+            byte mem2;
+
+            if(littleEladin){
+                 mem2 = (byte) (val & 255);
+                 mem1 = (byte) ((val >> 8) & 255);
+            }else {
+                 mem1 = (byte) (val & 255);
+                 mem2 = (byte) ((val >> 8) & 255);
+            }
 
             memory[index] = mem2;
             memory[index + 1] = mem1;

@@ -26,13 +26,13 @@ public class ExampleFrame extends SystemCallPluginFrame {
         initComponents();
 
         Timer timer;
-        timer = new Timer(1000, (ae) -> {
-            if (this.isShowing()) {
-                jRadioButton1.setSelected(!jRadioButton1.isSelected());
-                jRadioButton2.setSelected(jRadioButton1.isSelected());
-            }
-        });
-        timer.start();
+        //timer = new Timer(1000, (ae) -> {
+        //    if (this.isShowing()) {
+        //        jRadioButton1.setSelected(!jRadioButton1.isSelected());
+        //        jRadioButton2.setSelected(jRadioButton1.isSelected());
+        //    }
+        //});
+        //timer.start();
 
     }
 
