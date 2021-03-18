@@ -2,13 +2,20 @@ package org.parker.mips.misc;
 
 import java.io.Serializable;
 
-public class Font implements Serializable {
+public class SerializableFont implements Serializable {
 
-    private int size;
+
     private String name;
     private int style;
+    private int size;
 
-    public Font(){
+    public SerializableFont(){
+    }
+
+    public SerializableFont(String name, int style, int size){
+        this.name = name;
+        this.style = style;
+        this.size = size;
     }
 
     public java.awt.Font toFont(){

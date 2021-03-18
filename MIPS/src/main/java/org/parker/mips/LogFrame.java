@@ -8,6 +8,8 @@ package org.parker.mips;
 
 import org.parker.mips.assembler.AssemblerLevel;
 import org.parker.mips.gui.theme.lookandfeel.ModernScrollPane;
+import org.parker.mips.preferences.Preference;
+import org.parker.mips.preferences.Preferences;
 import org.parker.mips.processor.RunTimeLevel;
 
 import javax.swing.*;
@@ -27,6 +29,10 @@ import java.util.logging.*;
  * @author parke
  */
 public class LogFrame extends javax.swing.JPanel {
+
+    private final static Preferences loggerPrefs = Preferences.ROOT_NODE.getNode("system/logger");
+
+    private final static Logger LOGGER = Logger.getLogger(LogFrame.class.getName());
 
 	static {
         LogFrame.initComponents();
@@ -152,36 +158,78 @@ public class LogFrame extends javax.swing.JPanel {
         private static Level assemblerLevel;
         private static Level runtimeLevel;
 
+        private static Preference<Boolean> showStackTrace;
+        private static Preference<Boolean> logSystemCallMessages;
+        private static Preference<Boolean> showCallerClass;
+        private static Preference<Boolean> showCallerMethod;
+
         static{
-            OptionsHandler.systemLogLevel.addObserver((o, v) -> {
-                systemLevel = Level.parse((String) v);
-            });
-            OptionsHandler.assemblerLogLevel.addObserver((o, v) -> {
-                assemblerLevel = Level.parse((String) v);
-            });
-            OptionsHandler.runtimeLogLevel.addObserver((o,v) -> {
-                runtimeLevel = Level.parse((String) v);
-            });
-            systemLevel = Level.parse(OptionsHandler.systemLogLevel.val());
-            assemblerLevel = Level.parse(OptionsHandler.assemblerLogLevel.val());
-            runtimeLevel = Level.parse(OptionsHandler.runtimeLogLevel.val());
+
+            try{
+                showStackTrace = loggerPrefs.getRawPreference("showStackTrace", false);
+                logSystemCallMessages = loggerPrefs.getRawPreference("logSystemCallMessages", true);
+                showCallerClass = loggerPrefs.getRawPreference("showCallerClass", false);
+                showCallerMethod = loggerPrefs.getRawPreference("showCallerMethod", false);
+            }catch(Exception e){
+              LOGGER.log(Level.SEVERE, "Failed to get Logger Preferences", e);
+            }
+
+            try {
+                loggerPrefs.getRawPreference("systemLogLevel", "INFO").addObserver((o, v) -> {
+                    systemLevel = Level.parse((String) v);
+                });
+                loggerPrefs.getRawPreference("assemblerLogLevel", "ASSEMBLER_MESSAGE").addObserver((o, v) -> {
+                    assemblerLevel = Level.parse((String) v);
+                });
+                loggerPrefs.getRawPreference("runtimeLogLevel", "RUN_TIME_MESSAGE").addObserver((o, v) -> {
+                    runtimeLevel = Level.parse((String) v);
+                });
+            }catch(Exception e){
+                LOGGER.log(Level.SEVERE, "Failed to add Observers to logPreferences", e);
+            }
+            try {
+                systemLevel = Level.parse((String) loggerPrefs.getPreference("systemLogLevel", "INFO"));
+            }catch(Exception e){
+                systemLevel = Level.INFO;
+                LOGGER.log(Level.SEVERE, "Failed to load systemLevel from Preferences defaulting to level INFO",e);
+            }
+            try {
+                assemblerLevel = Level.parse((String) loggerPrefs.getPreference("assemblerLogLevel", "ASSEMBLER_MESSAGE"));
+            }catch (Exception e){
+                assemblerLevel = AssemblerLevel.ASSEMBLER_MESSAGE;
+                LOGGER.log(Level.SEVERE, "Failed to load assemblerLevel from Preferences defaulting to level ASSEMBLER_MESSAGE",e);
+            }
+            try {
+                runtimeLevel = Level.parse((String) loggerPrefs.getPreference("runtimeLogLevel", "RUN_TIME_MESSAGE"));
+            }catch(Exception e){
+                runtimeLevel = RunTimeLevel.RUN_TIME_MESSAGE;
+                LOGGER.log(Level.SEVERE, "Failed to load runtimeLevel from Preferences defaulting to level RUN_TIME_MESSAGE",e);
+            }
         }
 
         @Override
         public void publish(LogRecord record) {
 
+            if(loggerPrefs == null ||
+                    showStackTrace == null ||
+                    logSystemCallMessages == null ||
+                    showCallerMethod == null ||
+                    showCallerClass == null){
+                return;
+            }
+
             String message = "";
 
-            if (OptionsHandler.showCallerClass.val()) {
+            if (showCallerClass.val()) {
                 message += record.getSourceClassName();
             }
-            if (OptionsHandler.showCallerMethod.val()) {
-                if (OptionsHandler.showCallerClass.val()) {
+            if (showCallerMethod.val()) {
+                if (showCallerClass.val()) {
                     message += " ";
                 }
                 message += record.getSourceMethodName() + ":\n";
             } else {
-                if (OptionsHandler.showCallerClass.val()) {
+                if (showCallerClass.val()) {
                     message += ":\n";
                 }
             }
@@ -249,7 +297,7 @@ public class LogFrame extends javax.swing.JPanel {
                 StyleConstants.setForeground(sas, Color.RED);
                 StyleConstants.setBold(sas, false);
 
-                if (OptionsHandler.showStackTrace.val() && record.getThrown() != null) {
+                if (showStackTrace.val() && record.getThrown() != null) {
                     StringWriter sw = new StringWriter();
                     PrintWriter pw = new PrintWriter(sw);
                     record.getThrown().printStackTrace(pw);

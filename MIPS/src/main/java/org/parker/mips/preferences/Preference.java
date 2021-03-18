@@ -1,10 +1,9 @@
 package org.parker.mips.preferences;
 
 import com.google.common.collect.HashMultimap;
-import org.parker.mips.OptionsHandler;
 
 import javax.swing.*;
-import java.io.Serializable;
+import java.io.*;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
@@ -13,12 +12,22 @@ import java.util.logging.Logger;
 
 public class Preference<T extends Serializable> extends Observable {
 
-    private static final Logger LOGGER = Logger.getLogger(OptionsHandler.Option.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Preference.class.getName());
 
     private HashMultimap<Object, Observer> observerLinkedObject = HashMultimap.create();
     private static final HashMultimap<Object, Preference> optionLinkedObject = HashMultimap.create();
 
     protected T value;
+
+
+    public static void removeAllObserversLinkedToObject(Object object) {
+        LOGGER.log(Level.FINER, "Removing all linked observers from all options from link: " + object);
+        for(Preference o : optionLinkedObject.get(object)){
+            o.removeAllObserversFromLink(object);
+        }
+        optionLinkedObject.removeAll(object);
+    }
+
 
     protected Preference() {
     }
@@ -27,11 +36,11 @@ public class Preference<T extends Serializable> extends Observable {
         this.value = value;
     }
 
-    protected T val() {
+    public T val() {
         return value;
     }
 
-    protected void val(T val) {
+    public void val(T val) {
         LOGGER.log(Level.FINER, "Changed Value of Holder");
         this.value = val;
         this.setChanged();
@@ -40,13 +49,13 @@ public class Preference<T extends Serializable> extends Observable {
     }
 
 
-    protected void addLikedObserver(Object link, Observer observer){
+    public void addLikedObserver(Object link, Observer observer){
         LOGGER.log(Level.FINER, "Added Linked: " + link +  " Observer to Option");
         observerLinkedObject.put(link, observer);
         optionLinkedObject.put(link, this);
         this.addObserver(observer);
     }
-    protected void removeAllObserversFromLink(Object link){
+    public void removeAllObserversFromLink(Object link){
         LOGGER.log(Level.FINER, "Removed all Linked Observer from Option from link: " + link);
         Set<Observer> set = observerLinkedObject.get(link);
         for(Observer o: set){
@@ -55,7 +64,7 @@ public class Preference<T extends Serializable> extends Observable {
         observerLinkedObject.removeAll(link);
     }
 
-    protected void LinkJButton(Object link, AbstractButton but) {
+    public void LinkJButton(Object link, AbstractButton but) {
         but.setSelected((Boolean) value);
         but.addActionListener((ae) -> {
             if (but.isSelected() != (Boolean) value) {
@@ -69,7 +78,7 @@ public class Preference<T extends Serializable> extends Observable {
         });
     }
 
-    protected void LinkJSlider(Object link, JSlider slide) {
+    public void LinkJSlider(Object link, JSlider slide) {
         slide.setValue((Integer) value);
         slide.addChangeListener((ex) ->{
             if (slide.getValue() != (Integer) value) {
@@ -84,7 +93,7 @@ public class Preference<T extends Serializable> extends Observable {
         });
     }
 
-    protected void LinkJList(Object link, JList<T> list) {
+    public void LinkJList(Object link, JList<T> list) {
         list.setSelectedValue(this.val(), true);
 
         list.addListSelectionListener(e -> {

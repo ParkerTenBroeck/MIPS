@@ -16,6 +16,8 @@ import org.parker.mips.plugin.PluginLoader;
 import org.parker.mips.plugin.syscall.SystemCallPlugin;
 import org.parker.mips.plugin.syscall.SystemCallPlugin.Node;
 import org.parker.mips.plugin.syscall.SystemCallPluginHandler;
+import org.parker.mips.preferences.Preference;
+import org.parker.mips.preferences.Preferences;
 import org.parker.mips.processor.Memory;
 import org.parker.mips.processor.Processor;
 
@@ -38,13 +40,15 @@ import java.util.logging.Logger;
 public class MainGUI extends javax.swing.JFrame {
 
     private static Thread autoUpdateThread;
-    private static boolean autoUpdate;
+    private static boolean auteUpdateRunning;
     private static MainGUI instance;
 
     private static final Logger LOGGER = Logger.getLogger(MainGUI.class.getName());
 
+    private static final Preferences systemPrefs = Preferences.ROOT_NODE.getNode("system");
+
     public static synchronized boolean isRunning() {
-        return autoUpdate;
+        return auteUpdateRunning;
     }
 
     public static synchronized boolean canBreak() {
@@ -53,16 +57,20 @@ public class MainGUI extends javax.swing.JFrame {
 
     private static synchronized void startAutoUpdate() {
         MainGUI.startButton.setSelected(true);
-        MainGUI.autoUpdate = true;
-        if (!OptionsHandler.enableGUIAutoUpdateWhileRunning.val()) {
+        MainGUI.auteUpdateRunning = true;
+        if (!(Boolean)systemPrefs.getNode("gui").getPreference("enableGUIAutoUpdateWhileRunning", true)) {
             return;
         }
         autoUpdateThread = new Thread() {
             public void run() {
-                while (autoUpdate && OptionsHandler.enableGUIAutoUpdateWhileRunning.val()) {
+
+                Preference<Boolean> autoUpdate = systemPrefs.getNode("gui").getRawPreference("enableGUIAutoUpdateWhileRunning", true);
+                Preference<Integer> refreshTime = systemPrefs.getNode("gui").getRawPreference("GUIAutoUpdateRefreshTime", 100);
+
+                while (auteUpdateRunning && autoUpdate.val()) {
                     MainGUI.refresh();
                     try {
-                        Thread.sleep(OptionsHandler.GUIAutoUpdateRefreshTime.val());
+                        Thread.sleep(refreshTime.val());
                     } catch (Exception e) {
 
                     }
@@ -77,7 +85,7 @@ public class MainGUI extends javax.swing.JFrame {
         MainGUI.startButton.setSelected(false);
         //MainGUI.startButton.repaint();
         //System.out.println(startButton.isSelected());
-        MainGUI.autoUpdate = false;
+        MainGUI.auteUpdateRunning = false;
         MainGUI.refresh();
     }
 
@@ -112,16 +120,16 @@ public class MainGUI extends javax.swing.JFrame {
 
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        OptionsHandler.enableBreakPoints.LinkJButton(this, enableBreak);
+        systemPrefs.getNode("emulator/runtime").getRawPreference("enableBreakPoints",true).LinkJButton(this, enableBreak);
         //OptionsHandler.linkedFile.LinkJButton(this, linkedButton);
 
-        OptionsHandler.saveCompilationInfo.LinkJButton(this, saveCompileInformationButton);
-        OptionsHandler.savePreProcessedFile.LinkJButton(this, savePreProcessedFileButton);
+        systemPrefs.getNode("assembler").getRawPreference("saveCompilationInfo",false).LinkJButton(this, saveCompileInformationButton);
+        systemPrefs.getNode("assembler").getRawPreference("savePreProcessedFile",false).LinkJButton(this, savePreProcessedFileButton);
 
-        OptionsHandler.breakOnRunTimeError.LinkJButton(this, breakProgramOnRTEButton);
-        OptionsHandler.adaptiveMemory.LinkJButton(this, adaptiveMemoryMenuButton);
+        systemPrefs.getNode("emulator/runtime").getRawPreference("breakOnRunTimeError",true).LinkJButton(this, breakProgramOnRTEButton);
+        systemPrefs.getNode("emulator/runtime").getRawPreference("adaptiveMemory",false).LinkJButton(this, adaptiveMemoryMenuButton);
 
-        OptionsHandler.enableGUIAutoUpdateWhileRunning.LinkJButton(this,enableGUIUpdatingWhileRunningButton);
+        systemPrefs.getNode("gui").getRawPreference("enableGUIAutoUpdateWhileRunning", true).LinkJButton(this,enableGUIUpdatingWhileRunningButton);
         //OptionsHandler.logSystemMessages.LinkJButton(this, logSystemMessagesButton);
         //OptionsHandler.logMessages.LinkJButton(this, logMessagesButton);
         //OptionsHandler.logWarnings.LinkJButton(this, logWarningsButton);
@@ -178,15 +186,15 @@ public class MainGUI extends javax.swing.JFrame {
                         if (!EditorHandler.saveAll()) {
                             return;
                         }
-                        OptionsHandler.saveOptionsToDefaultFile();
+                        Preferences.savePreferencesToDefaultFile();
                         System.exit(0);
                     }
                     if (confirm == JOptionPane.NO_OPTION) {
-                        OptionsHandler.saveOptionsToDefaultFile();
+                        Preferences.savePreferencesToDefaultFile();
                         System.exit(0);
                     }
                 } else {
-                    OptionsHandler.saveOptionsToDefaultFile();
+                    Preferences.savePreferencesToDefaultFile();
                     System.exit(0);
                 }
 

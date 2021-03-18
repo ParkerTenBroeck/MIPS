@@ -5,8 +5,8 @@
  */
 package org.parker.mips.processor;
 
-import org.parker.mips.OptionsHandler;
 import org.parker.mips.gui.MainGUI;
+import org.parker.mips.preferences.Preferences;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,6 +27,8 @@ public class Processor implements Runnable {
 
     private final static Logger LOGGER = Logger.getLogger(Processor.class.getName());
 
+    private final static Preferences processorPrefs = Preferences.ROOT_NODE.getNode("system/emulator");
+
     public static long getInstructionsRan() {
         return instructionsRan;
     }
@@ -43,7 +45,7 @@ public class Processor implements Runnable {
         stop();
         instructionsRan = 0;
         Registers.reset();
-        if (OptionsHandler.reloadMemoryOnReset.val()) {
+        if ((Boolean)processorPrefs.getPreference("reloadMemoryOnReset", false)) {
             Memory.reloadMemory();
         }
         MainGUI.refresh();
@@ -78,7 +80,7 @@ public class Processor implements Runnable {
                 runInstruction(Memory.getWord(Registers.pc));
             }catch(Exception e){
                 LOGGER.log(RunTimeLevel.RUN_TIME_ERROR, e.getMessage(), e.getCause());
-                if (OptionsHandler.breakOnRunTimeError.val()) {
+                if ((Boolean)processorPrefs.getPreference("breakOnRunTimeError", true)) {
                     Processor.stop();
                     MainGUI.refreshAll();
                 }

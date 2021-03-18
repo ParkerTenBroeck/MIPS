@@ -1,26 +1,56 @@
 package org.parker.mips.gui.theme;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.json.Json;
 import com.formdev.flatlaf.util.StringUtils;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Karl Tauber
  */
 public class IJThemesManager
 {
+	private static final Map<String, IJThemeInfo> themes = new HashMap<String, IJThemeInfo>();
 	public static final List<IJThemeInfo> bundledThemes = new ArrayList<>();
 	public static final List<IJThemeInfo> moreThemes = new ArrayList<>();
 	private static final Map<File,Long> lastModifiedMap = new HashMap<>();
+
+
+	static {
+		loadBundledThemes();
+		loadThemesFromDirectory();
+
+			themes.put("Flat Light", new IJThemeInfo("Flat Light", null, false, null, null, null, null, null,
+					FlatLightLaf.class.getName()));
+
+			themes.put("Flat Dark",new IJThemeInfo("Flat Dark", null, true, null, null, null, null, null,
+					FlatDarkLaf.class.getName()));
+			themes.put("Flat IntelliJ",new IJThemeInfo("Flat IntelliJ", null, false, null, null, null, null, null,
+					FlatIntelliJLaf.class.getName()));
+			themes.put("Flat Darcula",new IJThemeInfo("Flat Darcula", null, true, null, null, null, null, null,
+					FlatDarculaLaf.class.getName()));
+	}
+
+
+	public static IJThemeInfo getTheme(String name){
+		if(themes.containsKey(name)) {
+			return themes.get(name);
+		}else{
+			return null;
+		}
+	}
 
 	@SuppressWarnings( "unchecked" )
 	public static void loadBundledThemes() {
@@ -47,7 +77,9 @@ public class IJThemesManager
 			String sourceCodeUrl = value.get( "sourceCodeUrl" );
 			String sourceCodePath = value.get( "sourceCodePath" );
 
-			bundledThemes.add( new IJThemeInfo( name, resourceName, dark, license, licenseFile, sourceCodeUrl, sourceCodePath, null, null ) );
+			IJThemeInfo theme = new IJThemeInfo( name, resourceName, dark, license, licenseFile, sourceCodeUrl, sourceCodePath, null, null );
+			bundledThemes.add(theme);
+			themes.put(theme.name, theme);
 		}
 	}
 
@@ -70,7 +102,9 @@ public class IJThemesManager
 			String name = fname.endsWith( ".properties" )
 				? StringUtils.removeTrailing( fname, ".properties" )
 				: StringUtils.removeTrailing( fname, ".theme.json" );
-			moreThemes.add( new IJThemeInfo( name, null, false, null, null, null, null, f, null ) );
+			IJThemeInfo theme = new IJThemeInfo( name, null, false, null, null, null, null, f, null );
+			moreThemes.add(theme);
+			themes.put(theme.name, theme);
 			lastModifiedMap.put( f, f.lastModified() );
 		}
 	}

@@ -6,11 +6,12 @@
 package org.parker.mips.gui.editor;
 
 import org.parker.mips.FileUtils;
-import org.parker.mips.OptionsHandler;
 import org.parker.mips.ResourceHandler;
 import org.parker.mips.gui.EditorTabbedPane;
 import org.parker.mips.gui.MainGUI;
 import org.parker.mips.gui.editor.rsyntax.FormattedTextEditor;
+import org.parker.mips.preferences.Preference;
+import org.parker.mips.preferences.Preferences;
 
 import javax.swing.*;
 import java.awt.event.FocusEvent;
@@ -252,7 +253,7 @@ public abstract class Editor extends javax.swing.JPanel {
             case JOptionPane.YES_OPTION:
                 if (save()) {
                     EditorHandler.removeEditor(this);
-                    OptionsHandler.removeAllObserversLinkedToObject(this);
+                    Preference.removeAllObserversLinkedToObject(this);
                     closeS();
                     return true;
                 } else {
@@ -260,7 +261,7 @@ public abstract class Editor extends javax.swing.JPanel {
                 }
             case JOptionPane.NO_OPTION:
                 EditorHandler.removeEditor(this);
-                OptionsHandler.removeAllObserversLinkedToObject(this);
+                Preference.removeAllObserversLinkedToObject(this);
                 closeS();
                 return true;
             case JOptionPane.CANCEL_OPTION:
