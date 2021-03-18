@@ -5,7 +5,8 @@
  */
 package org.parker.mips.processor;
 
-import org.parker.mips.OptionsHandler;
+import org.parker.mips.preferences.Preference;
+import org.parker.mips.preferences.Preferences;
 
 import java.util.logging.Logger;
 
@@ -16,9 +17,11 @@ import java.util.logging.Logger;
 public class Memory {
 
     private static byte[] savedMemory;
-    protected static volatile byte[] memory = new byte[0];
+    protected static byte[] memory = new byte[0];
 
     private static final Logger LOGGER = Logger.getLogger(Memory.class.getName());
+
+    private static final Preference<Boolean> adaptiveMemory = Preferences.ROOT_NODE.getNode("system/emulator").getRawPreference("adaptiveMemory", false);
 
     private static boolean littleEladin = false;
 
@@ -200,7 +203,7 @@ public class Memory {
     }
 
     private static void memoryOutOfBoundsEvent(int currentIndex) {
-        if (OptionsHandler.adaptiveMemory.val()) {
+        if (adaptiveMemory.val()) {
             byte[] temp;
             if (currentIndex >= memory.length * 2) {
                 temp = new byte[currentIndex + 16];

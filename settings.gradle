@@ -8,4 +8,4 @@
  */
 
 rootProject.name = 'MIPS'
-include('MIPS', 'ExampleSystemCallPlugin')
+include('MIPS', 'ExampleSystemCallPlugin', 'Updater')

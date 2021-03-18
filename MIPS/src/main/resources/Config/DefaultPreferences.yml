@@ -1,0 +1,41 @@
+'system':
+  'emulator':
+    'adaptiveMemory': false
+    'reloadMemoryOnReset': true
+    'runtime':
+      'adaptiveMemory': false
+      'breakOnRunTimeError': true
+      'checkMemoryAlignment': false
+      'enableBreakPoints': true
+  'plugins':
+    'systemCalls':
+      'Base':
+        'resetProcessorOnTrap0': false
+  'logger':
+    'showStackTrace': false
+    'systemLogLevel': 'INFO'
+    'runtimeLogLevel': 'RUN_TIME_MESSAGE'
+    'logSystemCallMessages': true
+    'showCallerClass': false
+    'showCallerMethod': false
+    'assemblerLogLevel': 'ASSEMBLER_MESSAGE'
+  'assembler':
+    'saveCleanedFile': false
+    'includeSysCallDef': true
+    'includeRegDef': true
+    'savePreProcessedFile': false
+    'saveCompilationInfo': false
+  'gui':
+    'GUIAutoUpdateRefreshTime': 121
+    'enableGUIAutoUpdateWhileRunning': true
+  'theme':
+    'currentGUIFont': !!org.parker.mips.misc.SerializableFont
+      'name': 'Segoe UI'
+      'size': 15
+      'style': 0
+    'currentEditorFont': !!org.parker.mips.misc.SerializableFont
+      'name': 'Segoe UI'
+      'size': 15
+      'style': 0
+    'currentGUITheme': 'Flat Darcula'
+    'currentEditorTheme': 'Dark'

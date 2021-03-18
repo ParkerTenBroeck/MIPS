@@ -6,12 +6,12 @@
 package org.parker.mips.assembler;
 
 import org.parker.mips.FileUtils;
-import org.parker.mips.OptionsHandler;
 import org.parker.mips.ResourceHandler;
 import org.parker.mips.assembler.data.MemoryLable;
 import org.parker.mips.assembler.data.UserLine;
 import org.parker.mips.gui.MainGUI;
 import org.parker.mips.gui.editor.EditorHandler;
+import org.parker.mips.preferences.Preferences;
 import org.parker.mips.processor.Memory;
 
 import java.io.File;
@@ -167,6 +167,8 @@ public class Assembler {
 
     private static final AssemblerLogger LOGGER = new AssemblerLogger(Assembler.class.getName());
 
+    private static final Preferences assPrefs = Preferences.ROOT_NODE.getNode("system/assembler");
+
     public static void assemble(File file) {
 
         memoryLables = new ArrayList<MemoryLable>();
@@ -203,7 +205,7 @@ public class Assembler {
 
         Memory.setMemory(memByteArray);
 
-        if (OptionsHandler.saveCompilationInfo.val()) {
+        if ((Boolean)assPrefs.getPreference("saveCompilationInfo", false)) {
             saveOriginsToFile(file.getAbsolutePath());
         }
 
