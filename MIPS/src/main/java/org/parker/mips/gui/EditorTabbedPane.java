@@ -5,9 +5,9 @@
  */
 package org.parker.mips.gui;
 
+
 import org.parker.mips.gui.editor.Editor;
 import org.parker.mips.gui.editor.EditorHandler;
-import org.parker.mips.gui.editor.rsyntax.FormattedTextEditor;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

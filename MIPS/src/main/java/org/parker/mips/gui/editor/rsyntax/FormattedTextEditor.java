@@ -134,7 +134,7 @@ public class FormattedTextEditor extends Editor {
         switch (ext) {
             case "asm":
                 AbstractTokenMakerFactory atmf = (AbstractTokenMakerFactory) TokenMakerFactory.getDefaultInstance();
-                atmf.putMapping("MIPS", "org.parker.mips.gui.editor.rsyntax.MIPSAbstractTokenMaker");
+                atmf.putMapping("MIPS", "org.parker.mips.gui.userPanes.editor.rsyntax.MIPSAbstractTokenMaker");
                 FoldParserManager.get().addFoldParserMapping("MIPS", new MIPSFoldParser());
 
                 textArea.setSyntaxEditingStyle("MIPS");

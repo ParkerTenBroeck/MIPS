@@ -11,7 +11,6 @@ import org.parker.mips.gui.EditorTabbedPane;
 import org.parker.mips.gui.MainGUI;
 import org.parker.mips.gui.editor.rsyntax.FormattedTextEditor;
 import org.parker.mips.preferences.Preference;
-import org.parker.mips.preferences.Preferences;
 
 import javax.swing.*;
 import java.awt.event.FocusEvent;

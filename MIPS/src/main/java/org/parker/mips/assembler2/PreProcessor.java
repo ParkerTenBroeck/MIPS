@@ -24,12 +24,17 @@ public class PreProcessor {
         String regex = "\\b(?:(?<=\")[^\"]*(?=\")|\\w+)\\b";
         String line = "\"hello world\" Alexandros Alex \"I Am\" Something";
         line = "addi $4, $0, width";
-        regex = "\\w{1}[\\w|\\d]+\\s+";
+
+        regex = "((\\w{1}[\\w|\\d]+)(\\s+))";
+
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(line);
         while (matcher.find()) {
 
+            System.out.println(matcher.start());
             System.out.println(matcher.group(0));
+            System.out.println(matcher.group(1));
+            System.out.println(matcher.end());
         }
         if(true)
         return;
