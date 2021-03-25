@@ -15,15 +15,13 @@ import java.util.Map;
  * value is what will be used in the compilation process of the assembly if this
  * value conflicts with any other system call registered it will throw warning
  * and will not be used
- *
+ * <p>
  * systemCallName is a unique name that describes what the system call does it
  * must be relativly short with no spaces this is what can be used when the
  * standardHeader is used to represent the number of the system call
  *
- *
- *
- * @return
  * @author parke
+ * @return
  */
 public abstract class SystemCall {
 
@@ -31,18 +29,24 @@ public abstract class SystemCall {
     public final SystemCallPlugin HOST_PLUGIN;
 
     /**
-     *
-     * @param data the data that is accociated with this system call
+     * @param data           the data that is accociated with this system call
      * @param systemCallName the unique string that represents the system call
-     * (this MUST be the same as defined in system call data this is used for
-     * verification that the right data is being used with the right system
-     * call)
-     * @param hostPlugin this is used to keep track of what system call belongs
-     * to what plugin
+     *                       (this MUST be the same as defined in system call data this is used for
+     *                       verification that the right data is being used with the right system
+     *                       call)
+     * @param hostPlugin     this is used to keep track of what system call belongs
+     *                       to what plugin
      */
     public SystemCall(SystemCallData data, String systemCallName, SystemCallPlugin hostPlugin) {
         this.DATA = data;
         this.HOST_PLUGIN = hostPlugin;
+
+        if (DATA == null) {
+            throw new IllegalArgumentException("DATA cannot be NULL");
+        }
+        if ((DATA.SYSTEM_CALL_NAME == null) || (DATA.SYSTEM_CALL_NAME == "")) {
+            throw new IllegalArgumentException("SystemCall Name cannot be NULL or Empty");
+        }
 
         if (DATA.SYSTEM_CALL_NAME.contains(" ")) {
             throw new IllegalArgumentException("System Call Name: "
@@ -90,19 +94,79 @@ public abstract class SystemCall {
 
         public SystemCallData(Map<String, Object> data) {
 
-            this.SYSTEM_CALL_NAME = (String) data.get("SYSTEM_CALL_NAME");
-            this.SYSTEM_CALL_NUMBER = (int) data.get("SYSTEM_CALL_NUMBER");
-            this.SYSTEM_CALL_DISCRIPTION = (String) data.get("SYSTEM_CALL_DISCRIPTION");
-            this.REGISTERS_READ_FROM = (Integer[]) ((ArrayList<Integer>) data.get("REGISTERS_READ_FROM")).toArray(new Integer[((ArrayList<Integer>) data.get("REGISTERS_READ_FROM")).size()]);
-            this.REGISTERS_WRITTEN_TO = (Integer[]) ((ArrayList<Integer>) data.get("REGISTERS_WRITTEN_TO")).toArray(new Integer[((ArrayList<Integer>) data.get("REGISTERS_WRITTEN_TO")).size()]);
-            this.PC_REG_READ_FROM = (boolean) data.get("PC_REG_READ_FROM");
-            this.PC_REG_WRITTEN_TO = (boolean) data.get("PC_REG_WRITTEN_TO");
-            this.HIGH_REG_READ_FROM = (boolean) data.get("HIGH_REG_READ_FROM");
-            this.HIGH_REG_WRITTEN_TO = (boolean) data.get("HIGH_REG_WRITTEN_TO");
-            this.LOW_REG_READ_FROM = (boolean) data.get("LOW_REG_READ_FROM");
-            this.LOW_REG_WRITTEN_TO = (boolean) data.get("LOW_REG_WRITTEN_TO");
-            this.MEMORY_READ_FROM = (boolean) data.get("MEMORY_READ_FROM");
-            this.MEMORY_WRITTEN_TO = (boolean) data.get("MEMORY_WRITTEN_TO");
+            try {
+                this.SYSTEM_CALL_NAME = (String) data.get("SYSTEM_CALL_NAME");
+            } catch (Exception e) {
+                throw new InvalidSystemCallException("SYSTEM_CALL_NAME field is missing from the yml");
+            }
+            try {
+                this.SYSTEM_CALL_NUMBER = (int) data.get("SYSTEM_CALL_NUMBER");
+            } catch (Exception e) {
+                throw new InvalidSystemCallException("SYSTEM_CALL_NUMBER field in " + this.SYSTEM_CALL_NAME + " is missing from the yml");
+            }
+            try {
+                this.SYSTEM_CALL_DISCRIPTION = (String) data.get("SYSTEM_CALL_DISCRIPTION");
+
+            } catch (Exception e) {
+                throw new InvalidSystemCallException("SYSTEM_CALL_DISCRIPTION field in " + this.SYSTEM_CALL_NAME + " is missing from the yml");
+            }
+            try {
+                this.REGISTERS_READ_FROM = (Integer[]) ((ArrayList<Integer>) data.get("REGISTERS_READ_FROM")).toArray(new Integer[((ArrayList<Integer>) data.get("REGISTERS_READ_FROM")).size()]);
+            } catch (Exception e) {
+                throw new InvalidSystemCallException("REGISTERS_READ_FROM field in " + this.SYSTEM_CALL_NAME + " is missing from the yml");
+            }
+            try {
+                this.REGISTERS_WRITTEN_TO = (Integer[]) ((ArrayList<Integer>) data.get("REGISTERS_WRITTEN_TO")).toArray(new Integer[((ArrayList<Integer>) data.get("REGISTERS_WRITTEN_TO")).size()]);
+            } catch (Exception e) {
+                throw new InvalidSystemCallException("REGISTERS_WRITTEN_TO field in " + this.SYSTEM_CALL_NAME + " is missing from the yml");
+            }
+            try {
+                this.PC_REG_READ_FROM = (boolean) data.get("PC_REG_READ_FROM");
+
+            } catch (Exception e) {
+                throw new InvalidSystemCallException("PC_REG_READ_FROM field in " + this.SYSTEM_CALL_NAME + " is missing from the yml");
+            }
+            try {
+                this.PC_REG_WRITTEN_TO = (boolean) data.get("PC_REG_WRITTEN_TO");
+
+            } catch (Exception e) {
+                throw new InvalidSystemCallException("PC_REG_WRITTEN_TO field in " + this.SYSTEM_CALL_NAME + " is missing from the yml");
+            }
+            try {
+                this.HIGH_REG_READ_FROM = (boolean) data.get("HIGH_REG_READ_FROM");
+
+            } catch (Exception e) {
+                throw new InvalidSystemCallException("HIGH_REG_READ_FROM field in " + this.SYSTEM_CALL_NAME + " is missing from the yml");
+            }
+            try {
+                this.HIGH_REG_WRITTEN_TO = (boolean) data.get("HIGH_REG_WRITTEN_TO");
+
+            } catch (Exception e) {
+                throw new InvalidSystemCallException("HIGH_REG_WRITTEN_TO field in " + this.SYSTEM_CALL_NAME + " is missing from the yml");
+            }
+            try {
+                this.LOW_REG_READ_FROM = (boolean) data.get("LOW_REG_READ_FROM");
+
+            } catch (Exception e) {
+                throw new InvalidSystemCallException("LOW_REG_READ_FROM field in " + this.SYSTEM_CALL_NAME + " is missing from the yml");
+            }
+            try {
+                this.LOW_REG_WRITTEN_TO = (boolean) data.get("LOW_REG_WRITTEN_TO");
+
+            } catch (Exception e) {
+                throw new InvalidSystemCallException("LOW_REG_WRITTEN_TO field in " + this.SYSTEM_CALL_NAME + " is missing from the yml");
+            }
+            try {
+                this.MEMORY_READ_FROM = (boolean) data.get("MEMORY_READ_FROM");
+
+            } catch (Exception e) {
+                throw new InvalidSystemCallException("MEMORY_READ_FROM field in " + this.SYSTEM_CALL_NAME + " is missing from the yml");
+            }
+            try {
+                this.MEMORY_WRITTEN_TO = (boolean) data.get("MEMORY_WRITTEN_TO");
+            } catch (Exception e) {
+                throw new InvalidSystemCallException("MEMORY_WRITTEN_TO field in " + this.SYSTEM_CALL_NAME + " is missing from the yml");
+            }
         }
 
     }

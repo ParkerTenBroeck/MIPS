@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.gui.editor;
+package org.parker.mips.gui.userpanes.editor;
 
-import org.parker.mips.gui.EditorTabbedPane;
+import org.parker.mips.gui.UserPaneTabbedPane;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -82,7 +82,7 @@ public class EditorHandler {
             return;
         }
         editors.add(editor);
-        EditorTabbedPane.addEditor(editor);
+        UserPaneTabbedPane.addEditor(editor);
         lastFoucsed = editor;
     }
 
@@ -102,7 +102,7 @@ public class EditorHandler {
 
     public static final void removeEditor(Editor editor) {
         editors.remove(editor);
-        EditorTabbedPane.removeEditor(editor);
+        UserPaneTabbedPane.removeEditor(editor);
         if (lastFoucsed == editor) {
             lastFoucsed = null;
         }
@@ -115,7 +115,7 @@ public class EditorHandler {
                 if(e.getFile() != null){
                     if(e.getFile().getAbsolutePath().equals(afp)){
                         setLastFocused(e);
-                        EditorTabbedPane.setSelectedTab(e);
+                        UserPaneTabbedPane.setSelectedTab(e);
                     }
                 }
             }

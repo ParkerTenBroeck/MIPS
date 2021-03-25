@@ -7,8 +7,10 @@ package org.parker.mips.plugin.syscall;
 
 import org.parker.mips.FileUtils;
 import org.parker.mips.gui.MainGUI;
-import org.parker.mips.gui.editor.Editor;
-import org.parker.mips.gui.editor.rsyntax.FormattedTextEditor;
+import org.parker.mips.gui.userpanes.editor.Editor;
+import org.parker.mips.gui.userpanes.editor.rsyntax.FormattedTextEditor;
+import org.parker.mips.plugin.InvalidDescriptionException;
+import org.parker.mips.plugin.InvalidPluginException;
 import org.parker.mips.plugin.PluginBase;
 import org.parker.mips.plugin.PluginClassLoader;
 import org.parker.mips.emulator.Memory;
@@ -278,7 +280,7 @@ public abstract class SystemCallPlugin extends PluginBase {
                 return scd;
             }
         }
-        return null;
+        throw new InvalidSystemCallException("SystemCall: " + name + " does not exist. Either there was an error loading it or it was not defined in the YML");
     }
 
     protected abstract class PRSystemCall extends SystemCall {

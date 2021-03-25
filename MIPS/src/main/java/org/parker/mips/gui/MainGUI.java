@@ -8,10 +8,12 @@ package org.parker.mips.gui;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.parker.mips.*;
 import org.parker.mips.assembler.Assembler;
-import org.parker.mips.gui.editor.Editor;
-import org.parker.mips.gui.editor.EditorHandler;
-import org.parker.mips.gui.editor.rsyntax.FormattedTextEditor;
+import org.parker.mips.gui.userpanes.editor.Editor;
+import org.parker.mips.gui.userpanes.editor.EditorHandler;
+import org.parker.mips.gui.userpanes.editor.hexeditor.MemoryEditorUserPane;
+import org.parker.mips.gui.userpanes.editor.rsyntax.FormattedTextEditor;
 import org.parker.mips.gui.theme.ThemeHandler;
+import org.parker.mips.log.LogFrame;
 import org.parker.mips.plugin.PluginLoader;
 import org.parker.mips.plugin.syscall.SystemCallPlugin;
 import org.parker.mips.plugin.syscall.SystemCallPlugin.Node;
@@ -369,6 +371,7 @@ public class MainGUI extends javax.swing.JFrame {
             register_GUI1.updateVals();
             InstructionMemoryGUI.refresh();
             InstructionsRan.setText(Long.toString(Emulator.getInstructionsRan()));
+            UserPaneTabbedPane.updateOpenUserPanes();
         });
     }
 
@@ -397,7 +400,7 @@ public class MainGUI extends javax.swing.JFrame {
         lowerContentPanel = new javax.swing.JPanel();
         instructionMemory_GUI1 = new org.parker.mips.gui.InstructionMemoryGUI();
         register_GUI1 = new org.parker.mips.gui.RegisterGUI();
-        aSM_GUI1 = new org.parker.mips.gui.EditorTabbedPane();
+        aSM_GUI1 = new UserPaneTabbedPane();
         midButtonSliderPanel = new javax.swing.JPanel();
         //linkedButton = new javax.swing.JCheckBox();
         //aboutLinkedFile = new javax.swing.JButton();
@@ -858,7 +861,9 @@ public class MainGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_openMenuButtonActionPerformed
 
     private void memoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_memoryButtonActionPerformed
-        new MemoryGUI();
+        //new MemoryGUI();
+
+        UserPaneTabbedPane.addEditor(new MemoryEditorUserPane());
     }//GEN-LAST:event_memoryButtonActionPerformed
 
     private void saveMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuButtonActionPerformed
@@ -1019,7 +1024,7 @@ public class MainGUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private static javax.swing.JLabel InstructionsRan;
-    private static org.parker.mips.gui.EditorTabbedPane aSM_GUI1;
+    private static UserPaneTabbedPane aSM_GUI1;
     private static javax.swing.JButton aboutButton;
     private static javax.swing.JCheckBoxMenuItem adaptiveMemoryMenuButton;
     private static javax.swing.JMenuItem asciiChartButton;

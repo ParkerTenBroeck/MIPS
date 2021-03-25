@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips;
+package org.parker.mips.log;
 
 
 import org.parker.mips.assembler.AssemblerLevel;
@@ -243,17 +243,17 @@ public class LogFrame extends javax.swing.JPanel {
             int value = record.getLevel().intValue();
 
 
-            if (value == AssemblerLevel.ASSEMBLER_MESSAGE.intValue()) {
+            if (value == AssemblerLevel.ASSEMBLER_MESSAGE.intValue()|| value == RunTimeLevel.RUN_TIME_MESSAGE.intValue()) {
 
                 StyleConstants.setForeground(sas, Color.LIGHT_GRAY);
                 StyleConstants.setBold(sas, false);
 
-            } else if (value == AssemblerLevel.ASSEMBLER_WARNING.intValue()) {
+            } else if (value == AssemblerLevel.ASSEMBLER_WARNING.intValue()|| value == RunTimeLevel.RUN_TIME_WARNING.intValue()) {
 
                 StyleConstants.setForeground(sas, Color.YELLOW);
                 StyleConstants.setBold(sas, false);
 
-            } else if (value == AssemblerLevel.ASSEMBLER_ERROR.intValue()) {
+            } else if (value == AssemblerLevel.ASSEMBLER_ERROR.intValue() || value == RunTimeLevel.RUN_TIME_ERROR.intValue()) {
 
                 StyleConstants.setForeground(sas, Color.RED);
                 StyleConstants.setBold(sas, false);

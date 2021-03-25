@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.gui.editor.rsyntax;
+package org.parker.mips.gui.userpanes.editor.rsyntax;
 
 import org.fife.ui.rsyntaxtextarea.AbstractTokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -13,7 +13,7 @@ import org.fife.ui.rsyntaxtextarea.folding.FoldParserManager;
 import org.fife.ui.rtextarea.RTextScrollPane;
 import org.parker.mips.FileUtils;
 import org.parker.mips.ResourceHandler;
-import org.parker.mips.gui.editor.Editor;
+import org.parker.mips.gui.userpanes.editor.Editor;
 import org.parker.mips.misc.SerializableFont;
 import org.parker.mips.preferences.Preference;
 import org.parker.mips.preferences.Preferences;
@@ -134,7 +134,7 @@ public class FormattedTextEditor extends Editor {
         switch (ext) {
             case "asm":
                 AbstractTokenMakerFactory atmf = (AbstractTokenMakerFactory) TokenMakerFactory.getDefaultInstance();
-                atmf.putMapping("MIPS", "org.parker.mips.gui.userPanes.editor.rsyntax.MIPSAbstractTokenMaker");
+                atmf.putMapping("MIPS", "org.parker.mips.gui.userpanes.editor.rsyntax.MIPSAbstractTokenMaker");
                 FoldParserManager.get().addFoldParserMapping("MIPS", new MIPSFoldParser());
 
                 textArea.setSyntaxEditingStyle("MIPS");

@@ -10,7 +10,7 @@ import org.parker.mips.ResourceHandler;
 import org.parker.mips.assembler.data.MemoryLable;
 import org.parker.mips.assembler.data.UserLine;
 import org.parker.mips.gui.MainGUI;
-import org.parker.mips.gui.editor.EditorHandler;
+import org.parker.mips.gui.userpanes.editor.EditorHandler;
 import org.parker.mips.preferences.Preferences;
 import org.parker.mips.emulator.Memory;
 

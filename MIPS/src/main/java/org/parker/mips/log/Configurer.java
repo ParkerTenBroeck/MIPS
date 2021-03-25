@@ -1,7 +1,6 @@
 package org.parker.mips.log;
 
 import org.parker.mips.FileUtils;
-import org.parker.mips.LogFrame;
 import org.parker.mips.ResourceHandler;
 
 import java.io.File;

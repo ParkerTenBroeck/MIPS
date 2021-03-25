@@ -8,7 +8,7 @@ package org.parker.mips;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.parker.mips.gui.MainGUI;
-import org.parker.mips.gui.editor.EditorHandler;
+import org.parker.mips.gui.userpanes.editor.EditorHandler;
 import org.parker.mips.preferences.Preferences;
 
 import javax.swing.*;

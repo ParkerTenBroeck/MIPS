@@ -9,7 +9,7 @@ import org.parker.mips.FileUtils;
 import org.parker.mips.assembler.AssemblerLevel;
 import org.parker.mips.assembler.AssemblerLogger;
 import org.parker.mips.assembler.data.UserLine;
-import org.parker.mips.gui.editor.EditorHandler;
+import org.parker.mips.gui.userpanes.editor.EditorHandler;
 
 import java.io.File;
 import java.util.ArrayList;

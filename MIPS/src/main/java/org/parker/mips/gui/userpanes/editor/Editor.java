@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.gui.editor;
+package org.parker.mips.gui.userpanes.editor;
 
 import org.parker.mips.FileUtils;
 import org.parker.mips.ResourceHandler;
-import org.parker.mips.gui.EditorTabbedPane;
+import org.parker.mips.gui.UserPaneTabbedPane;
 import org.parker.mips.gui.MainGUI;
-import org.parker.mips.gui.editor.rsyntax.FormattedTextEditor;
+import org.parker.mips.gui.userpanes.UserPane;
+import org.parker.mips.gui.userpanes.editor.rsyntax.FormattedTextEditor;
 import org.parker.mips.preferences.Preference;
 
 import javax.swing.*;
@@ -28,9 +29,8 @@ import java.util.logging.Logger;
  *
  * @author parke
  */
-public abstract class Editor extends javax.swing.JPanel {
+public abstract class Editor extends UserPane {
 
-    private JLabel title;
     protected File currentFile;
     private boolean isSaved;
 
@@ -202,11 +202,7 @@ public abstract class Editor extends javax.swing.JPanel {
         }
     }
 
-    public void setTitleLable(JLabel lable) {
-        this.title = lable;
-        updateDisplayTitle();
-    }
-
+    @Override
     public final String getDisplayName() {
         if (currentFile != null) {
             return currentFile.getName() + (isSaved ? "" : " *");
@@ -223,10 +219,6 @@ public abstract class Editor extends javax.swing.JPanel {
         }
     }
 
-    protected void updateDisplayTitle() {
-        title.setText(getDisplayName());
-    }
-
     public final boolean isSaved() {
         return isSaved;
     }
@@ -235,6 +227,7 @@ public abstract class Editor extends javax.swing.JPanel {
         isSaved = val;
     }
 
+    @Override
     public final boolean close() {
 
         if (isSaved) {
@@ -305,7 +298,7 @@ public abstract class Editor extends javax.swing.JPanel {
 
         if (currentFile == null) {
 
-            EditorTabbedPane.setSelectedTab(this);
+            UserPaneTabbedPane.setSelectedTab(this);
             EditorHandler.setLastFocused(this);
             JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
             int returnVal = fc.showOpenDialog(MainGUI.getFrame());
@@ -331,7 +324,7 @@ public abstract class Editor extends javax.swing.JPanel {
     }
 
     public final boolean saveAs() {
-        EditorTabbedPane.setSelectedTab(this);
+        UserPaneTabbedPane.setSelectedTab(this);
         EditorHandler.setLastFocused(this);
         JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
         int returnVal = fc.showOpenDialog(MainGUI.getFrame());

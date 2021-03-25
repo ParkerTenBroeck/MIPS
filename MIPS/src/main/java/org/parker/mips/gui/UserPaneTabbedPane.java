@@ -6,8 +6,9 @@
 package org.parker.mips.gui;
 
 
-import org.parker.mips.gui.editor.Editor;
-import org.parker.mips.gui.editor.EditorHandler;
+import org.parker.mips.gui.userpanes.UserPane;
+import org.parker.mips.gui.userpanes.editor.Editor;
+import org.parker.mips.gui.userpanes.editor.EditorHandler;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -23,25 +24,25 @@ import static com.formdev.flatlaf.FlatClientProperties.TABBED_PANE_TAB_CLOSE_CAL
  *
  * @author parke
  */
-public class EditorTabbedPane extends javax.swing.JPanel {
+public class UserPaneTabbedPane extends javax.swing.JPanel {
     
-    public static void addEditor(Editor editor) {
-        jTabbedPane1.add(editor, editor.getDisplayName());
-        jTabbedPane1.setSelectedComponent(editor);
+    public static void addEditor(UserPane userPane) {
+        jTabbedPane1.add(userPane, userPane.getDisplayName());
+        jTabbedPane1.setSelectedComponent(userPane);
         JLabel label = new JLabel();
         jTabbedPane1.setTabComponentAt(jTabbedPane1.getSelectedIndex(), label);
-        editor.setTitleLable(label);
+        userPane.setTitleLable(label);
     }
     
-    public static void removeEditor(Editor editor) {
-        jTabbedPane1.remove(editor);
+    public static void removeEditor(UserPane userPane) {
+        jTabbedPane1.remove(userPane);
     }
     
-    public static void setSelectedTab(Editor editor) {
-        jTabbedPane1.setSelectedComponent(editor);
+    public static void setSelectedTab(UserPane userPane) {
+        jTabbedPane1.setSelectedComponent(userPane);
     }
     
-    public EditorTabbedPane() {
+    public UserPaneTabbedPane() {
         initComponents();
         
         jTabbedPane1.setTabLayoutPolicy( JTabbedPane.SCROLL_TAB_LAYOUT );
@@ -55,8 +56,10 @@ public class EditorTabbedPane extends javax.swing.JPanel {
                         return;
                     }
                     if (me.getButton() == MouseEvent.BUTTON1) {
-                        Editor editor = (Editor) tabPane.getComponentAt(tabIndex);
-                        editor.close();
+                        UserPane userPane = (UserPane) tabPane.getComponentAt(tabIndex);
+                        if(userPane.close()){
+                         jTabbedPane1.remove(userPane);
+                        }
                     }
                 });
         
@@ -65,11 +68,18 @@ public class EditorTabbedPane extends javax.swing.JPanel {
         jTabbedPane1.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent ce) {
-                EditorHandler.setLastFocused((Editor) jTabbedPane1.getSelectedComponent());
+                if(jTabbedPane1.getSelectedComponent() instanceof Editor){
+                    EditorHandler.setLastFocused((Editor) jTabbedPane1.getSelectedComponent());
+                }
             }
         });
     }
-    
+
+    public static void updateOpenUserPanes() {
+
+        ((UserPane)jTabbedPane1.getSelectedComponent()).updateValues();
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -90,11 +100,6 @@ public class EditorTabbedPane extends javax.swing.JPanel {
             .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 364, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void aSMFormattedTextArea1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_aSMFormattedTextArea1KeyTyped
-
-    }//GEN-LAST:event_aSMFormattedTextArea1KeyTyped
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private static javax.swing.JTabbedPane jTabbedPane1;

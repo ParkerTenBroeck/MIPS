@@ -5,7 +5,7 @@
  */
 package org.parker.mips.gui;
 
-import org.parker.mips.gui.editor.Editor;
+import org.parker.mips.gui.userpanes.editor.Editor;
 
 import javax.swing.*;
 import java.awt.datatransfer.DataFlavor;

@@ -1,6 +1,7 @@
 plugins{
 	id 'java'
     id 'groovy'
+    id 'idea'
 	id 'org.parker.mips.java-application-conventions'
 }
 
@@ -49,4 +50,6 @@ dependencies {
     implementation  group: 'com.formdev', name: 'flatlaf-extras', version: '1.0'
     implementation  group: 'com.formdev', name: 'flatlaf-intellij-themes', version: '1.0'
     implementation  ("com.google.guava:guava:30.1-jre")
+
+    implementation 'com.intellij:forms_rt:7.0.3'
 }
