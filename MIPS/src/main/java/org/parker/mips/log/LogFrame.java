@@ -7,7 +7,6 @@ package org.parker.mips.log;
 
 
 import org.parker.mips.assembler.AssemblerLevel;
-import org.parker.mips.gui.theme.lookandfeel.ModernScrollPane;
 import org.parker.mips.preferences.Preference;
 import org.parker.mips.preferences.Preferences;
 import org.parker.mips.emulator.RunTimeLevel;
@@ -102,7 +101,7 @@ public class LogFrame extends javax.swing.JPanel {
             return;
         }
 
-        jScrollPane1 = new ModernScrollPane();
+        jScrollPane1 = new JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
         //jTextPane1.setBackground((Color) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.TEXT_AREA_BACKGROUND_2_PROPERTY_NAME));
         //jTextPane1.setFont((Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME)); // NOI18N

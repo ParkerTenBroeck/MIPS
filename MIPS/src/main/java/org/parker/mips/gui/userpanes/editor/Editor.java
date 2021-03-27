@@ -37,9 +37,6 @@ public abstract class Editor extends UserPane {
     private final static HashMap<String, Class<?>> defaultFileExtensionEditor = new HashMap<String, Class<?>>();
     private final static ArrayList<Object> availableEditors = new ArrayList<>();
 
-    //Only used if file is null
-    protected final String name;
-
 
     private static final Logger LOGGER = Logger.getLogger(Editor.class.getName());
 
@@ -158,29 +155,13 @@ public abstract class Editor extends UserPane {
     }
 
     private Editor() {
-        this(null, null);
+        this(null);
     }
 
-    protected Editor(File file, String name) {
+    protected Editor(File file) {
         this.currentFile = file;
-        if(file == null){
-            if(name == null){
-                this.name = "";
-            }else {
-                this.name = name;
-            }
-        }else{
-            this.name = "";
-        }
         isSaved = true;
         this.addFocusListener(new asd(this));
-    }
-    protected Editor(File file){
-        this(file, null);
-    }
-
-    protected Editor(String name){
-        this(null, name);
     }
 
     private class asd implements FocusListener {
@@ -194,7 +175,7 @@ public abstract class Editor extends UserPane {
         @Override
         public void focusGained(FocusEvent fe) {
             EditorHandler.setLastFocused(parent);
-            updateDisplayTitle();
+            updateTitle();
         }
 
         @Override
@@ -202,20 +183,11 @@ public abstract class Editor extends UserPane {
         }
     }
 
-    @Override
-    public final String getDisplayName() {
+    public final void updateTitle() {
         if (currentFile != null) {
-            return currentFile.getName() + (isSaved ? "" : " *");
+            setTitle(currentFile.getName() + (isSaved ? "" : " *"));
         } else {
-            return (name.equals("") ? "untitled" : name) + (isSaved ? "" : " *");
-        }
-    }
-
-    public final String getName() {
-        if (currentFile != null) {
-            return currentFile.getName();
-        } else {
-            return (name.equals("") ? "untitled" : name);
+            setTitle("untitled" + (isSaved ? "" : " *"));
         }
     }
 
@@ -225,6 +197,7 @@ public abstract class Editor extends UserPane {
 
     protected final void setSaved(boolean val) {
         isSaved = val;
+        updateTitle();
     }
 
     @Override

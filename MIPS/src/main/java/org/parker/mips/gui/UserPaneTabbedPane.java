@@ -27,11 +27,9 @@ import static com.formdev.flatlaf.FlatClientProperties.TABBED_PANE_TAB_CLOSE_CAL
 public class UserPaneTabbedPane extends javax.swing.JPanel {
     
     public static void addEditor(UserPane userPane) {
-        jTabbedPane1.add(userPane, userPane.getDisplayName());
+        jTabbedPane1.add(userPane);
         jTabbedPane1.setSelectedComponent(userPane);
-        JLabel label = new JLabel();
-        jTabbedPane1.setTabComponentAt(jTabbedPane1.getSelectedIndex(), label);
-        userPane.setTitleLable(label);
+        jTabbedPane1.setTabComponentAt(jTabbedPane1.getSelectedIndex(), userPane.getTitleLabel());
     }
     
     public static void removeEditor(UserPane userPane) {

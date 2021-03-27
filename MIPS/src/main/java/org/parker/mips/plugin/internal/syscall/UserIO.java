@@ -8,6 +8,7 @@ package org.parker.mips.plugin.internal.syscall;
 import org.parker.mips.plugin.syscall.SystemCallPluginFrame;
 import org.parker.mips.plugin.syscall.SystemCallRunTimeExcpetion;
 
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.*;
@@ -106,7 +107,7 @@ public class UserIO extends SystemCallPluginFrame {
     private void initComponents() {
 
         jPanel2 = new javax.swing.JPanel();
-        modernScrollPane1 = new org.parker.mips.gui.theme.lookandfeel.ModernScrollPane();
+        modernScrollPane1 = new JScrollPane();
         outputTextArea = new javax.swing.JTextArea();
         themedJButton1 = new javax.swing.JButton();
         inputTextFeild = new javax.swing.JTextField();
@@ -204,7 +205,7 @@ public class UserIO extends SystemCallPluginFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private static javax.swing.JTextField inputTextFeild;
     private javax.swing.JPanel jPanel2;
-    private org.parker.mips.gui.theme.lookandfeel.ModernScrollPane modernScrollPane1;
+    private javax.swing.JScrollPane modernScrollPane1;
     private static javax.swing.JTextArea outputTextArea;
     private javax.swing.JButton themedJButton1;
     // End of variables declaration//GEN-END:variables

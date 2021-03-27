@@ -10,7 +10,7 @@ import org.parker.mips.*;
 import org.parker.mips.assembler.Assembler;
 import org.parker.mips.gui.userpanes.editor.Editor;
 import org.parker.mips.gui.userpanes.editor.EditorHandler;
-import org.parker.mips.gui.userpanes.editor.hexeditor.MemoryEditorUserPane;
+import org.parker.mips.gui.userpanes.hexeditor.MemoryEditorUserPane;
 import org.parker.mips.gui.userpanes.editor.rsyntax.FormattedTextEditor;
 import org.parker.mips.gui.theme.ThemeHandler;
 import org.parker.mips.log.LogFrame;
@@ -96,10 +96,7 @@ public class MainGUI extends javax.swing.JFrame {
     }
 
     public static void refreshAll() {
-        //ASM_GUI.setTextAreaFromASMFile();
-
         Memory.reloadMemory();
-        InstructionMemoryGUI.refreshValues();
         refresh();
     }
 
@@ -369,7 +366,7 @@ public class MainGUI extends javax.swing.JFrame {
     public static void refresh() {
         javax.swing.SwingUtilities.invokeLater(() -> {
             register_GUI1.updateVals();
-            InstructionMemoryGUI.refresh();
+            //InstructionMemoryGUI.refresh();
             InstructionsRan.setText(Long.toString(Emulator.getInstructionsRan()));
             UserPaneTabbedPane.updateOpenUserPanes();
         });
@@ -398,7 +395,7 @@ public class MainGUI extends javax.swing.JFrame {
         resetButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         lowerContentPanel = new javax.swing.JPanel();
-        instructionMemory_GUI1 = new org.parker.mips.gui.InstructionMemoryGUI();
+        //instructionMemory_GUI1 = new org.parker.mips.gui.InstructionMemoryGUI();
         register_GUI1 = new org.parker.mips.gui.RegisterGUI();
         aSM_GUI1 = new UserPaneTabbedPane();
         midButtonSliderPanel = new javax.swing.JPanel();
@@ -555,13 +552,13 @@ public class MainGUI extends javax.swing.JFrame {
                 .addComponent(aSM_GUI1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(register_GUI1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(instructionMemory_GUI1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                //.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                //.addComponent(instructionMemory_GUI1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         lowerContentPanelLayout.setVerticalGroup(
             lowerContentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(instructionMemory_GUI1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            //.addComponent(instructionMemory_GUI1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(register_GUI1, javax.swing.GroupLayout.DEFAULT_SIZE, 631, Short.MAX_VALUE)
             .addComponent(aSM_GUI1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -1041,7 +1038,7 @@ public class MainGUI extends javax.swing.JFrame {
     private static javax.swing.JCheckBoxMenuItem enableGUIUpdatingWhileRunningButton;
     private static javax.swing.JMenu exampleMenu;
     private static javax.swing.JMenu fileMenu;
-    private static org.parker.mips.gui.InstructionMemoryGUI instructionMemory_GUI1;
+    //private static org.parker.mips.gui.InstructionMemoryGUI instructionMemory_GUI1;
     private static javax.swing.JLabel jLabel2;
     private static javax.swing.JSplitPane jSplitPane1;
     //private static javax.swing.JCheckBox linkedButton;

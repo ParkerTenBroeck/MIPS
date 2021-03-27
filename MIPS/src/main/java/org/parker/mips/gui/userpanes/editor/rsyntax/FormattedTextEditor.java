@@ -42,8 +42,8 @@ public class FormattedTextEditor extends Editor {
 
     private static final DefaultHighlighter.DefaultHighlightPainter errorHighlight = new DefaultHighlighter.DefaultHighlightPainter(new Color(255,0,0,128));
 
-    protected FormattedTextEditor(File file, String name) {
-        super(file, name);
+    protected FormattedTextEditor(File file) {
+        super(file);
         initComponents();
 
         textArea.addKeyListener(new KeyListener() {
@@ -51,29 +51,12 @@ public class FormattedTextEditor extends Editor {
             public void keyTyped(KeyEvent ke) {
                 if(isSaved()){
                     setSaved(false);
-                    updateDisplayTitle();
                 }
-
-                /*
-                try {
-                    for(int i = 0; i < 20; i ++) {
-                        textArea.addLineHighlight(i, textArea.getCurrentLineHighlightColor());
-                    }
-                    textArea.getHighlighter().addHighlight(20,100,errorHighlight);
-
-                } catch (BadLocationException e) {
-                    e.printStackTrace();
-                }
-                 */
             }
-
             @Override
-            public void keyPressed(KeyEvent ke) {
-            }
-
+            public void keyPressed(KeyEvent ke) {}
             @Override
-            public void keyReleased(KeyEvent ke) {
-            }
+            public void keyReleased(KeyEvent ke) {}
         });
 
         for (FocusListener fl : this.getFocusListeners()) {
@@ -83,23 +66,17 @@ public class FormattedTextEditor extends Editor {
         if (file != null) {
             this.textArea.setText(FileUtils.loadFileAsString(file));
         }
-    }
-    protected FormattedTextEditor(File file){
-        this(file, null);
+
+        this.updateTitle();
     }
 
-    protected FormattedTextEditor(byte[] textBody) {
-        this( (File)null, "");
-        this.textArea.setText(new String(textBody));
-    }
-
-    protected FormattedTextEditor(byte[] textBody, String name){
-        this( (File)null, name);
+    protected FormattedTextEditor(byte[] textBody){
+        this((File)null);
         this.textArea.setText(new String(textBody));
     }
 
     protected FormattedTextEditor() {
-        this( (File)null, "");
+        this((File)null);
     }
 
     public final void setTheme(String name) {

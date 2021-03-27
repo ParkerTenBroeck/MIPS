@@ -7,7 +7,6 @@ package org.parker.mips.gui;
 
 import org.parker.mips.assembler.Assembler;
 import org.parker.mips.assembler.data.MemoryLable;
-import org.parker.mips.gui.theme.lookandfeel.ModernScrollPane;
 import org.parker.mips.emulator.Memory;
 
 import javax.swing.*;
@@ -99,7 +98,7 @@ public class MemoryGUI extends javax.swing.JFrame {
 
                     tempMemPos[i - startingPos][0] = String.format("%8s", Integer.toHexString(i)).replaceAll(" ", "0");
 
-                    int val = Memory.superGetByte(i) & 0xFF;
+                    int val = Memory.superGetByte(i, null) & 0xFF;
                     tempData[i - startingPos][0] = val;
                     tempData[i - startingPos][1] = String.format("%8s", Integer.toBinaryString(val)).replaceAll(" ", "0");
                     tempData[i - startingPos][2] = String.format("%2s", Integer.toHexString(val)).replaceAll(" ", "0");
@@ -141,10 +140,10 @@ public class MemoryGUI extends javax.swing.JFrame {
         memoryPointersLable = new javax.swing.JLabel();
         themedJPanel21 = new javax.swing.JPanel();
         StuffHolder1 = new javax.swing.JPanel();
-        memoryPositionScrollPane = new ModernScrollPane();
+        memoryPositionScrollPane = new JScrollPane();
  ;
         memoryPositionTable = new javax.swing.JTable();
-        valsScrollPane = new ModernScrollPane();  ;
+        valsScrollPane = new JScrollPane();
         valsTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);

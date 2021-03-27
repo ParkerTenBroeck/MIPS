@@ -8,8 +8,10 @@ package org.parker.mips;
 import org.parker.mips.gui.MainGUI;
 import org.parker.mips.gui.theme.ThemeHandler;
 import org.parker.mips.plugin.PluginLoader;
+import org.parker.mips.preferences.Preference;
 import org.parker.mips.preferences.Preferences;
 
+import javax.swing.*;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,16 +51,29 @@ public class MIPS {
         }
 
         Preferences.readPreferencesFromDefaultFile(); //loads Options from file
+        applyStaticPreferences();
 
         ResourceHandler.extractResources(); //loads all resorces into documents folder
 
         ThemeHandler.init();
-        MainGUI gui = new MainGUI(); //creates the GUI
+        new MainGUI(); //creates the GUI
         //ThemeHandler.updateUI();
 
         PluginLoader.loadDefaultPlugins(); //loads all plugins internal and external
 
         checkForUpdates(); //checks for updates
+    }
+
+    private static Preferences systemPrefs = Preferences.ROOT_NODE.getNode("system");
+
+    private static void applyStaticPreferences(){
+        {
+            Preference showToolTips = systemPrefs.getNode("gui").getRawPreference("showToolTips", true);
+            showToolTips.addObserver((o, arg) -> {
+                ToolTipManager.sharedInstance().setEnabled((Boolean)arg);
+            });
+            ToolTipManager.sharedInstance().setEnabled((Boolean) showToolTips.val());
+        }
     }
 
 }

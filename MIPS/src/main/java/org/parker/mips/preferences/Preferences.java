@@ -81,8 +81,6 @@ public class Preferences {
 
     public static void loadPreferencesFromFile(File file) {
 
-
-
         InputStream in = null;
 
         try {

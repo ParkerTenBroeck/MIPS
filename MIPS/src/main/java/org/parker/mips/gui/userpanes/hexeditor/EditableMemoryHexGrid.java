@@ -1,4 +1,4 @@
-package org.parker.mips.gui.userpanes.editor.hexeditor;
+package org.parker.mips.gui.userpanes.hexeditor;
 
 
 import org.parker.mips.emulator.Memory;
@@ -12,9 +12,11 @@ public class EditableMemoryHexGrid extends JPanel {
     private MemoryEditGrid mGrid;
     private int currentScroll = 0;
 
-    public EditableMemoryHexGrid(){
+    private boolean bigEndianness = true;
 
-        mGrid = new MemoryEditGrid();
+    public EditableMemoryHexGrid(int rows, int columns, EditableHexGrid.GroupSize groupSize){
+
+        mGrid = new MemoryEditGrid(rows, columns, groupSize);
 
         scrollBar = new JScrollBar();
         scrollBar.setOrientation(JScrollBar.VERTICAL);
@@ -23,7 +25,6 @@ public class EditableMemoryHexGrid extends JPanel {
         scrollBar.setUnitIncrement(1);
         scrollBar.addAdjustmentListener(e -> {
             //this.dispatchEvent(e);
-            System.out.println(e);
             if(mGrid.currModify != -1){
                 return;
             }
@@ -51,15 +52,51 @@ public class EditableMemoryHexGrid extends JPanel {
         //this.add(scrollBar);
     }
 
+    protected void updateThings(int rows, int columns, EditableHexGrid.GroupSize groupSize){
+
+        SwingUtilities.invokeLater(() -> {
+            this.remove(mGrid);
+            mGrid = new MemoryEditGrid(rows, columns, groupSize);
+            this.add(mGrid, BorderLayout.CENTER);
+
+            //the new grid wont be drawn until the next draw cycle so a event needs to be fired
+            //problem is i cant get it to fire the event manually so here we are
+            int scrol = currentScroll;
+            scrollBar.setValue(scrol + 1);
+            scrollBar.setValue(scrol);
+            });
+    }
+
+    public int getColumns(){
+        return mGrid.columns;
+    }
+    public int getRows(){
+        return mGrid.rows;
+    }
+    public EditableHexGrid.GroupSize getGroupSize(){
+        return mGrid.groupSize;
+    }
+
+
     protected void updateValues(){
         mGrid.refreshValues();
         this.repaint();
     }
 
+    public void setIndex(int value) {
+        scrollBar.setValue(value / (mGrid.columns - 1));
+    }
+
+    public void setBigEndian(boolean selected) {
+        bigEndianness = selected;
+        mGrid.refreshValues();
+        repaint();
+    }
+
     private class MemoryEditGrid extends EditableHexGrid {
 
-        private MemoryEditGrid() {
-            super(20, 17, -1, -1, 4, 2, i -> i/9 > 0, GroupSize.HalfWord);
+        private MemoryEditGrid(int rows, int columns, GroupSize groupSize) {
+            super(rows, columns, -1, -1, 4, 2, i -> i/columns > 0, groupSize);
 
             refreshValues();
 
@@ -89,7 +126,7 @@ public class EditableMemoryHexGrid extends JPanel {
         public void refreshValues(){
 
             for(int i = 1; i < rows; i ++){
-                labels[i * columns].setText(String.format("%08X",  (currentScroll * (columns - 1) + i - 1) * groupSize.value));
+                labels[i * columns].setText(String.format("%08X", groupSize.value * ((columns - 1) * currentScroll + (i - 1) * (columns - 1))));
             }
             //long start = System.currentTimeMillis();
             for(int r = 1; r < rows; r ++) {
@@ -109,13 +146,13 @@ public class EditableMemoryHexGrid extends JPanel {
             int value = 0;
             switch(groupSize) {
                 case Byte:
-                    value = 0xFF & Memory.superGetByte(index);
+                    value = 0xFF & Memory.superGetByte(index, bigEndianness);
                     break;
                 case HalfWord:
-                    value = 0xFFFF & Memory.superGetHalfWord(index);
+                    value = 0xFFFF & Memory.superGetHalfWord(index, bigEndianness);
                     break;
                 case Word:
-                    value = Memory.superGetWord(index);
+                    value = Memory.superGetWord(index,bigEndianness);
                     break;
             }
                 return String.format("%0"+ groupSize.value * 2 +"X", value);

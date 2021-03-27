@@ -23,6 +23,8 @@ public class Memory {
 
     private static final Preference<Boolean> adaptiveMemory = Preferences.ROOT_NODE.getNode("system/runtime/emulator").getRawPreference("adaptiveMemory", false);
 
+    private static final boolean bigEndian = true;
+
     public static void setMemory(byte[] memory) {
         if (memory == null) {
             Memory.savedMemory = new byte[0];
@@ -45,7 +47,7 @@ public class Memory {
             return -1;
         } else {
 
-            return superGetWord(index);
+            return superGetWord(index, bigEndian);
         }
     }
 
@@ -58,7 +60,7 @@ public class Memory {
             return -1;
         } else {
 
-            return superGetHalfWord(index);
+            return superGetHalfWord(index, bigEndian);
         }
     }
 
@@ -67,37 +69,57 @@ public class Memory {
             memoryOutOfBoundsEvent(index);
             return -1;
         } else {
-            return superGetByte(index);
+            return superGetByte(index, bigEndian);
         }
     }
 
-    public static int superGetWord(int index) { //doesnt throw an error when trying to get memory out of bounds
+    public static int superGetWord(int index, Boolean bigEndianness) { //doesnt throw an error when trying to get memory out of bounds
+
+        if(bigEndianness == null){
+            bigEndianness = bigEndian;
+        }
 
         int mem4 = 0xCD;
         int mem3 = 0xCD;
         int mem2 = 0xCD;
         int mem1 = 0xCD;
         if (index >= 0 && memory.length > index + 3){
-            mem4 = Memory.memory[index] & 0xFF;
-            mem3 = Memory.memory[index + 1] & 0xFF;
-            mem2 = Memory.memory[index + 2] & 0xFF;
-            mem1 = Memory.memory[index + 3] & 0xFF;
+            if(bigEndianness) {
+                mem4 = Memory.memory[index] & 0xFF;
+                mem3 = Memory.memory[index + 1] & 0xFF;
+                mem2 = Memory.memory[index + 2] & 0xFF;
+                mem1 = Memory.memory[index + 3] & 0xFF;
+            }else{
+                mem4 = Memory.memory[index + 3] & 0xFF;
+                mem3 = Memory.memory[index + 2] & 0xFF;
+                mem2 = Memory.memory[index + 1] & 0xFF;
+                mem1 = Memory.memory[index] & 0xFF;
+            }
         }
         return mem1 | mem2 << 8 | mem3 << 16 | mem4 << 24;
     }
 
-    public static int superGetHalfWord(int index) { //doesnt throw an error when trying to get memory out of bounts
+    public static int superGetHalfWord(int index, Boolean bigEndianness) { //doesnt throw an error when trying to get memory out of bounts
+
+        if(bigEndianness == null){
+            bigEndianness = bigEndian;
+        }
 
         int mem1 = 0xCD;
         int mem2 = 0xCD;
         if (index >= 0 && memory.length > index + 1){
-            mem2 = ((int) Memory.memory[index]);
-            mem1 = ((int) Memory.memory[index + 1]) & 0xFF;
+            if(bigEndianness) {
+                mem2 = ((int) Memory.memory[index]);
+                mem1 = ((int) Memory.memory[index + 1]) & 0xFF;
+            }else{
+                mem2 = ((int) Memory.memory[index + 1]) & 0xFF;
+                mem1 = ((int) Memory.memory[index]);
+            }
         }
         return mem1 | mem2 << 8;
     }
 
-    public static int superGetByte(int index) {
+    public static int superGetByte(int index, Boolean bigEndianness) {
 
         int mem1 = 0xCD;
         if (index >= 0 && memory.length > index){

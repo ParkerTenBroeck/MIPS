@@ -6,21 +6,24 @@ import javax.swing.*;
 
 public abstract class UserPane extends javax.swing.JPanel {
 
-    private JLabel title;
+    private JLabel title = new JLabel();
 
-    public abstract String getDisplayName();
+    public UserPane(){
+
+    }
 
     public abstract boolean close();
 
     public void updateValues(){};
 
-    protected void updateDisplayTitle() {
-        title.setText(getDisplayName());
+    protected final void setTitle(String title){
+        this.title.setText(title);
     }
-
-    public void setTitleLable(JLabel lable) {
-        this.title = lable;
-        updateDisplayTitle();
+    public final String getTitle(){
+        return this.title.getText();
+    }
+    public final JLabel getTitleLabel(){
+        return this.title;
     }
 
 }

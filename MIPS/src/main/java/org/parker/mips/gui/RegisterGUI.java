@@ -130,7 +130,7 @@ public class RegisterGUI extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new org.parker.mips.gui.theme.lookandfeel.ModernScrollPane();
+        jScrollPane1 = new JScrollPane();
         jPanel2 = new javax.swing.JPanel();
         lowHigh = new javax.swing.JTable();
         registers = new javax.swing.JTable();
@@ -265,7 +265,7 @@ public class RegisterGUI extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private static javax.swing.JPanel jPanel2;
-    private static org.parker.mips.gui.theme.lookandfeel.ModernScrollPane jScrollPane1;
+    private static javax.swing.JScrollPane jScrollPane1;
     private static javax.swing.JTable lowHigh;
     private static javax.swing.JTable pc;
     private static javax.swing.JTable pc1;

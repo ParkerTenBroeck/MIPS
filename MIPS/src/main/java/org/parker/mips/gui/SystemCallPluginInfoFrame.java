@@ -5,11 +5,11 @@
  */
 package org.parker.mips.gui;
 
-import org.parker.mips.gui.theme.lookandfeel.ModernScrollPane;
 import org.parker.mips.plugin.syscall.SystemCall;
 import org.parker.mips.plugin.syscall.SystemCallPlugin;
 import org.parker.mips.plugin.syscall.SystemCallPluginHandler;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 
@@ -100,7 +100,7 @@ public class SystemCallPluginInfoFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         themedJPanel11 = new javax.swing.JPanel();
-        modernScrollPane1 = new ModernScrollPane(Color.gray);
+        modernScrollPane1 = new JScrollPane();
         jEditorPane1 = new javax.swing.JEditorPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -139,7 +139,7 @@ public class SystemCallPluginInfoFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JEditorPane jEditorPane1;
-    private org.parker.mips.gui.theme.lookandfeel.ModernScrollPane modernScrollPane1;
+    private javax.swing.JScrollPane modernScrollPane1;
     private javax.swing.JPanel themedJPanel11;
     // End of variables declaration//GEN-END:variables
 }
