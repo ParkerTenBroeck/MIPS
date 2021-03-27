@@ -21,7 +21,7 @@ public class EditableMemoryHexGrid extends JPanel {
         scrollBar = new JScrollBar();
         scrollBar.setOrientation(JScrollBar.VERTICAL);
         scrollBar.setMaximum(0);
-        scrollBar.setMaximum(0x08000000 - 8);
+        scrollBar.setMaximum((1 << (32 - (int)Math.log((columns - 1) * 8 * groupSize.value))) - (rows - 1));
         scrollBar.setUnitIncrement(1);
         scrollBar.addAdjustmentListener(e -> {
             //this.dispatchEvent(e);
@@ -94,6 +94,8 @@ public class EditableMemoryHexGrid extends JPanel {
     }
 
     private class MemoryEditGrid extends EditableHexGrid {
+
+        private long carrotPosition = 0;
 
         private MemoryEditGrid(int rows, int columns, GroupSize groupSize) {
             super(rows, columns, -1, -1, 4, 2, i -> i/columns > 0, groupSize);
