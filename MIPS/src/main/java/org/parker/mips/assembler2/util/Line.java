@@ -1,4 +1,4 @@
-package org.parker.mips.assembler2;
+package org.parker.mips.assembler2.util;
 
 import java.io.File;
 
@@ -9,6 +9,7 @@ public class Line {
     private int startingIndex;
     private int endingIndex;
     private File parentFile;
+    private Line parentLine = null;
 
     public void setLine(String line){
         this.line = line;
@@ -48,5 +49,9 @@ public class Line {
             endingIndex--;
         }
         line =  ((st > 0) || (len < line.length())) ? line.substring(st, len) : line;
+    }
+
+    public void setParent(Line line){
+        this.parentLine = line;
     }
 }

@@ -1,5 +1,7 @@
 package org.parker.mips.assembler2;
 
+import org.parker.mips.assembler2.util.Line;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -7,7 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -72,6 +73,11 @@ public class PreProcessor {
                 //String line = s.next();
                 lineNumber++;
                 index += line.length();
+
+                if(line.contains(";")){
+                    line = line.split(";")[0];
+                }
+
                 currentLine.setLine(line);
                 currentLine.setEndingLine(lineNumber);
                 currentLine.setEndingIndex(index);

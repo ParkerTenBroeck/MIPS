@@ -79,15 +79,16 @@ public abstract class Editor extends UserPane {
      * @param clazz the editor to use
      */
     public static void createEditor(byte[] data, String name, Class<?> clazz){
-        try {
-            Constructor constructor = clazz.getDeclaredConstructor(byte[].class, String.class);
-            constructor.setAccessible(true);
-            Editor editor = (Editor)constructor.newInstance(data, name);
-            registerEditor(editor);
+        //try {
+           // Constructor constructor = clazz.getDeclaredConstructor(byte[].class, String.class);
+           // constructor.setAccessible(true);
+          //  Editor editor = (Editor)constructor.newInstance(data, name);
+          //  registerEditor(editor);
 
-        }catch(Exception e){
-            LOGGER.log(Level.SEVERE, "Cannot create editor", e);
-        }
+        //}catch(Exception e){
+        //    LOGGER.log(Level.SEVERE, "Cannot create editor", e);
+        //}
+        registerEditor(new FormattedTextEditor(data));
     }
 
     public static void createEditor(File file, Class<?> clazz){

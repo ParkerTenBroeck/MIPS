@@ -121,9 +121,9 @@ public class PluginLoader {
         try {
 
             try {
-                SystemCallPluginHandler.registerSystemCallPlugin((SystemCallPlugin) loadInternalPlugin("/org/parker/mips/plugin/internal/syscall/default.yml"));
-                SystemCallPluginHandler.registerSystemCallPlugin((SystemCallPlugin) loadInternalPlugin("/org/parker/mips/plugin/internal/syscall/screen.yml"));
-                SystemCallPluginHandler.registerSystemCallPlugin((SystemCallPlugin) loadInternalPlugin("/org/parker/mips/plugin/internal/syscall/userio.yml"));
+                SystemCallPluginHandler.registerSystemCallPlugin((SystemCallPlugin) loadInternalPlugin("/org/parker/mips/internal/syscall/default.yml"));
+                SystemCallPluginHandler.registerSystemCallPlugin((SystemCallPlugin) loadInternalPlugin("/org/parker/mips/internal/syscall/screen.yml"));
+                SystemCallPluginHandler.registerSystemCallPlugin((SystemCallPlugin) loadInternalPlugin("/org/parker/mips/internal/syscall/userio.yml"));
             }catch(Exception e){
                 LOGGER.log(Level.SEVERE, "Failed to load an internal Plugin", e);
             }

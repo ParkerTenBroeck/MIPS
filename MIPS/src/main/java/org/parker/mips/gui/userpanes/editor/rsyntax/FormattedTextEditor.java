@@ -70,7 +70,7 @@ public class FormattedTextEditor extends Editor {
         this.updateTitle();
     }
 
-    protected FormattedTextEditor(byte[] textBody){
+    public FormattedTextEditor(byte[] textBody){
         this((File)null);
         this.textArea.setText(new String(textBody));
     }

@@ -5,11 +5,23 @@
  */
 package org.parker.mips.assembler;
 
+import org.parker.mips.emulator.Memory;
+import org.parker.mips.gui.userpanes.editor.Editor;
+
 /**
  *
  * @author parke
  */
 public class InstructionToString {
+
+    public static void decompile(){
+        StringBuilder sb = new StringBuilder();
+
+        for(int i = 0; i < Memory.getSize() / 4; i ++){
+            sb.append(instructionToString(Memory.getWord(i * 4)) + "\n");
+        }
+        Editor.createEditor(sb.toString().getBytes(), "", "");
+    }
 
     public static String instructionToString(int opCode) {
         int o = (opCode >>> 26) & 0B111111;

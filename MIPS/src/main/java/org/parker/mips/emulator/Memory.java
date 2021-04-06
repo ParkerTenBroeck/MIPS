@@ -21,7 +21,7 @@ public class Memory {
 
     private static final Logger LOGGER = Logger.getLogger(Memory.class.getName());
 
-    private static final Preference<Boolean> adaptiveMemory = Preferences.ROOT_NODE.getNode("system/runtime/emulator").getRawPreference("adaptiveMemory", false);
+    private static final Preference<Boolean> adaptiveMemory = Preferences.ROOT_NODE.getNode("system/emulator/runtime").getRawPreference("adaptiveMemory", true);
 
     private static final boolean bigEndian = true;
 

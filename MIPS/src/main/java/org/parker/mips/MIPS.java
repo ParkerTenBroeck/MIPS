@@ -5,6 +5,7 @@
  */
 package org.parker.mips;
 
+import org.parker.mips.assembler2.Assembler;
 import org.parker.mips.gui.MainGUI;
 import org.parker.mips.gui.theme.ThemeHandler;
 import org.parker.mips.plugin.PluginLoader;
