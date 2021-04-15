@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class PagedMemory {
 
-    private HashMap<Integer, byte[]> memory = new HashMap();
+    private final HashMap<Integer, byte[]> memory = new HashMap();
 
 
     public PagedMemory(){
@@ -22,8 +22,6 @@ public class PagedMemory {
             memory.put(address >> 12, new byte[0b111111111111]);
         }
         memory.get(address >> 12)[address & 0b111111111111] = data;
-        //byte[] temp = memory.getOrDefault((address >> 12), new byte[12]);
-        //temp[address & 0b111111111111] = data;
     }
 
     public byte[] getPage(int i) {

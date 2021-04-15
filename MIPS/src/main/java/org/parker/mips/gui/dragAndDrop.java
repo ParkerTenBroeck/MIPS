@@ -41,16 +41,16 @@ public class dragAndDrop {
                     // Ok, get the dropped object and try to figure out what it is
                     Transferable tr = dtde.getTransferable();
                     DataFlavor[] flavors = tr.getTransferDataFlavors();
-                    for (int i = 0; i < flavors.length; i++) {
+                    for (DataFlavor flavor : flavors) {
                         // Check for file lists specifically
-                        if (flavors[i].isFlavorJavaFileListType()) {
+                        if (flavor.isFlavorJavaFileListType()) {
                             // Great!  Accept copy drops...
                             dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
                             // And add the list of file names to our text area
-                            java.util.List list = (java.util.List) tr.getTransferData(flavors[i]);
-                            for (int j = 0; j < list.size(); j++) {
+                            java.util.List<?> list = (java.util.List<?>) tr.getTransferData(flavor);
+                            for (Object o : list) {
                                 //filePathLable.setText(((File) list.get(j)).getPath());
-                                Editor.loadFileIntoEditor((File) list.get(j));
+                                Editor.loadFileIntoEditor((File) o);
                                 MainGUI.refreshAll();
                                 //list.get(j); is the file
                             }
@@ -58,13 +58,13 @@ public class dragAndDrop {
                             dtde.dropComplete(true);
                             return;
                         } // Ok, is it another Java object?
-                        else if (flavors[i].isFlavorSerializedObjectType()) {
+                        else if (flavor.isFlavorSerializedObjectType()) {
                             dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-                            Object o = tr.getTransferData(flavors[i]);
+                            //Object o = tr.getTransferData(flavor);
                             dtde.dropComplete(true);
                             return;
                         } // How about an input stream?
-                        else if (flavors[i].isRepresentationClassInputStream()) {
+                        else if (flavor.isRepresentationClassInputStream()) {
                             dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
                             dtde.dropComplete(true);
                             return;

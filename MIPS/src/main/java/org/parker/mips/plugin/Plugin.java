@@ -9,6 +9,7 @@ package org.parker.mips.plugin;
  *
  * @author parke
  */
+@SuppressWarnings("unused")
 public interface Plugin {
     
     void onLoad();

@@ -5,17 +5,15 @@
  */
 package org.parker.mips.plugin.syscall;
 
-import org.parker.mips.FileUtils;
+import org.parker.mips.util.FileUtils;
 import org.parker.mips.gui.MainGUI;
 import org.parker.mips.gui.userpanes.editor.Editor;
 import org.parker.mips.gui.userpanes.editor.rsyntax.FormattedTextEditor;
-import org.parker.mips.plugin.InvalidDescriptionException;
-import org.parker.mips.plugin.InvalidPluginException;
 import org.parker.mips.plugin.PluginBase;
 import org.parker.mips.plugin.PluginClassLoader;
-import org.parker.mips.emulator.Memory;
-import org.parker.mips.emulator.Emulator;
-import org.parker.mips.emulator.Registers;
+import org.parker.mips.emulator.mips.Memory;
+import org.parker.mips.emulator.mips.Emulator;
+import org.parker.mips.emulator.mips.Registers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,6 +28,8 @@ import java.util.logging.Level;
  *
  * @author parke
  */
+
+@SuppressWarnings("unused")
 public abstract class SystemCallPlugin extends PluginBase {
 
     private final SystemCallPlugin instance;
@@ -40,6 +40,7 @@ public abstract class SystemCallPlugin extends PluginBase {
     private ArrayList<Node<ActionListener>> registeredInternalExamples = null;
     private ArrayList<Node<ActionListener>> registeredGeneralListeners = null;
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public SystemCallPlugin() {
         {
             final ClassLoader classLoader = this.getClass().getClassLoader();
@@ -49,17 +50,17 @@ public abstract class SystemCallPlugin extends PluginBase {
         }
         final PluginClassLoader classLoader = ((PluginClassLoader) this.getClass().getClassLoader());
 
-        Set set = ((Map<String, Map<String, Object>>) classLoader.PLUGIN_YAML.get("system_calls")).entrySet();
+        Set<?> set = ((Map<String, Map<String, Object>>) classLoader.PLUGIN_YAML.get("system_calls")).entrySet();
 
         final int size = set.size();
         this.systemCalls = new SystemCall[size];
         this.systemCallData = new SystemCall.SystemCallData[size];
 
-        Iterator iterator = set.iterator();
+        Iterator<?> iterator = set.iterator();
 
         int i = 0;
         while (iterator.hasNext()) {
-            Map.Entry next = (Map.Entry) iterator.next();
+            Map.Entry<?,?> next = (Map.Entry) iterator.next();
 
             Map<String, Object> tempMap = (Map<String, Object>) next.getValue();
             tempMap.put("SYSTEM_CALL_NAME", next.getKey());
@@ -101,26 +102,26 @@ public abstract class SystemCallPlugin extends PluginBase {
         }
 
         public Node<T> addChild(String name, T data) {
-            Node<T> child = new Node(name, data);
+            Node<T> child = new Node<>(name, data);
             this.addChild(child);
             return child;
         }
 
         public Node<T> addChild(String name) {
-            Node<T> child = new Node(name);
+            Node<T> child = new Node<>(name);
             this.addChild(child);
             return child;
         }
 
         public Node<T> addChild(T data) {
-            Node<T> child = new Node(data);
+            Node<T> child = new Node<>(data);
             this.addChild(child);
             return child;
         }
 
         public Node<T> addChild(Node<T> child) {
             if (children == null) {
-                children = new ArrayList();
+                children = new ArrayList<>();
             }
 
             child.setParent(this);
@@ -130,7 +131,7 @@ public abstract class SystemCallPlugin extends PluginBase {
 
         public void addChildren(Node<T>[] children) {
             if (this.children == null) {
-                this.children = new ArrayList();
+                this.children = new ArrayList<>();
             }
 
             for (Node<T> each : children) {
@@ -142,7 +143,7 @@ public abstract class SystemCallPlugin extends PluginBase {
 
         public void addChildren(ArrayList<Node<T>> children) {
             if (this.children == null) {
-                this.children = new ArrayList();
+                this.children = new ArrayList<>();
             }
 
             children.forEach(each -> each.setParent(this));
@@ -195,15 +196,11 @@ public abstract class SystemCallPlugin extends PluginBase {
         @Override
         public void actionPerformed(ActionEvent ae) {
             try {
+
             	InputStream stream = CLASS_LOADER.getResourceAsStream(resources);
             	byte[] bytes = FileUtils.loadStreamAsByteArray(stream);
-            	//String text = new String(bytes);
-            	//new FormattedTextEditor(text);
                 Editor.createEditor(bytes, null, FormattedTextEditor.class);
-            //FileHandler.loadASMExampleFromStream(CLASS_LOADER.getResourceAsStream(resources));
-            //ASM_GUI.setTextAreaFromASMFile();
-          
-            //Assembler.compileDefault();
+
             }catch(Exception e) {
             	
             }
@@ -308,9 +305,10 @@ public abstract class SystemCallPlugin extends PluginBase {
         return systemCalls.clone();
     }
 
+
     /**
      *
-     * @return
+     * @return returns true when the emulator has stopped
      */
     protected final boolean throwBreakPoint() {
 
@@ -459,13 +457,6 @@ public abstract class SystemCallPlugin extends PluginBase {
      */
     protected final void setLow(int val) {
         Registers.setLow(val);
-    }
-
-    /**
-     * NOT IMPLEMENTED YET
-     */
-    protected final void throwNonInturuptableIntturupt() { //still in the works
-        throw new Error("Not implemented yet");
     }
 
 }

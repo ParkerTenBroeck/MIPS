@@ -12,11 +12,10 @@ import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.ui.FlatUIUtils;
 import com.formdev.flatlaf.util.UIScale;
-import org.parker.mips.ResourceHandler;
+import org.parker.mips.util.ResourceHandler;
 import org.parker.mips.gui.theme.IJThemeInfo;
 import org.parker.mips.gui.theme.IJThemesManager;
-import org.parker.mips.gui.theme.ThemeHandler;
-import org.parker.mips.misc.SerializableFont;
+import org.parker.mips.util.SerializableFont;
 import org.parker.mips.preferences.Preference;
 import org.parker.mips.preferences.Preferences;
 

@@ -18,18 +18,14 @@ import java.util.logging.Logger;
  */
 public class DesktopBrowser {
 
-    public static boolean openLinkInBrowser(String url) {
+    public static void openLinkInBrowser(String url) {
         if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
             try {
                 Desktop.getDesktop().browse(new URI(url.replaceAll("\\\\", "/")));
-                return true;
-            } catch (URISyntaxException ex) {
-                Logger.getLogger(DesktopBrowser.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
+            } catch (URISyntaxException | IOException ex) {
                 Logger.getLogger(DesktopBrowser.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }
-        return false;
     }
 }

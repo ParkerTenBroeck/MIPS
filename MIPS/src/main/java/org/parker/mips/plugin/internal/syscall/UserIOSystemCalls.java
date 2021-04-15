@@ -6,12 +6,11 @@
 package org.parker.mips.plugin.internal.syscall;
 
 import org.parker.mips.plugin.syscall.SystemCallPlugin;
-import org.parker.mips.plugin.syscall.SystemCallRunTimeExcpetion;
+import org.parker.mips.plugin.syscall.SystemCallRunTimeException;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 
 /**
  *
@@ -63,7 +62,7 @@ public class UserIOSystemCalls extends SystemCallPlugin {
                 }
 
                 if (i >= max) {
-                    throw new SystemCallRunTimeExcpetion("Trap 4 reached limit of " + max + " while printing string possibly non terminated string");
+                    throw new SystemCallRunTimeException("Trap 4 reached limit of " + max + " while printing string possibly non terminated string");
                 }
             }
         });

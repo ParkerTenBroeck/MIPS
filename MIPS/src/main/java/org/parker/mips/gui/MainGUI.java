@@ -20,8 +20,11 @@ import org.parker.mips.plugin.syscall.SystemCallPlugin.Node;
 import org.parker.mips.plugin.syscall.SystemCallPluginHandler;
 import org.parker.mips.preferences.Preference;
 import org.parker.mips.preferences.Preferences;
-import org.parker.mips.emulator.Memory;
-import org.parker.mips.emulator.Emulator;
+import org.parker.mips.emulator.mips.Memory;
+import org.parker.mips.emulator.mips.Emulator;
+import org.parker.mips.util.FileUtils;
+import org.parker.mips.util.ResourceHandler;
+import org.parker.mips.util.UpdateHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,7 +44,6 @@ import java.util.logging.Logger;
  */
 public class MainGUI extends javax.swing.JFrame {
 
-    private static Thread autoUpdateThread;
     private static boolean auteUpdateRunning;
     private static MainGUI instance;
 
@@ -49,44 +51,38 @@ public class MainGUI extends javax.swing.JFrame {
 
     private static final Preferences systemPrefs = Preferences.ROOT_NODE.getNode("system");
 
-    public static synchronized boolean isRunning() {
-        return auteUpdateRunning;
-    }
-
     public static synchronized boolean canBreak() {
         return enableBreak.isSelected();
     }
 
     private static synchronized void startAutoUpdate() {
         MainGUI.startButton.setSelected(true);
+
         MainGUI.auteUpdateRunning = true;
+
         if (!(Boolean)systemPrefs.getNode("gui").getPreference("enableGUIAutoUpdateWhileRunning", true)) {
             return;
         }
-        autoUpdateThread = new Thread() {
-            public void run() {
+        Thread autoUpdateThread = new Thread(() -> {
 
-                Preference<Boolean> autoUpdate = systemPrefs.getNode("gui").getRawPreference("enableGUIAutoUpdateWhileRunning", true);
-                Preference<Integer> refreshTime = systemPrefs.getNode("gui").getRawPreference("GUIAutoUpdateRefreshTime", 100);
+            Preference<Boolean> autoUpdate = systemPrefs.getNode("gui").getRawPreference("enableGUIAutoUpdateWhileRunning", true);
+            Preference<Integer> refreshTime = systemPrefs.getNode("gui").getRawPreference("GUIAutoUpdateRefreshTime", 100);
 
-                while (auteUpdateRunning && autoUpdate.val()) {
-                    MainGUI.refresh();
-                    try {
-                        Thread.sleep(refreshTime.val());
-                    } catch (Exception e) {
+            while (auteUpdateRunning && autoUpdate.val()) {
+                MainGUI.refresh();
+                try {
+                    Thread.sleep(refreshTime.val());
+                } catch (Exception e) {
 
-                    }
                 }
             }
-        };
+        });
         autoUpdateThread.setName("autoUpdate");
         autoUpdateThread.start();
     }
 
     public static synchronized void stopAutoUpdate() {
         MainGUI.startButton.setSelected(false);
-        //MainGUI.startButton.repaint();
-        //System.out.println(startButton.isSelected());
         MainGUI.auteUpdateRunning = false;
         MainGUI.refresh();
     }
@@ -296,7 +292,6 @@ public class MainGUI extends javax.swing.JFrame {
                     systemCallExampleJMenu.add(tempMenu);
                 }
             }
-
         }
     }
 

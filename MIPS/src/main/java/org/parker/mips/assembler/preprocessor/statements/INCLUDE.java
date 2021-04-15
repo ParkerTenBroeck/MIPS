@@ -5,7 +5,7 @@
  */
 package org.parker.mips.assembler.preprocessor.statements;
 
-import org.parker.mips.FileUtils;
+import org.parker.mips.util.FileUtils;
 import org.parker.mips.assembler.AssemblerLevel;
 import org.parker.mips.assembler.AssemblerLogger;
 import org.parker.mips.assembler.data.UserLine;

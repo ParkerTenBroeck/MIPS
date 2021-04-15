@@ -5,8 +5,8 @@
  */
 package org.parker.mips.gui.userpanes.editor;
 
-import org.parker.mips.FileUtils;
-import org.parker.mips.ResourceHandler;
+import org.parker.mips.util.FileUtils;
+import org.parker.mips.util.ResourceHandler;
 import org.parker.mips.gui.UserPaneTabbedPane;
 import org.parker.mips.gui.MainGUI;
 import org.parker.mips.gui.userpanes.UserPane;

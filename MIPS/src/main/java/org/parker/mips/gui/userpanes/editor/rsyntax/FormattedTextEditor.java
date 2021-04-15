@@ -11,10 +11,10 @@ import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.folding.FoldParserManager;
 import org.fife.ui.rtextarea.RTextScrollPane;
-import org.parker.mips.FileUtils;
-import org.parker.mips.ResourceHandler;
+import org.parker.mips.util.FileUtils;
+import org.parker.mips.util.ResourceHandler;
 import org.parker.mips.gui.userpanes.editor.Editor;
-import org.parker.mips.misc.SerializableFont;
+import org.parker.mips.util.SerializableFont;
 import org.parker.mips.preferences.Preference;
 import org.parker.mips.preferences.Preferences;
 

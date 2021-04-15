@@ -5,8 +5,8 @@
  */
 package org.parker.mips.assembler;
 
-import org.parker.mips.FileUtils;
-import org.parker.mips.ResourceHandler;
+import org.parker.mips.util.FileUtils;
+import org.parker.mips.util.ResourceHandler;
 import org.parker.mips.assembler.data.UserLine;
 import org.parker.mips.assembler.preprocessor.statements.*;
 import org.parker.mips.preferences.Preferences;

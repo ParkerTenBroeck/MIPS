@@ -12,8 +12,8 @@ import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
 import com.formdev.flatlaf.extras.FlatInspector;
 import com.formdev.flatlaf.util.StringUtils;
 import com.formdev.flatlaf.util.SystemInfo;
-import org.parker.mips.ResourceHandler;
-import org.parker.mips.misc.SerializableFont;
+import org.parker.mips.util.ResourceHandler;
+import org.parker.mips.util.SerializableFont;
 import org.parker.mips.preferences.Preference;
 import org.parker.mips.preferences.Preferences;
 
@@ -25,8 +25,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

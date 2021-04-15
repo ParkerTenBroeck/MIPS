@@ -5,7 +5,7 @@
  */
 package org.parker.mips.assembler;
 
-import org.parker.mips.emulator.Memory;
+import org.parker.mips.emulator.mips.Memory;
 import org.parker.mips.gui.userpanes.editor.Editor;
 
 /**

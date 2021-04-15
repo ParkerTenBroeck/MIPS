@@ -1,16 +1,12 @@
 package org.parker.mips.assembler2.instruction;
 
-import org.parker.mips.assembler2.Assembler;
-import org.parker.mips.assembler2.operand.Operand;
-import org.parker.mips.assembler2.util.LinkType;
+import org.parker.mips.assembler2.mips.MipsAssembler;
+import org.parker.mips.assembler2.util.linking.LinkType;
 
 public interface InstructionFormatter {
 
     int getInstructionSize();
-    void encode(byte[] data, Operand[] operands, Assembler assembler);
-    default String modifyOperandExpression(String expression){
-        return expression;
-    }
+    void encode(byte[] data, StandardInstruction instruction, MipsAssembler assembler);
 
     /**
      * only used in LinkableInstructions

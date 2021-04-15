@@ -209,11 +209,11 @@ public class LogFrame extends javax.swing.JPanel {
         @Override
         public void publish(LogRecord record) {
 
-            if(loggerPrefs == null ||
+            if (loggerPrefs == null ||
                     showStackTrace == null ||
                     logSystemCallMessages == null ||
                     showCallerMethod == null ||
-                    showCallerClass == null){
+                    showCallerClass == null) {
                 return;
             }
 
@@ -232,9 +232,12 @@ public class LogFrame extends javax.swing.JPanel {
                     message += ":\n";
                 }
             }
+            String[] classPath = record.getLoggerName().split("\\.");
+            String className = classPath[classPath.length - 1];
 
             message += "[" + record.getLevel().getName() + "] "
-                    + "[" + String.join("] [", record.getSourceClassName().replaceFirst("org.parker.mips.", "").split("\\.")) + "] "
+                    + "[" + className + "]"
+                    //+ "[" + String.join("] [", record.getSourceClassName().replaceFirst("org.parker.mips.", "").split("\\.")) + "] "
                     + (record.getMessage() == null ? "" : record.getMessage());
 
             SimpleAttributeSet sas = new SimpleAttributeSet();

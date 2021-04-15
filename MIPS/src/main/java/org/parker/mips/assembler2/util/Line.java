@@ -1,8 +1,9 @@
 package org.parker.mips.assembler2.util;
 
 import java.io.File;
+import java.io.Serializable;
 
-public class Line {
+public class Line implements Serializable {
     private String line;
     private int startingLine;
     private int endingLine;
@@ -18,13 +19,13 @@ public class Line {
         this.startingLine = startingLine;
     }
     public void setEndingLine(int endingLine){
-        this.startingLine = endingLine;
+        this.endingLine = endingLine;
     }
     public void setStartingIndex(int startingIndex){
-        this.startingLine = startingIndex;
+        this.startingIndex = startingIndex;
     }
     public void setEndingIndex(int endingIndex){
-        this.startingLine = endingIndex;
+        this.endingIndex = endingIndex;
     }
     public void setParentFile(File parentFile){
         this.parentFile = parentFile;
@@ -53,5 +54,9 @@ public class Line {
 
     public void setParent(Line line){
         this.parentLine = line;
+    }
+
+    public int getLineNumber() {
+        return startingLine + 1;
     }
 }

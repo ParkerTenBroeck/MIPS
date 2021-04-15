@@ -1,7 +1,7 @@
 package org.parker.mips.preferences;
 
-import org.parker.mips.FileUtils;
-import org.parker.mips.ResourceHandler;
+import org.parker.mips.util.FileUtils;
+import org.parker.mips.util.ResourceHandler;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.introspector.BeanAccess;

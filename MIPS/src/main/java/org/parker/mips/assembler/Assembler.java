@@ -5,14 +5,15 @@
  */
 package org.parker.mips.assembler;
 
-import org.parker.mips.FileUtils;
-import org.parker.mips.ResourceHandler;
+import org.parker.mips.util.FileUtils;
+import org.parker.mips.util.ResourceHandler;
 import org.parker.mips.assembler.data.MemoryLable;
 import org.parker.mips.assembler.data.UserLine;
+import org.parker.mips.assembler2.mips.MipsAssembler;
 import org.parker.mips.gui.MainGUI;
 import org.parker.mips.gui.userpanes.editor.EditorHandler;
 import org.parker.mips.preferences.Preferences;
-import org.parker.mips.emulator.Memory;
+import org.parker.mips.emulator.mips.Memory;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -554,7 +555,8 @@ public class Assembler {
 
     public static void assembleDefault() {
         Thread t1 = new Thread(() -> {
-            assemble(EditorHandler.getFalseFileFromLastFocused());
+            MipsAssembler a = new MipsAssembler();
+            a.assemble(new File[]{EditorHandler.getFalseFileFromLastFocused()});
         });
         t1.setName("Assembler");
         t1.start();

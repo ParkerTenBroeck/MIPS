@@ -5,7 +5,7 @@
  */
 package org.parker.mips.assembler;
 
-import org.parker.mips.FileUtils;
+import org.parker.mips.util.FileUtils;
 import org.parker.mips.assembler.data.UserLine;
 
 import java.io.File;

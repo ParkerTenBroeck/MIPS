@@ -10,7 +10,6 @@ import org.parker.mips.plugin.syscall.SystemCallPlugin;
 import org.parker.mips.plugin.syscall.SystemCallPluginHandler;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.Arrays;
 
 import static org.parker.mips.plugin.syscall.SystemCallPluginHandler.getSystemCallNumberFromGeneratedNumber;
@@ -22,7 +21,7 @@ import static org.parker.mips.plugin.syscall.SystemCallPluginHandler.getSystemCa
 public class SystemCallPluginInfoFrame extends javax.swing.JFrame {
 
     /**
-     * Creates new form dsfsdf
+     * Creates new form SystemCallPluginInfoFrame
      */
     public SystemCallPluginInfoFrame(SystemCallPlugin plugin) {
         initComponents();
@@ -84,7 +83,7 @@ public class SystemCallPluginInfoFrame extends javax.swing.JFrame {
             html += "<div>Memory Read From: " + sc.DATA.MEMORY_READ_FROM + "</div>";
             html += "<div>Memory Written to: " + sc.DATA.MEMORY_WRITTEN_TO + "</div>";
 
-            html += "<br><p>" + sc.DATA.SYSTEM_CALL_DISCRIPTION + "</p><br><br>";
+            html += "<br><p>" + sc.DATA.SYSTEM_CALL_DESCRIPTION + "</p><br><br>";
         }
 
         return html + "</html>";

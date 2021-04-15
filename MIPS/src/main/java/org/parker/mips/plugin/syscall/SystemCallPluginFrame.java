@@ -5,7 +5,7 @@
  */
 package org.parker.mips.plugin.syscall;
 
-import org.parker.mips.emulator.Emulator;
+import org.parker.mips.emulator.mips.Emulator;
 
 import javax.swing.*;
 import java.net.URL;
@@ -23,6 +23,7 @@ public class SystemCallPluginFrame extends JFrame {
 
     public SystemCallPluginFrame(String name) {
         this.FRAME_NAME = name;
+
         try {
             URL url = ClassLoader.getSystemClassLoader().getResource("images/project.png");
             ImageIcon icon = new ImageIcon(url);

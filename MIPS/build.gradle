@@ -52,4 +52,12 @@ dependencies {
     implementation  ("com.google.guava:guava:30.1-jre")
 
     implementation 'com.intellij:forms_rt:7.0.3'
+
+
+    //test
+    testCompile "junit:junit:4.11"
+}
+
+test{
+    useJUnitPlatform()
 }

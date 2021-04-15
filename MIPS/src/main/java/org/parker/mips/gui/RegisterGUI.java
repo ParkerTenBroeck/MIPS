@@ -5,7 +5,7 @@
  */
 package org.parker.mips.gui;
 
-import org.parker.mips.emulator.Registers;
+import org.parker.mips.emulator.mips.Registers;
 
 import javax.swing.*;
 import javax.swing.table.TableColumnModel;

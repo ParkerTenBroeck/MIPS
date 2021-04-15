@@ -1,6 +1,8 @@
 package org.parker.mips.assembler2.util;
 
-public class Label {
+import org.parker.mips.assembler2.util.Line;
+
+public class Label{
 
     public final long address;
     public final Line line;
@@ -10,5 +12,11 @@ public class Label {
         this.address = address;
         this.mnemonic = mnemonic;
         this.line = line;
+    }
+
+    public Label(String mnemonic){
+        this.mnemonic = mnemonic;
+        line = null;
+        address = -1;
     }
 }

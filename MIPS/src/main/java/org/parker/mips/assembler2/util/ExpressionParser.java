@@ -1,73 +1,15 @@
 package org.parker.mips.assembler2.util;
 
-import org.parker.mips.assembler.Assembler;
-import org.parker.mips.assembler2.operand.OpRegister;
-import org.parker.mips.assembler2.operand.Operand;
-
 import java.util.*;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Deprecated
+@SuppressWarnings("all")
 public class ExpressionParser {
 
     private static final Logger LOGGER = Logger.getLogger(ExpressionParser.class.getName());
-
-
-    public static void main(String... args) {
-        ExpressionParser ep = new ExpressionParser();
-
-        //System.out.println("[$4, 12, $0]: " + Arrays.toString((Object[])ep.parse(ep.doTheThing("$4, 12($0)"))));
-
-        System.out.println("1.0: " + ep.parse("(Double)1"));
-
-        String result = (String) ep.parse("true || false && false?\"This \" + \"is \" + \"true\":\"This \" + \"is \" + \"false\"");
-        System.out.println("This is true: " + result);
-        System.out.println(false?1:2 + ": " + ep.parse("false?1:2"));
-
-        System.out.println("5: " + ep.parse("$4"));
-
-        System.out.println("5: " + ep.parse("+5"));
-        System.out.println("-5: " + ep.parse("-5"));
-        System.out.println("false: " + ep.parse("!true"));
-        System.out.println("-1: " + ep.parse("~0b0"));
-
-        System.out.println("-1: " + ep.parse("2+-3"));
-        System.out.println("-1: " + ep.parse("2+(-3)"));
-
-        System.out.println("17.0: " + ep.parse("(5+4+(4*(5/2.5)))"));
-        System.out.println("2: " + ep.parse("12%5"));
-
-        System.out.println("16: " + ep.parse("8 << 1"));
-        System.out.println("4: " + ep.parse("8 >> 1"));
-
-        System.out.println("true: " + ep.parse("8 > 2"));
-        System.out.println("false: " + ep.parse("2 > 8"));
-
-        System.out.println("false: " + ep.parse("8 < 2"));
-        System.out.println("true: " + ep.parse("2 < 8"));
-
-        System.out.println("1.0: " + ep.parse("sin(toRadians(90))"));
-        System.out.println("1.0: " + ep.parse("sin(toRadians(90))"));
-
-        System.out.println("1.0: " + ep.parse("sin(toRadians(90))"));
-        System.out.println("1.0: " + ep.parse("sin(toRadians(90))"));
-
-        System.out.println("true: " + ep.parse("8 == 8"));
-        System.out.println("false: " + ep.parse("2 == 8"));
-
-        System.out.println("false: " + ep.parse("8 != 8"));
-        System.out.println("true: " + ep.parse("2 != 8"));
-
-        System.out.println("0.5: " + ep.parse("sin(PI/6)"));
-        System.out.println("0.5: " + ep.parse("cos(PI*2/6)"));
-        System.out.println("1.0: " + ep.parse("tan(PI/4)"));
-
-        System.out.println("32.0: " + ep.parse("pow(2,5)"));
-        System.out.println("5.0: " + ep.parse("sqrt(25)"));
-        System.out.println("1.0: " + ep.parse("sin(toRadians(90))"));
-        System.out.println("1.0: " + ep.parse("sin(toRadians(toDegrees(PI/2)))"));
-}
 
     public ExpressionParser() {
     }
@@ -350,14 +292,14 @@ public class ExpressionParser {
                 } else if (x instanceof Number || y instanceof Number) {
                     x = add((Number) x, (Number) y);
                 } else {
-                    throw new IllegalArgumentException("Cannot use \'+\' token between a " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName());
+                    throw new IllegalArgumentException("Cannot use '+' token between a " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName());
                 }
             } else if (eat("-")) {
                 Object y = parseLevel3();
                 if (x instanceof Number || y instanceof Number) {
                     x = subtract((Number) x, (Number) y);
                 } else {
-                    throw new IllegalArgumentException("Cannot use \'-\' token between a " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName());
+                    throw new IllegalArgumentException("Cannot use '-' token between a " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName());
                 }
             } else {
                 return x;
@@ -378,21 +320,21 @@ public class ExpressionParser {
                 if (x instanceof Number || y instanceof Number) {
                     x = multiply((Number) x, (Number) y);
                 } else {
-                    throw new IllegalArgumentException("Cannot use \'*\' token between a " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName());
+                    throw new IllegalArgumentException("Cannot use '*' token between a " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName());
                 }
             } else if (eat("/")) {
                 Object y = parseLevel2();
                 if (x instanceof Number || y instanceof Number) {
                     x = divide((Number) x, (Number) y);
                 } else {
-                    throw new IllegalArgumentException("Cannot use \'/\' token between a " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName());
+                    throw new IllegalArgumentException("Cannot use '/' token between a " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName());
                 }
             } else if (eat("%")) {
                 Object y = parseLevel2();
                 if (x instanceof Number || y instanceof Number) {
                     x = mod((Number) x, (Number) y);
                 } else {
-                    throw new IllegalArgumentException("Cannot use \'%\' token between a " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName());
+                    throw new IllegalArgumentException("Cannot use '%' token between a " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName());
                 }
             } else {
                 return x;
@@ -401,9 +343,9 @@ public class ExpressionParser {
     }
 
 
-    private static Pattern castPattern = Pattern.compile("\\s*([(][\\s]*([a-zA-Z_$][a-zA-Z_$0-9]*)[\\s]*[)])\\s*[a-zA-Z_$0-9]+");
-    private static HashMap<String, Class> castMap = new HashMap<>();
-    private static HashMap<String, Class> primitiveCastMap = new HashMap<>();
+    private static final Pattern castPattern = Pattern.compile("\\s*([(][\\s]*([a-zA-Z_$][a-zA-Z_$0-9]*)[\\s]*[)])\\s*[a-zA-Z_$0-9]+");
+    private static final HashMap<String, Class> castMap = new HashMap<>();
+    private static final HashMap<String, Class> primitiveCastMap = new HashMap<>();
 
     static{
         primitiveCastMap.put("Double", Double.class);
@@ -438,7 +380,7 @@ public class ExpressionParser {
                 {
                     Object x = parseLevel1();
                     if (x instanceof Number) {
-                        return subtract((Integer) 0, (Number) x);
+                        return subtract(0, (Number) x);
                     } else {
                         throw new IllegalArgumentException("Cannot use '-' modifier on: " + x.getClass().getSimpleName());
                     }
@@ -513,12 +455,13 @@ public class ExpressionParser {
         if (eat('(')) { // parentheses
             x = parseLevel15();
             eat(')');
-        } else if ((ch >= '0' && ch <= '9') || ch == '.') { // numbers
-            while ((ch >= '0' && ch <= '9') || ch == '.' || ch == 'x' || ch == 'b') nextChar();
+        } else if ((ch >= '0' && ch <= '9')) { // numbers
+
+            while ((ch >= '0' && ch <= '9') || ch == '.' || (ch > 'a' && ch < 'z')|| (ch > 'A' && ch < 'Z')) nextChar();
             if (str.substring(startPos, this.pos).contains(".")) {
                 x = Double.parseDouble(str.substring(startPos, this.pos));
             } else {
-                x = Assembler.parseInt(str.substring(startPos, this.pos));
+                x = parseInt(str.substring(startPos, this.pos));
             }
         } else if (Character.isAlphabetic(ch) || ch == '_' || ch == '$') { // functions
             while (Character.isAlphabetic(ch) || Character.isDigit(ch) || ch == '_'|| ch == '$') nextChar();
@@ -820,7 +763,7 @@ protected Object parseVariable(String token){
         @SuppressWarnings("unchecked")
         @Override
         public int compare(Object number1, Object number2) {
-            if (((Object) number2).getClass().equals(((Object) number1).getClass())) {
+            if (number2.getClass().equals(number1.getClass())) {
                 // both numbers are instances of the same type!
                 if (number1 instanceof Comparable) {
                     // and they implement the Comparable interface
@@ -834,5 +777,22 @@ protected Object parseVariable(String token){
                 return 1;
             return 0;
         }
+    }
+
+    public static int parseInt(String string) {
+
+        int temp;
+
+        if (string.startsWith("0b")) {
+            temp = (int) Long.parseLong(string.split("b")[1], 2);
+        } else if (string.startsWith("0x")) {
+            temp = (int) Long.parseLong(string.split("x")[1], 16);
+        } else if (string.contains("x")) {
+            temp = (int) Long.parseLong(string.split("x")[1], Integer.parseInt(string.split("x")[0]));
+        } else {
+            temp = (int) Long.parseLong(string.trim());
+        }
+        return temp;
+
     }
 }

@@ -5,19 +5,19 @@
  */
 package org.parker.mips;
 
-import org.parker.mips.assembler2.Assembler;
 import org.parker.mips.gui.MainGUI;
 import org.parker.mips.gui.theme.ThemeHandler;
 import org.parker.mips.plugin.PluginLoader;
 import org.parker.mips.preferences.Preference;
 import org.parker.mips.preferences.Preferences;
+import org.parker.mips.util.ResourceHandler;
 
 import javax.swing.*;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.parker.mips.UpdateHandler.checkForUpdates;
+import static org.parker.mips.util.UpdateHandler.checkForUpdates;
 
 /**
  *

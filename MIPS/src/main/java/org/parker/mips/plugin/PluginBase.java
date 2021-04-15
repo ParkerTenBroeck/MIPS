@@ -14,6 +14,7 @@ import java.util.logging.Logger;
  *
  * @author parke
  */
+@SuppressWarnings("unused")
 public abstract class PluginBase implements Plugin {
 
     public final PluginDescription DESCRIPTION;

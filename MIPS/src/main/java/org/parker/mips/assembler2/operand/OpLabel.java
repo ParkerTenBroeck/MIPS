@@ -1,18 +1,17 @@
 package org.parker.mips.assembler2.operand;
 
+import org.parker.mips.assembler2.base.assembler.Assembler;
 import org.parker.mips.assembler2.exception.LableNotDeclaredError;
 import org.parker.mips.assembler2.util.Label;
-import org.parker.mips.assembler2.util.LinkType;
-
-import java.util.HashMap;
+import org.parker.mips.assembler2.util.linking.LinkType;
 
 public class OpLabel extends OpLong implements LinkableOperand{
 
-    protected final String labelMnemonic;
+    protected final Label label;
     private Boolean linked = false;
 
-    public OpLabel(String label) {
-        this.labelMnemonic = label;
+    public OpLabel(Label label) {
+        this.label = label;
     }
 
     @Override
@@ -25,17 +24,17 @@ public class OpLabel extends OpLong implements LinkableOperand{
     }
 
     @Override
-    public void link(HashMap<String, Label> labelMap, long sourceAddr, LinkType linkType) {
-        if(labelMap.containsKey(labelMnemonic)){
-            Label label = labelMap.get(labelMnemonic);
+    public void link(Assembler assembler, long sourceAddr, LinkType linkType) throws LableNotDeclaredError {
+        //if(labelMap.containsKey(labelMnemonic)){
+            //Label label = labelMap.get(labelMnemonic);
             if(linkType == null){
                 this.setValue(LinkType.ABSOLUTE_BYTE.link(sourceAddr, label.address));
             }else{
                 this.setValue(linkType.link(sourceAddr, label.address));
             }
-        }else{
-            throw new LableNotDeclaredError();
-        }
+        //}else{
+            //throw new LableNotDeclaredError("Label: " + labelMnemonic + " is not defined or not defined in the current scope");
+        //}
         this.linked = true;
     }
 }
