@@ -2,7 +2,9 @@ package org.parker.mips.assembler2.mips;
 
 import org.junit.jupiter.api.Test;
 import org.parker.mips.MIPS;
-import org.parker.mips.assembler2.base.assembler.Assembler;
+import org.parker.mips.assembler.base.assembler.Assembler;
+import org.parker.mips.assembler.mips.MipsAssembler;
+import org.parker.mips.assembler.mips.MipsDisassembler;
 
 import java.io.File;
 

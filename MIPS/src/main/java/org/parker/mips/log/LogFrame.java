@@ -6,7 +6,7 @@
 package org.parker.mips.log;
 
 
-import org.parker.mips.assembler.AssemblerLevel;
+import org.parker.mips.assembler_old.AssemblerLevel;
 import org.parker.mips.preferences.Preference;
 import org.parker.mips.preferences.Preferences;
 import org.parker.mips.emulator.RunTimeLevel;

@@ -2,7 +2,7 @@ package org.parker.mips.gui.userpanes.hexeditor;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import org.parker.mips.assembler.Assembler;
+import org.parker.mips.assembler_old.Assembler;
 import org.parker.mips.gui.components.FlatIconButton;
 import org.parker.mips.gui.icons.FlatMinusIcon;
 import org.parker.mips.gui.icons.FlatPlusIcon;

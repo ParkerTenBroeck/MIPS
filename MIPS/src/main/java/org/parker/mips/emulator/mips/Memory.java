@@ -132,7 +132,7 @@ public class Memory {
 
     public static boolean setWord(int index, int val) {
         if ((index & 3) != 0) {
-            throw new RunTimeMemoryException("setWord must be alligned to 4 error at index:" + index);
+            throw new RunTimeMemoryException("setWord must be aligned to 4 error at index:" + index);
         }
         if (index + 3 > Memory.memory.length || index < 0) {
             memoryOutOfBoundsEvent(index);

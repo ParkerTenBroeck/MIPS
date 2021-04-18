@@ -5,7 +5,7 @@
  */
 package org.parker.mips.gui;
 
-import org.parker.mips.assembler.data.MemoryLable;
+import org.parker.mips.assembler_old.data.MemoryLable;
 
 import javax.swing.*;
 import java.util.ArrayList;

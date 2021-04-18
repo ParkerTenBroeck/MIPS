@@ -1,14 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.parker.mips.gui;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.parker.mips.*;
-import org.parker.mips.assembler.Assembler;
-import org.parker.mips.assembler2.mips.MipsDisassembler;
+import org.parker.mips.assembler_old.Assembler;
+import org.parker.mips.assembler.mips.MipsDisassembler;
 import org.parker.mips.gui.userpanes.editor.Editor;
 import org.parker.mips.gui.userpanes.editor.EditorHandler;
 import org.parker.mips.gui.userpanes.hexeditor.MemoryEditorUserPane;
@@ -36,16 +31,18 @@ import java.awt.event.WindowListener;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  *
- * @author parke
+ * @author Parker TenBroeck
  */
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class MainGUI extends javax.swing.JFrame {
 
-    private static boolean auteUpdateRunning;
+    private static boolean autoUpdateRunning;
     private static MainGUI instance;
 
     private static final Logger LOGGER = Logger.getLogger(MainGUI.class.getName());
@@ -56,10 +53,11 @@ public class MainGUI extends javax.swing.JFrame {
         return enableBreak.isSelected();
     }
 
+    @SuppressWarnings("unchecked")
     private static synchronized void startAutoUpdate() {
         MainGUI.startButton.setSelected(true);
 
-        MainGUI.auteUpdateRunning = true;
+        MainGUI.autoUpdateRunning = true;
 
         if (!(Boolean)systemPrefs.getNode("gui").getPreference("enableGUIAutoUpdateWhileRunning", true)) {
             return;
@@ -69,11 +67,11 @@ public class MainGUI extends javax.swing.JFrame {
             Preference<Boolean> autoUpdate = systemPrefs.getNode("gui").getRawPreference("enableGUIAutoUpdateWhileRunning", true);
             Preference<Integer> refreshTime = systemPrefs.getNode("gui").getRawPreference("GUIAutoUpdateRefreshTime", 100);
 
-            while (auteUpdateRunning && autoUpdate.val()) {
+            while (autoUpdateRunning && autoUpdate.val()) {
                 MainGUI.refresh();
                 try {
                     Thread.sleep(refreshTime.val());
-                } catch (Exception e) {
+                } catch (Exception ignored) {
 
                 }
             }
@@ -84,7 +82,7 @@ public class MainGUI extends javax.swing.JFrame {
 
     public static synchronized void stopAutoUpdate() {
         MainGUI.startButton.setSelected(false);
-        MainGUI.auteUpdateRunning = false;
+        MainGUI.autoUpdateRunning = false;
         MainGUI.refresh();
     }
 
@@ -100,11 +98,13 @@ public class MainGUI extends javax.swing.JFrame {
     /**
      * Creates new form Main_GUI
      */
+    @SuppressWarnings("null")
     public MainGUI() {
         initComponents();
 
         try {
             URL url = ClassLoader.getSystemClassLoader().getResource("images/logo4.png");
+            assert url != null;
             ImageIcon icon = new ImageIcon(url);
             this.setIconImage(icon.getImage());
 
@@ -119,7 +119,7 @@ public class MainGUI extends javax.swing.JFrame {
         systemPrefs.getNode("emulator/runtime").getRawPreference("enableBreakPoints",true).LinkJButton(this, enableBreak);
         //OptionsHandler.linkedFile.LinkJButton(this, linkedButton);
 
-        systemPrefs.getNode("assembler").getRawPreference("saveCompilationInfo",false).LinkJButton(this, saveCompileInformationButton);
+        systemPrefs.getNode("assembler").getRawPreference("saveCompilationInfo",false).LinkJButton(this, saveAssemblyInformationButton);
         systemPrefs.getNode("assembler").getRawPreference("savePreProcessedFile",false).LinkJButton(this, savePreProcessedFileButton);
 
         systemPrefs.getNode("emulator/runtime").getRawPreference("breakOnRunTimeError",true).LinkJButton(this, breakProgramOnRTEButton);
@@ -132,11 +132,16 @@ public class MainGUI extends javax.swing.JFrame {
         //OptionsHandler.logErrors.LinkJButton(this, logErrorsButton);
 
 
-        addCompileButtonListener((ae) -> {
-            LOGGER.log(Level.FINER, "Compile Button Action Preformed");
+        addAssembleButtonListener((ae) -> {
+            LOGGER.log(Level.FINER, "Assemble Button Action Preformed");
             Emulator.reset();
             EditorHandler.saveAll();
             Assembler.assembleDefault();
+        });
+
+        addDisassembleButtonListener(e -> {
+            LOGGER.log(Level.FINER, "Disassemble Button Action Preformed");
+            MipsDisassembler.disassemble();
         });
 
         addStartButtonListener((ae) -> {
@@ -178,8 +183,7 @@ public class MainGUI extends javax.swing.JFrame {
 
                     if (confirm == JOptionPane.CANCEL_OPTION) {
 
-                    }
-                    if (confirm == JOptionPane.YES_OPTION) {
+                    }else if (confirm == JOptionPane.YES_OPTION) {
                         if (!EditorHandler.saveAll()) {
                             return;
                         }
@@ -202,25 +206,23 @@ public class MainGUI extends javax.swing.JFrame {
         //Generates examples
         try {
 
-            ActionListener al = new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    Emulator.stop();
-                    Emulator.reset();
-                    //if (FileHandler.loadExampleFile(new File(((ThemedJMenuItem) evt.getSource()).getName()))) {
-                    //new FormattedTextEditor();
-                    File file = new File(((javax.swing.JMenuItem) evt.getSource()).getName());
+            ActionListener al = evt -> {
+                Emulator.stop();
+                Emulator.reset();
+                //if (FileHandler.loadExampleFile(new File(((ThemedJMenuItem) evt.getSource()).getName()))) {
+                //new FormattedTextEditor();
+                File file = new File(((JMenuItem) evt.getSource()).getName());
 
-                    Editor.createEditor(FileUtils.loadFileAsByteArraySafe(file), FileUtils.removeExtension(file.getName()), FormattedTextEditor.class);
-                    Assembler.assembleDefault();
-                    //}
-                }
+                Editor.createEditor(FileUtils.loadFileAsByteArraySafe(file), FileUtils.removeExtension(file.getName()), FormattedTextEditor.class);
+                Assembler.assembleDefault();
+                //}
             };
 
-            for (Component comp : generateJMenuFromFile(new File(ResourceHandler.EXAMPLES_PATH), al).getMenuComponents()) {
-                MainGUI.exampleMenu.add((JComponent) comp);
+            for (Component comp : Objects.requireNonNull(generateJMenuFromFile(new File(ResourceHandler.EXAMPLES_PATH), al)).getMenuComponents()) {
+                MainGUI.exampleMenu.add(comp);
             }
 
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
 
         new dragAndDrop(mainPanel);
@@ -265,9 +267,7 @@ public class MainGUI extends javax.swing.JFrame {
 
                 ArrayList<Node<ActionListener>> temp = plugin.getGeneralListeners(); //adds general listeners to syscall menu
                 if (temp != null) {
-                    temp.forEach((t) -> {
-                        generateJMenuFromNodeStructure(tempMenu, t);
-                    });
+                    temp.forEach((t) -> generateJMenuFromNodeStructure(tempMenu, t));
                 }
 
                 registerSystemCallPluginsJMenu.add(tempMenu);
@@ -277,9 +277,7 @@ public class MainGUI extends javax.swing.JFrame {
                 if (temp != null) {
                 	javax.swing.JMenu tempMenu = new javax.swing.JMenu();
                     tempMenu.setText(plugin.DESCRIPTION.NAME.replaceAll("_", " "));
-                    temp.forEach((t) -> {
-                        generateJMenuFromNodeStructure(tempMenu, t);
-                    });
+                    temp.forEach((t) -> generateJMenuFromNodeStructure(tempMenu, t));
                     systemCallFrameJMenu.add(tempMenu);
                 }
             }
@@ -288,9 +286,7 @@ public class MainGUI extends javax.swing.JFrame {
                 if (temp != null) {
                 	javax.swing.JMenu tempMenu = new javax.swing.JMenu();
                     tempMenu.setText(plugin.DESCRIPTION.NAME.replaceAll("_", " "));
-                    temp.forEach((t) -> {
-                        generateJMenuFromNodeStructure(tempMenu, t);
-                    });
+                    temp.forEach((t) -> generateJMenuFromNodeStructure(tempMenu, t));
                     systemCallExampleJMenu.add(tempMenu);
                 }
             }
@@ -302,19 +298,17 @@ public class MainGUI extends javax.swing.JFrame {
             return menu;
         }
 
-        if (node.hasChildern()) { // if node has no childerent then add to menu as an item
+        if (node.hasChildern()) { // if node has no children then add to menu as an item
         	javax.swing.JMenuItem temp = new javax.swing.JMenuItem();
             temp.setText(node.name);
-            temp.addActionListener((ActionListener) node.getData());
+            temp.addActionListener(node.getData());
             menu.add(temp);
             return menu;
         }
 
         javax.swing.JMenu temp = new javax.swing.JMenu();
         temp.setText(node.name);
-        node.getChildernAndDestroyParent().forEach((t) -> {
-            generateJMenuFromNodeStructure(temp, t);
-        });
+        Objects.requireNonNull(node.getChildernAndDestroyParent()).forEach((t) -> generateJMenuFromNodeStructure(temp, t));
         menu.add(temp);
         return menu;
     }
@@ -327,30 +321,30 @@ public class MainGUI extends javax.swing.JFrame {
             if (name.contains("‰")) {
                 try {
                     name = name.split("‰")[2];
-                } catch (Exception e) {
+                } catch (Exception ignored) {
 
                 }
             }
 
             jMenu.setText(name);
             jMenu.setName(file.getAbsolutePath());
-            for (File f2 : file.listFiles()) {
+            for (File f2 : Objects.requireNonNull(file.listFiles())) {
                 if (f2.isDirectory()) {
                     jMenu.add(generateJMenuFromFile(f2, al));
                 } else {
                     if (f2.getName().split("\\.")[1].equals("mxn")) {
                         continue;
                     }
-                    String namef2 = f2.getName().split("\\.")[0];
-                    if (namef2.contains("‰")) {
+                    String name2 = f2.getName().split("\\.")[0];
+                    if (name2.contains("‰")) {
                         try {
-                            namef2 = namef2.split("‰")[2];
-                        } catch (Exception e) {
+                            name2 = name2.split("‰")[2];
+                        } catch (Exception ignored) {
 
                         }
                     }
                     javax.swing.JMenuItem jMenuItem = new javax.swing.JMenuItem();
-                    jMenuItem.setText(namef2);
+                    jMenuItem.setText(name2);
                     jMenuItem.setName(f2.getAbsolutePath());
                     jMenuItem.addActionListener(al);
                     jMenu.add(jMenuItem);
@@ -375,7 +369,7 @@ public class MainGUI extends javax.swing.JFrame {
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("all")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -383,7 +377,8 @@ public class MainGUI extends javax.swing.JFrame {
         jSplitPane1 = new javax.swing.JSplitPane();
         topPanel = new javax.swing.JPanel();
         topButtonBarPanel = new javax.swing.JPanel();
-        compileButton = new javax.swing.JButton();
+        assembleButton = new javax.swing.JButton();
+        disassembleButton = new javax.swing.JButton();
         startButton = new javax.swing.JToggleButton();
         stopButton = new javax.swing.JButton();
         singleStepButton = new javax.swing.JButton();
@@ -401,7 +396,7 @@ public class MainGUI extends javax.swing.JFrame {
         //aboutLinkedFile = new javax.swing.JButton();
         enableBreak = new javax.swing.JCheckBox();
         delaySlider = new javax.swing.JSlider();
-        delayLable = new javax.swing.JLabel();
+        delayLabel = new javax.swing.JLabel();
         bottomPanel = new javax.swing.JPanel();
         logFrame = new LogFrame();
         menuBar = new javax.swing.JMenuBar();
@@ -424,7 +419,7 @@ public class MainGUI extends javax.swing.JFrame {
         asciiChartButton = new javax.swing.JMenuItem();
         documentationButton = new javax.swing.JMenuItem();
         savePreProcessedFileButton = new javax.swing.JCheckBoxMenuItem();
-        saveCompileInformationButton = new javax.swing.JCheckBoxMenuItem();
+        saveAssemblyInformationButton = new javax.swing.JCheckBoxMenuItem();
         processorMenu = new javax.swing.JMenu();
         saveMemoryButton = new javax.swing.JMenuItem();
         loadMemoryButton = new javax.swing.JMenuItem();
@@ -453,8 +448,12 @@ public class MainGUI extends javax.swing.JFrame {
         topButtonBarPanel.setBackground(new java.awt.Color(102, 102, 102));
         topButtonBarPanel.setOpaque(false);
 
-        compileButton.setText("Compile");
-        compileButton.setFocusable(false);
+        assembleButton.setText("Assemble");
+        assembleButton.setFocusable(false);
+
+        disassembleButton.setText("Disassemble");
+        disassembleButton.setToolTipText("Dissasembles the data currently in memory");
+        disassembleButton.setFocusable(false);
 
         startButton.setText("Start");
         startButton.setFocusable(false);
@@ -497,7 +496,7 @@ public class MainGUI extends javax.swing.JFrame {
             topButtonBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(topButtonBarPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(compileButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(assembleButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -505,9 +504,11 @@ public class MainGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(singleStepButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(resetButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(memoryButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(resetButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(disassembleButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(InstructionsRan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 449, Short.MAX_VALUE)
@@ -523,12 +524,13 @@ public class MainGUI extends javax.swing.JFrame {
                 .addGroup(topButtonBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(aboutButton)
                     .addGroup(topButtonBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(compileButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(assembleButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(stopButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(singleStepButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(memoryButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(disassembleButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(resetButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(InstructionsRan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(3, 3, 3))
@@ -583,16 +585,16 @@ public class MainGUI extends javax.swing.JFrame {
         enableBreak.setSelected(true);
         enableBreak.setText("Enable BreakPoints");
 
-        delaySlider.setForeground(new java.awt.Color(0, 204, 153));
+        //delaySlider.setForeground(new java.awt.Color(0, 204, 153));
         delaySlider.setMaximum(1000);
         delaySlider.setValue(0);
         delaySlider.setFocusable(false);
 
-        delayLable.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        delayLable.setText("Instruction Delay: " + delaySlider.getValue() + "ns");
+        delayLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        delayLabel.setText("Instruction Delay: " + delaySlider.getValue() + "ns");
         delaySlider.addChangeListener(cl ->{
         	long trueValue = (long) Math.pow(delaySlider.getValue(), 3);
-        	delayLable.setText("Instruction Delay: " + trueValue + "ns");	
+        	delayLabel.setText("Instruction Delay: " + trueValue + "ns");
         	 Emulator.setDelay(trueValue);
         });
 
@@ -611,7 +613,7 @@ public class MainGUI extends javax.swing.JFrame {
                 ).addGap(63, 63, 63)
                 .addGroup(midButtonSliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(delaySlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(delayLable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(delayLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(191, 191, 191))
         );
         midButtonSliderPanelLayout.setVerticalGroup(
@@ -621,7 +623,7 @@ public class MainGUI extends javax.swing.JFrame {
                 .addGroup(midButtonSliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     //.addComponent(linkedButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     //.addComponent(aboutLinkedFile, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(delayLable, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(delayLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(midButtonSliderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(enableBreak, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -772,9 +774,9 @@ public class MainGUI extends javax.swing.JFrame {
         savePreProcessedFileButton.setText("Save PreProcessed File");
         assemblerMenu.add(savePreProcessedFileButton);
 
-        saveCompileInformationButton.setSelected(true);
-        saveCompileInformationButton.setText("Save CompileInformation");
-        assemblerMenu.add(saveCompileInformationButton);
+        saveAssemblyInformationButton.setSelected(true);
+        saveAssemblyInformationButton.setText("Save Assembly Information");
+        assemblerMenu.add(saveAssemblyInformationButton);
 
         menuBar.add(assemblerMenu);
 
@@ -873,7 +875,7 @@ public class MainGUI extends javax.swing.JFrame {
         Emulator.stop();
     	JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
         int returnVal = fc.showOpenDialog(MainGUI.getFrame());
-        if (returnVal == fc.FILES_ONLY) {
+        if (returnVal == JFileChooser.FILES_ONLY) {
             FileUtils.saveByteArrayToFileSafe(Memory.getMemory(), fc.getSelectedFile());
         }
     }
@@ -881,7 +883,7 @@ public class MainGUI extends javax.swing.JFrame {
     private void loadMemoryButtonActionPreformed(java.awt.event.ActionEvent evt) {
     	JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
         int returnVal = fc.showOpenDialog(MainGUI.getFrame());
-        if (returnVal == fc.FILES_ONLY) {
+        if (returnVal == JFileChooser.FILES_ONLY) {
             Memory.setMemory(FileUtils.loadFileAsByteArraySafe(fc.getSelectedFile()));
         }
         Emulator.stop();
@@ -897,12 +899,6 @@ public class MainGUI extends javax.swing.JFrame {
         new imageFrame("/images/asciiChart.bmp");
     }//GEN-LAST:event_asciiChartButtonActionPerformed
 
-    private void aboutLinkedFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutLinkedFileActionPerformed
-        LOGGER.log(Level.INFO, "Linked Files can only be read by this program and are loaded from the file every time compiled. This is usful is another text editor is being used");
-        //LogFrame.logCustomMessage(, true, false, true, Color.BLUE, null);
-        //infoBox("Message", "Linked Files can only be read by this program \n and are loaded from the file every time compiled. \n This is usful is another text editor is being used");
-    }//GEN-LAST:event_aboutLinkedFileActionPerformed
-
     private void linkedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linkedButtonActionPerformed
         //ASM_GUI.setEnable(!linkedButton.isSelected());
     }//GEN-LAST:event_linkedButtonActionPerformed
@@ -915,6 +911,7 @@ public class MainGUI extends javax.swing.JFrame {
         try {
             DesktopBrowser.openLinkInBrowser(ResourceHandler.DOCUMENTATION_PATH + FileUtils.FILE_SEPARATOR + "index.html");
         } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "Cannot open desktop browser", ex);
         }
     }//GEN-LAST:event_documentationButtonActionPerformed
 
@@ -996,8 +993,12 @@ public class MainGUI extends javax.swing.JFrame {
         return JOptionPane.showOptionDialog(instance, message, title, i, ii, icon, objects, object);
     }
 
-    public static void addCompileButtonListener(ActionListener al) {
-        MainGUI.compileButton.addActionListener(al);
+    public static void addAssembleButtonListener(ActionListener al) {
+        MainGUI.assembleButton.addActionListener(al);
+    }
+
+    public static void addDisassembleButtonListener(ActionListener al){
+        MainGUI.disassembleButton.addActionListener(al);
     }
 
     public static void addStartButtonListener(ActionListener al) {
@@ -1016,7 +1017,6 @@ public class MainGUI extends javax.swing.JFrame {
         MainGUI.resetButton.addActionListener(al);
     }
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private static javax.swing.JLabel InstructionsRan;
     private static UserPaneTabbedPane aSM_GUI1;
@@ -1026,9 +1026,10 @@ public class MainGUI extends javax.swing.JFrame {
     private static javax.swing.JPanel bottomPanel;
     private static javax.swing.JCheckBoxMenuItem breakProgramOnRTEButton;
     private static javax.swing.JMenuItem checkForUpdates;
-    private static javax.swing.JButton compileButton;
+    private static javax.swing.JButton assembleButton;
+    private static javax.swing.JButton disassembleButton;
     private static javax.swing.JMenu assemblerMenu;
-    private static javax.swing.JLabel delayLable;
+    private static javax.swing.JLabel delayLabel;
     private static javax.swing.JSlider delaySlider;
     private static javax.swing.JMenuItem documentationButton;
     private static javax.swing.JMenu editMenu;
@@ -1036,16 +1037,10 @@ public class MainGUI extends javax.swing.JFrame {
     private static javax.swing.JCheckBoxMenuItem enableGUIUpdatingWhileRunningButton;
     private static javax.swing.JMenu exampleMenu;
     private static javax.swing.JMenu fileMenu;
-    //private static org.parker.mips.gui.InstructionMemoryGUI instructionMemory_GUI1;
     private static javax.swing.JLabel jLabel2;
     private static javax.swing.JSplitPane jSplitPane1;
-    //private static javax.swing.JCheckBox linkedButton;
     private static javax.swing.JMenuItem loadPluginJMenuItem;
-    //private static javax.swing.JCheckBoxMenuItem logErrorsButton;
     private static LogFrame logFrame;
-    //private static javax.swing.JCheckBoxMenuItem logMessagesButton;
-    //private static javax.swing.JCheckBoxMenuItem logSystemMessagesButton;
-    //private static javax.swing.JCheckBoxMenuItem logWarningsButton;
     private static javax.swing.JPanel lowerContentPanel;
     private static javax.swing.JPanel mainPanel;
     private static javax.swing.JButton memoryButton;
@@ -1062,7 +1057,7 @@ public class MainGUI extends javax.swing.JFrame {
     private static javax.swing.JMenuItem saveMemoryButton;
     private static javax.swing.JMenuItem loadMemoryButton;
     private static javax.swing.JMenuItem saveAsMenuButton;
-    private static javax.swing.JCheckBoxMenuItem saveCompileInformationButton;
+    private static javax.swing.JCheckBoxMenuItem saveAssemblyInformationButton;
     private static javax.swing.JMenuItem saveMenuButton;
     private static javax.swing.JCheckBoxMenuItem savePreProcessedFileButton;
     private static javax.swing.JButton singleStepButton;

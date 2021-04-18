@@ -9,9 +9,9 @@ import org.fife.ui.rsyntaxtextarea.AbstractTokenMaker;
 import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.TokenMap;
-import org.parker.mips.assembler.PreProcessor;
-import org.parker.mips.assembler.StringToOpcode;
-import org.parker.mips.assembler.preprocessor.statements.Statement;
+import org.parker.mips.assembler_old.PreProcessor;
+import org.parker.mips.assembler_old.StringToOpcode;
+import org.parker.mips.assembler_old.preprocessor.statements.Statement;
 
 import javax.swing.text.Segment;
 

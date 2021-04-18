@@ -2,6 +2,8 @@ package org.parker.mips.assembler2.util;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+import org.parker.mips.assembler.util.CompiledExpression;
+import org.parker.mips.assembler.util.ExpressionCompiler;
 
 import java.util.HashMap;
 import java.util.Map;

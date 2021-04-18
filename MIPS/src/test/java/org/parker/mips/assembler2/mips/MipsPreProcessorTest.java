@@ -3,7 +3,9 @@ package org.parker.mips.assembler2.mips;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
-import org.parker.mips.assembler2.base.preprocessor.PreProcessedStatement;
+import org.parker.mips.assembler.base.preprocessor.PreProcessedStatement;
+import org.parker.mips.assembler.mips.MipsAssembler;
+import org.parker.mips.assembler.mips.MipsPreProcessor;
 import org.parker.mips.util.FileUtils;
 
 import java.io.File;

@@ -106,6 +106,8 @@ public class Emulator implements Runnable {
         }
 
         } while (isRunning);
+
+        MainGUI.refreshAll();
     }
 
     public static int getOpCode() {
