@@ -8,4 +8,7 @@ public class LinkingException extends RuntimeException{
     public LinkingException(String message, Exception cause){
         super(message, cause);
     }
+    public LinkingException(){
+
+    }
 }

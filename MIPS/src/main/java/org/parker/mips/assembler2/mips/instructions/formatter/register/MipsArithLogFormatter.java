@@ -1,5 +1,6 @@
 package org.parker.mips.assembler2.mips.instructions.formatter.register;
 
+import org.parker.mips.assembler2.base.assembler.BaseAssembler;
 import org.parker.mips.assembler2.instruction.StandardInstruction;
 import org.parker.mips.assembler2.mips.MipsAssembler;
 import org.parker.mips.assembler2.mips.instructions.formatter.MipsRegisterFormatter;
@@ -25,7 +26,7 @@ public enum MipsArithLogFormatter implements MipsRegisterFormatter {
     }
 
     @Override
-    public void encode(byte[] data, StandardInstruction instruction, MipsAssembler assembler){
+    public void encode(byte[] data, StandardInstruction instruction, BaseAssembler assembler){
         int regd = 0;
         int regs = 0;
         int regt = 0;

@@ -1,5 +1,6 @@
 package org.parker.mips.assembler2.mips.instructions.formatter.jump;
 
+import org.parker.mips.assembler2.base.assembler.BaseAssembler;
 import org.parker.mips.assembler2.instruction.StandardInstruction;
 import org.parker.mips.assembler2.mips.MipsAssembler;
 import org.parker.mips.assembler2.operand.OpLong;
@@ -17,7 +18,7 @@ public enum MipsJumpFormatter implements org.parker.mips.assembler2.mips.instruc
     }
 
     @Override
-    public void encode(byte[] data, StandardInstruction instruction, MipsAssembler assembler){
+    public void encode(byte[] data, StandardInstruction instruction, BaseAssembler assembler){
         int im = 0;
 
         if(instruction.argsLength() == 1){

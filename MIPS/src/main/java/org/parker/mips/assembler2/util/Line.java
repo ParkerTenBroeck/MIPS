@@ -59,4 +59,8 @@ public class Line implements Serializable {
     public int getLineNumber() {
         return startingLine + 1;
     }
+
+    public File getFile() {
+        return this.parentFile;
+    }
 }

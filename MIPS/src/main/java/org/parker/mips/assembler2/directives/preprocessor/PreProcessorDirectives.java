@@ -4,8 +4,11 @@ import org.parker.mips.assembler2.base.preprocessor.BasePreProcessor;
 import org.parker.mips.assembler2.base.preprocessor.IntermediateDirective;
 import org.parker.mips.assembler2.base.preprocessor.IntermediateStatement;
 import org.parker.mips.assembler2.exception.DirectivesError;
+import org.parker.mips.assembler2.util.CompiledExpression;
 import org.parker.mips.assembler2.util.ExpressionCompiler;
+import org.parker.mips.util.FileUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +20,32 @@ public class PreProcessorDirectives {
     private static final HashMap<String, PreProcessorDirective> handlerMap = new HashMap<>();
 
     private static final PreProcessorDirective INCLUDE = (s, is, index, ec, preProcessor) -> {
+
+        CompiledExpression[] ecs = ec.compileExpressionsAsArray(s.expressionString, s.parentLine, s.expressionStartingIndex);
+
+        if(ecs.length != 1){
+            throw new IllegalArgumentException("wrong number of arguments found expected: 1 found: " + ecs.length);
+        }
+
+        Object arg1 = ecs[0].evaluate();
+        if(!(arg1 instanceof String)){
+            throw new IllegalArgumentException("wrong type found expected: String found: " + arg1.getClass().getSimpleName());
+        }
+
+        String path = (String) arg1;
+
+        File file = new File(path);
+        if(!file.exists()){
+            file = new File(s.parentLine.getFile().getParentFile().getAbsolutePath() + FileUtils.FILE_SEPARATOR + path);
+            if(!file.exists()){
+                throw new IllegalArgumentException("File not found");
+            }
+        }
+        List<IntermediateStatement> include = preProcessor.preProcessToIntermediate(file);
+        for(IntermediateStatement as: include){
+            as.getLine().setParent(s.parentLine);
+        }
+        is.addAll(index + 1, include);
 
     };
 
@@ -117,7 +146,7 @@ public class PreProcessorDirectives {
         List<IntermediateStatement> myStatements = new ArrayList<>();
         while(true){
             if(is.size() <= index){
-                throw new DirectivesError("reached end of file before .endm", s.parentLine);
+                throw new DirectivesError("reached end of file before endm", s.parentLine);
             }
 
             IntermediateStatement statement = is.get(index);
@@ -128,16 +157,13 @@ public class PreProcessorDirectives {
 
                 if(identifier.equals("endm")){
                     break;
-                }else{
-                    myStatements.add(statement);
                 }
+            }else{
+                statement.getLine().setParent(s.parentLine);
+                myStatements.add(statement);
             }
 
             index ++;
-        }
-
-        for(int i = 0; i < myStatements.size(); i ++){
-            System.out.println(myStatements.get(i).toString());
         }
     };
 

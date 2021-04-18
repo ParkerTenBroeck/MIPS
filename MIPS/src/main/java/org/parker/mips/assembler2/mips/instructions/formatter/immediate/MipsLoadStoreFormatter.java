@@ -1,5 +1,6 @@
 package org.parker.mips.assembler2.mips.instructions.formatter.immediate;
 
+import org.parker.mips.assembler2.base.assembler.BaseAssembler;
 import org.parker.mips.assembler2.instruction.StandardInstruction;
 import org.parker.mips.assembler2.mips.MipsAssembler;
 import org.parker.mips.assembler2.mips.instructions.formatter.MipsImmediateFormatter;
@@ -25,7 +26,7 @@ public enum MipsLoadStoreFormatter implements MipsImmediateFormatter {
     }
 
     @Override
-    public void encode(byte[] data, StandardInstruction instruction, MipsAssembler assembler){
+    public void encode(byte[] data, StandardInstruction instruction, BaseAssembler assembler){
         int regt = 0;
         int im = 0;
         int regs = 0;

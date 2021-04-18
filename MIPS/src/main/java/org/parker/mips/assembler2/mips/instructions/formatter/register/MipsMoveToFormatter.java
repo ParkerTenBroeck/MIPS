@@ -1,5 +1,6 @@
 package org.parker.mips.assembler2.mips.instructions.formatter.register;
 
+import org.parker.mips.assembler2.base.assembler.BaseAssembler;
 import org.parker.mips.assembler2.instruction.StandardInstruction;
 import org.parker.mips.assembler2.mips.MipsAssembler;
 import org.parker.mips.assembler2.mips.instructions.formatter.MipsRegisterFormatter;
@@ -17,7 +18,7 @@ public enum MipsMoveToFormatter implements MipsRegisterFormatter {
     }
 
     @Override
-    public void encode(byte[] data, StandardInstruction instruction, MipsAssembler assembler){
+    public void encode(byte[] data, StandardInstruction instruction, BaseAssembler assembler){
         int regs = 0;
         if(instruction.argsLength() == 3){
                 if(!(instruction.getArg(0) instanceof OpRegister)){

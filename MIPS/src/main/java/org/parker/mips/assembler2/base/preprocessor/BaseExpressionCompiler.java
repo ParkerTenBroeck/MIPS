@@ -3,6 +3,7 @@ package org.parker.mips.assembler2.base.preprocessor;
 import org.parker.mips.assembler2.base.assembler.BaseAssembler;
 import org.parker.mips.assembler2.base.preprocessor.BasePreProcessor;
 import org.parker.mips.assembler2.util.ExpressionCompiler;
+import org.parker.mips.assembler2.util.linking.Label;
 
 public class BaseExpressionCompiler<A extends BaseAssembler, P extends BasePreProcessor> extends ExpressionCompiler {
 
@@ -40,5 +41,15 @@ public class BaseExpressionCompiler<A extends BaseAssembler, P extends BasePrePr
         }else{
             return super.preProcessVariableMnemonic(token);
         }
+    }
+
+    @Override
+    protected Object parseMemberAccess(Object variable, String memberAccess) {
+        if(variable instanceof Label){
+            if(memberAccess.equals("byteAddress")){
+                return ((Label) variable).getAddress();
+            }
+        }
+        return super.parseMemberAccess(variable, memberAccess);
     }
 }

@@ -5,7 +5,6 @@
  */
 package org.parker.mips.plugin.syscall;
 
-
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -79,74 +78,122 @@ public abstract class SystemCall {
         public SystemCallData(Map<String, Object> data) {
 
             try {
+                if(!data.containsKey("SYSTEM_CALL_NAME"))
+                    throw new MissingYMALField("SYSTEM_CALL_NAME");
+
                 this.SYSTEM_CALL_NAME = (String) data.get("SYSTEM_CALL_NAME");
             } catch (Exception e) {
                 throw new InvalidSystemCallException("SYSTEM_CALL_NAME field is missing from the yml");
             }
             try {
+                if(!data.containsKey("SYSTEM_CALL_NUMBER"))
+                    throw new MissingYMALField("SYSTEM_CALL_NUMBER");
+
                 this.SYSTEM_CALL_NUMBER = (int) data.get("SYSTEM_CALL_NUMBER");
             } catch (Exception e) {
                 throw new InvalidSystemCallException("SYSTEM_CALL_NUMBER field in " + this.SYSTEM_CALL_NAME + " is missing from the yml");
             }
             try {
-                this.SYSTEM_CALL_DESCRIPTION = (String) data.get("SYSTEM_CALL_DESCRIPTION");
+                if(!data.containsKey("SYSTEM_CALL_DESCRIPTION"))
+                    throw new MissingYMALField("SYSTEM_CALL_DESCRIPTION");
 
+                this.SYSTEM_CALL_DESCRIPTION = (String) data.get("SYSTEM_CALL_DESCRIPTION");
             } catch (Exception e) {
                 throw new InvalidSystemCallException("SYSTEM_CALL_DESCRIPTION field in " + this.SYSTEM_CALL_NAME + " is missing from the yml");
             }
             try {
+                if(!data.containsKey("REGISTERS_READ_FROM"))
+                    throw new MissingYMALField("REGISTERS_READ_FROM");
+
+
                 this.REGISTERS_READ_FROM = ((ArrayList<Integer>) data.get("REGISTERS_READ_FROM")).toArray(new Integer[0]);
             } catch (Exception e) {
                 throw new InvalidSystemCallException("REGISTERS_READ_FROM field in " + this.SYSTEM_CALL_NAME + " is missing from the yml");
             }
             try {
+                if(!data.containsKey("REGISTERS_WRITTEN_TO"))
+                    throw new MissingYMALField("REGISTERS_WRITTEN_TO");
+
+
                 this.REGISTERS_WRITTEN_TO = ((ArrayList<Integer>) data.get("REGISTERS_WRITTEN_TO")).toArray(new Integer[0]);
             } catch (Exception e) {
                 throw new InvalidSystemCallException("REGISTERS_WRITTEN_TO field in " + this.SYSTEM_CALL_NAME + " is missing from the yml");
             }
             try {
+                if(!data.containsKey("PC_REG_READ_FROM"))
+                    throw new MissingYMALField("PC_REG_READ_FROM");
+
+
                 this.PC_REG_READ_FROM = (boolean) data.get("PC_REG_READ_FROM");
 
             } catch (Exception e) {
                 throw new InvalidSystemCallException("PC_REG_READ_FROM field in " + this.SYSTEM_CALL_NAME + " is missing from the yml");
             }
             try {
+                if(!data.containsKey("PC_REG_WRITTEN_TO"))
+                    throw new MissingYMALField("PC_REG_WRITTEN_TO");
+
+
                 this.PC_REG_WRITTEN_TO = (boolean) data.get("PC_REG_WRITTEN_TO");
 
             } catch (Exception e) {
                 throw new InvalidSystemCallException("PC_REG_WRITTEN_TO field in " + this.SYSTEM_CALL_NAME + " is missing from the yml");
             }
             try {
+                if(!data.containsKey("HIGH_REG_READ_FROM"))
+                    throw new MissingYMALField("HIGH_REG_READ_FROM");
+
+
                 this.HIGH_REG_READ_FROM = (boolean) data.get("HIGH_REG_READ_FROM");
 
             } catch (Exception e) {
                 throw new InvalidSystemCallException("HIGH_REG_READ_FROM field in " + this.SYSTEM_CALL_NAME + " is missing from the yml");
             }
             try {
+                if(!data.containsKey("HIGH_REG_WRITTEN_TO"))
+                    throw new MissingYMALField("HIGH_REG_WRITTEN_TO");
+
+
                 this.HIGH_REG_WRITTEN_TO = (boolean) data.get("HIGH_REG_WRITTEN_TO");
 
             } catch (Exception e) {
                 throw new InvalidSystemCallException("HIGH_REG_WRITTEN_TO field in " + this.SYSTEM_CALL_NAME + " is missing from the yml");
             }
             try {
+                if(!data.containsKey("LOW_REG_READ_FROM"))
+                    throw new MissingYMALField("LOW_REG_READ_FROM");
+
+
                 this.LOW_REG_READ_FROM = (boolean) data.get("LOW_REG_READ_FROM");
 
             } catch (Exception e) {
                 throw new InvalidSystemCallException("LOW_REG_READ_FROM field in " + this.SYSTEM_CALL_NAME + " is missing from the yml");
             }
             try {
+                if(!data.containsKey("LOW_REG_WRITTEN_TO"))
+                    throw new MissingYMALField("LOW_REG_WRITTEN_TO");
+
+
                 this.LOW_REG_WRITTEN_TO = (boolean) data.get("LOW_REG_WRITTEN_TO");
 
             } catch (Exception e) {
                 throw new InvalidSystemCallException("LOW_REG_WRITTEN_TO field in " + this.SYSTEM_CALL_NAME + " is missing from the yml");
             }
             try {
+                if(!data.containsKey("MEMORY_READ_FROM"))
+                    throw new MissingYMALField("MEMORY_READ_FROM");
+
+
                 this.MEMORY_READ_FROM = (boolean) data.get("MEMORY_READ_FROM");
 
             } catch (Exception e) {
                 throw new InvalidSystemCallException("MEMORY_READ_FROM field in " + this.SYSTEM_CALL_NAME + " is missing from the yml");
             }
             try {
+                if(!data.containsKey("MEMORY_WRITTEN_TO"))
+                    throw new MissingYMALField("MEMORY_WRITTEN_TO");
+
+
                 this.MEMORY_WRITTEN_TO = (boolean) data.get("MEMORY_WRITTEN_TO");
             } catch (Exception e) {
                 throw new InvalidSystemCallException("MEMORY_WRITTEN_TO field in " + this.SYSTEM_CALL_NAME + " is missing from the yml");

@@ -6,7 +6,7 @@ description: Used to add basic Input and Output functionality to MIPS
 system_calls:  
     USERIO_PRINT_INT: 
         SYSTEM_CALL_NUMBER: 1
-        SYSTEM_CALL_DISCRIPTION: Print the integer in $4 to the console
+        SYSTEM_CALL_DESCRIPTION: Print the integer in $4 to the console
         REGISTERS_READ_FROM: [4]
         REGISTERS_WRITTEN_TO: []
         PC_REG_READ_FROM: false
@@ -19,8 +19,8 @@ system_calls:
         MEMORY_WRITTEN_TO: false
 
     USERIO_PRINT_ASCIIZ_STRING:
-        SYSTEM_CALL_NUMBER: 4 
-        SYSTEM_CALL_DISCRIPTION: Print the ASCIIZ string to console starting at the address in $4 stepping every n bytes for each character where n is equal to $5
+        SYSTEM_CALL_NUMBER: 4
+        SYSTEM_CALL_DESCRIPTION: Print the ASCIIZ string to console starting at the address in $4 stepping every n bytes for each character where n is equal to $5
         REGISTERS_READ_FROM: [4,5]
         REGISTERS_WRITTEN_TO: []
         PC_REG_READ_FROM: false
@@ -33,8 +33,8 @@ system_calls:
         MEMORY_WRITTEN_TO: false
 
     USERIO_READ_USER_INTEGER:
-        SYSTEM_CALL_NUMBER: 5 
-        SYSTEM_CALL_DISCRIPTION: Read an integer from the user console and place value in $2
+        SYSTEM_CALL_NUMBER: 5
+        SYSTEM_CALL_DESCRIPTION: Read an integer from the user console and place value in $2
         REGISTERS_READ_FROM: []
         REGISTERS_WRITTEN_TO: [2]
         PC_REG_READ_FROM: false
@@ -47,8 +47,8 @@ system_calls:
         MEMORY_WRITTEN_TO: false
 
     USERIO_READ_USER_STRING:
-        SYSTEM_CALL_NUMBER: 8 
-        SYSTEM_CALL_DISCRIPTION: Read a string from the user console and store at the address in $4. Length of buffer in $5 Need to allocate one more word than used (for the terminating 0 in the ASCIIZ string)
+        SYSTEM_CALL_NUMBER: 8
+        SYSTEM_CALL_DESCRIPTION: Read a string from the user console and store at the address in $4. Length of buffer in $5 Need to allocate one more word than used (for the terminating 0 in the ASCIIZ string)
         REGISTERS_READ_FROM: [4,5]
         REGISTERS_WRITTEN_TO: []
         PC_REG_READ_FROM: false
@@ -61,8 +61,8 @@ system_calls:
         MEMORY_WRITTEN_TO: true
 
     USERIO_PRINT_CHAR:
-        SYSTEM_CALL_NUMBER: 101 
-        SYSTEM_CALL_DISCRIPTION: Print character to console in $4
+        SYSTEM_CALL_NUMBER: 101
+        SYSTEM_CALL_DESCRIPTION: Print character to console in $4
         REGISTERS_READ_FROM: [4]
         REGISTERS_WRITTEN_TO: []
         PC_REG_READ_FROM: false
@@ -75,8 +75,8 @@ system_calls:
         MEMORY_WRITTEN_TO: false
 
     USERIO_READ_USER_CHAR:
-        SYSTEM_CALL_NUMBER: 102 
-        SYSTEM_CALL_DISCRIPTION: Read character from user console and place value in $2
+        SYSTEM_CALL_NUMBER: 102
+        SYSTEM_CALL_DESCRIPTION: Read character from user console and place value in $2
         REGISTERS_READ_FROM: []
         REGISTERS_WRITTEN_TO: [2]
         PC_REG_READ_FROM: false

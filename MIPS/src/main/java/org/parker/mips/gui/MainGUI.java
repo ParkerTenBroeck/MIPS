@@ -8,6 +8,7 @@ package org.parker.mips.gui;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.parker.mips.*;
 import org.parker.mips.assembler.Assembler;
+import org.parker.mips.assembler2.mips.MipsDisassembler;
 import org.parker.mips.gui.userpanes.editor.Editor;
 import org.parker.mips.gui.userpanes.editor.EditorHandler;
 import org.parker.mips.gui.userpanes.hexeditor.MemoryEditorUserPane;
@@ -129,6 +130,7 @@ public class MainGUI extends javax.swing.JFrame {
         //OptionsHandler.logMessages.LinkJButton(this, logMessagesButton);
         //OptionsHandler.logWarnings.LinkJButton(this, logWarningsButton);
         //OptionsHandler.logErrors.LinkJButton(this, logErrorsButton);
+
 
         addCompileButtonListener((ae) -> {
             LOGGER.log(Level.FINER, "Compile Button Action Preformed");

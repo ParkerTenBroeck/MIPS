@@ -14,4 +14,8 @@ public abstract class Label {
 
     public abstract long getAddress();
 
+    @Override
+    public String toString() {
+        return "Label: " + mnemonic + " on line: " + line.getLineNumber() + " from: " + line.getFile().getAbsolutePath();
+    }
 }

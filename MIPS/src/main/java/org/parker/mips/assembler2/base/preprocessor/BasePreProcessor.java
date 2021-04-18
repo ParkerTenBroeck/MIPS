@@ -4,6 +4,7 @@ import org.parker.mips.assembler.AssemblerLevel;
 import org.parker.mips.assembler2.base.assembler.BaseAssembler;
 import org.parker.mips.assembler2.directives.preprocessor.PreProcessorDirectives;
 import org.parker.mips.assembler2.util.Line;
+import org.parker.mips.util.ResourceHandler;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -25,7 +26,9 @@ public abstract class BasePreProcessor<A extends BaseAssembler> {
     public static final Pattern directivePattern = Pattern.compile("\\s*\\.([a-zA-Z_$][a-zA-Z_$0-9]*)\\s*(.*)");
     public static final Pattern labelPattern = Pattern.compile("\\s*([a-zA-Z_$][a-zA-Z_$0-9]*):\\s*");
 
-    protected Map<String, Object> definedValues = new HashMap<>();
+    protected Map<String, String> definedValues = new HashMap<>();
+
+    protected final Map<String, String> preDefinedValues = new HashMap<>();
 
     protected Number n;
     protected final A assembler;
@@ -36,9 +39,16 @@ public abstract class BasePreProcessor<A extends BaseAssembler> {
         ec = getExpressionCompiler();
         ec.setAssembler(assembler);
         ec.setPreProcessor(this);
+
+        //preprocess(new File(ResourceHandler.REG_DEF_HEADER_FILE));
+        //preDefinedValues.putAll(definedValues);
+        preprocess(new File(ResourceHandler.SYS_CALL_DEF_HEADER_FILE));
+        preDefinedValues.putAll(definedValues);
     }
 
     public List<PreProcessedStatement> preprocess(File file){
+        definedValues = new HashMap<>();
+        definedValues.putAll(preDefinedValues);
         return preProcessStage3(preProcessToIntermediate(file));
     }
 
@@ -63,6 +73,7 @@ public abstract class BasePreProcessor<A extends BaseAssembler> {
             int lineNumber = 0;
             while ((line = br.readLine()) != null) {
                 Line currentLine = new Line();
+                currentLine.setParentFile(file);
                 currentLine.setStartingLine(lineNumber);
                 currentLine.setStartingIndex(index);
                 lineNumber++;
@@ -70,7 +81,7 @@ public abstract class BasePreProcessor<A extends BaseAssembler> {
 
                 if(line.contains(";")){
                     if(line.split(";").length < 2){
-                        continue;
+                        //continue;
                     }
                     line = line.split(";")[0];
                 }
@@ -239,7 +250,7 @@ public abstract class BasePreProcessor<A extends BaseAssembler> {
         return false;
     }
 
-    public Object getDefinedValue(String mnemonic){
+    public String getDefinedValue(String mnemonic){
         if(definedValues.containsKey(mnemonic)){
             return definedValues.get(mnemonic);
         }else{
@@ -257,7 +268,7 @@ public abstract class BasePreProcessor<A extends BaseAssembler> {
         definedValues.put(token, null);
     }
 
-    public void setValue(String token, Object value){
+    public void setValue(String token, String value){
         definedValues.put(token, value);
     }
 

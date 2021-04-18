@@ -1,25 +1,39 @@
 package org.parker.mips.assembler2.mips.instructions.formatter;
 
+import org.parker.mips.assembler2.base.assembler.BaseAssembler;
+import org.parker.mips.assembler2.instruction.StandardInstruction;
 import org.parker.mips.assembler2.mips.MipsAssembler;
 import org.parker.mips.assembler2.instruction.InstructionFormatter;
+import org.parker.mips.assembler2.mips.exceptions.FieldOverflow;
+
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 public interface MipsFormatter extends InstructionFormatter {
 
 
-    default void encode(byte[] data, int[] fields, int[] fieldSize, MipsAssembler assembler){
+    default void encode(byte[] data, int[] fields, int[] fieldSize, BaseAssembler assembler){
 
         int dataI = 0;
 
         for(int i = 0; i < fields.length; i ++){
-            int max = (1 << (fieldSize[i])) - 1;
-            int min = -((1 << (fieldSize[i])));
-            if(max < fields[i] || min > fields[i]) {
-                //error field overflow
-            }else{
+            int mask = (1 << (fieldSize[i])) - 1;
+
+            int sMax = (1 << (fieldSize[i] - 1)) - 1;
+            int sMin = -((1 << (fieldSize[i] - 1)));
+            int uMax = (1 << (fieldSize[i])) - 1;
+            int  uMin = 0;
+            if((sMax >= fields[i] && sMin <= fields[i]) || (uMax >= fields[i] && uMin <= fields[i])) {
                 dataI = dataI << fieldSize[i];
-                dataI |= fields[i] & max;
+                dataI |= fields[i] & mask;
+            }else{
+                throw new FieldOverflow(i,fields[i], uMax, sMin);
             }
         }
+
+        //ByteBuffer bb = ByteBuffer.wrap(data);
+        //bb.order(assembler.isBigEndian()? ByteOrder.BIG_ENDIAN:ByteOrder.LITTLE_ENDIAN);
+        //bb.putInt(dataI);
         //no idea if this is big or small endian
         data[0] = (byte) ((dataI & 0xFF000000) >> 24);
         data[1] = (byte) ((dataI & 0x00FF0000) >> 16);

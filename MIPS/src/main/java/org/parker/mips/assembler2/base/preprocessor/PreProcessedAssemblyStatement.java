@@ -20,7 +20,14 @@ public class PreProcessedAssemblyStatement implements PreProcessedStatement{
 
     @Override
     public String toString() {
-        return identifier + " " + expressionString;
+        String temp = identifier + " ";
+        for(int i = 0; i < args.length; i ++){
+            temp += args[i].toString();
+            if(i < args.length - 1){
+                temp += ", ";
+            }
+        }
+        return temp;
     }
 
     @Override

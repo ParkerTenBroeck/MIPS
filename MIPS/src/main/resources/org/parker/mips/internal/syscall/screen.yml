@@ -5,8 +5,8 @@ author: Parker TenBroeck
 description: Used to add screen and graphic functionality to MIPS
 system_calls:  
     SCREEN_IS_KEY_PRESSED:
-        SYSTEM_CALL_NUMBER: 104 
-        SYSTEM_CALL_DISCRIPTION: Returns in $2 True(value greater than 0) if user is pressing the key value stored in $4 and returns false(value is 0) if the user is not.
+        SYSTEM_CALL_NUMBER: 104
+        SYSTEM_CALL_DESCRIPTION: Returns in $2 True(value greater than 0) if user is pressing the key value stored in $4 and returns false(value is 0) if the user is not.
         REGISTERS_READ_FROM: [4]
         REGISTERS_WRITTEN_TO: [2]
         PC_REG_READ_FROM: false
@@ -20,8 +20,8 @@ system_calls:
 
         
     SCREEN_INIT:
-        SYSTEM_CALL_NUMBER: 150 
-        SYSTEM_CALL_DISCRIPTION: Sets the screen size where width is the number in $4 and height is in $5.
+        SYSTEM_CALL_NUMBER: 150
+        SYSTEM_CALL_DESCRIPTION: Sets the screen size where width is the number in $4 and height is in $5.
         REGISTERS_READ_FROM: [4,5]
         REGISTERS_WRITTEN_TO: []
         PC_REG_READ_FROM: false
@@ -35,8 +35,8 @@ system_calls:
 
 
     SCREEN_SET_PIXEL_X_Y_RGB:
-        SYSTEM_CALL_NUMBER: 151 
-        SYSTEM_CALL_DISCRIPTION: Sets the pixel color at $4 ->x $5 ->y $6 ->color stored as a RGB int.
+        SYSTEM_CALL_NUMBER: 151
+        SYSTEM_CALL_DESCRIPTION: Sets the pixel color at $4 ->x $5 ->y $6 ->color stored as a RGB int.
         REGISTERS_READ_FROM: [4,5,6]
         REGISTERS_WRITTEN_TO: []
         PC_REG_READ_FROM: false
@@ -50,8 +50,8 @@ system_calls:
 
 
     SCREEN_SET_PIXEL_INDEX_RGB:
-        SYSTEM_CALL_NUMBER: 152 
-        SYSTEM_CALL_DISCRIPTION: Set the pixel color at index of $4 $5 ->color stored as RGB int.
+        SYSTEM_CALL_NUMBER: 152
+        SYSTEM_CALL_DESCRIPTION: Set the pixel color at index of $4 $5 ->color stored as RGB int.
         REGISTERS_READ_FROM: [4,5]
         REGISTERS_WRITTEN_TO: []
         PC_REG_READ_FROM: false
@@ -65,8 +65,8 @@ system_calls:
 
 
     SCREEN_UPDATE:
-        SYSTEM_CALL_NUMBER: 153 
-        SYSTEM_CALL_DISCRIPTION: Updates the screen to the new values.
+        SYSTEM_CALL_NUMBER: 153
+        SYSTEM_CALL_DESCRIPTION: Updates the screen to the new values.
         REGISTERS_READ_FROM: []
         REGISTERS_WRITTEN_TO: []
         PC_REG_READ_FROM: false
@@ -80,8 +80,8 @@ system_calls:
 
 
     SCREEN_HSV_TO_RGB:
-        SYSTEM_CALL_NUMBER: 154 
-        SYSTEM_CALL_DISCRIPTION: hsv 0 - 255 h $4 s $5 v $6 - returns rgb values into $4 $5 $6.
+        SYSTEM_CALL_NUMBER: 154
+        SYSTEM_CALL_DESCRIPTION: hsv 0 - 255 h $4 s $5 v $6 - returns rgb values into $4 $5 $6.
         REGISTERS_READ_FROM: [4,5,6]
         REGISTERS_WRITTEN_TO: [4,5,6]
         PC_REG_READ_FROM: false
@@ -95,8 +95,8 @@ system_calls:
 
 
     SCREEN_RGB_TO_HSV:
-        SYSTEM_CALL_NUMBER: 155 
-        SYSTEM_CALL_DISCRIPTION: hsv 0 - 255 h $4 s $5 v $6 - returns color int $4.
+        SYSTEM_CALL_NUMBER: 155
+        SYSTEM_CALL_DESCRIPTION: hsv 0 - 255 h $4 s $5 v $6 - returns color int $4.
         REGISTERS_READ_FROM: [4,5,6]
         REGISTERS_WRITTEN_TO: [4]
         PC_REG_READ_FROM: false
@@ -110,8 +110,8 @@ system_calls:
 
 
     SCREEN_FILL:
-        SYSTEM_CALL_NUMBER: 156 
-        SYSTEM_CALL_DISCRIPTION: fills the whole screen with the color in $4
+        SYSTEM_CALL_NUMBER: 156
+        SYSTEM_CALL_DESCRIPTION: fills the whole screen with the color in $4
         REGISTERS_READ_FROM: [4]
         REGISTERS_WRITTEN_TO: []
         PC_REG_READ_FROM: false
@@ -125,7 +125,7 @@ system_calls:
 
     SCREEN_GET_PIXEL_X_Y_RGB:
         SYSTEM_CALL_NUMBER: 157
-        SYSTEM_CALL_DISCRIPTION: Gets the pixel color at $4 ->x $5 ->y and places the RGB int in register 2
+        SYSTEM_CALL_DESCRIPTION: Gets the pixel color at $4 ->x $5 ->y and places the RGB int in register 2
         REGISTERS_READ_FROM: [ 4,5 ]
         REGISTERS_WRITTEN_TO: [ 2 ]
         PC_REG_READ_FROM: false
@@ -140,7 +140,7 @@ system_calls:
 
     SCREEN_GET_PIXEL_INDEX_RGB:
         SYSTEM_CALL_NUMBER: 158
-        SYSTEM_CALL_DISCRIPTION: Gets the pixel color at index of $4 and places the RGB int into register 2
+        SYSTEM_CALL_DESCRIPTION: Gets the pixel color at index of $4 and places the RGB int into register 2
         REGISTERS_READ_FROM: [ 4 ]
         REGISTERS_WRITTEN_TO: [ 2 ]
         PC_REG_READ_FROM: false

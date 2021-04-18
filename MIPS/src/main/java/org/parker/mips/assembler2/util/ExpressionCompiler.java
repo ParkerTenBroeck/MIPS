@@ -1,7 +1,5 @@
 package org.parker.mips.assembler2.util;
 
-import com.sun.xml.internal.ws.util.StringUtils;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -15,6 +13,44 @@ public class ExpressionCompiler {
 
 
     private static final Logger LOGGER = Logger.getLogger(ExpressionParser.class.getName());
+
+
+    public static int countTopLevelExpressions(String expression){
+        if(expression.trim().isEmpty())return 0;
+
+        char[] chs = expression.toCharArray();
+        int index = 0;
+
+        int count = 1;
+
+
+        int into = 0;
+        boolean string = false;
+
+        while (index >= 0 && index < chs.length) {
+            if (chs[index] == '(' && !string) {
+                into++;
+            } else if (chs[index] == ')' && !string) {
+                into--;
+                if (into == 0) {
+                    break;
+                }
+            } else if (chs[index] == '"') {
+                string = !string;
+            } else if (chs[index] == '\\' && string) {
+                if (chs[index + 1] == '"') {
+                    index += 2;
+                    continue;
+                }
+            }else if(chs[index] == ',' && into == 0){
+                count ++;
+            }
+
+            index++;
+        }
+
+        return count;
+    }
 
     public ExpressionCompiler() {
     }
@@ -85,6 +121,9 @@ public class ExpressionCompiler {
         primitiveCastMap.put("short", Short.class);
         primitiveCastMap.put("Byte", Byte.class);
         primitiveCastMap.put("byte", Byte.class);
+
+        primitiveCastMap.put("Character", Character.class);
+        primitiveCastMap.put("char", Character.class);
     }
 
     private interface Expression{
@@ -179,10 +218,14 @@ public class ExpressionCompiler {
             CompiledExpression x;
             try {
                 Expression e = parseLevel15();
-                x = new CompiledExpression(expressionLine,  expressionLineIndexOffset + 1, pos + expressionLineIndexOffset) {
+                x = new CompiledExpression(expressionLine,  expressionLineIndexOffset, pos + expressionLineIndexOffset) {
                     @Override
                     public Object evaluate() {
                         return e.evaluate();
+                    }
+                    @Override
+                    public String toString() {
+                        return e.toString();
                     }
                 };
             } catch (Exception e) {
@@ -213,10 +256,15 @@ public class ExpressionCompiler {
 
             final List<CompiledExpression> list = new ArrayList<>();
 
-            list.add(new CompiledExpression(expressionLine, start + expressionLineIndexOffset + 1, end + expressionLineIndexOffset) {
+            list.add(new CompiledExpression(expressionLine, start + expressionLineIndexOffset, end + expressionLineIndexOffset) {
                 @Override
                 public Object evaluate() {
                     return xEM.evaluate();
+                }
+
+                @Override
+                public String toString() {
+                    return xEM.toString();
                 }
             });
 
@@ -229,6 +277,11 @@ public class ExpressionCompiler {
                         @Override
                         public Object evaluate() {
                             return xEMT.evaluate();
+                        }
+
+                        @Override
+                        public String toString() {
+                            return xEMT.toString();
                         }
                     });
                 } else {
@@ -253,12 +306,33 @@ public class ExpressionCompiler {
                     if (list.size() == 0) {
                         return xEM;
                     } else {
-                        return () -> {
-                            Object[] x = new Object[list.size()];
-                            for(int i = 0; i < list.size(); i ++){
-                                x[i] = list.get(i).evaluate();
+                        return new Expression() {
+                            @Override
+                            public Object evaluate() {
+                                Object[] x = new Object[list.size()];
+                                for (int i = 0; i < list.size(); i++) {
+                                    x[i] = list.get(i).evaluate();
+                                }
+                                return x;
                             }
-                            return x;
+
+                            @Override
+                            public String toString() {
+                                List<String> a = new ArrayList<>();
+                                for(Expression e: list){
+                                    a.add(e.toString());
+                                }
+                                String temp = "";
+
+                                for(int i = 0; i < a.size(); i ++){
+                                    temp += a.get(i);
+                                    if(i < a.size() - 1){
+                                        temp += ", ";
+                                    }
+                                }
+
+                                return temp;
+                            }
                         };
                     }
                 }
@@ -278,14 +352,23 @@ public class ExpressionCompiler {
                 if(eat(":")){
                     Expression EM2 = parseLevel15();
                     final int e = pos;
-                    return () -> {
-                        Object d = xEM.evaluate();
-                        Object o1 = EM1.evaluate();
-                        Object o2 = EM2.evaluate();
-                        if(d instanceof Boolean){
-                            return (Boolean) d?o1:o2;
-                        }else{
-                            throw new ExpressionError("Expected Boolean before ? got: " + d.getClass().getSimpleName(), s,e);
+
+                    return new Expression() {
+                        @Override
+                        public Object evaluate() {
+                            Object d = xEM.evaluate();
+                            Object o1 = EM1.evaluate();
+                            Object o2 = EM2.evaluate();
+                            if (d instanceof Boolean) {
+                                return (Boolean) d ? o1 : o2;
+                            } else {
+                                throw new ExpressionError("Expected Boolean before ? got: " + d.getClass().getSimpleName(), s, e);
+                            }
+                        }
+
+                        @Override
+                        public String toString() {
+                            return xEM.toString() + " ? " + EM1.toString() + " : " + EM2.toString();
                         }
                     };
                 }else{
@@ -306,13 +389,22 @@ public class ExpressionCompiler {
                     si = removeWhiteSpace();
                     Expression xEP = xEM, yEP = parseLevel11();
                     final int e = pos;
-                    xEM = () -> {
-                        Object x = xEP.evaluate();
-                        Object y = yEP.evaluate();
-                        if (x instanceof Boolean && y instanceof Boolean) {
-                            return (Boolean) x || (Boolean) y;
-                        } else {
-                            throw new ExpressionError("Cannot preform Logical OR between: " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(), s, e);
+
+                    xEM = new Expression() {
+                        @Override
+                        public Object evaluate() {
+                            Object x = xEP.evaluate();
+                            Object y = yEP.evaluate();
+                            if (x instanceof Boolean && y instanceof Boolean) {
+                                return (Boolean) x || (Boolean) y;
+                            } else {
+                                throw new ExpressionError("Cannot preform Logical OR between: " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(), s, e);
+                            }
+                        }
+
+                        @Override
+                        public String toString() {
+                            return xEP.toString() + " || " + yEP.toString();
                         }
                     };
                 } else {
@@ -331,13 +423,22 @@ public class ExpressionCompiler {
                     si = removeWhiteSpace();
                     Expression xEP = xEM, yEP = parseLevel10();
                     final int e = pos;
-                    xEM = () -> {
-                        Object x = xEP.evaluate();
-                        Object y = yEP.evaluate();
-                        if (x instanceof Boolean && y instanceof Boolean) {
-                            return (Boolean) x && (Boolean) y;
-                        } else {
-                            throw new ExpressionError("Cannot preform Logical AND between: " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(),s,e);
+
+                    xEM = new Expression() {
+                        @Override
+                        public Object evaluate() {
+                            Object x = xEP.evaluate();
+                            Object y = yEP.evaluate();
+                            if (x instanceof Boolean && y instanceof Boolean) {
+                                return (Boolean) x && (Boolean) y;
+                            } else {
+                                throw new ExpressionError("Cannot preform Logical AND between: " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(), s, e);
+                            }
+                        }
+
+                        @Override
+                        public String toString() {
+                            return xEP.toString() + " && " + yEP.toString();
                         }
                     };
                 } else {
@@ -356,13 +457,22 @@ public class ExpressionCompiler {
                     si = removeWhiteSpace();
                     Expression xEP = xEM, yEP = parseLevel9();
                     final int e = pos;
-                    xEM = () -> {
-                        Object x = xEP.evaluate();
-                        Object y = yEP.evaluate();
-                        if (x instanceof Number && y instanceof Number) {
-                            return bitwiseOr((Number) x, (Number) y);
-                        } else {
-                            throw new ExpressionError("Cannot preform bitwise OR between: " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(),s,e);
+
+                    xEM = new Expression() {
+                        @Override
+                        public Object evaluate() {
+                            Object x = xEP.evaluate();
+                            Object y = yEP.evaluate();
+                            if (x instanceof Number && y instanceof Number) {
+                                return bitwiseOr((Number) x, (Number) y);
+                            } else {
+                                throw new ExpressionError("Cannot preform bitwise OR between: " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(), s, e);
+                            }
+                        }
+
+                        @Override
+                        public String toString() {
+                            return xEP.toString() + " | " + yEP.toString();
                         }
                     };
                 } else {
@@ -381,13 +491,22 @@ public class ExpressionCompiler {
                     si = removeWhiteSpace();
                     Expression xEP = xEM, yEP = parseLevel8();
                     final int e = pos;
-                    xEM = () -> {
-                        Object x = xEP.evaluate();
-                        Object y = yEP.evaluate();
-                        if (x instanceof Number && y instanceof Number) {
-                            return bitwiseXor((Number) x, (Number) y);
-                        } else {
-                            throw new ExpressionError("Cannot preform bitwise XOR between: " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(),s,e);
+
+                    xEM = new Expression() {
+                        @Override
+                        public Object evaluate() {
+                            Object x = xEP.evaluate();
+                            Object y = yEP.evaluate();
+                            if (x instanceof Number && y instanceof Number) {
+                                return bitwiseXor((Number) x, (Number) y);
+                            } else {
+                                throw new ExpressionError("Cannot preform bitwise XOR between: " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(), s, e);
+                            }
+                        }
+
+                        @Override
+                        public String toString() {
+                            return xEP.toString() + " ^ " + yEP.toString();
                         }
                     };
                 } else {
@@ -406,13 +525,22 @@ public class ExpressionCompiler {
                     si = removeWhiteSpace();
                     Expression xEP = xEM, yEP = parseLevel7();
                     final int e = pos;
-                    xEM = () -> {
-                        Object x = xEP.evaluate();
-                        Object y = yEP.evaluate();
-                        if (x instanceof Number && y instanceof Number) {
-                            return bitwiseAnd((Number) x, (Number) y);
-                        } else {
-                            throw new ExpressionError("Cannot preform bitwise AND between: " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(),s,e);
+
+                    xEM = new Expression() {
+                        @Override
+                        public Object evaluate() {
+                            Object x = xEP.evaluate();
+                            Object y = yEP.evaluate();
+                            if (x instanceof Number && y instanceof Number) {
+                                return bitwiseAnd((Number) x, (Number) y);
+                            } else {
+                                throw new ExpressionError("Cannot preform bitwise AND between: " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(), s, e);
+                            }
+                        }
+
+                        @Override
+                        public String toString() {
+                            return xEP.toString() + " & " + yEP.toString();
                         }
                     };
                 } else {
@@ -428,25 +556,42 @@ public class ExpressionCompiler {
             if (eat("==")) {
                 Expression xEP = xEM, yEP = parseLevel6();
                 final int e = pos;
-                return () -> {
-                    Object x = xEP.evaluate();
-                    Object y = yEP.evaluate();
-                    if (x instanceof Number && y instanceof Number) {
-                        return NUMBER_COMPARATOR.compare(x, y) == 0;
-                    } else {
-                        throw new ExpressionError("Cannot use '==' on: " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(),s,e);
+                return new Expression() {
+                    @Override
+                    public Object evaluate() {
+                        Object x = xEP.evaluate();
+                        Object y = yEP.evaluate();
+                        if (x instanceof Number && y instanceof Number) {
+                            return NUMBER_COMPARATOR.compare(x, y) == 0;
+                        } else {
+                            throw new ExpressionError("Cannot use '==' on: " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(), s, e);
+                        }
+                    }
+
+                    @Override
+                    public String toString() {
+                        return xEP.toString() + " == " + yEP.toString();
                     }
                 };
             } else if (eat("!=")) {
                 Expression xEP = xEM, yEP = parseLevel6();
                 final int e = pos;
-                return () -> {
-                    Object x = xEP.evaluate();
-                    Object y = yEP.evaluate();
-                    if (x instanceof Number && y instanceof Number) {
-                        return NUMBER_COMPARATOR.compare(x, y) != 0;
-                    } else {
-                        throw new ExpressionError("Cannot use '!=' on: " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(),s,e);
+
+                return new Expression() {
+                    @Override
+                    public Object evaluate() {
+                        Object x = xEP.evaluate();
+                        Object y = yEP.evaluate();
+                        if (x instanceof Number && y instanceof Number) {
+                            return NUMBER_COMPARATOR.compare(x, y) != 0;
+                        } else {
+                            throw new ExpressionError("Cannot use '!=' on: " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(), s, e);
+                        }
+                    }
+
+                    @Override
+                    public String toString() {
+                        return xEP.toString() + " != " + yEP.toString();
                     }
                 };
             } else {
@@ -462,49 +607,85 @@ public class ExpressionCompiler {
             if (eat("<")) {
                 Expression xEP = xEM, yEP = parseLevel5();
                 final int e = pos;
-                return () -> {
-                    Object x = xEP.evaluate();
-                    Object y = yEP.evaluate();
-                    if (x instanceof Number && y instanceof Number) {
-                        return NUMBER_COMPARATOR.compare(x, y) < 0;
-                    } else {
-                        throw new ExpressionError("Cannot use '<' on: " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(),s,e);
+
+                return new Expression() {
+                    @Override
+                    public Object evaluate() {
+                        Object x = xEP.evaluate();
+                        Object y = yEP.evaluate();
+                        if (x instanceof Number && y instanceof Number) {
+                            return NUMBER_COMPARATOR.compare(x, y) < 0;
+                        } else {
+                            throw new ExpressionError("Cannot use '<' on: " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(), s, e);
+                        }
+                    }
+
+                    @Override
+                    public String toString() {
+                        return xEP.toString() + " < " + yEP.toString();
                     }
                 };
             } else if (eat("<=")) {
                 Expression xEP = xEM, yEP = parseLevel5();
                 final int e = pos;
-                return () -> {
-                    Object x = xEP.evaluate();
-                    Object y = yEP.evaluate();
-                    if (x instanceof Number && y instanceof Number) {
-                        return NUMBER_COMPARATOR.compare(x, y) <= 0;
-                    } else {
-                        throw new ExpressionError("Cannot use '<=' on: " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(),s,e);
+
+                return new Expression() {
+                    @Override
+                    public Object evaluate() {
+                        Object x = xEP.evaluate();
+                        Object y = yEP.evaluate();
+                        if (x instanceof Number && y instanceof Number) {
+                            return NUMBER_COMPARATOR.compare(x, y) <= 0;
+                        } else {
+                            throw new ExpressionError("Cannot use '<=' on: " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(), s, e);
+                        }
+                    }
+
+                    @Override
+                    public String toString() {
+                        return xEP.toString() + " <= " + yEP.toString();
                     }
                 };
             } else if (eat(">")) {
                 Expression xEP = xEM, yEP = parseLevel5();
                 final int e = pos;
-                return () -> {
-                    Object x = xEP.evaluate();
-                    Object y = yEP.evaluate();
-                    if (x instanceof Number && y instanceof Number) {
-                        return NUMBER_COMPARATOR.compare(x, y) > 0;
-                    } else {
-                        throw new ExpressionError("Cannot use '>' on: " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(),s,e);
+
+                return new Expression() {
+                    @Override
+                    public Object evaluate() {
+                        Object x = xEP.evaluate();
+                        Object y = yEP.evaluate();
+                        if (x instanceof Number && y instanceof Number) {
+                            return NUMBER_COMPARATOR.compare(x, y) > 0;
+                        } else {
+                            throw new ExpressionError("Cannot use '>' on: " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(), s, e);
+                        }
+                    }
+
+                    @Override
+                    public String toString() {
+                        return xEP.toString() + " > " + yEP.toString();
                     }
                 };
             } else if (eat(">=")) {
                 Expression xEP = xEM, yEP = parseLevel5();
                 final int e = pos;
-                return () -> {
-                    Object x = xEP.evaluate();
-                    Object y = yEP.evaluate();
-                    if (x instanceof Number && y instanceof Number) {
-                        return NUMBER_COMPARATOR.compare(x, y) >= 0;
-                    } else {
-                        throw new ExpressionError("Cannot use '>=' on: " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(),s,e);
+
+                return new Expression() {
+                    @Override
+                    public Object evaluate() {
+                        Object x = xEP.evaluate();
+                        Object y = yEP.evaluate();
+                        if (x instanceof Number && y instanceof Number) {
+                            return NUMBER_COMPARATOR.compare(x, y) >= 0;
+                        } else {
+                            throw new ExpressionError("Cannot use '>=' on: " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(), s, e);
+                        }
+                    }
+
+                    @Override
+                    public String toString() {
+                        return xEP.toString() + " >= " + yEP.toString();
                     }
                 };
             } else {
@@ -522,26 +703,44 @@ public class ExpressionCompiler {
                     si = removeWhiteSpace();
                     Expression xEP = xEM, yEP = parseLevel4();
                     final int e = pos;
-                    xEM = () -> {
-                        Object x = xEP.evaluate();
-                        Object y = yEP.evaluate();
-                        if (x instanceof Number && y instanceof Number) {
-                            return shiftLeft((Number) x, (Number) y);
-                        } else {
-                            throw new ExpressionError("Cannot use '<<' on: " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(),s,e);
+
+                    xEM = new Expression() {
+                        @Override
+                        public Object evaluate() {
+                            Object x = xEP.evaluate();
+                            Object y = yEP.evaluate();
+                            if (x instanceof Number && y instanceof Number) {
+                                return shiftLeft((Number) x, (Number) y);
+                            } else {
+                                throw new ExpressionError("Cannot use '<<' on: " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(), s, e);
+                            }
+                        }
+
+                        @Override
+                        public String toString() {
+                            return xEP.toString() + " << " + yEP.toString();
                         }
                     };
                 } else if (eat(">>")) {
                     si = removeWhiteSpace();
                     Expression xEP = xEM, yEP = parseLevel4();
                     final int e = pos;
-                    xEM = () -> {
-                        Object x = xEP.evaluate();
-                        Object y = yEP.evaluate();
-                        if (x instanceof Number && y instanceof Number) {
-                            return shiftRight((Number) x, (Number) y);
-                        } else {
-                            throw new ExpressionError("Cannot use '>>' on: " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(),s,e);
+
+                    xEM = new Expression() {
+                        @Override
+                        public Object evaluate() {
+                            Object x = xEP.evaluate();
+                            Object y = yEP.evaluate();
+                            if (x instanceof Number && y instanceof Number) {
+                                return shiftRight((Number) x, (Number) y);
+                            } else {
+                                throw new ExpressionError("Cannot use '>>' on: " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(), s, e);
+                            }
+                        }
+
+                        @Override
+                        public String toString() {
+                            return xEP.toString() + " >> " + yEP.toString();
                         }
                     };
                 } else {
@@ -564,28 +763,46 @@ public class ExpressionCompiler {
                     si = removeWhiteSpace();
                     Expression xEP = xEM, yEP = parseLevel3();
                     final int e = pos;
-                    xEM = () -> {
-                        Object x = xEP.evaluate();
-                        Object y = yEP.evaluate();
-                        if (x instanceof String || y instanceof String) {
-                            return x.toString() + y.toString();
-                        } else if (x instanceof Number || y instanceof Number) {
-                            return add((Number) x, (Number) y);
-                        } else {
-                            throw new ExpressionError("Cannot use '+' token between a " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(),s,e);
+
+                    xEM = new Expression() {
+                        @Override
+                        public Object evaluate() {
+                            Object x = xEP.evaluate();
+                            Object y = yEP.evaluate();
+                            if (x instanceof String || y instanceof String) {
+                                return x.toString() + y.toString();
+                            } else if (x instanceof Number || y instanceof Number) {
+                                return add((Number) x, (Number) y);
+                            } else {
+                                throw new ExpressionError("Cannot use '+' token between a " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(), s, e);
+                            }
+                        }
+
+                        @Override
+                        public String toString() {
+                            return xEP.toString() + " + " + yEP.toString();
                         }
                     };
                 } else if (eat("-")) {
                     si = removeWhiteSpace();
                     Expression xEP = xEM, yEP = parseLevel3();
                     final int e = pos;
-                    xEM = () -> {
-                        Object x = xEP.evaluate();
-                        Object y = yEP.evaluate();
-                        if (x instanceof Number || y instanceof Number) {
-                            return subtract((Number) x, (Number) y);
-                        } else {
-                            throw new ExpressionError("Cannot use '-' token between a " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(),s,e);
+
+                    xEM = new Expression() {
+                        @Override
+                        public Object evaluate() {
+                            Object x = xEP.evaluate();
+                            Object y = yEP.evaluate();
+                            if (x instanceof Number || y instanceof Number) {
+                                return subtract((Number) x, (Number) y);
+                            } else {
+                                throw new ExpressionError("Cannot use '-' token between a " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(), s, e);
+                            }
+                        }
+
+                        @Override
+                        public String toString() {
+                            return xEP.toString() + " - " + yEP.toString();
                         }
                     };
                 } else {
@@ -607,39 +824,65 @@ public class ExpressionCompiler {
                     si = removeWhiteSpace();
                     Expression xEP = xEM, yEP = parseLevel2();
                     final int e = pos;
-                    xEM = () -> {
-                        Object x = xEP.evaluate();
-                        Object y = yEP.evaluate();
-                        if (x instanceof Number || y instanceof Number) {
-                            return multiply((Number) x, (Number) y);
-                        } else {
-                            throw new ExpressionError("Cannot use '*' token between a " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(),s,e);
+
+                    xEM = new Expression() {
+                        @Override
+                        public Object evaluate() {
+                            Object x = xEP.evaluate();
+                            Object y = yEP.evaluate();
+                            if (x instanceof Number || y instanceof Number) {
+                                return multiply((Number) x, (Number) y);
+                            } else {
+                                throw new ExpressionError("Cannot use '*' token between a " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(), s, e);
+                            }
+                        }
+
+                        @Override
+                        public String toString() {
+                            return xEP.toString() + " * " + yEP.toString();
                         }
                     };
                 } else if (eat("/")) {
                     si = removeWhiteSpace();
                     Expression xEP = xEM, yEP = parseLevel2();
                     final int e = pos;
-                    xEM = () -> {
-                        Object x = xEP.evaluate();
-                        Object y = yEP.evaluate();
-                        if (x instanceof Number || y instanceof Number) {
-                            return divide((Number) x, (Number) y);
-                        } else {
-                            throw new ExpressionError("Cannot use '/' token between a " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(),s,e);
+
+                    xEM = new Expression() {
+                        @Override
+                        public Object evaluate() {
+                            Object x = xEP.evaluate();
+                            Object y = yEP.evaluate();
+                            if (x instanceof Number || y instanceof Number) {
+                                return divide((Number) x, (Number) y);
+                            } else {
+                                throw new ExpressionError("Cannot use '/' token between a " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(), s, e);
+                            }
+                        }
+
+                        @Override
+                        public String toString() {
+                            return xEP.toString() + " / " + yEP.toString();
                         }
                     };
                 } else if (eat("%")) {
                     si = removeWhiteSpace();
                     Expression xEP = xEM, yEP = parseLevel2();
                     final int e = pos;
-                    xEM = () -> {
-                        Object x = xEP.evaluate();
-                        Object y = yEP.evaluate();
-                        if (x instanceof Number || y instanceof Number) {
-                            return mod((Number) x, (Number) y);
-                        } else {
-                            throw new ExpressionError("Cannot use '%' token between a " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(),s,e);
+                    xEM = new Expression() {
+                        @Override
+                        public Object evaluate() {
+                            Object x = xEP.evaluate();
+                            Object y = yEP.evaluate();
+                            if (x instanceof Number || y instanceof Number) {
+                                return mod((Number) x, (Number) y);
+                            } else {
+                                throw new ExpressionError("Cannot use '%' token between a " + x.getClass().getSimpleName() + " and " + y.getClass().getSimpleName(), s, e);
+                            }
+                        }
+
+                        @Override
+                        public String toString() {
+                            return xEP.toString() + " % " + yEP.toString();
                         }
                     };
                 } else {
@@ -660,12 +903,20 @@ public class ExpressionCompiler {
                     si = removeWhiteSpace();
                     Expression xEM = parseLevel1();
                     final int e = pos;
-                    return () -> {
-                        Object x = xEM.evaluate();
-                        if (x instanceof Number) {
-                            return x;
-                        } else {
-                            throw new ExpressionError("cannot use '+' modifier on: " + x.getClass().getSimpleName(),s,e);
+                    return new Expression() {
+                        @Override
+                        public Object evaluate() {
+                            Object x = xEM.evaluate();
+                            if (x instanceof Number) {
+                                return x;
+                            } else {
+                                throw new ExpressionError("cannot use '+' modifier on: " + x.getClass().getSimpleName(), s, e);
+                            }
+                        }
+
+                        @Override
+                        public String toString() {
+                            return " +" + xEM.toString();
                         }
                     };
                 } else if (eat("-")) {
@@ -673,12 +924,20 @@ public class ExpressionCompiler {
                         si = removeWhiteSpace();
                         final Expression xEM = parseLevel1();
                         final int e = pos;
-                        return () -> {
-                            Object x = xEM.evaluate();
-                            if (x instanceof Number) {
-                                return subtract(0, (Number) x);
-                            } else {
-                                throw new ExpressionError("Cannot use '-' modifier on: " + x.getClass().getSimpleName(), s, e);
+                        return new Expression() {
+                            @Override
+                            public Object evaluate() {
+                                Object x = xEM.evaluate();
+                                if (x instanceof Number) {
+                                    return subtract(0, (Number) x);
+                                } else {
+                                    throw new ExpressionError("Cannot use '-' modifier on: " + x.getClass().getSimpleName(), s, e);
+                                }
+                            }
+
+                            @Override
+                            public String toString() {
+                                return " -" + xEM.toString();
                             }
                         };
                     }
@@ -686,24 +945,39 @@ public class ExpressionCompiler {
                     si = removeWhiteSpace();
                     final Expression xEM = parseLevel1();
                     final int e = pos;
-                    return () -> {
-                        Object x = xEM.evaluate();
-                        if (x instanceof Number) {
-                            return invert((Number) x);
-                        } else {
-                            throw new ExpressionError("Cannot use '~' modifier on: " + x.getClass().getSimpleName(),s,e);
-                        }
-                    };
+                    return () -> new Expression() {
+                            @Override
+                            public Object evaluate() {
+                                Object x = xEM.evaluate();
+                                if (x instanceof Number) {
+                                    return invert((Number) x);
+                                } else {
+                                    throw new ExpressionError("Cannot use '~' modifier on: " + x.getClass().getSimpleName(), s, e);
+                                }
+                            }
+                            @Override
+                            public String toString() {
+                                return " ~" + xEM.toString();
+                            }
+                        };
                 } else if (eat("!")) {
                     si = removeWhiteSpace();
                     final Expression xEM = parseLevel1();
                     final int e = pos;
-                    return () -> {
-                        Object x = xEM.evaluate();
-                        if (x instanceof Boolean) {
-                            return !(Boolean) x;
-                        } else {
-                            throw new ExpressionError("Cannot use '!' modifier on: " + x.getClass().getSimpleName(), s,e);
+                    return new Expression() {
+                        @Override
+                        public Object evaluate() {
+                            Object x = xEM.evaluate();
+                            if (x instanceof Boolean) {
+                                return !(Boolean) x;
+                            } else {
+                                throw new ExpressionError("Cannot use '!' modifier on: " + x.getClass().getSimpleName(), s, e);
+                            }
+                        }
+
+                        @Override
+                        public String toString() {
+                            return " !" + xEM.toString();
                         }
                     };
                 } else {
@@ -716,35 +990,47 @@ public class ExpressionCompiler {
 
                         final Expression xEM = parseLevel1();
                         final int e = pos;
-                        return () -> {
-                            Object x = xEM.evaluate();
-                            if (primitiveCastMap.containsKey(cName)) {
-                                Class c = primitiveCastMap.get(cName);
-                                if (c.getSuperclass() == Number.class) {
-                                    if (x instanceof Number) {
-                                        if (c == Long.class) {
-                                            x = new Long(((Number) x).longValue());
-                                        } else if (c == Integer.class) {
-                                            x = new Integer(((Number) x).intValue());
-                                        } else if (c == Short.class) {
-                                            x = new Short(((Number) x).shortValue());
-                                        } else if (c == Byte.class) {
-                                            x = new Byte(((Number) x).byteValue());
-                                        } else if (c == Double.class) {
-                                            x = new Double(((Number) x).doubleValue());
-                                        } else if (c == Float.class) {
-                                            x = new Float(((Number) x).floatValue());
+                        return new Expression() {
+                            @Override
+                            public Object evaluate() {
+                                Object x = xEM.evaluate();
+                                if (primitiveCastMap.containsKey(cName)) {
+                                        Class c = primitiveCastMap.get(cName);
+                                        if (x instanceof Number) {
+                                            if (c == Long.class) {
+                                                x = new Long(((Number) x).longValue());
+                                            } else if (c == Integer.class) {
+                                                x = new Integer(((Number) x).intValue());
+                                            } else if (c == Short.class) {
+                                                x = new Short(((Number) x).shortValue());
+                                            } else if (c == Byte.class) {
+                                                x = new Byte(((Number) x).byteValue());
+                                            } else if (c == Double.class) {
+                                                x = new Double(((Number) x).doubleValue());
+                                            } else if (c == Float.class) {
+                                                x = new Float(((Number) x).floatValue());
+                                            } else if (c == Character.class){
+                                                if(x instanceof Long || x instanceof Integer || x instanceof Short || x instanceof Byte){
+                                                    x = new Character((char)((Number)x).longValue());
+                                                }else{
+                                                    throw new ClassCastException("Cannot cast: " + x.getClass().getSimpleName() + " cannot be cast to char || Character");
+                                                }
+                                        } else {
+                                            throw new ExpressionError(x.getClass().getSimpleName() + " cannot be cast to a: " + cName, s, e);
                                         }
-                                    } else {
-                                        throw new ExpressionError(x.getClass().getSimpleName() + " cannot be cast to a: " + cName,s,e);
                                     }
+                                } else if (castMap.containsKey(cName)) {
+                                    x = castMap.get(cName).cast(x);
+                                } else {
+                                    throw new ExpressionError("Cannot find class: " + cName, s, e);
                                 }
-                            } else if (castMap.containsKey(cName)) {
-                                x = castMap.get(cName).cast(x);
-                            } else {
-                                throw new ExpressionError("Cannot find class: " + cName, s, e);
+                                return x;
                             }
-                            return x;
+
+                            @Override
+                            public String toString() {
+                                return '(' + cName + ')' + xEM.toString();
+                            }
                         };
                     }
 
@@ -765,31 +1051,58 @@ public class ExpressionCompiler {
             final Expression xEM;
             final int startPos = this.pos;
             if (eat('(')) { // parentheses
-                xEM = parseLevel15();
+                Expression internal = parseLevel15();
+                xEM = new Expression() {
+                    @Override
+                    public Object evaluate() {
+                        return internal.evaluate();
+                    }
+
+                    @Override
+                    public String toString() {
+                        return '(' + internal.toString() + ')';
+                    }
+                };
                 eat(')');
             } else if ((ch >= '0' && ch <= '9')) { // numbers
 
-                while ((ch >= '0' && ch <= '9') || ch == '.' || (ch > 'a' && ch < 'z')|| (ch > 'A' && ch < 'Z')) nextChar();
+                while ((ch >= '0' && ch <= '9') || ch == '.' || (ch >= 'a' && ch <= 'z')|| (ch >= 'A' && ch <= 'Z')) nextChar();
                 if (str.substring(startPos, this.pos).contains(".")) {
                     final int end = this.pos;
                     final String string = str;
                     final int e = pos;
-                    xEM = () -> {
-                        try{
-                            return Double.parseDouble(string.substring(startPos, end));
-                        }catch (Exception ex){
-                            throw new ExpressionError("Failed to parse double: " + string.substring(startPos, end), s, e, ex);
+                    xEM = new Expression() {
+                        @Override
+                        public Object evaluate() {
+                            try {
+                                return Double.parseDouble(string.substring(startPos, end));
+                            } catch (Exception ex) {
+                                throw new ExpressionError("Failed to parse double: " + string.substring(startPos, end), s, e, ex);
+                            }
+                        }
+
+                        @Override
+                        public String toString() {
+                            return string.substring(startPos, end);
                         }
                     };
                 } else {
                     final int end = this.pos;
                     final String string = str;
                     final int e = pos;
-                    xEM = () -> {
-                        try{
-                            return parseInt(string.substring(startPos, end));
-                        }catch (Exception ex){
-                            throw new ExpressionError("Failed to parse int: " + string.substring(startPos, end), s, e, ex);
+                    xEM = new Expression() {
+                        @Override
+                        public Object evaluate() {
+                            try {
+                                return parseInt(string.substring(startPos, end));
+                            } catch (Exception ex) {
+                                throw new ExpressionError("Failed to parse int: " + string.substring(startPos, end), s, e, ex);
+                            }
+                        }
+
+                        @Override
+                        public String toString() {
+                            return string.substring(startPos, end);
                         }
                     };
                 }
@@ -801,41 +1114,131 @@ public class ExpressionCompiler {
                 switch (token) {
                     case "true":
                     case "TRUE":
-                        return () -> true;
+                        return new Expression() {
+                            @Override
+                            public Object evaluate() {
+                                return true;
+                            }
+
+                            @Override
+                            public String toString() {
+                                return "true";
+                            }
+                        };
                     case "false":
                     case "FALSE":
-                        return () -> false;
+                        return new Expression() {
+                            @Override
+                            public Object evaluate() {
+                                return false;
+                            }
+
+                            @Override
+                            public String toString() {
+                                return "false";
+                            }
+                        };
                     case "pi":
                     case "PI":
-                        return () -> Math.PI;
+                        return new Expression() {
+                            @Override
+                            public Object evaluate() {
+                                return Math.PI;
+                            }
+
+                            @Override
+                            public String toString() {
+                                return "pi";
+                            }
+                        };
                 }
 
                 if (next("(")) {
                     final Expression args = parseLevel15();
                     final int endFunc = pos;
-                    xEM = () -> {
-                        try {
-                           return parseFunction(token, args.evaluate());
-                        }catch (Exception ex){
-                            throw new ExpressionError("Failed to parse function: " + token, s, endFunc, ex);
+
+                    xEM = new Expression() {
+                        @Override
+                        public Object evaluate() {
+                            try {
+                                return parseFunction(token, args.evaluate());
+                            } catch (Exception ex) {
+                                throw new ExpressionError("Failed to parse function: " + token, s, endFunc, ex);
+                            }
+                        }
+
+                        @Override
+                        public String toString() {
+                            return token + args.toString();
                         }
                     };
                 } else {
                     final String ppToken = preProcessVariableMnemonic(token);
                     if(namePattern.matcher(ppToken).matches()){
-                        xEM = () ->{
-                          try{
-                              return parseVariable(ppToken);
-                          }catch(Exception ex){
-                              throw new ExpressionError("Failed to parse symbol", s, e, ex);
-                          }
-                        };
+
+
+                        removeWhiteSpace();
+                        if(eat(".")){
+
+                            final int memberAccessStart = pos;
+                            if (Character.isAlphabetic(ch) || ch == '_' || ch == '$') { // functions
+                                while (Character.isAlphabetic(ch) || Character.isDigit(ch) || ch == '_' || ch == '$')
+                                    nextChar();
+                            }
+                            final int memberAccessEnd = pos;
+                            final String memberAccess = str.substring(memberAccessStart, memberAccessEnd);
+
+                            xEM = new Expression() {
+                                @Override
+                                public Object evaluate() {
+                                    try {
+                                        return parseMemberAccess(parseVariable(ppToken), memberAccess);
+                                    } catch (Exception ex) {
+                                        throw new ExpressionError("Failed to parse symbol", s, memberAccessEnd, ex);
+                                    }
+                                }
+
+                                @Override
+                                public String toString() {
+                                    return ppToken + "." + memberAccess;
+                                }
+                            };
+
+                        }else {
+                            xEM = new Expression() {
+                                @Override
+                                public Object evaluate() {
+                                    try {
+                                        return parseVariable(ppToken);
+                                    } catch (Exception ex) {
+                                        throw new ExpressionError("Failed to parse symbol", s, e, ex);
+                                    }
+                                }
+
+                                @Override
+                                public String toString() {
+                                    return ppToken;
+                                }
+                            };
+                        }
                     }else{
-                        xEM = () -> {
-                            try {
-                                return new PrivateExpressionCompiler(ppToken).compileExpression().evaluate();
-                            }catch(Exception error){
-                                throw new ExpressionError("Failed to parse: " + ppToken + " from value: " + token, s, e, error);
+                        xEM = new Expression() {
+                            private CompiledExpression pp;
+                            {
+                                pp = new PrivateExpressionCompiler(ppToken).compileExpression();
+                            }
+                            @Override
+                            public Object evaluate() {
+                                try {
+                                    return pp.evaluate();
+                                } catch (Exception error) {
+                                    throw new ExpressionError("Failed to parse: " + ppToken + " from value: " + token, s, e, error);
+                                }
+                            }
+
+                            @Override
+                            public String toString() {
+                                return pp.toString();
                             }
                         };
                     }
@@ -856,7 +1259,17 @@ public class ExpressionCompiler {
                 final String string = str;
                 final int start = startPos + 1;
                 final int end = pos - 1;
-                xEM = () -> string.substring(start, end);
+                xEM = new Expression() {
+                    @Override
+                    public Object evaluate() {
+                        return string.substring(start, end);
+                    }
+
+                    @Override
+                    public String toString() {
+                        return '"' + string.substring(start, end) + '"';
+                    }
+                };
             } else {
                 throw new CompilationError("Unexpected: " + (char) ch, s, s);
             }
@@ -864,7 +1277,10 @@ public class ExpressionCompiler {
             return xEM;
         }
 
+    }
 
+    protected Object parseMemberAccess(Object parseVariable, String memberAccess) {
+        throw new IllegalArgumentException("Cannot access member: " + memberAccess + " on: " + parseVariable.getClass().getSimpleName());
     }
 
     protected String preProcessVariableMnemonic(String token) {

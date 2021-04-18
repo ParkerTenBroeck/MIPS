@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.assembler;
+package org.parker.mips.assembler2.mips;
 
 import org.parker.mips.emulator.mips.Memory;
 import org.parker.mips.gui.userpanes.editor.Editor;
@@ -12,15 +12,23 @@ import org.parker.mips.gui.userpanes.editor.Editor;
  *
  * @author parke
  */
-public class InstructionToString {
+public class MipsDisassembler {
 
-    public static void decompile(){
+    public static void disassemble(){
         StringBuilder sb = new StringBuilder();
 
         for(int i = 0; i < Memory.getSize() / 4; i ++){
             sb.append(instructionToString(Memory.getWord(i * 4)) + "\n");
         }
         Editor.createEditor(sb.toString().getBytes(), "", "");
+    }
+
+    public static void disassemble(org.parker.mips.util.Memory memory){
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < memory.getSize() / 4; i ++){
+            sb.append(instructionToString(memory.getWord(i * 4, true)) + "\n");
+        }
+        Editor.createEditor(sb.toString().getBytes(), "", "asm");
     }
 
     public static String instructionToString(int opCode) {

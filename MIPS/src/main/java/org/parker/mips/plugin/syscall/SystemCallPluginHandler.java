@@ -82,7 +82,8 @@ public class SystemCallPluginHandler {
         } else {
             LOGGER.log(Level.CONFIG, "SystemCall plugin: " + scp.DESCRIPTION.NAME + " was registered with " + totalConflicts + " conflicts" + "\n");
         }
-        
+
+        regenerateStandardSysCallHeaderFile();
         MainGUI.reloadSystemCallPluginLists();
 
     }
@@ -166,6 +167,8 @@ public class SystemCallPluginHandler {
                 if (plugin != null) {
 
                     writer.println(";SystemCalls defined withing Plugin: " + plugin.DESCRIPTION.NAME);
+                    writer.println("");
+                    writer.println(".define " + plugin.DESCRIPTION.NAME);
                     writer.println("");
 
                     for (SystemCall call : plugin.getSystemCalls()) {

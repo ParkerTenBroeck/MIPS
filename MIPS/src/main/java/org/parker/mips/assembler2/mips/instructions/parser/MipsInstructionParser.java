@@ -1,5 +1,7 @@
 package org.parker.mips.assembler2.mips.instructions.parser;
 
+import org.parker.mips.assembler2.base.assembler.Assembler;
+import org.parker.mips.assembler2.base.assembler.BaseAssembler;
 import org.parker.mips.assembler2.exception.InstructionNotFoundError;
 import org.parker.mips.assembler2.instruction.InstructionFormatter;
 import org.parker.mips.assembler2.instruction.InstructionParser;
@@ -64,13 +66,13 @@ public class MipsInstructionParser implements InstructionParser {
     }
 
     @Override
-    public StandardInstruction newInstance(String mnemonic) {
+    public StandardInstruction newInstance(String mnemonic, BaseAssembler assembler) {
         if(formatterSndMnemonicMap.containsKey(mnemonic)){
-            return new StandardInstruction(formatterSndMnemonicMap.get(mnemonic));
+            return new StandardInstruction(formatterSndMnemonicMap.get(mnemonic), assembler);
         }else if(formatterLinkMnemonicMap.containsKey(mnemonic)){
-            return new StandardLinkableInstruction(formatterLinkMnemonicMap.get(mnemonic));
+            return new StandardLinkableInstruction(formatterLinkMnemonicMap.get(mnemonic), assembler);
         }else{
-            throw new InstructionNotFoundError(null, null, 0,0);
+            throw new InstructionNotFoundError("Instruction: " + mnemonic + " not found", null, 0,0);
         }
     }
 }

@@ -1,8 +1,8 @@
 package org.parker.mips.assembler2.operand;
 
 import org.parker.mips.assembler2.base.assembler.Assembler;
-import org.parker.mips.assembler2.exception.LableNotDeclaredError;
-import org.parker.mips.assembler2.util.Label;
+import org.parker.mips.assembler2.exception.LabelNotDeclaredError;
+import org.parker.mips.assembler2.util.linking.Label;
 import org.parker.mips.assembler2.util.linking.LinkType;
 
 public class OpLabel extends OpLong implements LinkableOperand{
@@ -24,13 +24,13 @@ public class OpLabel extends OpLong implements LinkableOperand{
     }
 
     @Override
-    public void link(Assembler assembler, long sourceAddr, LinkType linkType) throws LableNotDeclaredError {
+    public void link(Assembler assembler, long sourceAddr, LinkType linkType) throws LabelNotDeclaredError {
         //if(labelMap.containsKey(labelMnemonic)){
             //Label label = labelMap.get(labelMnemonic);
             if(linkType == null){
-                this.setValue(LinkType.ABSOLUTE_BYTE.link(sourceAddr, label.address));
+                this.setValue(LinkType.ABSOLUTE_BYTE.link(sourceAddr, label.getAddress()));
             }else{
-                this.setValue(linkType.link(sourceAddr, label.address));
+                this.setValue(linkType.link(sourceAddr, label.getAddress()));
             }
         //}else{
             //throw new LableNotDeclaredError("Label: " + labelMnemonic + " is not defined or not defined in the current scope");

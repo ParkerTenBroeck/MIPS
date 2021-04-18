@@ -2,6 +2,7 @@ package org.parker.mips.assembler2.mips;
 
 import org.parker.mips.assembler2.base.preprocessor.BaseExpressionCompiler;
 import org.parker.mips.assembler2.base.preprocessor.BasePreProcessor;
+import org.parker.mips.assembler2.util.ExpressionCompiler;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -35,7 +36,8 @@ public class MipsPreProcessor extends BasePreProcessor<MipsAssembler> {
 
     @Override
     protected String preProcessAssemblyArguments(String instructionMnemonic, String arguments) {
-        if (memoryAccessFormattedInstructionMnemonics.contains(instructionMnemonic)) {
+        if (memoryAccessFormattedInstructionMnemonics.contains(instructionMnemonic) &&
+                ExpressionCompiler.countTopLevelExpressions(arguments) == 2) {
             char[] chs = arguments.toCharArray();
             int index = chs.length - 1;
 

@@ -17,7 +17,7 @@ public class MipsAssembler extends BaseAssembler {
 
     @Override
     protected DataStatement getInstruction(String mnemonic) {
-        return instructionParser.newInstance(mnemonic);
+        return instructionParser.newInstance(mnemonic, this);
     }
 
     @Override

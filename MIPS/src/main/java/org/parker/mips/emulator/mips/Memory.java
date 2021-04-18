@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  *
  * @author parke
  */
-public class Memory implements org.parker.mips.emulator.Memory {
+public class Memory {
 
     private static byte[] savedMemory;
     protected static byte[] memory = new byte[0];

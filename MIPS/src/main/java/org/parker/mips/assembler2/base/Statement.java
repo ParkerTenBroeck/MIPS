@@ -26,10 +26,18 @@ public abstract class Statement<ArgType> {
 
     public final ArgType getArg(int index){
         if(!evaluated[index]) {
-            args[index] = evaluateArgument(index, argExpressions[index].evaluate());
+            try {
+                args[index] = evaluateArgument(index, argExpressions[index].evaluate());
+            }catch (Exception e){
+                throw new AssemblerError("Failed to evaluate operand: " + (index + 1), argExpressions[index].line, argExpressions[index].startingAddress, argExpressions[index].endingAddress, e);
+            }
             evaluated[index] = true;
         }
         return args[index];
+    }
+
+    public Line getLine(){
+        return this.line;
     }
 
     @SuppressWarnings("unchecked")

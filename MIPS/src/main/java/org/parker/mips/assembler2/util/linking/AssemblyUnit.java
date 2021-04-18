@@ -2,7 +2,7 @@ package org.parker.mips.assembler2.util.linking;
 
 import org.parker.mips.assembler2.base.Data;
 import org.parker.mips.assembler2.base.assembler.BaseAssembler;
-import org.parker.mips.assembler2.util.Label;
+import org.parker.mips.assembler2.exception.LabelRedeclaredError;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,6 +24,17 @@ public class AssemblyUnit implements Serializable {
             return this.startingAddress;
         }
         return BaseAssembler.align(this.startingAddress, alignment);
+    }
+
+    public Map<String, Label> getAsuLabelMap() {
+        return asuLabelMap;
+    }
+
+    public void addLabel(Label label){
+        if (asuLabelMap.containsKey(label.mnemonic)) {
+            throw new LabelRedeclaredError(label);
+        }
+        asuLabelMap.put(label.mnemonic, label);
     }
 
     public long getEndingAddress(){

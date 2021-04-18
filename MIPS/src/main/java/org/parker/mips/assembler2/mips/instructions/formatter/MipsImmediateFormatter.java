@@ -1,6 +1,6 @@
 package org.parker.mips.assembler2.mips.instructions.formatter;
 
-import org.parker.mips.assembler2.mips.MipsAssembler;
+import org.parker.mips.assembler2.base.assembler.BaseAssembler;
 
 public interface MipsImmediateFormatter extends MipsFormatter{
 
@@ -9,7 +9,7 @@ public interface MipsImmediateFormatter extends MipsFormatter{
         return 4;
     }
 
-    default void encode(byte[] data, int[] fields, MipsAssembler assembler){
+    default void encode(byte[] data, int[] fields, BaseAssembler assembler){
         MipsFormatter.super.encode(data, fields, new int[]{6,5,5,16}, assembler);
     }
 }

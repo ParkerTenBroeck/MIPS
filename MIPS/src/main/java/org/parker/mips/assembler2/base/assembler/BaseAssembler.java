@@ -1,23 +1,22 @@
 package org.parker.mips.assembler2.base.assembler;
 
-import org.parker.mips.MIPS;
 import org.parker.mips.assembler.AssemblerLevel;
-import org.parker.mips.assembler.InstructionToString;
 import org.parker.mips.assembler2.base.*;
 import org.parker.mips.assembler2.base.preprocessor.*;
 import org.parker.mips.assembler2.directives.assembler.AssemblerDirectives;
 import org.parker.mips.assembler2.exception.AssemblerError;
-import org.parker.mips.assembler2.exception.LableNotDeclaredError;
-import org.parker.mips.assembler2.mips.MipsAssembler;
 import org.parker.mips.assembler2.util.*;
 import org.parker.mips.assembler2.util.linking.AssemblyUnit;
-import org.parker.mips.assembler2.util.Label;
+import org.parker.mips.assembler2.util.linking.Label;
+import org.parker.mips.assembler2.util.linking.LocalLabel;
 import org.parker.mips.emulator.mips.Memory;
+import org.parker.mips.util.PagedMemory;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public abstract class BaseAssembler<P extends BasePreProcessor> implements Assembler{
@@ -30,26 +29,14 @@ public abstract class BaseAssembler<P extends BasePreProcessor> implements Assem
     protected ArrayList<AssemblyUnit> assemblyUnits = new ArrayList<>();
     protected HashMap<String, Label> globalLabelMap = new HashMap<>();
 
-    public static void main(String... args){
-        MIPS.main(args);
-        MipsAssembler a = new MipsAssembler();
-        org.parker.mips.assembler.Assembler.assemble(new File("C:\\Users\\parke\\OneDrive\\Documents\\MIPS\\Examples\\Games\\snake2.asm"));
-        InstructionToString.decompile();
-        a.assemble(new File[]{new File("C:\\Users\\parke\\OneDrive\\Documents\\MIPS\\Examples\\Games\\snake2.asm")});
-        InstructionToString.decompile();
-    }
-
-    public long getCurrentAddress(){
-        return currentAddress;
-    }
-
     protected File currentFile;
     protected HashMap<String, Label> fileLabelMap = new HashMap<>();
     protected ArrayList<Data> fileDataList = new ArrayList<>();
     protected AssemblyUnit currentAssemblyUnit;
-    protected long startingAddress = 0;
-    protected long currentAddress = 0;
-    protected long size = 0;
+    protected long currentAssemblyUnitAddress = 0;
+    protected long currentAssemblyUnitSize = 0;
+
+    protected boolean isBigEndian;
 
     private void assemble(File input){
 
@@ -66,9 +53,8 @@ public abstract class BaseAssembler<P extends BasePreProcessor> implements Assem
 
         List<PreProcessedStatement> lines = preProcessor.preprocess(input);
 
-        startingAddress = 0;
-        currentAddress = 0;
-        size = 0;
+        currentAssemblyUnitAddress = 0;
+        currentAssemblyUnitSize = 0;
 
         for(int i = 0; i < lines.size(); i ++){
 
@@ -95,7 +81,8 @@ public abstract class BaseAssembler<P extends BasePreProcessor> implements Assem
                         String directive = ((PreProcessedAssemblyDirective) line).identifier;
                         CompiledExpression[] args = ((PreProcessedAssemblyDirective) line).args;
 
-                        AssemblerDirectives.getHandler(directive).parse(args, this);
+                        AssemblerDirectives.getHandler(directive).parse(
+                                ((PreProcessedAssemblyDirective) line).parentLine, args, this);
                     }catch (Exception e){
                         ASSEMBLER_LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR, "", new AssemblerError("Failed to evaluate AssemblyDirective", ((PreProcessedAssemblyDirective) line).parentLine, -1, e));
                         continue;
@@ -104,8 +91,8 @@ public abstract class BaseAssembler<P extends BasePreProcessor> implements Assem
                 } else if (line instanceof PreProcessedLabel) {
                     try {
 
-                        Label label = new Label(currentAddress, ((PreProcessedLabel) line).label, ((PreProcessedLabel) line).parentLine);
-                        fileLabelMap.put(((PreProcessedLabel) line).label, label);
+                        Label label = new LocalLabel(currentAssemblyUnitAddress, this.currentAssemblyUnit, ((PreProcessedLabel) line).label, ((PreProcessedLabel) line).parentLine);
+                        currentAssemblyUnit.addLabel(label);
 
                     }catch (Exception e){
                         ASSEMBLER_LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR, "", new AssemblerError("Failed to evaluate Label", ((PreProcessedLabel) line).parentLine, -1, e));
@@ -114,25 +101,26 @@ public abstract class BaseAssembler<P extends BasePreProcessor> implements Assem
                 }
 
             if(data != null){
-                currentAddress += data.getSize();
-                size += data.getSize();
+                currentAssemblyUnitAddress += data.getSize();
+                currentAssemblyUnitSize += data.getSize();
                 fileDataList.add(data);
             }
 
         }
-        currentAssemblyUnit.setSize(size);
+        currentAssemblyUnit.setSize(currentAssemblyUnitSize);
 
         assemblyUnits.add(currentAssemblyUnit);
-        globalLabelMap.putAll(fileLabelMap);
     }
 
     public void addDataToCurrent(Data data){
-        currentAddress += data.getSize();
-        size += data.getSize();
+        currentAssemblyUnitAddress += data.getSize();
+        currentAssemblyUnitSize += data.getSize();
         fileDataList.add(data);
     }
 
     public PagedMemory linkGlobal(){
+
+        LINKER_LOGGER.log(AssemblerLevel.ASSEMBLER_MESSAGE, "Started linking global");
 
         PagedMemory pMemory = new PagedMemory();
 
@@ -150,16 +138,19 @@ public abstract class BaseAssembler<P extends BasePreProcessor> implements Assem
             assemblyUnits.get(0).setStartingAddress(0);
         }
         for(int i = 1; i < assemblyUnits.size(); i ++){
-            if(assemblyUnits.get(i - 1).getStartingAddress() < 0){
-                assemblyUnits.get(i).setStartingAddress(assemblyUnits.get(i).getEndingAddress());
+            if(assemblyUnits.get(i).getStartingAddress() < 0){
+                assemblyUnits.get(i).setStartingAddress(assemblyUnits.get(i - 1).getEndingAddress());
             }else{
-                if(assemblyUnits.get(i - 1).getEndingAddress() >= assemblyUnits.get(i).getStartingAddress()){
+                if(assemblyUnits.get(i - 1).getEndingAddress() > assemblyUnits.get(i).getStartingAddress()){
                     LINKER_LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR, "Size miss mach");
                 }
             }
         }
 
         for(AssemblyUnit au: assemblyUnits){
+
+            currentAssemblyUnit = au;
+
             long address = au.getStartingAddress();
             long size = 0;
 
@@ -183,7 +174,7 @@ public abstract class BaseAssembler<P extends BasePreProcessor> implements Assem
                         pMemory.add((int) address, bytes);
                         address += d.getSize();
                         size += d.getSize();
-                    }catch(AssemblerError e){
+                    }catch(Exception e){
                         try{
                             address += d.getSize();
                             size += d.getSize();
@@ -197,14 +188,25 @@ public abstract class BaseAssembler<P extends BasePreProcessor> implements Assem
                 LINKER_LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR, ": Size missmatch size of Assembler Unit does not match the linked size? expected: " + au.getSize() + " got: " + size);
             }
         }
+
         Memory.setMemory(pMemory.getPage(0));
+        byte[] temp = new byte[pMemory.getPageCount() * 4096];
+        for(int p = 0; p < pMemory.getPageCount(); p++){
+            byte[] page = pMemory.getPage(p);
+            for(int i = 0; i < 4096; i ++){
+                temp[i + p * 4096] = page[i];
+            }
+        }
+        Memory.setMemory(temp);
+
         return pMemory;
     }
-
 
     @Override
     public void assemble(File[] files) {
 
+        isBigEndian = true;
+        this.globalLabelMap = new HashMap<>();
         this.preProcessor = createPreProcessor();
 
         for(File f: files){
@@ -214,20 +216,40 @@ public abstract class BaseAssembler<P extends BasePreProcessor> implements Assem
         linkGlobal();
     }
 
-    protected abstract P createPreProcessor();
-    protected abstract DataStatement getInstruction(String mnemonic);
-
     public Label getLabel(String token) {
-        if(globalLabelMap.containsKey(token)) {
-            return globalLabelMap.get(token);
+        if(currentAssemblyUnit.getAsuLabelMap().containsKey(token)) {
+            return currentAssemblyUnit.getAsuLabelMap().get(token);
         }else{
-            throw new LableNotDeclaredError("Label: " + token + " is not defined or not in the current scope");
+            throw new IllegalArgumentException("token: " + token + " is not declared in the current scope");
         }
     }
 
     public void setCurrentAssemblyUnitAlignment(int i){
         currentAssemblyUnit.setAlignment(i);
     }
+
+    public long getCurrentAssemblyUnitAddress(){
+        return currentAssemblyUnitAddress;
+    }
+
+    public AssemblyUnit getCurrentAssemblyUnit() {
+        return currentAssemblyUnit;
+    }
+
+    public Map<String, Label> getGlobalLabelMap() {
+        return globalLabelMap;
+    }
+
+    public void addGlobalLabel(Label label) {
+        this.globalLabelMap.put(label.mnemonic, label);
+    }
+
+    public boolean isBigEndian(){
+        return isBigEndian;
+    }
+
+    protected abstract P createPreProcessor();
+    protected abstract DataStatement getInstruction(String mnemonic);
 
     public static long align(long address, long alignment){
         return address + getAlignmentOffset(address, alignment);
