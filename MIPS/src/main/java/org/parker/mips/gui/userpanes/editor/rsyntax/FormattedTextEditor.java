@@ -11,13 +11,14 @@ import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.folding.FoldParserManager;
 import org.fife.ui.rtextarea.RTextScrollPane;
+import org.parker.mips.gui.userpanes.editor.TextEditor;
 import org.parker.mips.util.FileUtils;
 import org.parker.mips.util.ResourceHandler;
-import org.parker.mips.gui.userpanes.editor.Editor;
 import org.parker.mips.util.SerializableFont;
 import org.parker.mips.preferences.Preference;
 import org.parker.mips.preferences.Preferences;
 
+import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import java.awt.*;
 import java.awt.event.FocusListener;
@@ -35,14 +36,14 @@ import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
  *
  * @author parke
  */
-public class FormattedTextEditor extends Editor {
+public class FormattedTextEditor extends TextEditor {
 
     private static final Logger LOGGER = Logger.getLogger(FormattedTextEditor.class.getName());
     private static final Preferences themePrefs = Preferences.ROOT_NODE.getNode("system/theme");
 
     private static final DefaultHighlighter.DefaultHighlightPainter errorHighlight = new DefaultHighlighter.DefaultHighlightPainter(new Color(255,0,0,128));
 
-    protected FormattedTextEditor(File file) {
+    public FormattedTextEditor(File file) {
         super(file);
         initComponents();
 
@@ -75,7 +76,7 @@ public class FormattedTextEditor extends Editor {
         this.textArea.setText(new String(textBody));
     }
 
-    protected FormattedTextEditor() {
+    public FormattedTextEditor(){
         this((File)null);
     }
 
@@ -167,5 +168,24 @@ public class FormattedTextEditor extends Editor {
     @Override
     public byte[] getDataAsBytes() {
         return textArea.getText().getBytes();
+    }
+
+    public void setHighlightedLine(int lineNumber) {
+
+        try {
+            textArea.removeAllLineHighlights();
+            textArea.addLineHighlight(lineNumber, new Color(200, 0, 0, 128));
+
+
+            int height = scrollPane.getVisibleRect().height;
+            int yPos = clamp(textArea.yForLine(lineNumber) - (height / 2), 0, scrollPane.getVerticalScrollBar().getMaximum() - height);
+            scrollPane.getVerticalScrollBar().setValue(yPos);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static int clamp(int val, int min, int max) {
+        return Math.max(min, Math.min(max, val));
     }
 }

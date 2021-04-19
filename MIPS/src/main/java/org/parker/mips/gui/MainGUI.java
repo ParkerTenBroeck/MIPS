@@ -2,9 +2,12 @@ package org.parker.mips.gui;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.parker.mips.*;
+import org.parker.mips.assembler.debugger.Debugger;
+import org.parker.mips.assembler.util.Line;
 import org.parker.mips.assembler_old.Assembler;
 import org.parker.mips.assembler.mips.MipsDisassembler;
-import org.parker.mips.gui.userpanes.editor.Editor;
+import org.parker.mips.emulator.mips.Registers;
+import org.parker.mips.gui.userpanes.editor.FileEditor;
 import org.parker.mips.gui.userpanes.editor.EditorHandler;
 import org.parker.mips.gui.userpanes.hexeditor.MemoryEditorUserPane;
 import org.parker.mips.gui.userpanes.editor.rsyntax.FormattedTextEditor;
@@ -93,6 +96,24 @@ public class MainGUI extends javax.swing.JFrame {
     public static void refreshAll() {
         Memory.reloadMemory();
         refresh();
+    }
+
+    public static void refresh() {
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            register_GUI1.updateVals();
+            //InstructionMemoryGUI.refresh();
+            InstructionsRan.setText(Long.toString(Emulator.getInstructionsRan()));
+            UserPaneTabbedPane.updateOpenUserPanes();
+
+            Line line = Debugger.getDataLineFromAddress(Registers.getPc());
+            if(line != null) {
+                //LOGGER.log(Level.INFO, (line.getHumanLineNumber() + ": " + line.getLine()));
+                FileEditor e = EditorHandler.getEditorFromFile(line.getFile());
+                if (e instanceof FormattedTextEditor) {
+                    ((FormattedTextEditor) e).setHighlightedLine(line.getLineNumber());
+                }
+            }
+        });
     }
 
     /**
@@ -213,7 +234,8 @@ public class MainGUI extends javax.swing.JFrame {
                 //new FormattedTextEditor();
                 File file = new File(((JMenuItem) evt.getSource()).getName());
 
-                Editor.createEditor(FileUtils.loadFileAsByteArraySafe(file), FileUtils.removeExtension(file.getName()), FormattedTextEditor.class);
+                new FormattedTextEditor(file);
+                //Editor.createEditor(FileUtils.loadFileAsByteArraySafe(file), FileUtils.removeExtension(file.getName()), FormattedTextEditor.class);
                 Assembler.assembleDefault();
                 //}
             };
@@ -353,15 +375,6 @@ public class MainGUI extends javax.swing.JFrame {
             return jMenu;
         }
         return null;
-    }
-
-    public static void refresh() {
-        javax.swing.SwingUtilities.invokeLater(() -> {
-            register_GUI1.updateVals();
-            //InstructionMemoryGUI.refresh();
-            InstructionsRan.setText(Long.toString(Emulator.getInstructionsRan()));
-            UserPaneTabbedPane.updateOpenUserPanes();
-        });
     }
 
     /**
@@ -853,7 +866,8 @@ public class MainGUI extends javax.swing.JFrame {
 
         if (returnVal != JFileChooser.FILES_AND_DIRECTORIES) {
             File chosenFile = fc.getSelectedFile();
-            Editor.loadFileIntoEditor(chosenFile);
+            //Editor.loadFileIntoEditor(chosenFile);
+            new FormattedTextEditor(chosenFile);
         }
     }//GEN-LAST:event_openMenuButtonActionPerformed
 
@@ -892,7 +906,8 @@ public class MainGUI extends javax.swing.JFrame {
 
     private void newMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newMenuButtonActionPerformed
         //new FormattedTextEditor();
-        Editor.createEditor();
+        //Editor.createEditor();
+        new FormattedTextEditor();
     }//GEN-LAST:event_newMenuButtonActionPerformed
 
     private void asciiChartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asciiChartButtonActionPerformed

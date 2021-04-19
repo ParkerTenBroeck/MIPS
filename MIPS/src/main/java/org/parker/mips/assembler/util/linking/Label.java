@@ -16,6 +16,6 @@ public abstract class Label {
 
     @Override
     public String toString() {
-        return "Label: " + mnemonic + " on line: " + line.getLineNumber() + " from: " + line.getFile().getAbsolutePath();
+        return "Label: " + mnemonic + " on line: " + line.getHumanLineNumber() + " from: " + line.getFile().getAbsolutePath();
     }
 }

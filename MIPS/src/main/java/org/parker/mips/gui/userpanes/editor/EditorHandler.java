@@ -16,11 +16,11 @@ import java.util.ArrayList;
  */
 public class EditorHandler {
 
-    private static final ArrayList<Editor> editors = new ArrayList<Editor>();
-    private static Editor lastFoucsed;
+    private static final ArrayList<FileEditor> editors = new ArrayList<FileEditor>();
+    private static FileEditor lastFoucsed;
 
     public static boolean isAllSaved() {
-        for (Editor e : editors) {
+        for (FileEditor e : editors) {
             if (!e.isSaved()) {
                 return false;
             }
@@ -31,14 +31,14 @@ public class EditorHandler {
     public static boolean saveAll() {
         boolean allSaved = true;
 
-        for (Editor e : editors) {
+        for (FileEditor e : editors) {
             allSaved &= e.save();
         }
         return allSaved;
     }
 
     public static void saveAsAll() {
-        for (Editor e : editors) {
+        for (FileEditor e : editors) {
             e.saveAs();
         }
     }
@@ -57,7 +57,7 @@ public class EditorHandler {
         }
     }
 
-    public static void setLastFocused(Editor editor) {
+    public static void setLastFocused(FileEditor editor) {
         lastFoucsed = editor;
     }
 
@@ -73,11 +73,11 @@ public class EditorHandler {
         return null;
     }
 
-    public static Editor getLastFocused() {
+    public static FileEditor getLastFocused() {
         return lastFoucsed;
     }
 
-    public static final void addEditor(Editor editor) {
+    public static final void addEditor(FileEditor editor) {
         if(editors.contains(editor)){
             return;
         }
@@ -89,7 +89,7 @@ public class EditorHandler {
     public static final boolean isFileOpen(File file){
         if(file != null) {
             String afp = file.getAbsolutePath();
-            for (Editor e : editors) {
+            for (FileEditor e : editors) {
                 if(e.getFile() != null) {
                     if (e.getFile().getAbsolutePath().equals(afp)) {
                         return true;
@@ -100,7 +100,7 @@ public class EditorHandler {
         return false;
     }
 
-    public static final void removeEditor(Editor editor) {
+    public static final void removeEditor(FileEditor editor) {
         editors.remove(editor);
         UserPaneTabbedPane.removeEditor(editor);
         if (lastFoucsed == editor) {
@@ -111,7 +111,7 @@ public class EditorHandler {
     public static void switchCurrentViewToFile(File file) {
         if(isFileOpen(file)){
             String afp = file.getAbsolutePath();
-            for(Editor e: editors){
+            for(FileEditor e: editors){
                 if(e.getFile() != null){
                     if(e.getFile().getAbsolutePath().equals(afp)){
                         setLastFocused(e);
@@ -120,5 +120,16 @@ public class EditorHandler {
                 }
             }
         }
+    }
+
+    public static FileEditor getEditorFromFile(File file) {
+        for(FileEditor editor: editors){
+            if(editor.getFile() != null) {
+                if (editor.getFile().equals(file)) {
+                    return editor;
+                }
+            }
+        }
+        return null;
     }
 }

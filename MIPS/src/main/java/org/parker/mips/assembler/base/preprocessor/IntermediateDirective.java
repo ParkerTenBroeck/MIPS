@@ -14,7 +14,6 @@ public class IntermediateDirective implements IntermediateStatement{
     public final int expressionStartingIndex;
     public final int expressionEndingIndex;
 
-
     @Deprecated
     public IntermediateDirective(Line parentLine, String identifier, String expressionString){
         this.parentLine = parentLine;

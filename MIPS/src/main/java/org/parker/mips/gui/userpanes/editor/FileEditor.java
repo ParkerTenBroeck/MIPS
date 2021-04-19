@@ -10,7 +10,6 @@ import org.parker.mips.util.ResourceHandler;
 import org.parker.mips.gui.UserPaneTabbedPane;
 import org.parker.mips.gui.MainGUI;
 import org.parker.mips.gui.userpanes.UserPane;
-import org.parker.mips.gui.userpanes.editor.rsyntax.FormattedTextEditor;
 import org.parker.mips.preferences.Preference;
 
 import javax.swing.*;
@@ -18,10 +17,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,84 +25,15 @@ import java.util.logging.Logger;
  *
  * @author parke
  */
-public abstract class Editor extends UserPane {
+public abstract class FileEditor extends UserPane {
 
     protected File currentFile;
     private boolean isSaved;
 
-    private final static HashMap<String, Class<?>> defaultFileExtensionEditor = new HashMap<String, Class<?>>();
-    private final static ArrayList<Object> availableEditors = new ArrayList<>();
+    private static final Logger LOGGER = Logger.getLogger(FileEditor.class.getName());
 
 
-    private static final Logger LOGGER = Logger.getLogger(Editor.class.getName());
-
-    //these are just the system editors idc that its hard coded eat me
-    static{
-        Editor.registerEditorWithDefaultExtensions(FormattedTextEditor.class, new String[]{"txt", "asm"});
-        //SwingUtilities.invokeLater(new UI$1(new String[]{}));
-    }
-
-
-    private static void registerEditor(Editor editor){
-        EditorHandler.addEditor(editor);
-    }
-
-    /**
-     *
-     * @param file the file that the editor will "edit"
-     */
-    public static void createEditor(File file){
-        String extension = FileUtils.getExtension(file);
-        Class<?> clazz = defaultFileExtensionEditor.getOrDefault(extension, FormattedTextEditor.class);
-       createEditor(file, clazz);
-    }
-
-    /** creates an editor with no association to a file
-     *
-     * @param data the data to be loaded into the editor, each editor will load the data as it sees fit
-     * @param name the title of the editor, since there is no accociated file this name will be used until the user decides to save the information to a file
-     * @parma extension the type of file the data would be stored in
-     */
-    public static void createEditor(byte[] data, String name, String extension){
-        Class<?> clazz = defaultFileExtensionEditor.getOrDefault(extension, FormattedTextEditor.class);
-        createEditor(data, name, clazz);
-    }
-
-    /**
-     *
-     * @param data
-     * @param name the name of the
-     * @param clazz the editor to use
-     */
-    public static void createEditor(byte[] data, String name, Class<?> clazz){
-        //try {
-           // Constructor constructor = clazz.getDeclaredConstructor(byte[].class, String.class);
-           // constructor.setAccessible(true);
-          //  Editor editor = (Editor)constructor.newInstance(data, name);
-          //  registerEditor(editor);
-
-        //}catch(Exception e){
-        //    LOGGER.log(Level.SEVERE, "Cannot create editor", e);
-        //}
-        registerEditor(new FormattedTextEditor(data));
-    }
-
-    public static void createEditor(File file, Class<?> clazz){
-        if(EditorHandler.isFileOpen(file)){
-            EditorHandler.switchCurrentViewToFile(file);
-            return;
-        }
-        try {
-            Constructor constructor = clazz.getDeclaredConstructor(File.class);
-            constructor.setAccessible(true);
-            Editor editor = (Editor)constructor.newInstance(file);
-            registerEditor(editor);
-
-        }catch(Exception e){
-            LOGGER.log(Level.SEVERE, "Cannot create editor", e);
-        }
-    }
-
+    /*
     public static void createEditor(){
         Class<?> clazz = FormattedTextEditor.class;
 
@@ -154,35 +81,15 @@ public abstract class Editor extends UserPane {
         }
         createEditor(file);
     }
+    */
 
-    private Editor() {
-        this(null);
-    }
-
-    protected Editor(File file) {
+    protected FileEditor(File file) {
         this.currentFile = file;
         isSaved = true;
-        this.addFocusListener(new asd(this));
+        EditorHandler.addEditor(this);
     }
 
-    private class asd implements FocusListener {
 
-        private final Editor parent;
-
-        public asd(Editor editor) {
-            parent = editor;
-        }
-
-        @Override
-        public void focusGained(FocusEvent fe) {
-            EditorHandler.setLastFocused(parent);
-            updateTitle();
-        }
-
-        @Override
-        public void focusLost(FocusEvent fe) {
-        }
-    }
 
     public final void updateTitle() {
         if (currentFile != null) {
@@ -238,13 +145,10 @@ public abstract class Editor extends UserPane {
     }
 
     public final File getFile() {
-        if (currentFile != null) {
-            return currentFile;
-        }
-        return null;
+        return currentFile;
     }
 
-    public File getFalseFile() {
+    public final File getFalseFile() {
         if (currentFile != null) {
             return currentFile;
         } else {

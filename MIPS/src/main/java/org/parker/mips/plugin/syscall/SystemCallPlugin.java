@@ -7,7 +7,6 @@ package org.parker.mips.plugin.syscall;
 
 import org.parker.mips.util.FileUtils;
 import org.parker.mips.gui.MainGUI;
-import org.parker.mips.gui.userpanes.editor.Editor;
 import org.parker.mips.gui.userpanes.editor.rsyntax.FormattedTextEditor;
 import org.parker.mips.plugin.PluginBase;
 import org.parker.mips.plugin.PluginClassLoader;
@@ -199,7 +198,8 @@ public abstract class SystemCallPlugin extends PluginBase {
 
             	InputStream stream = CLASS_LOADER.getResourceAsStream(resources);
             	byte[] bytes = FileUtils.loadStreamAsByteArray(stream);
-                Editor.createEditor(bytes, null, FormattedTextEditor.class);
+                new FormattedTextEditor(bytes);
+            	//Editor.createEditor(bytes, null, FormattedTextEditor.class);
 
             }catch(Exception e) {
             	

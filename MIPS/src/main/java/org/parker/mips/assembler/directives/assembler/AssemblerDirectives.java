@@ -73,7 +73,7 @@ public class AssemblerDirectives {
             }
 
             if(((Number) arg).longValue() > Long.MAX_VALUE || ((Number) arg).longValue() < Long.MIN_VALUE){
-                ASSEMBLER_LOGGER.log(AssemblerLevel.ASSEMBLER_WARNING, "On Line: " + line.getLineNumber()
+                ASSEMBLER_LOGGER.log(AssemblerLevel.ASSEMBLER_WARNING, "On Line: " + line.getHumanLineNumber()
                         + " argument: " + i + " index: " + args[i].startingAddress + " to: " + args[i]
                         + " value overflows");
             }
@@ -103,7 +103,7 @@ public class AssemblerDirectives {
             }
 
             if(((Number) arg).longValue() > Integer.MAX_VALUE || ((Number) arg).longValue() < Integer.MIN_VALUE){
-                ASSEMBLER_LOGGER.log(AssemblerLevel.ASSEMBLER_WARNING, "On Line: " + line.getLineNumber()
+                ASSEMBLER_LOGGER.log(AssemblerLevel.ASSEMBLER_WARNING, "On Line: " + line.getHumanLineNumber()
                         + " argument: " + i + " index: " + args[i].startingAddress + " to: " + args[i]
                         + " value overflows");
             }
@@ -133,7 +133,7 @@ public class AssemblerDirectives {
             }
 
             if(((Number) arg).longValue() > Short.MAX_VALUE || ((Number) arg).longValue() < Short.MIN_VALUE){
-                ASSEMBLER_LOGGER.log(AssemblerLevel.ASSEMBLER_WARNING, "On Line: " + line.getLineNumber()
+                ASSEMBLER_LOGGER.log(AssemblerLevel.ASSEMBLER_WARNING, "On Line: " + line.getHumanLineNumber()
                         + " argument: " + i + " index: " + args[i].startingAddress + " to: " + args[i]
                         + " value overflows");
             }
@@ -163,7 +163,7 @@ public class AssemblerDirectives {
             }
 
             if(((Number) arg).longValue() > Byte.MAX_VALUE || ((Number) arg).longValue() < Byte.MIN_VALUE){
-                ASSEMBLER_LOGGER.log(AssemblerLevel.ASSEMBLER_WARNING, "On Line: " + line.getLineNumber()
+                ASSEMBLER_LOGGER.log(AssemblerLevel.ASSEMBLER_WARNING, "On Line: " + line.getHumanLineNumber()
                         + " argument: " + i + " index: " + args[i].startingAddress + " to: " + args[i]
                         + " value overflows");
             }

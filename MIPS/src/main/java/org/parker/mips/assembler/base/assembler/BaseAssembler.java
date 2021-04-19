@@ -4,6 +4,8 @@ import org.parker.mips.assembler.base.Data;
 import org.parker.mips.assembler.base.DataStatement;
 import org.parker.mips.assembler.base.LinkableData;
 import org.parker.mips.assembler.base.preprocessor.*;
+import org.parker.mips.assembler.debugger.Debugger;
+import org.parker.mips.assembler.debugger.FinalizedLabel;
 import org.parker.mips.assembler.directives.assembler.AssemblerDirectives;
 import org.parker.mips.assembler.exception.AssemblerError;
 import org.parker.mips.assembler.util.CompiledExpression;
@@ -27,13 +29,19 @@ public abstract class BaseAssembler<P extends BasePreProcessor> implements Assem
     private static final Logger ASSEMBLER_LOGGER = Logger.getLogger(BaseAssembler.class.getName() + "\\.Assembler");
     private static final Logger LINKER_LOGGER = Logger.getLogger(BaseAssembler.class.getName() + "\\.Linker");
 
+    //global values
     protected P preProcessor;
     protected ArrayList<AssemblyUnit> assemblyUnits = new ArrayList<>();
     protected HashMap<String, Label> globalLabelMap = new HashMap<>();
 
+    //debugging
+    protected HashMap<Data, PreProcessedStatement> dataToPreProcessedStatement;
+
+    //values specific to current assemble(File)
     protected File currentFile;
-    protected HashMap<String, Label> fileLabelMap = new HashMap<>();
-    protected ArrayList<Data> fileDataList = new ArrayList<>();
+    protected PreProcessedStatement currentStatement;
+    protected HashMap<String, Label> fileLabelMap;
+    protected ArrayList<Data> fileDataList;
     protected AssemblyUnit currentAssemblyUnit;
     protected long currentAssemblyUnitAddress = 0;
     protected long currentAssemblyUnitSize = 0;
@@ -60,64 +68,73 @@ public abstract class BaseAssembler<P extends BasePreProcessor> implements Assem
 
         for(int i = 0; i < lines.size(); i ++){
 
-            PreProcessedStatement line = lines.get(i);
+            currentStatement = lines.get(i);
             Data data = null;
 
-                if (line instanceof PreProcessedAssemblyStatement) {
+                if (currentStatement instanceof PreProcessedAssemblyStatement) {
 
                     try {
-                        String mnemonic = ((PreProcessedAssemblyStatement) line).identifier;
-                        CompiledExpression[] args = ((PreProcessedAssemblyStatement) line).args;
+                        String mnemonic = ((PreProcessedAssemblyStatement) currentStatement).identifier;
+                        CompiledExpression[] args = ((PreProcessedAssemblyStatement) currentStatement).args;
 
                         DataStatement instruction = getInstruction(mnemonic);
-                        instruction.setArgExpressions(args, ((PreProcessedAssemblyStatement) line).parentLine);
+                        instruction.setArgExpressions(args, ((PreProcessedAssemblyStatement) currentStatement).parentLine);
                         data = instruction;
                     }catch (Exception e){
-                        ASSEMBLER_LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR, "", new AssemblerError("Failed to evaluate Assembly Statement", ((PreProcessedAssemblyStatement) line).parentLine, e));
+                        ASSEMBLER_LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR, "", new AssemblerError("Failed to evaluate Assembly Statement", ((PreProcessedAssemblyStatement) currentStatement).parentLine, e));
                         continue;
                     }
 
-                } else if (line instanceof PreProcessedAssemblyDirective) {
+                } else if (currentStatement instanceof PreProcessedAssemblyDirective) {
 
                     try {
-                        String directive = ((PreProcessedAssemblyDirective) line).identifier;
-                        CompiledExpression[] args = ((PreProcessedAssemblyDirective) line).args;
+                        String directive = ((PreProcessedAssemblyDirective) currentStatement).identifier;
+                        CompiledExpression[] args = ((PreProcessedAssemblyDirective) currentStatement).args;
 
                         AssemblerDirectives.getHandler(directive).parse(
-                                ((PreProcessedAssemblyDirective) line).parentLine, args, this);
+                                ((PreProcessedAssemblyDirective) currentStatement).parentLine, args, this);
                     }catch (Exception e){
-                        ASSEMBLER_LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR, "", new AssemblerError("Failed to evaluate AssemblyDirective", ((PreProcessedAssemblyDirective) line).parentLine, -1, e));
+                        ASSEMBLER_LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR, "", new AssemblerError("Failed to evaluate AssemblyDirective", ((PreProcessedAssemblyDirective) currentStatement).parentLine, -1, e));
                         continue;
                     }
 
-                } else if (line instanceof PreProcessedLabel) {
+                } else if (currentStatement instanceof PreProcessedLabel) {
                     try {
 
-                        Label label = new LocalLabel(currentAssemblyUnitAddress, this.currentAssemblyUnit, ((PreProcessedLabel) line).label, ((PreProcessedLabel) line).parentLine);
+                        Label label = new LocalLabel(currentAssemblyUnitAddress, this.currentAssemblyUnit, ((PreProcessedLabel) currentStatement).label, ((PreProcessedLabel) currentStatement).parentLine);
                         currentAssemblyUnit.addLabel(label);
 
                     }catch (Exception e){
-                        ASSEMBLER_LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR, "", new AssemblerError("Failed to evaluate Label", ((PreProcessedLabel) line).parentLine, -1, e));
+                        ASSEMBLER_LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR, "", new AssemblerError("Failed to evaluate Label", ((PreProcessedLabel) currentStatement).parentLine, -1, e));
                         continue;
                     }
                 }
 
             if(data != null){
-                currentAssemblyUnitAddress += data.getSize();
-                currentAssemblyUnitSize += data.getSize();
-                fileDataList.add(data);
+                this.addDataToCurrent(data);
             }
 
         }
         currentAssemblyUnit.setSize(currentAssemblyUnitSize);
 
         assemblyUnits.add(currentAssemblyUnit);
+
+        currentFile = null;
+        currentStatement = null;
+        fileLabelMap = null;
+        fileDataList = null;
+        currentAssemblyUnit = null;
+        currentAssemblyUnitAddress = 0;
+        currentAssemblyUnitSize = 0;
     }
 
     public void addDataToCurrent(Data data){
         currentAssemblyUnitAddress += data.getSize();
         currentAssemblyUnitSize += data.getSize();
         fileDataList.add(data);
+
+        //debug
+        dataToPreProcessedStatement.put(data, currentStatement);
     }
 
     public PagedMemory linkGlobal(){
@@ -176,6 +193,8 @@ public abstract class BaseAssembler<P extends BasePreProcessor> implements Assem
                         pMemory.add((int) address, bytes);
                         address += d.getSize();
                         size += d.getSize();
+
+                        Debugger.addDataRange(address - d.getSize(), address, dataToPreProcessedStatement.get(d).getLine());
                     }catch(Exception e){
                         try{
                             address += d.getSize();
@@ -188,6 +207,16 @@ public abstract class BaseAssembler<P extends BasePreProcessor> implements Assem
                 }
             if(size != au.getSize()){
                 LINKER_LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR, ": Size missmatch size of Assembler Unit does not match the linked size? expected: " + au.getSize() + " got: " + size);
+            }
+        }
+
+        for(AssemblyUnit au: assemblyUnits){
+            for(Map.Entry<String, Label> s:au.asuLabelMap.entrySet()){
+                try {
+                    Debugger.addLabel(new FinalizedLabel(s.getValue().mnemonic, s.getValue().line, s.getValue().getAddress()));
+                }catch (Exception ignored){
+
+                }
             }
         }
 
@@ -209,13 +238,23 @@ public abstract class BaseAssembler<P extends BasePreProcessor> implements Assem
 
         isBigEndian = true;
         this.globalLabelMap = new HashMap<>();
+        this.assemblyUnits = new ArrayList<>();
         this.preProcessor = createPreProcessor();
+
+        Debugger.clear();
+        this.dataToPreProcessedStatement = new HashMap<>();
 
         for(File f: files){
             assemble(f);
         }
 
         linkGlobal();
+
+        this.globalLabelMap = null;
+        this.assemblyUnits = null;
+        this.preProcessor = null;
+
+        this.dataToPreProcessedStatement = null;
     }
 
     public Label getLabel(String token) {

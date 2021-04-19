@@ -6,7 +6,7 @@
 package org.parker.mips.assembler.mips;
 
 import org.parker.mips.emulator.mips.Memory;
-import org.parker.mips.gui.userpanes.editor.Editor;
+import org.parker.mips.gui.userpanes.editor.rsyntax.FormattedTextEditor;
 
 /**
  *
@@ -20,7 +20,8 @@ public class MipsDisassembler {
         for(int i = 0; i < Memory.getSize() / 4; i ++){
             sb.append(instructionToString(Memory.getWord(i * 4)) + "\n");
         }
-        Editor.createEditor(sb.toString().getBytes(), "", "");
+        new FormattedTextEditor(sb.toString().getBytes());
+        //Editor.createEditor(sb.toString().getBytes(), "", "");
     }
 
     public static void disassemble(org.parker.mips.util.Memory memory){
@@ -28,7 +29,8 @@ public class MipsDisassembler {
         for(int i = 0; i < memory.getSize() / 4; i ++){
             sb.append(instructionToString(memory.getWord(i * 4, true)) + "\n");
         }
-        Editor.createEditor(sb.toString().getBytes(), "", "asm");
+        new FormattedTextEditor(sb.toString().getBytes());
+        //Editor.createEditor(sb.toString().getBytes(), "", "asm");
     }
 
     public static String instructionToString(int opCode) {

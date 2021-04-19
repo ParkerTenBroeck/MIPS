@@ -56,8 +56,11 @@ public class Line implements Serializable {
         this.parentLine = line;
     }
 
-    public int getLineNumber() {
+    public int getHumanLineNumber() {
         return startingLine + 1;
+    }
+    public int getLineNumber(){
+        return startingLine;
     }
 
     public File getFile() {

@@ -7,8 +7,9 @@ package org.parker.mips.gui;
 
 
 import org.parker.mips.gui.userpanes.UserPane;
-import org.parker.mips.gui.userpanes.editor.Editor;
+import org.parker.mips.gui.userpanes.editor.FileEditor;
 import org.parker.mips.gui.userpanes.editor.EditorHandler;
+import org.parker.mips.gui.userpanes.editor.rsyntax.FormattedTextEditor;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -60,14 +61,15 @@ public class UserPaneTabbedPane extends javax.swing.JPanel {
                         }
                     }
                 });
-        
-        Editor.createEditor();
+
+        new FormattedTextEditor();
+        //Editor.createEditor();
         
         jTabbedPane1.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent ce) {
-                if(jTabbedPane1.getSelectedComponent() instanceof Editor){
-                    EditorHandler.setLastFocused((Editor) jTabbedPane1.getSelectedComponent());
+                if(jTabbedPane1.getSelectedComponent() instanceof FileEditor){
+                    EditorHandler.setLastFocused((FileEditor) jTabbedPane1.getSelectedComponent());
                 }
             }
         });

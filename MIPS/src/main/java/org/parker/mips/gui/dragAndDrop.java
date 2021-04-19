@@ -5,7 +5,7 @@
  */
 package org.parker.mips.gui;
 
-import org.parker.mips.gui.userpanes.editor.Editor;
+import org.parker.mips.gui.userpanes.editor.rsyntax.FormattedTextEditor;
 
 import javax.swing.*;
 import java.awt.datatransfer.DataFlavor;
@@ -50,7 +50,8 @@ public class dragAndDrop {
                             java.util.List<?> list = (java.util.List<?>) tr.getTransferData(flavor);
                             for (Object o : list) {
                                 //filePathLable.setText(((File) list.get(j)).getPath());
-                                Editor.loadFileIntoEditor((File) o);
+                                new FormattedTextEditor((File)o);
+                                //Editor.loadFileIntoEditor((File) o);
                                 MainGUI.refreshAll();
                                 //list.get(j); is the file
                             }

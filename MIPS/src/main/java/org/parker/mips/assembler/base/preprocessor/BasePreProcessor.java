@@ -76,7 +76,6 @@ public abstract class BasePreProcessor<A extends BaseAssembler> {
                 currentLine.setParentFile(file);
                 currentLine.setStartingLine(lineNumber);
                 currentLine.setStartingIndex(index);
-                lineNumber++;
                 index += line.length();
 
                 if(line.contains(";")){
@@ -87,9 +86,9 @@ public abstract class BasePreProcessor<A extends BaseAssembler> {
                 }
 
                 currentLine.setLine(line);
-                currentLine.setEndingLine(lineNumber);
                 currentLine.setEndingIndex(index);
                 list.add(currentLine);
+                lineNumber++;
             }
 
         } catch (IOException e) {
@@ -163,10 +162,10 @@ public abstract class BasePreProcessor<A extends BaseAssembler> {
                     s = new IntermediateAssemblyStatement(line, m, 1, 2);
 
                 } else {
-                    LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR, "Illegal expression on line: " + line.getLineNumber());
+                    LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR, "Illegal expression on line: " + line.getHumanLineNumber());
                 }
             }catch (Exception e){
-                LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR, "Failed to PreProcess line: " + line.getLineNumber(), e);
+                LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR, "Failed to PreProcess line: " + line.getHumanLineNumber(), e);
             }
 
             if(s != null) {
@@ -222,10 +221,10 @@ public abstract class BasePreProcessor<A extends BaseAssembler> {
                             ec.compileExpressionsAsArray(args, line, expressionStartingIndex));
 
                 } else {
-                    LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR, "Illegal expression on line: " + statement.getLine().getLineNumber());
+                    LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR, "Illegal expression on line: " + statement.getLine().getHumanLineNumber());
                 }
             }catch (Exception e){
-                LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR, "Failed to PreProcess line: " + statement.getLine().getLineNumber(), e);
+                LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR, "Failed to PreProcess line: " + statement.getLine().getHumanLineNumber(), e);
             }
 
             if(s != null) {

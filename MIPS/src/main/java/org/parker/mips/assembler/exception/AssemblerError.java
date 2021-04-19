@@ -60,7 +60,7 @@ public class AssemblerError extends RuntimeException{
             }
         }
         if(line != null){
-            return  "On Line: " + line.getLineNumber() + " " + super.getMessage() + indexInfo;
+            return  "On Line: " + line.getHumanLineNumber() + " " + super.getMessage() + indexInfo;
         }else{
             return super.getMessage();
         }

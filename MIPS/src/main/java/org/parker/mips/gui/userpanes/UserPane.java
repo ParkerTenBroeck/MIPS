@@ -1,7 +1,5 @@
 package org.parker.mips.gui.userpanes;
 
-import javafx.scene.layout.BorderPane;
-
 import javax.swing.*;
 
 public abstract class UserPane extends javax.swing.JPanel {
@@ -9,7 +7,6 @@ public abstract class UserPane extends javax.swing.JPanel {
     private JLabel title = new JLabel();
 
     public UserPane(){
-
     }
 
     public abstract boolean close();
