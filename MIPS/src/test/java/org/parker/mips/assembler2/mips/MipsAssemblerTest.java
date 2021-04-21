@@ -3,8 +3,8 @@ package org.parker.mips.assembler2.mips;
 import org.junit.jupiter.api.Test;
 import org.parker.mips.MIPS;
 import org.parker.mips.assembler.base.assembler.Assembler;
-import org.parker.mips.assembler.mips.MipsAssembler;
-import org.parker.mips.assembler.mips.MipsDisassembler;
+import org.parker.mips.architectures.mips.assembler.MipsAssembler;
+import org.parker.mips.architectures.mips.disassembler.MipsDisassembler;
 
 import java.io.File;
 

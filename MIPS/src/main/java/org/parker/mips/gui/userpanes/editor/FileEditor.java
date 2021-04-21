@@ -13,8 +13,6 @@ import org.parker.mips.gui.userpanes.UserPane;
 import org.parker.mips.preferences.Preference;
 
 import javax.swing.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,57 +29,6 @@ public abstract class FileEditor extends UserPane {
     private boolean isSaved;
 
     private static final Logger LOGGER = Logger.getLogger(FileEditor.class.getName());
-
-
-    /*
-    public static void createEditor(){
-        Class<?> clazz = FormattedTextEditor.class;
-
-        try {
-            Constructor constructor = clazz.getDeclaredConstructor();
-            constructor.setAccessible(true);
-            Editor editor = (Editor)constructor.newInstance();
-            EditorHandler.addEditor(editor);
-
-        }catch(Exception e){
-            LOGGER.log(Level.SEVERE, "Cannot create editor", e);
-        }
-    }
-
-    protected static void registerEditorWithDefaultExtensions(Class<?> clazz, String[] accociatedExctentions){
-        for(String ext: accociatedExctentions){
-            defaultFileExtensionEditor.put(ext, clazz);
-        }
-        //temp
-       registerEditorWithoutDefaultExtensions(new Object());
-    }
-
-    protected static void registerEditorWithoutDefaultExtensions(Object object){
-        if(availableEditors.contains(object)){
-            return;
-        }else {
-            availableEditors.add(object);
-        }
-    }
-
-    public static void loadFileIntoEditor(File file) {
-        if (file == null) {
-            return;
-        }
-        if (!file.exists()) {
-            return;
-        }
-        if (file.isDirectory()) {
-            File[] files = file.listFiles();
-            for (File f : files) {
-                if (f.exists() && f.isFile()) {
-                    createEditor(f);
-                }
-            }
-        }
-        createEditor(file);
-    }
-    */
 
     protected FileEditor(File file) {
         this.currentFile = file;
@@ -127,7 +74,7 @@ public abstract class FileEditor extends UserPane {
                 if (save()) {
                     EditorHandler.removeEditor(this);
                     Preference.removeAllObserversLinkedToObject(this);
-                    closeS();
+                    closeP();
                     return true;
                 } else {
                     return false;
@@ -135,7 +82,7 @@ public abstract class FileEditor extends UserPane {
             case JOptionPane.NO_OPTION:
                 EditorHandler.removeEditor(this);
                 Preference.removeAllObserversLinkedToObject(this);
-                closeS();
+                closeP();
                 return true;
             case JOptionPane.CANCEL_OPTION:
                 return false;
@@ -217,7 +164,7 @@ public abstract class FileEditor extends UserPane {
         return false;
     }
 
-    public void closeS(){};
+    protected void closeP(){}
 
     public abstract byte[] getDataAsBytes();
 

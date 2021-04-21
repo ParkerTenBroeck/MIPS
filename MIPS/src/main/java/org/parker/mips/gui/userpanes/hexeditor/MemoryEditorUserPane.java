@@ -2,7 +2,7 @@ package org.parker.mips.gui.userpanes.hexeditor;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import org.parker.mips.assembler_old.Assembler;
+import org.parker.mips.assembler.base.preprocessor.BaseExpressionCompiler;
 import org.parker.mips.gui.components.FlatIconButton;
 import org.parker.mips.gui.icons.FlatMinusIcon;
 import org.parker.mips.gui.icons.FlatPlusIcon;
@@ -23,7 +23,7 @@ public class MemoryEditorUserPane extends UserPane {
     private JRadioButton bigEndianRadioButton;
     private JCheckBox checkBox1;
     private JCheckBox checkBox2;
-    private JLabel rowCountLable;
+    private JLabel rowCountLabel;
 
     public MemoryEditorUserPane() {
 
@@ -72,7 +72,7 @@ public class MemoryEditorUserPane extends UserPane {
                         String text = textField.getText();
                         int value;
 
-                        value = Assembler.parseInt(text);
+                        value = BaseExpressionCompiler.parseInt(text);
 
                         ((EditableMemoryHexGrid) bfg).setIndex(value);
                     } catch (Exception ex) {
@@ -122,7 +122,7 @@ public class MemoryEditorUserPane extends UserPane {
         if (rows < 2)
             return;
         ((EditableMemoryHexGrid) bfg).updateThings(rows, ((EditableMemoryHexGrid) bfg).getColumns(), ((EditableMemoryHexGrid) bfg).getGroupSize());
-        rowCountLable.setText((rows - 1) + "");
+        rowCountLabel.setText((rows - 1) + "");
     }
 
     public final int getRows() {
@@ -234,9 +234,9 @@ public class MemoryEditorUserPane extends UserPane {
         checkBox1.setSelected(true);
         checkBox1.setText("");
         panel4.add(checkBox1, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        rowCountLable = new JLabel();
-        rowCountLable.setText("20");
-        panel4.add(rowCountLable, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        rowCountLabel = new JLabel();
+        rowCountLabel.setText("20");
+        panel4.add(rowCountLabel, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label4 = new JLabel();
         label4.setText("Rows");
         panel2.add(label4, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));

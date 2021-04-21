@@ -9,9 +9,6 @@ import org.fife.ui.rsyntaxtextarea.AbstractTokenMaker;
 import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.TokenMap;
-import org.parker.mips.assembler_old.PreProcessor;
-import org.parker.mips.assembler_old.StringToOpcode;
-import org.parker.mips.assembler_old.preprocessor.statements.Statement;
 
 import javax.swing.text.Segment;
 
@@ -25,12 +22,12 @@ public class MIPSAbstractTokenMaker extends AbstractTokenMaker {
     public TokenMap getWordsToHighlight() {
         TokenMap tokenMap = new TokenMap();
 
-        for (String instruction : StringToOpcode.INSTRUCTIONS) {
-            tokenMap.put(instruction, Token.RESERVED_WORD);
-        }
-        for (Statement s : PreProcessor.validStatements) {
-            tokenMap.put("#" + s.STATEMENT_NAME, Token.MARKUP_PROCESSING_INSTRUCTION);
-        }
+        //for (String instruction : StringToOpcode.INSTRUCTIONS) {
+        //    tokenMap.put(instruction, Token.RESERVED_WORD);
+        //}
+        //for (Statement s : PreProcessor.validStatements) {
+        //    tokenMap.put("#" + s.STATEMENT_NAME, Token.MARKUP_PROCESSING_INSTRUCTION);
+        //}
 
         tokenMap.put(".byte", Token.DATA_TYPE);
         tokenMap.put(".hword", Token.DATA_TYPE);

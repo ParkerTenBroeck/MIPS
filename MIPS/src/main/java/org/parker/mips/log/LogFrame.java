@@ -6,10 +6,10 @@
 package org.parker.mips.log;
 
 
-import org.parker.mips.assembler_old.AssemblerLevel;
+import org.parker.mips.assembler.util.AssemblerLevel;
 import org.parker.mips.preferences.Preference;
 import org.parker.mips.preferences.Preferences;
-import org.parker.mips.emulator.RunTimeLevel;
+import org.parker.mips.architectures.mips.emulator.RunTimeLevel;
 
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;

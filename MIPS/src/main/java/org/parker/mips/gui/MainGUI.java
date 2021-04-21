@@ -2,11 +2,13 @@ package org.parker.mips.gui;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.parker.mips.*;
+import org.parker.mips.architectures.ArchitectureAccess;
+import org.parker.mips.architectures.mips.gui.RegisterGUI;
+import org.parker.mips.architectures.mips.gui.SystemCallPluginInfoFrame;
 import org.parker.mips.assembler.debugger.Debugger;
 import org.parker.mips.assembler.util.Line;
-import org.parker.mips.assembler_old.Assembler;
-import org.parker.mips.assembler.mips.MipsDisassembler;
-import org.parker.mips.emulator.mips.Registers;
+import org.parker.mips.architectures.mips.disassembler.MipsDisassembler;
+import org.parker.mips.architectures.mips.emulator.mips.Registers;
 import org.parker.mips.gui.userpanes.editor.FileEditor;
 import org.parker.mips.gui.userpanes.editor.EditorHandler;
 import org.parker.mips.gui.userpanes.hexeditor.MemoryEditorUserPane;
@@ -14,16 +16,17 @@ import org.parker.mips.gui.userpanes.editor.rsyntax.FormattedTextEditor;
 import org.parker.mips.gui.theme.ThemeHandler;
 import org.parker.mips.log.LogFrame;
 import org.parker.mips.plugin.PluginLoader;
-import org.parker.mips.plugin.syscall.SystemCallPlugin;
-import org.parker.mips.plugin.syscall.SystemCallPlugin.Node;
-import org.parker.mips.plugin.syscall.SystemCallPluginHandler;
+import org.parker.mips.architectures.mips.syscall.SystemCallPlugin;
+import org.parker.mips.architectures.mips.syscall.SystemCallPlugin.Node;
+import org.parker.mips.architectures.mips.syscall.SystemCallPluginHandler;
 import org.parker.mips.preferences.Preference;
 import org.parker.mips.preferences.Preferences;
-import org.parker.mips.emulator.mips.Memory;
-import org.parker.mips.emulator.mips.Emulator;
+import org.parker.mips.architectures.mips.emulator.mips.Memory;
+import org.parker.mips.architectures.mips.emulator.mips.Emulator;
 import org.parker.mips.util.FileUtils;
 import org.parker.mips.util.ResourceHandler;
 import org.parker.mips.util.UpdateHandler;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -155,9 +158,7 @@ public class MainGUI extends javax.swing.JFrame {
 
         addAssembleButtonListener((ae) -> {
             LOGGER.log(Level.FINER, "Assemble Button Action Preformed");
-            Emulator.reset();
-            EditorHandler.saveAll();
-            Assembler.assembleDefault();
+            ArchitectureAccess.onAssembleButton();
         });
 
         addDisassembleButtonListener(e -> {
@@ -236,7 +237,8 @@ public class MainGUI extends javax.swing.JFrame {
 
                 new FormattedTextEditor(file);
                 //Editor.createEditor(FileUtils.loadFileAsByteArraySafe(file), FileUtils.removeExtension(file.getName()), FormattedTextEditor.class);
-                Assembler.assembleDefault();
+                throw new NotImplementedException();
+                //Assembler.assembleDefault();
                 //}
             };
 
@@ -247,7 +249,7 @@ public class MainGUI extends javax.swing.JFrame {
         } catch (Exception ignored) {
         }
 
-        new dragAndDrop(mainPanel);
+        new DragAndDrop(mainPanel);
         Thread.currentThread().setName("GUI");
         refresh();
 
@@ -402,7 +404,7 @@ public class MainGUI extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         lowerContentPanel = new javax.swing.JPanel();
         //instructionMemory_GUI1 = new org.parker.mips.gui.InstructionMemoryGUI();
-        register_GUI1 = new org.parker.mips.gui.RegisterGUI();
+        register_GUI1 = new RegisterGUI();
         aSM_GUI1 = new UserPaneTabbedPane();
         midButtonSliderPanel = new javax.swing.JPanel();
         //linkedButton = new javax.swing.JCheckBox();
@@ -1066,7 +1068,7 @@ public class MainGUI extends javax.swing.JFrame {
     private static javax.swing.JMenuItem optionsButton;
     private static javax.swing.JMenu optionsMenu;
     private static javax.swing.JMenu registerSystemCallPluginsJMenu;
-    private static org.parker.mips.gui.RegisterGUI register_GUI1;
+    private static RegisterGUI register_GUI1;
     private static javax.swing.JButton resetButton;
     private static javax.swing.JMenu processorMenu;
     private static javax.swing.JMenuItem saveMemoryButton;

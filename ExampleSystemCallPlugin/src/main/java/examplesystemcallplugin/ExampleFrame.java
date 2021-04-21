@@ -5,7 +5,7 @@
  */
 package examplesystemcallplugin;
 
-import org.parker.mips.plugin.syscall.SystemCallPluginFrame;
+import org.parker.mips.architectures.mips.syscall.SystemCallPluginFrame;
 
 import javax.swing.*;
 

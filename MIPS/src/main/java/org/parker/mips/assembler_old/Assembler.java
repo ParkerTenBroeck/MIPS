@@ -5,15 +5,16 @@
  */
 package org.parker.mips.assembler_old;
 
+import org.parker.mips.assembler.util.AssemblerLevel;
 import org.parker.mips.util.FileUtils;
 import org.parker.mips.util.ResourceHandler;
 import org.parker.mips.assembler_old.data.MemoryLable;
 import org.parker.mips.assembler_old.data.UserLine;
-import org.parker.mips.assembler.mips.MipsAssembler;
+import org.parker.mips.architectures.mips.assembler.MipsAssembler;
 import org.parker.mips.gui.MainGUI;
 import org.parker.mips.gui.userpanes.editor.EditorHandler;
 import org.parker.mips.preferences.Preferences;
-import org.parker.mips.emulator.mips.Memory;
+import org.parker.mips.architectures.mips.emulator.mips.Memory;
 
 import java.io.File;
 import java.io.PrintWriter;

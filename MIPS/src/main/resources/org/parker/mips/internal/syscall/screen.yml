@@ -1,5 +1,5 @@
 name: Screen
-main: org.parker.mips.plugin.internal.syscall.ScreenSystemCalls
+main: org.parker.mips.architectures.mips.syscall.ScreenSystemCalls
 version: 1.0
 author: Parker TenBroeck
 description: Used to add screen and graphic functionality to MIPS

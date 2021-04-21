@@ -12,8 +12,8 @@ import org.parker.mips.assembler.util.CompiledExpression;
 import org.parker.mips.assembler.util.linking.AssemblyUnit;
 import org.parker.mips.assembler.util.linking.Label;
 import org.parker.mips.assembler.util.linking.LocalLabel;
-import org.parker.mips.assembler_old.AssemblerLevel;
-import org.parker.mips.emulator.mips.Memory;
+import org.parker.mips.assembler.util.AssemblerLevel;
+import org.parker.mips.architectures.mips.emulator.mips.Memory;
 import org.parker.mips.util.PagedMemory;
 
 import java.io.File;

@@ -29,4 +29,6 @@ public abstract class TextEditor extends FileEditor {
         public void focusLost(FocusEvent fe) {
         }
     }
+
+    public abstract void setHighlightedLine(int lineNumber);
 }

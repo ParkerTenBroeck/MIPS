@@ -1,5 +1,5 @@
 name: Base
-main: org.parker.mips.plugin.internal.syscall.DefaultSystemCalls
+main: org.parker.mips.architectures.mips.syscall.DefaultSystemCalls
 version: 1.0
 author: Parker TenBroeck
 description: Default System Calls Included with MIPS ISA

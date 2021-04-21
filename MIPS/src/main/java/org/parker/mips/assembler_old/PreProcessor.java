@@ -5,6 +5,7 @@
  */
 package org.parker.mips.assembler_old;
 
+import org.parker.mips.assembler.util.AssemblerLevel;
 import org.parker.mips.util.FileUtils;
 import org.parker.mips.util.ResourceHandler;
 import org.parker.mips.assembler_old.data.UserLine;

@@ -170,6 +170,7 @@ public class FormattedTextEditor extends TextEditor {
         return textArea.getText().getBytes();
     }
 
+    @Override
     public void setHighlightedLine(int lineNumber) {
 
         try {

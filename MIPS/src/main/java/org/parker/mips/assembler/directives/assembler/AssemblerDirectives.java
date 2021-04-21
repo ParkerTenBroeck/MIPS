@@ -1,7 +1,7 @@
 package org.parker.mips.assembler.directives.assembler;
 
 import org.parker.mips.assembler.util.linking.GlobalLabel;
-import org.parker.mips.assembler_old.AssemblerLevel;
+import org.parker.mips.assembler.util.AssemblerLevel;
 import org.parker.mips.assembler.base.assembler.BaseAssembler;
 import org.parker.mips.assembler.base.Data;
 import org.parker.mips.assembler.exception.ParameterCountError;

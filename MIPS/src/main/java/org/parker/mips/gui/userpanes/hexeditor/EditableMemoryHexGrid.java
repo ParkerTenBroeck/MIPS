@@ -1,7 +1,7 @@
 package org.parker.mips.gui.userpanes.hexeditor;
 
 
-import org.parker.mips.emulator.mips.Memory;
+import org.parker.mips.architectures.mips.emulator.mips.Memory;
 
 import javax.swing.*;
 import java.awt.*;

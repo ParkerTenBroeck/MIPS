@@ -3,7 +3,7 @@ package org.parker.mips.assembler.base.preprocessor;
 import org.parker.mips.assembler.base.assembler.BaseAssembler;
 import org.parker.mips.assembler.directives.preprocessor.PreProcessorDirectives;
 import org.parker.mips.assembler.util.Line;
-import org.parker.mips.assembler_old.AssemblerLevel;
+import org.parker.mips.assembler.util.AssemblerLevel;
 import org.parker.mips.util.ResourceHandler;
 
 import java.io.BufferedReader;
