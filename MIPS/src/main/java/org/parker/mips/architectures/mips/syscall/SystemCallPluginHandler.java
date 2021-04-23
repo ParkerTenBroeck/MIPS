@@ -68,7 +68,6 @@ public class SystemCallPluginHandler {
                     LOGGER.log(Level.INFO,"SystemCall: " + sc.DATA.SYSTEM_CALL_NAME + " From Plugin: " + scp.DESCRIPTION.NAME + " was registered with the artificial System_Call_Number: " + i);
                     integerToSystemCall[i] = sc;
                 }
-                scp.onLoad();
                 registeredSystemCalls.add(sc);
                 LOGGER.log(Level.CONFIG,"System Call " + sc.DATA.SYSTEM_CALL_NAME + ":" + sc.DATA.SYSTEM_CALL_NUMBER + " was successfully registered");
             } else {
@@ -83,6 +82,7 @@ public class SystemCallPluginHandler {
             LOGGER.log(Level.CONFIG, "SystemCall plugin: " + scp.DESCRIPTION.NAME + " was registered with " + totalConflicts + " conflicts" + "\n");
         }
 
+        scp.onLoad();
         regenerateStandardSysCallHeaderFile();
         MainGUI.reloadSystemCallPluginLists();
 

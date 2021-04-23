@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.architectures.mips.syscall;
+package org.parker.mips.architectures.mips.syscall.internal;
 
+import org.parker.mips.architectures.mips.syscall.SystemCallPlugin;
+import org.parker.mips.architectures.mips.syscall.UnloadInternalSystemCallException;
 import org.parker.mips.preferences.Preference;
 import org.parker.mips.preferences.Preferences;
 

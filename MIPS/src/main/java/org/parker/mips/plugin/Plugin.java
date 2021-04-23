@@ -15,8 +15,4 @@ public interface Plugin {
     void onLoad();
     
     void onUnload();
-    
-    void onEnable();
-    
-    void onDisable();
 }

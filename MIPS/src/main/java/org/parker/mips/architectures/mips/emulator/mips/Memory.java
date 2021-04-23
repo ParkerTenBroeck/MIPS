@@ -5,7 +5,7 @@
  */
 package org.parker.mips.architectures.mips.emulator.mips;
 
-import org.parker.mips.architectures.mips.emulator.RunTimeMemoryException;
+import org.parker.mips.architectures.mips.emulator.exceptions.RunTimeMemoryException;
 import org.parker.mips.preferences.Preference;
 import org.parker.mips.preferences.Preferences;
 
@@ -41,7 +41,7 @@ public class Memory {
 
     public static int getWord(int index) {
         if ((index & 3) != 0) {
-            throw new RunTimeMemoryException("getWord must be alligned to 4 error at index:" + index);
+            throw new RunTimeMemoryException("getWord must be aligned to 4 error at index:" + index);
         }
         if (index + 3 > Memory.memory.length) {
             memoryOutOfBoundsEvent(index);
@@ -54,7 +54,7 @@ public class Memory {
 
     public static int getHalfWord(int index) {
         if ((index & 1) != 0) {
-            throw new RunTimeMemoryException("getHalfWord must be alligned to 2 error at index:" + index);
+            throw new RunTimeMemoryException("getHalfWord must be aligned to 2 error at index:" + index);
         }
         if (index + 1 > memory.length) {
             memoryOutOfBoundsEvent(index);
@@ -155,7 +155,7 @@ public class Memory {
 
     public static boolean setHalfWord(int index, int val) {
         if ((index & 1) != 0) {
-            throw new RunTimeMemoryException("setHalfWord must be alligned to 2 error at index:" + index);
+            throw new RunTimeMemoryException("setHalfWord must be aligned to 2 error at index:" + index);
         }
         if (index + 1 > Memory.memory.length || index < 0) {
             Emulator.stop();

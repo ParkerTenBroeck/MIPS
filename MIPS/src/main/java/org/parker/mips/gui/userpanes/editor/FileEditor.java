@@ -5,6 +5,7 @@
  */
 package org.parker.mips.gui.userpanes.editor;
 
+import org.parker.mips.architectures.BaseComputerArchitecture;
 import org.parker.mips.util.FileUtils;
 import org.parker.mips.util.ResourceHandler;
 import org.parker.mips.gui.UserPaneTabbedPane;
@@ -64,9 +65,9 @@ public abstract class FileEditor extends UserPane {
         }
         int choice;
         if (currentFile != null) {
-            choice = MainGUI.createWarningQuestion("Warning", currentFile.getName() + " is modified, would you like to save?");
+            choice = BaseComputerArchitecture.createWarningQuestion("Warning", currentFile.getName() + " is modified, would you like to save?");
         } else {
-            choice = MainGUI.createWarningQuestion("Warning", "untitled" + " is modified, would you like to save?");
+            choice = BaseComputerArchitecture.createWarningQuestion("Warning", "untitled" + " is modified, would you like to save?");
         }
 
         switch (choice) {

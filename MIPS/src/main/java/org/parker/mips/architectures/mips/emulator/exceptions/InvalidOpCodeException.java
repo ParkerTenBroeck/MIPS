@@ -1,4 +1,4 @@
-package org.parker.mips.architectures.mips.emulator;
+package org.parker.mips.architectures.mips.emulator.exceptions;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;

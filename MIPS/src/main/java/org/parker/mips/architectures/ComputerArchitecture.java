@@ -1,13 +1,11 @@
 package org.parker.mips.architectures;
 
+import javax.swing.*;
+
 public interface ComputerArchitecture {
 
     void onLoad();
-    void onExit();
+    void requestSystemExit() throws UnableToExitException;
 
-    void onStartButton();
-    void onSingleStepButton();
-    void onStopButton();
-    void onDisassembleButton();
-
+    JFrame createGUI();
 }

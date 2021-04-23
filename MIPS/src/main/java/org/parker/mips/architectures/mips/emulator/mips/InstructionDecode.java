@@ -5,7 +5,7 @@
  */
 package org.parker.mips.architectures.mips.emulator.mips;
 
-import org.parker.mips.architectures.mips.emulator.InvalidOpCodeException;
+import org.parker.mips.architectures.mips.emulator.exceptions.InvalidOpCodeException;
 
 import static org.parker.mips.architectures.mips.syscall.SystemCallPluginHandler.SystemCall;
 import static org.parker.mips.architectures.mips.emulator.mips.Memory.*;

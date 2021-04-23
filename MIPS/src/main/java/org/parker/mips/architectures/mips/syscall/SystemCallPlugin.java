@@ -216,15 +216,6 @@ public abstract class SystemCallPlugin extends PluginBase {
     public void onUnload() {
     }
 
-    @Override
-    public void onEnable() {
-
-    }
-
-    @Override
-    public void onDisable() {
-
-    }
 
     /**
      * Registers a

@@ -8,6 +8,7 @@ package org.parker.mips.util;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.parker.mips.MIPS;
+import org.parker.mips.architectures.BaseComputerArchitecture;
 import org.parker.mips.gui.MainGUI;
 import org.parker.mips.gui.userpanes.editor.EditorHandler;
 import org.parker.mips.preferences.Preferences;
@@ -95,7 +96,7 @@ public class UpdateHandler {
         }
 
         if (!EditorHandler.isAllSaved()) {
-            int confirm = MainGUI.createWarningQuestion("Exit Confirmation", "You have unsaved work would you like to save before continuing?");
+            int confirm = BaseComputerArchitecture.createWarningQuestion("Exit Confirmation", "You have unsaved work would you like to save before continuing?");
 
             if (confirm == JOptionPane.CANCEL_OPTION) {
                 return;

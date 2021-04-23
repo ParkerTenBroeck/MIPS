@@ -1,4 +1,4 @@
-package org.parker.mips.architectures.mips.syscall;
+package org.parker.mips.plugin.exceptions;
 
 public class MissingYMALField extends RuntimeException{
 

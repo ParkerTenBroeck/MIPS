@@ -5,9 +5,9 @@
  */
 package org.parker.mips;
 
+import org.parker.mips.architectures.ArchitecturePluginLoader;
 import org.parker.mips.gui.MainGUI;
 import org.parker.mips.gui.theme.ThemeHandler;
-import org.parker.mips.plugin.PluginLoader;
 import org.parker.mips.preferences.Preference;
 import org.parker.mips.preferences.Preferences;
 import org.parker.mips.util.ResourceHandler;
@@ -47,20 +47,18 @@ public class MIPS {
 
         if (args.length != 0) {
             if (args[0].equals("Updated")) {
-                LOGGER.log(Level.INFO, "Successfuly Updated to: " + VERSION);
+                LOGGER.log(Level.INFO, "Successfully Updated to: " + VERSION);
             }
         }
 
         Preferences.readPreferencesFromDefaultFile(); //loads Options from file
         applyStaticPreferences();
 
-        ResourceHandler.extractResources(); //loads all resorces into documents folder
+        ResourceHandler.extractResources(); //loads all resources into documents folder
 
         ThemeHandler.init();
-        new MainGUI(); //creates the GUI
-        //ThemeHandler.updateUI();
 
-        PluginLoader.loadDefaultPlugins(); //loads all plugins internal and external
+        ArchitecturePluginLoader.loadArchitecturePlugin(); //loads the set Computer Architecture
 
         checkForUpdates(); //checks for updates
     }

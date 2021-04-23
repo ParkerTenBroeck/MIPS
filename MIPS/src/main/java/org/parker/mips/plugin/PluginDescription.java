@@ -5,6 +5,7 @@
  */
 package org.parker.mips.plugin;
 
+import org.parker.mips.plugin.exceptions.InvalidDescriptionException;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;

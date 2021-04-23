@@ -7,6 +7,7 @@ import org.parker.mips.gui.components.FlatIconButton;
 import org.parker.mips.gui.icons.FlatMinusIcon;
 import org.parker.mips.gui.icons.FlatPlusIcon;
 import org.parker.mips.gui.userpanes.UserPane;
+import org.parker.mips.util.Memory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,7 +26,7 @@ public class MemoryEditorUserPane extends UserPane {
     private JCheckBox checkBox2;
     private JLabel rowCountLabel;
 
-    public MemoryEditorUserPane() {
+    public MemoryEditorUserPane(Memory processorMemory) {
 
         this.setTitle("Memory");
 
@@ -117,6 +118,7 @@ public class MemoryEditorUserPane extends UserPane {
             }
         });
     }
+
 
     protected final void changeRows(int rows) {
         if (rows < 2)

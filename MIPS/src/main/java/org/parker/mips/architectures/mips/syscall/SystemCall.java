@@ -5,6 +5,8 @@
  */
 package org.parker.mips.architectures.mips.syscall;
 
+import org.parker.mips.plugin.exceptions.MissingYMALField;
+
 import java.util.ArrayList;
 import java.util.Map;
 

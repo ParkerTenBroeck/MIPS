@@ -5,7 +5,7 @@
  */
 package org.parker.mips.architectures.mips.emulator.mips;
 
-import org.parker.mips.architectures.mips.emulator.RunTimeLevel;
+import org.parker.mips.architectures.mips.emulator.exceptions.RunTimeLevel;
 import org.parker.mips.gui.MainGUI;
 import org.parker.mips.preferences.Preferences;
 

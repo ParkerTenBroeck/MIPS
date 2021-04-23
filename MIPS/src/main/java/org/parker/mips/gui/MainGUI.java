@@ -2,19 +2,17 @@ package org.parker.mips.gui;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.parker.mips.*;
-import org.parker.mips.architectures.ArchitectureAccess;
+import org.parker.mips.architectures.BaseComputerArchitecture;
 import org.parker.mips.architectures.mips.gui.RegisterGUI;
 import org.parker.mips.architectures.mips.gui.SystemCallPluginInfoFrame;
 import org.parker.mips.assembler.debugger.Debugger;
 import org.parker.mips.assembler.util.Line;
-import org.parker.mips.architectures.mips.disassembler.MipsDisassembler;
 import org.parker.mips.architectures.mips.emulator.mips.Registers;
 import org.parker.mips.gui.userpanes.editor.FileEditor;
 import org.parker.mips.gui.userpanes.editor.EditorHandler;
-import org.parker.mips.gui.userpanes.hexeditor.MemoryEditorUserPane;
 import org.parker.mips.gui.userpanes.editor.rsyntax.FormattedTextEditor;
 import org.parker.mips.gui.theme.ThemeHandler;
-import org.parker.mips.log.LogFrame;
+import org.parker.mips.log.LogPanel;
 import org.parker.mips.plugin.PluginLoader;
 import org.parker.mips.architectures.mips.syscall.SystemCallPlugin;
 import org.parker.mips.architectures.mips.syscall.SystemCallPlugin.Node;
@@ -50,6 +48,7 @@ public class MainGUI extends javax.swing.JFrame {
 
     private static boolean autoUpdateRunning;
     private static MainGUI instance;
+    private static BaseComputerArchitecture bca;
 
     private static final Logger LOGGER = Logger.getLogger(MainGUI.class.getName());
 
@@ -123,8 +122,9 @@ public class MainGUI extends javax.swing.JFrame {
      * Creates new form Main_GUI
      */
     @SuppressWarnings("null")
-    public MainGUI() {
+    public MainGUI(BaseComputerArchitecture bca) {
         initComponents();
+        this.bca = bca;
 
         try {
             URL url = ClassLoader.getSystemClassLoader().getResource("images/logo4.png");
@@ -150,58 +150,51 @@ public class MainGUI extends javax.swing.JFrame {
         systemPrefs.getNode("emulator/runtime").getRawPreference("adaptiveMemory",false).LinkJButton(this, adaptiveMemoryMenuButton);
 
         systemPrefs.getNode("gui").getRawPreference("enableGUIAutoUpdateWhileRunning", true).LinkJButton(this,enableGUIUpdatingWhileRunningButton);
-        //OptionsHandler.logSystemMessages.LinkJButton(this, logSystemMessagesButton);
-        //OptionsHandler.logMessages.LinkJButton(this, logMessagesButton);
-        //OptionsHandler.logWarnings.LinkJButton(this, logWarningsButton);
-        //OptionsHandler.logErrors.LinkJButton(this, logErrorsButton);
 
-
-        addAssembleButtonListener((ae) -> {
+        assembleButton.addActionListener((ae) -> {
             LOGGER.log(Level.FINER, "Assemble Button Action Preformed");
-            ArchitectureAccess.onAssembleButton();
+            bca.onAssembleButton(ae);
         });
 
-        addDisassembleButtonListener(e -> {
+        disassembleButton.addActionListener(e -> {
             LOGGER.log(Level.FINER, "Disassemble Button Action Preformed");
-            MipsDisassembler.disassemble();
+            bca.onDisassembleButton(e);
         });
 
-        addStartButtonListener((ae) -> {
+        startButton.addActionListener((ae) -> {
             LOGGER.log(Level.FINER, "Start Processor Button Action Preformed");
-            if (startButton.isSelected()) {
-                Emulator.start();
-                MainGUI.startAutoUpdate();
-            } else {
-                Emulator.stop();
-            }
+            bca.onStartButton(ae, startButton.isSelected());
         });
 
-        addStopButtonListener((ae) -> {
+        stopButton.addActionListener((ae) -> {
             LOGGER.log(Level.FINER, "Stop Processor Button Action Preformed");
-            Emulator.stop();
+            bca.onStopButton(ae);
         });
 
-        addSingleStepButtonListener((ae) -> {
+        singleStepButton.addActionListener((ae) -> {
             LOGGER.log(Level.FINER, "Single Step Processor Button Action Preformed");
-            if (!startButton.isSelected()) {
-                Emulator.runSingleStep();
-            }
+            bca.onSingleStepButton(ae);
             refresh();
         });
 
-        addResetButtonListener((ae) -> {
+        resetButton.addActionListener((ae) -> {
             LOGGER.log(Level.FINER, "Reset Processor Button Action Preformed");
-            Emulator.reset();
+            bca.onResetButton(ae);
+        });
+
+        memoryButton.addActionListener((ae) -> {
+            LOGGER.log(Level.FINER, "Memory Button Action Preformed");
+            bca.onMemoryButton(ae);
         });
 
         WindowListener exitListener = new WindowAdapter() {
 
             @Override
             public void windowClosing(WindowEvent e) {
-        LOGGER.log(Level.FINER, "Main Window Exit Action Preformed");
+            LOGGER.log(Level.FINER, "Main Window Exit Action Preformed");
 
                 if (!EditorHandler.isAllSaved()) {
-                    int confirm = createWarningQuestion("Exit Confirmation", "You have unsaved work would you like to save before continuing?");
+                    int confirm = BaseComputerArchitecture.createWarningQuestion("Exit Confirmation", "You have unsaved work would you like to save before continuing?");
 
                     if (confirm == JOptionPane.CANCEL_OPTION) {
 
@@ -223,6 +216,7 @@ public class MainGUI extends javax.swing.JFrame {
 
             }
         };
+
         this.addWindowListener(exitListener);
 
         //Generates examples
@@ -249,16 +243,17 @@ public class MainGUI extends javax.swing.JFrame {
         } catch (Exception ignored) {
         }
 
-        new DragAndDrop(mainPanel);
+
         Thread.currentThread().setName("GUI");
         refresh();
+        ThemeHandler.updateUI();
+        this.setVisible(true);
 
         if (instance != null) {
             instance.dispatchEvent(new WindowEvent(instance, WindowEvent.WINDOW_CLOSING));
+        }else {
+            instance = this;
         }
-        ThemeHandler.updateUI();
-        this.setVisible(true);
-        instance = this;
     }
 
     public static void reloadSystemCallPluginLists() {
@@ -403,17 +398,14 @@ public class MainGUI extends javax.swing.JFrame {
         resetButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         lowerContentPanel = new javax.swing.JPanel();
-        //instructionMemory_GUI1 = new org.parker.mips.gui.InstructionMemoryGUI();
         register_GUI1 = new RegisterGUI();
         aSM_GUI1 = new UserPaneTabbedPane();
         midButtonSliderPanel = new javax.swing.JPanel();
-        //linkedButton = new javax.swing.JCheckBox();
-        //aboutLinkedFile = new javax.swing.JButton();
         enableBreak = new javax.swing.JCheckBox();
         delaySlider = new javax.swing.JSlider();
         delayLabel = new javax.swing.JLabel();
         bottomPanel = new javax.swing.JPanel();
-        logFrame = new LogFrame();
+        logFrame = new LogPanel();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuButton = new javax.swing.JMenuItem();
@@ -425,10 +417,6 @@ public class MainGUI extends javax.swing.JFrame {
         optionsMenu = new javax.swing.JMenu();
         checkForUpdates = new javax.swing.JMenuItem();
         enableGUIUpdatingWhileRunningButton = new javax.swing.JCheckBoxMenuItem();
-        //logSystemMessagesButton = new javax.swing.JCheckBoxMenuItem();
-        //logMessagesButton = new javax.swing.JCheckBoxMenuItem();
-        //logWarningsButton = new javax.swing.JCheckBoxMenuItem();
-        //logErrorsButton = new javax.swing.JCheckBoxMenuItem();
         optionsButton = new javax.swing.JMenuItem();
         assemblerMenu = new javax.swing.JMenu();
         asciiChartButton = new javax.swing.JMenuItem();
@@ -481,11 +469,6 @@ public class MainGUI extends javax.swing.JFrame {
 
         memoryButton.setText("Memory");
         memoryButton.setFocusable(false);
-        memoryButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                memoryButtonActionPerformed(evt);
-            }
-        });
 
         aboutButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/info.png"))); // NOI18N
         aboutButton.setBorderPainted(false);
@@ -860,7 +843,7 @@ public class MainGUI extends javax.swing.JFrame {
 
     private void aboutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutButtonActionPerformed
         DesktopBrowser.openLinkInBrowser("https://github.com/ParkerTenBroeck/MIPS/blob/master/README.md");
-    }//GEN-LAST:event_aboutButtonActionPerformed
+    }
 
     private void openMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuButtonActionPerformed
         JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
@@ -872,12 +855,6 @@ public class MainGUI extends javax.swing.JFrame {
             new FormattedTextEditor(chosenFile);
         }
     }//GEN-LAST:event_openMenuButtonActionPerformed
-
-    private void memoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_memoryButtonActionPerformed
-        //new MemoryGUI();
-
-        UserPaneTabbedPane.addEditor(new MemoryEditorUserPane());
-    }//GEN-LAST:event_memoryButtonActionPerformed
 
     private void saveMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuButtonActionPerformed
         EditorHandler.saveLastFocused();
@@ -910,15 +887,11 @@ public class MainGUI extends javax.swing.JFrame {
         //new FormattedTextEditor();
         //Editor.createEditor();
         new FormattedTextEditor();
-    }//GEN-LAST:event_newMenuButtonActionPerformed
+    }
 
     private void asciiChartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asciiChartButtonActionPerformed
         new imageFrame("/images/asciiChart.bmp");
     }//GEN-LAST:event_asciiChartButtonActionPerformed
-
-    private void linkedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_linkedButtonActionPerformed
-        //ASM_GUI.setEnable(!linkedButton.isSelected());
-    }//GEN-LAST:event_linkedButtonActionPerformed
 
     private void checkForUpdatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkForUpdatesActionPerformed
         UpdateHandler.update();
@@ -930,11 +903,11 @@ public class MainGUI extends javax.swing.JFrame {
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Cannot open desktop browser", ex);
         }
-    }//GEN-LAST:event_documentationButtonActionPerformed
+    }
 
     private void optionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_optionsButtonActionPerformed
         new OptionsGUI();
-    }//GEN-LAST:event_optionsButtonActionPerformed
+    }
 
     private void loadPluginJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadPluginJMenuItemActionPerformed
         JFileChooser fc = new JFileChooser();
@@ -945,94 +918,6 @@ public class MainGUI extends javax.swing.JFrame {
         File chosenFile = fc.getSelectedFile();
         PluginLoader.loadPlugin(chosenFile);
     }//GEN-LAST:event_loadPluginJMenuItemActionPerformed
-
-    //messages (ok)
-    public static void createPlaneMessage(String title, String message) {
-        createCustomOptionDialog(title, message, JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE, null, null, null);
-    }
-
-    public static void createPlaneInfo(String title, String message) {
-        createCustomOptionDialog(title, message, JOptionPane.PLAIN_MESSAGE, JOptionPane.INFORMATION_MESSAGE, null, null, null);
-    }
-
-    public static void createWarningMessage(String title, String message) {
-        createCustomOptionDialog(title, message, JOptionPane.PLAIN_MESSAGE, JOptionPane.WARNING_MESSAGE, null, null, null);
-    }
-
-    public static void createErrorMessage(String title, String message) {
-        createCustomOptionDialog(title, message, JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE, null, null, null);
-    }
-
-    //choices (yes, no)
-    public static int createPlaneChoice(String title, String message) {
-        return createCustomOptionDialog(title, message, JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
-    }
-
-    public static int createInfoChoice(String title, String message) {
-        return createCustomOptionDialog(title, message, JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
-    }
-
-    public static int createWarningChoice(String title, String message) {
-        return createCustomOptionDialog(title, message, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
-    }
-
-    public static int createErrorChoice(String title, String message) {
-        return createCustomOptionDialog(title, message, JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null);
-    }
-
-    //Question (yes, no, cancel)
-    public static int createPlaneQuestion(String title, String message) {
-        return createCustomOptionDialog(title, message, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
-    }
-
-    public static int createInfoQuestion(String title, String message) {
-        return createCustomOptionDialog(title, message, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
-    }
-
-    public static int createWarningQuestion(String title, String message) {
-        return createCustomOptionDialog(title, message, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
-    }
-
-    public static int createErrorQuestion(String title, String message) {
-        return createCustomOptionDialog(title, message, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null);
-    }
-
-    //custom
-    public static int createCustomOptionDialog(String title, String message, int i, int ii) {
-        return createCustomOptionDialog(title, message, i, ii, null, null, null);
-    }
-
-    public static int createCustomOptionDialog(String title, String message, int i, int ii, Icon icon) {
-        return createCustomOptionDialog(title, message, i, ii, icon, null, null);
-    }
-
-    public static int createCustomOptionDialog(String title, String message, int i, int ii, Icon icon, Object[] objects, Object object) {
-        return JOptionPane.showOptionDialog(instance, message, title, i, ii, icon, objects, object);
-    }
-
-    public static void addAssembleButtonListener(ActionListener al) {
-        MainGUI.assembleButton.addActionListener(al);
-    }
-
-    public static void addDisassembleButtonListener(ActionListener al){
-        MainGUI.disassembleButton.addActionListener(al);
-    }
-
-    public static void addStartButtonListener(ActionListener al) {
-        MainGUI.startButton.addActionListener(al);
-    }
-
-    public static void addStopButtonListener(ActionListener al) {
-        MainGUI.stopButton.addActionListener(al);
-    }
-
-    public static void addSingleStepButtonListener(ActionListener al) {
-        MainGUI.singleStepButton.addActionListener(al);
-    }
-
-    public static void addResetButtonListener(ActionListener al) {
-        MainGUI.resetButton.addActionListener(al);
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private static javax.swing.JLabel InstructionsRan;
@@ -1057,7 +942,7 @@ public class MainGUI extends javax.swing.JFrame {
     private static javax.swing.JLabel jLabel2;
     private static javax.swing.JSplitPane jSplitPane1;
     private static javax.swing.JMenuItem loadPluginJMenuItem;
-    private static LogFrame logFrame;
+    private static LogPanel logFrame;
     private static javax.swing.JPanel lowerContentPanel;
     private static javax.swing.JPanel mainPanel;
     private static javax.swing.JButton memoryButton;

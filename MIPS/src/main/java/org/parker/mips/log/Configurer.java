@@ -91,7 +91,7 @@ public class Configurer {
             ch.setLevel(Level.ALL);
             BASE_LOGGER.addHandler(ch);
 
-            Handler vh = new LogFrame.LogFrameHandler();
+            Handler vh = new LogPanel.LogFrameHandler();
             vh.setLevel(Level.ALL);
             BASE_LOGGER.addHandler(vh);
 

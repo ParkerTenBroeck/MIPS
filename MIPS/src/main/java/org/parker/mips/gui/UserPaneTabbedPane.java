@@ -61,9 +61,6 @@ public class UserPaneTabbedPane extends javax.swing.JPanel {
                         }
                     }
                 });
-
-        new FormattedTextEditor();
-        //Editor.createEditor();
         
         jTabbedPane1.addChangeListener(new ChangeListener() {
             @Override
@@ -77,7 +74,9 @@ public class UserPaneTabbedPane extends javax.swing.JPanel {
 
     public static void updateOpenUserPanes() {
 
-        ((UserPane)jTabbedPane1.getSelectedComponent()).updateValues();
+        if(jTabbedPane1.getSelectedComponent() != null) {
+            ((UserPane) jTabbedPane1.getSelectedComponent()).updateValues();
+        }
     }
 
     @SuppressWarnings("unchecked")

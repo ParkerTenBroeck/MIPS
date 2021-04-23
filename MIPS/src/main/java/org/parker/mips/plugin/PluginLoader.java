@@ -6,6 +6,8 @@
 package org.parker.mips.plugin;
 
 import org.parker.mips.MIPS;
+import org.parker.mips.plugin.exceptions.InvalidDescriptionException;
+import org.parker.mips.plugin.exceptions.InvalidPluginException;
 import org.parker.mips.util.ResourceHandler;
 import org.parker.mips.architectures.mips.syscall.SystemCallPlugin;
 import org.parker.mips.architectures.mips.syscall.SystemCallPluginHandler;
@@ -35,7 +37,7 @@ public class PluginLoader {
 
     private static final Logger LOGGER = Logger.getLogger(PluginLoader.class.getName());
 
-    private static Plugin loadInternalPlugin(String yamlPath) throws InvalidDescriptionException, InvalidPluginException, MalformedURLException, NoSuchFieldException, IOException {
+    public static Plugin loadInternalPlugin(String yamlPath) throws InvalidDescriptionException, InvalidPluginException, MalformedURLException, NoSuchFieldException, IOException {
         return PluginLoader.loadPlugin(new File(MIPS.JAR_PATH), yamlPath);
     }
 
@@ -104,10 +106,10 @@ public class PluginLoader {
         try {
             loader = new PluginClassLoader(file, loadedYaml, PluginLoader.class.getClassLoader());
 
-            if (!(loader.plugin instanceof SystemCallPlugin)) {
-                throw new InvalidPluginException("Plugin not a SystemCall Plugin: " + file.getPath());
+            if (!(loader.plugin instanceof Plugin)) {
+                throw new InvalidPluginException("Plugin not a valid Plugin: " + file.getPath());
             } else {
-                return (SystemCallPlugin) loader.plugin;
+                return loader.plugin;
             }
 
         } catch (InvalidPluginException ex) {
@@ -116,35 +118,4 @@ public class PluginLoader {
             throw new InvalidPluginException(ex);
         }
     }
-
-    public static void loadDefaultPlugins() {
-        try {
-
-            try {
-                SystemCallPluginHandler.registerSystemCallPlugin((SystemCallPlugin) loadInternalPlugin("/org/parker/mips/internal/syscall/default.yml"));
-                SystemCallPluginHandler.registerSystemCallPlugin((SystemCallPlugin) loadInternalPlugin("/org/parker/mips/internal/syscall/screen.yml"));
-                SystemCallPluginHandler.registerSystemCallPlugin((SystemCallPlugin) loadInternalPlugin("/org/parker/mips/internal/syscall/userio.yml"));
-            }catch(Exception e){
-                LOGGER.log(Level.SEVERE, "Failed to load an internal Plugin", e);
-            }
-
-            File file = new File(ResourceHandler.SYS_CALLS_PLUGIN_PATH);
-            File files[] = file.listFiles();
-            for (File f : files) {
-                if (f.exists()) {
-                    try {
-                        SystemCallPlugin scp = (SystemCallPlugin) loadPlugin(f);
-                        SystemCallPluginHandler.registerSystemCallPlugin(scp);
-                    } catch (Exception e) {
-                        LOGGER.log(Level.SEVERE, "Failed to load External Plugin: " + f.getAbsolutePath(), e);
-                    }
-                }
-                SystemCallPluginHandler.regenerateStandardSysCallHeaderFile();
-            }
-
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, null, e);
-        }
-    }
-
 }

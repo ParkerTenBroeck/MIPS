@@ -9,7 +9,7 @@ package org.parker.mips.log;
 import org.parker.mips.assembler.util.AssemblerLevel;
 import org.parker.mips.preferences.Preference;
 import org.parker.mips.preferences.Preferences;
-import org.parker.mips.architectures.mips.emulator.RunTimeLevel;
+import org.parker.mips.architectures.mips.emulator.exceptions.RunTimeLevel;
 
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
@@ -27,18 +27,18 @@ import java.util.logging.*;
  *
  * @author parke
  */
-public class LogFrame extends javax.swing.JPanel {
+public class LogPanel extends javax.swing.JPanel {
 
     private final static Preferences loggerPrefs = Preferences.ROOT_NODE.getNode("system/logger");
 
-    private final static Logger LOGGER = Logger.getLogger(LogFrame.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(LogPanel.class.getName());
 
 	static {
-        LogFrame.initComponents();
+        LogPanel.initComponents();
     }
 
     private static void logCustomMessage(String message, SimpleAttributeSet att) {
-        LogFrame.appendMessageToVirtualConsoleLog("[Message] " + message, att);
+        LogPanel.appendMessageToVirtualConsoleLog("[Message] " + message, att);
     }
 
     private static void logCustomMessage(String message, boolean bold, boolean italic, boolean underline, Color color, String font) {
@@ -50,11 +50,11 @@ public class LogFrame extends javax.swing.JPanel {
         if (font != null) {
             StyleConstants.setFontFamily(att, font);
         }
-        LogFrame.appendMessageToVirtualConsoleLog("[Message] " + message, att);
+        LogPanel.appendMessageToVirtualConsoleLog("[Message] " + message, att);
     }
 
     private static void appendMessageToVirtualConsoleLog(String message, SimpleAttributeSet att) {
-        Document doc = LogFrame.jTextPane1.getStyledDocument();
+        Document doc = LogPanel.jTextPane1.getStyledDocument();
         try {
             doc.insertString(doc.getLength(), message + "\n", att);
         } catch (Exception exc) {
@@ -64,7 +64,7 @@ public class LogFrame extends javax.swing.JPanel {
     }
 
     private static void appendMessageToVirtualConsoleLog(String message){
-	    Document doc = LogFrame.jTextPane1.getStyledDocument();
+	    Document doc = LogPanel.jTextPane1.getStyledDocument();
 	    try{
             doc.insertString(doc.getLength(), message + "\n", null);
         }catch(Exception e){
@@ -72,7 +72,7 @@ public class LogFrame extends javax.swing.JPanel {
         }
     }
 
-    public LogFrame() {
+    public LogPanel() {
         initLayout();
         this.setVisible(true);
     }
@@ -309,7 +309,7 @@ public class LogFrame extends javax.swing.JPanel {
             }
         }
 
-            LogFrame.appendMessageToVirtualConsoleLog(message,sas);
+            LogPanel.appendMessageToVirtualConsoleLog(message,sas);
 
             return;
 

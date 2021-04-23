@@ -3,7 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.architectures.mips.syscall;
+package org.parker.mips.architectures.mips.syscall.internal;
+
+import org.parker.mips.architectures.mips.syscall.SystemCallPluginFrame;
+import org.parker.mips.architectures.mips.syscall.SystemCallRunTimeException;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
