@@ -1,4 +1,4 @@
-package org.parker.mips.gui.components;
+package org.parker.mips.gui.icons;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +17,7 @@ public class VerticalLabelIcon implements Icon {
         label.setSize(label.getPreferredSize());
         this.bottomToTop = bottomToTop;
     }
+
 
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {

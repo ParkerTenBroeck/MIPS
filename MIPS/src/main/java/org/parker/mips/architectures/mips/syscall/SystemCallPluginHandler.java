@@ -84,7 +84,7 @@ public class SystemCallPluginHandler {
 
         scp.onLoad();
         regenerateStandardSysCallHeaderFile();
-        MainGUI.reloadSystemCallPluginLists();
+        //MainGUI.reloadSystemCallPluginLists();
 
     }
 

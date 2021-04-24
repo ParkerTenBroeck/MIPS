@@ -24,7 +24,6 @@ import org.parker.mips.architectures.mips.emulator.mips.Emulator;
 import org.parker.mips.util.FileUtils;
 import org.parker.mips.util.ResourceHandler;
 import org.parker.mips.util.UpdateHandler;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -127,12 +126,12 @@ public class MainGUI extends javax.swing.JFrame {
         this.bca = bca;
 
         try {
-            URL url = ClassLoader.getSystemClassLoader().getResource("images/logo4.png");
+            URL url = ClassLoader.getSystemClassLoader().getResource("Images/Icons/PNG/logo4.png");
             assert url != null;
             ImageIcon icon = new ImageIcon(url);
             this.setIconImage(icon.getImage());
 
-            aboutButton.setIcon(new FlatSVGIcon("images/informationDialog.svg", (int) (aboutButton.getWidth() / 1.5), (int) (aboutButton.getHeight() / 1.5)));
+            aboutButton.setIcon(new FlatSVGIcon("Images/Icons/PNG/informationDialog.svg", (int) (aboutButton.getWidth() / 1.5), (int) (aboutButton.getHeight() / 1.5)));
             //aboutLinkedFile.setIcon(new FlatSVGIcon("images/informationDialog.svg", (int) (aboutLinkedFile.getWidth() / 1.5), (int) (aboutLinkedFile.getHeight() / 1.5)));
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Failed to load Icon", e);
@@ -231,7 +230,7 @@ public class MainGUI extends javax.swing.JFrame {
 
                 new FormattedTextEditor(file);
                 //Editor.createEditor(FileUtils.loadFileAsByteArraySafe(file), FileUtils.removeExtension(file.getName()), FormattedTextEditor.class);
-                throw new NotImplementedException();
+                throw new RuntimeException("eat ass and chew bubblegum");
                 //Assembler.assembleDefault();
                 //}
             };
@@ -470,7 +469,7 @@ public class MainGUI extends javax.swing.JFrame {
         memoryButton.setText("Memory");
         memoryButton.setFocusable(false);
 
-        aboutButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/info.png"))); // NOI18N
+        aboutButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/PNG/info.png"))); // NOI18N
         aboutButton.setBorderPainted(false);
         aboutButton.setContentAreaFilled(false);
         aboutButton.setFocusPainted(false);
@@ -890,7 +889,7 @@ public class MainGUI extends javax.swing.JFrame {
     }
 
     private void asciiChartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asciiChartButtonActionPerformed
-        new imageFrame("/images/asciiChart.bmp");
+        new imageFrame("/Images/asciiChart.bmp");
     }//GEN-LAST:event_asciiChartButtonActionPerformed
 
     private void checkForUpdatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkForUpdatesActionPerformed

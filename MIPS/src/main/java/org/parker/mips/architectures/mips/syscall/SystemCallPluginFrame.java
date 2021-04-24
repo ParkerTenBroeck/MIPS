@@ -25,7 +25,7 @@ public class SystemCallPluginFrame extends JFrame {
         this.FRAME_NAME = name;
 
         try {
-            URL url = ClassLoader.getSystemClassLoader().getResource("images/project.png");
+            URL url = ClassLoader.getSystemClassLoader().getResource("Images/Icons/SVG/project.png");
             ImageIcon icon = new ImageIcon(url);
             this.setIconImage(icon.getImage());
         } catch (Exception e) {

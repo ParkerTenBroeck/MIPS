@@ -58,7 +58,7 @@ public class OptionsGUI extends javax.swing.JFrame {
 
 		this.setTitle("Options");
 		try {
-			this.setIconImage(new FlatSVGIcon("images/project.svg").getImage());
+			this.setIconImage(new FlatSVGIcon("Images/Icons/SVG/project.svg").getImage());
 		} catch (Exception e) {
 
 		}
