@@ -14,7 +14,7 @@ import org.parker.mips.architectures.mips.assembler.MipsAssembler;
 import org.parker.mips.gui.MainGUI;
 import org.parker.mips.gui.userpanes.editor.EditorHandler;
 import org.parker.mips.preferences.Preferences;
-import org.parker.mips.architectures.mips.emulator.mips.Memory;
+import org.parker.mips.architectures.mips.emulator.mips.EmulatorMemory;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -205,7 +205,7 @@ public class Assembler {
 
         byte[] memByteArray = createByteArrayFromByteList();
 
-        Memory.setMemory(memByteArray);
+        EmulatorMemory.setMemory(memByteArray);
 
         if ((Boolean)assPrefs.getPreference("saveCompilationInfo", false)) {
             saveOriginsToFile(file.getAbsolutePath());
@@ -215,7 +215,7 @@ public class Assembler {
         memoryByteList.clear();
         origins.clear();
 
-        MainGUI.refreshAll();
+        //MainGUI.refreshAll();
 
         LOGGER.log(AssemblerLevel.ASSEMBLER_MESSAGE, "Compilation of file: " + file.getAbsolutePath() + " has finished\n");
     }

@@ -13,10 +13,11 @@
           <autoscrolls value="false"/>
           <hasFullBorder value="false"/>
           <hideTabAreaWithOneTab value="false"/>
+          <tabAreaInsets top="0" left="0" bottom="0" right="0"/>
           <tabHeight value="10"/>
           <tabInsets top="5" left="2" bottom="5" right="2"/>
-          <tabPlacement value="4"/>
-          <tabWidthMode value="compact"/>
+          <tabPlacement value="2"/>
+          <tabWidthMode value="preferred"/>
           <tabsClosable value="false"/>
           <tabsPopupPolicy value="never"/>
         </properties>

@@ -9,7 +9,6 @@ package org.parker.mips.gui;
 import org.parker.mips.gui.userpanes.UserPane;
 import org.parker.mips.gui.userpanes.editor.FileEditor;
 import org.parker.mips.gui.userpanes.editor.EditorHandler;
-import org.parker.mips.gui.userpanes.editor.rsyntax.FormattedTextEditor;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -27,17 +26,17 @@ import static com.formdev.flatlaf.FlatClientProperties.TABBED_PANE_TAB_CLOSE_CAL
  */
 public class UserPaneTabbedPane extends javax.swing.JPanel {
     
-    public static void addEditor(UserPane userPane) {
+    public static void addUserPane(UserPane userPane) {
         jTabbedPane1.add(userPane);
         jTabbedPane1.setSelectedComponent(userPane);
         jTabbedPane1.setTabComponentAt(jTabbedPane1.getSelectedIndex(), userPane.getTitleLabel());
     }
     
-    public static void removeEditor(UserPane userPane) {
+    public static void removeUserPane(UserPane userPane) {
         jTabbedPane1.remove(userPane);
     }
     
-    public static void setSelectedTab(UserPane userPane) {
+    public static void setSelectedUserPane(UserPane userPane) {
         jTabbedPane1.setSelectedComponent(userPane);
     }
     
@@ -75,7 +74,7 @@ public class UserPaneTabbedPane extends javax.swing.JPanel {
     public static void updateOpenUserPanes() {
 
         if(jTabbedPane1.getSelectedComponent() != null) {
-            ((UserPane) jTabbedPane1.getSelectedComponent()).updateValues();
+            ((UserPane) jTabbedPane1.getSelectedComponent()).update();
         }
     }
 

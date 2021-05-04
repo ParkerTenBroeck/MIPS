@@ -52,7 +52,7 @@ public class DragAndDrop {
                                 //filePathLable.setText(((File) list.get(j)).getPath());
                                 new FormattedTextEditor((File)o);
                                 //Editor.loadFileIntoEditor((File) o);
-                                MainGUI.refreshAll();
+                                //MainGUI.refreshAll();
                                 //list.get(j); is the file
                             }
                             // If we made it this far, everything worked.

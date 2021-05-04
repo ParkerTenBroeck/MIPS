@@ -6,6 +6,7 @@
 package org.parker.mips.architectures.mips.gui;
 
 import org.parker.mips.architectures.mips.emulator.mips.Registers;
+import org.parker.mips.gui.userpanes.UserPane;
 
 import javax.swing.*;
 import javax.swing.table.TableColumnModel;
@@ -15,7 +16,7 @@ import java.awt.*;
  *
  * @author parke
  */
-public class RegisterGUI extends javax.swing.JPanel {
+public class MipsEmulatorState extends UserPane {
 
     /**
      * Creates new form Registers
@@ -24,14 +25,22 @@ public class RegisterGUI extends javax.swing.JPanel {
 
     private final int[] lastUpdatedVals;
 
-    public RegisterGUI() {
+    public MipsEmulatorState() {
         lastUpdatedVals = new int[40];
         for(int i = 0; i < lastUpdatedVals.length; i ++){
             lastUpdatedVals[i] = -2;
         }
         initComponents();
         setFont(this.getFont());
+        update();
     }
+
+    @Override
+    public final boolean close() {
+        return true;
+    }
+
+
 
     @Override
     public void setFont(Font font) {
@@ -76,7 +85,8 @@ public class RegisterGUI extends javax.swing.JPanel {
         colModel.getColumn(3).setPreferredWidth(fourth);
     }
 
-    public void updateVals() {
+    @Override
+    public void update() {
         int currentRegisterValue;
 
         for (int i = 1; i <= 31; i++) {

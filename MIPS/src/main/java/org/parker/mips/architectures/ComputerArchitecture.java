@@ -5,7 +5,12 @@ import javax.swing.*;
 public interface ComputerArchitecture {
 
     void onLoad();
-    void requestSystemExit() throws UnableToExitException;
+    void requestSystemExit();
+    void requestSystemExit(SystemClosingEvent sce);
+
+    interface SystemClosingEvent{
+        void onClose();
+    }
 
     JFrame createGUI();
 }

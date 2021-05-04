@@ -82,7 +82,7 @@ public class EditorHandler {
             return;
         }
         editors.add(editor);
-        UserPaneTabbedPane.addEditor(editor);
+        UserPaneTabbedPane.addUserPane(editor);
         lastFoucsed = editor;
     }
 
@@ -102,7 +102,7 @@ public class EditorHandler {
 
     public static final void removeEditor(FileEditor editor) {
         editors.remove(editor);
-        UserPaneTabbedPane.removeEditor(editor);
+        UserPaneTabbedPane.removeUserPane(editor);
         if (lastFoucsed == editor) {
             lastFoucsed = null;
         }
@@ -115,7 +115,7 @@ public class EditorHandler {
                 if(e.getFile() != null){
                     if(e.getFile().getAbsolutePath().equals(afp)){
                         setLastFocused(e);
-                        UserPaneTabbedPane.setSelectedTab(e);
+                        UserPaneTabbedPane.setSelectedUserPane(e);
                     }
                 }
             }

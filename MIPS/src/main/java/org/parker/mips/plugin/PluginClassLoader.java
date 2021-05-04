@@ -5,7 +5,7 @@
  */
 package org.parker.mips.plugin;
 
-import org.parker.mips.MIPS;
+import org.parker.mips.core.MIPS;
 import org.parker.mips.plugin.exceptions.InvalidDescriptionException;
 import org.parker.mips.plugin.exceptions.InvalidPluginException;
 

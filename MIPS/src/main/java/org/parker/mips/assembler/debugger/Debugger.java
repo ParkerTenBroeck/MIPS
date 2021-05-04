@@ -6,42 +6,43 @@ import com.google.common.collect.TreeRangeMap;
 import org.parker.mips.assembler.util.Line;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Debugger {
-    static RangeMap<Long, Line> rangeToLine = TreeRangeMap.create();
-    static Map<Line, Range<Long>> lineToRange = new HashMap<>();
-    static Map<Long, FinalizedLabel> addressToLabel = new HashMap<>();
-    static Map<FinalizedLabel, Long> labelToAddress = new HashMap<>();
+public class Debugger implements Serializable {
+    private final RangeMap<Long, Line> rangeToLine = TreeRangeMap.create();
+    private final Map<Line, Range<Long>> lineToRange = new HashMap<>();
+    private final Map<Long, FinalizedLabel> addressToLabel = new HashMap<>();
+    private final Map<FinalizedLabel, Long> labelToAddress = new HashMap<>();
 
 
-    public static void clear(){
+    public void clear(){
         rangeToLine.clear();
         lineToRange.clear();
         addressToLabel.clear();
         labelToAddress.clear();
     }
 
-    public static void addDataRange(long beginning, long ending, Line line){
+    public void addDataRange(long beginning, long ending, Line line){
         rangeToLine.put(Range.closed(beginning, ending), line);
         lineToRange.put(line, Range.closed(beginning, ending));
     }
 
-    public static void addLabel(FinalizedLabel label){
+    public void addLabel(FinalizedLabel label){
         addressToLabel.put(label.address, label);
         labelToAddress.put(label, label.address);
     }
 
-    public static FinalizedLabel getLabelFromAddress(long address){
+    public FinalizedLabel getLabelFromAddress(long address){
         return addressToLabel.get(address);
     }
 
-    public static long getAddressFromLine(String label, File file){
+    public long getAddressFromLine(String label, File file){
         return labelToAddress.get(label + ": " + file.getAbsolutePath());
     }
 
-    public static Line getDataLineFromAddress(long address) {
+    public Line getDataLineFromAddress(long address) {
         return rangeToLine.get(address);
     }
 }

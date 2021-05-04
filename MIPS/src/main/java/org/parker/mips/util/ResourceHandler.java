@@ -5,7 +5,7 @@
  */
 package org.parker.mips.util;
 
-import org.parker.mips.MIPS;
+import org.parker.mips.core.MIPS;
 import org.parker.mips.gui.MainGUI;
 
 import javax.swing.*;

@@ -13,7 +13,7 @@ import org.parker.mips.assembler.util.linking.AssemblyUnit;
 import org.parker.mips.assembler.util.linking.Label;
 import org.parker.mips.assembler.util.linking.LocalLabel;
 import org.parker.mips.assembler.util.AssemblerLevel;
-import org.parker.mips.architectures.mips.emulator.mips.Memory;
+import org.parker.mips.util.Memory;
 import org.parker.mips.util.PagedMemory;
 
 import java.io.File;
@@ -166,6 +166,8 @@ public abstract class BaseAssembler<P extends BasePreProcessor> implements Assem
             }
         }
 
+        Debugger debugger = new Debugger();
+
         for(AssemblyUnit au: assemblyUnits){
 
             currentAssemblyUnit = au;
@@ -194,7 +196,7 @@ public abstract class BaseAssembler<P extends BasePreProcessor> implements Assem
                         address += d.getSize();
                         size += d.getSize();
 
-                        Debugger.addDataRange(address - d.getSize(), address, dataToPreProcessedStatement.get(d).getLine());
+                        debugger.addDataRange(address - d.getSize(), address, dataToPreProcessedStatement.get(d).getLine());
                     }catch(Exception e){
                         try{
                             address += d.getSize();
@@ -213,48 +215,39 @@ public abstract class BaseAssembler<P extends BasePreProcessor> implements Assem
         for(AssemblyUnit au: assemblyUnits){
             for(Map.Entry<String, Label> s:au.asuLabelMap.entrySet()){
                 try {
-                    Debugger.addLabel(new FinalizedLabel(s.getValue().mnemonic, s.getValue().line, s.getValue().getAddress()));
+                    debugger.addLabel(new FinalizedLabel(s.getValue().mnemonic, s.getValue().line, s.getValue().getAddress()));
                 }catch (Exception ignored){
 
                 }
             }
         }
 
-        Memory.setMemory(pMemory.getPage(0));
-        byte[] temp = new byte[pMemory.getPageCount() * 4096];
-        for(int p = 0; p < pMemory.getPageCount(); p++){
-            byte[] page = pMemory.getPage(p);
-            for(int i = 0; i < 4096; i ++){
-                temp[i + p * 4096] = page[i];
-            }
-        }
-        Memory.setMemory(temp);
-
         return pMemory;
     }
 
     @Override
-    public void assemble(File[] files) {
+    public Memory assemble(File[] files) {
 
         isBigEndian = true;
         this.globalLabelMap = new HashMap<>();
         this.assemblyUnits = new ArrayList<>();
         this.preProcessor = createPreProcessor();
 
-        Debugger.clear();
         this.dataToPreProcessedStatement = new HashMap<>();
 
         for(File f: files){
             assemble(f);
         }
 
-        linkGlobal();
+        Memory mem = linkGlobal();
 
         this.globalLabelMap = null;
         this.assemblyUnits = null;
         this.preProcessor = null;
 
         this.dataToPreProcessedStatement = null;
+
+        return mem;
     }
 
     public Label getLabel(String token) {

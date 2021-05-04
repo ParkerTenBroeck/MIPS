@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips;
+package org.parker.mips.core;
 
 import org.parker.mips.architectures.ArchitecturePluginLoader;
-import org.parker.mips.gui.MainGUI;
 import org.parker.mips.gui.theme.ThemeHandler;
 import org.parker.mips.preferences.Preference;
 import org.parker.mips.preferences.Preferences;

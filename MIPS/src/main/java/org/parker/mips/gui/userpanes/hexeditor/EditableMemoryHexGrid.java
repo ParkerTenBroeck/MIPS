@@ -1,7 +1,6 @@
 package org.parker.mips.gui.userpanes.hexeditor;
 
-
-import org.parker.mips.architectures.mips.emulator.mips.Memory;
+import org.parker.mips.util.Memory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,9 +11,13 @@ public class EditableMemoryHexGrid extends JPanel {
     private MemoryEditGrid mGrid;
     private int currentScroll = 0;
 
+    private Memory mem;
+
     private boolean bigEndianness = true;
 
-    public EditableMemoryHexGrid(int rows, int columns, EditableHexGrid.GroupSize groupSize){
+    public EditableMemoryHexGrid(int rows, int columns, EditableHexGrid.GroupSize groupSize, Memory mem){
+
+        this.mem = mem;
 
         mGrid = new MemoryEditGrid(rows, columns, groupSize);
 
@@ -83,8 +86,8 @@ public class EditableMemoryHexGrid extends JPanel {
         this.repaint();
     }
 
-    public void setIndex(int value) {
-        scrollBar.setValue(value / (mGrid.columns - 1));
+    public void scrollToAddress(int value) {
+        scrollBar.setValue(value / ((mGrid.columns - 1) * getGroupSize().value));
     }
 
     public void setBigEndian(boolean selected) {
@@ -148,13 +151,13 @@ public class EditableMemoryHexGrid extends JPanel {
             int value = 0;
             switch(groupSize) {
                 case Byte:
-                    value = 0xFF & Memory.superGetByte(index, bigEndianness);
+                    value = 0xFF & mem.getByte(index);
                     break;
                 case HalfWord:
-                    value = 0xFFFF & Memory.superGetHalfWord(index, bigEndianness);
+                    value = 0xFFFF & mem.getShort(index, bigEndianness);
                     break;
                 case Word:
-                    value = Memory.superGetWord(index,bigEndianness);
+                    value = mem.getWord(index,bigEndianness);
                     break;
             }
                 return String.format("%0"+ groupSize.value * 2 +"X", value);
@@ -164,7 +167,18 @@ public class EditableMemoryHexGrid extends JPanel {
         @Override
         public void commitModify(int newValue) {
             int index = groupSize.value * (currentScroll * (columns - 1) + ((currModify - columns)*(columns - 1))/columns);
-            Memory.superSetByte(index,newValue);
+
+            switch(groupSize) {
+                case Byte:
+                    mem.setByte(index, (byte) newValue);
+                    break;
+                case HalfWord:
+                    mem.setShort(index, (short) newValue, bigEndianness);
+                    break;
+                case Word:
+                    mem.setWord(index, newValue,bigEndianness);
+                    break;
+            }
 
             this.labels[currModify].setText(getStringFromIndex(index));
         }

@@ -15,12 +15,12 @@ import java.util.logging.Logger;
  *
  * @author parke
  */
-public class Memory {
+public class EmulatorMemory {
 
     private static byte[] savedMemory;
     protected static byte[] memory = new byte[0];
 
-    private static final Logger LOGGER = Logger.getLogger(Memory.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(EmulatorMemory.class.getName());
 
     private static final Preference<Boolean> adaptiveMemory = Preferences.ROOT_NODE.getNode("system/emulator/runtime").getRawPreference("adaptiveMemory", true);
 
@@ -28,9 +28,9 @@ public class Memory {
 
     public static void setMemory(byte[] memory) {
         if (memory == null) {
-            Memory.savedMemory = new byte[0];
+            EmulatorMemory.savedMemory = new byte[0];
         } else {
-            Memory.savedMemory = memory;
+            EmulatorMemory.savedMemory = memory;
         }
         reloadMemory();
     }
@@ -43,7 +43,7 @@ public class Memory {
         if ((index & 3) != 0) {
             throw new RunTimeMemoryException("getWord must be aligned to 4 error at index:" + index);
         }
-        if (index + 3 > Memory.memory.length) {
+        if (index + 3 > EmulatorMemory.memory.length) {
             memoryOutOfBoundsEvent(index);
             return -1;
         } else {
@@ -66,7 +66,7 @@ public class Memory {
     }
 
     public static int getByte(int index) {
-        if (index > Memory.memory.length - 1) {
+        if (index > EmulatorMemory.memory.length - 1) {
             memoryOutOfBoundsEvent(index);
             return -1;
         } else {
@@ -86,15 +86,15 @@ public class Memory {
         int mem1 = 0xCD;
         if (index >= 0 && memory.length > index + 3){
             if(bigEndianness) {
-                mem4 = Memory.memory[index] & 0xFF;
-                mem3 = Memory.memory[index + 1] & 0xFF;
-                mem2 = Memory.memory[index + 2] & 0xFF;
-                mem1 = Memory.memory[index + 3] & 0xFF;
+                mem4 = EmulatorMemory.memory[index] & 0xFF;
+                mem3 = EmulatorMemory.memory[index + 1] & 0xFF;
+                mem2 = EmulatorMemory.memory[index + 2] & 0xFF;
+                mem1 = EmulatorMemory.memory[index + 3] & 0xFF;
             }else{
-                mem4 = Memory.memory[index + 3] & 0xFF;
-                mem3 = Memory.memory[index + 2] & 0xFF;
-                mem2 = Memory.memory[index + 1] & 0xFF;
-                mem1 = Memory.memory[index] & 0xFF;
+                mem4 = EmulatorMemory.memory[index + 3] & 0xFF;
+                mem3 = EmulatorMemory.memory[index + 2] & 0xFF;
+                mem2 = EmulatorMemory.memory[index + 1] & 0xFF;
+                mem1 = EmulatorMemory.memory[index] & 0xFF;
             }
         }
         return mem1 | mem2 << 8 | mem3 << 16 | mem4 << 24;
@@ -110,11 +110,11 @@ public class Memory {
         int mem2 = 0xCD;
         if (index >= 0 && memory.length > index + 1){
             if(bigEndianness) {
-                mem2 = ((int) Memory.memory[index]);
-                mem1 = ((int) Memory.memory[index + 1]) & 0xFF;
+                mem2 = ((int) EmulatorMemory.memory[index]);
+                mem1 = ((int) EmulatorMemory.memory[index + 1]) & 0xFF;
             }else{
-                mem2 = ((int) Memory.memory[index + 1]) & 0xFF;
-                mem1 = ((int) Memory.memory[index]);
+                mem2 = ((int) EmulatorMemory.memory[index + 1]) & 0xFF;
+                mem1 = ((int) EmulatorMemory.memory[index]);
             }
         }
         return mem1 | mem2 << 8;
@@ -124,7 +124,7 @@ public class Memory {
 
         int mem1 = 0xCD;
         if (index >= 0 && memory.length > index){
-            mem1 = Memory.memory[index];
+            mem1 = EmulatorMemory.memory[index];
         }
         return mem1;
 
@@ -134,7 +134,7 @@ public class Memory {
         if ((index & 3) != 0) {
             throw new RunTimeMemoryException("setWord must be aligned to 4 error at index:" + index);
         }
-        if (index + 3 > Memory.memory.length || index < 0) {
+        if (index + 3 > EmulatorMemory.memory.length || index < 0) {
             memoryOutOfBoundsEvent(index);
             return false;
         } else {
@@ -157,7 +157,7 @@ public class Memory {
         if ((index & 1) != 0) {
             throw new RunTimeMemoryException("setHalfWord must be aligned to 2 error at index:" + index);
         }
-        if (index + 1 > Memory.memory.length || index < 0) {
+        if (index + 1 > EmulatorMemory.memory.length || index < 0) {
             Emulator.stop();
             memoryOutOfBoundsEvent(index);
             return false;
@@ -174,7 +174,7 @@ public class Memory {
     }
 
     public static boolean setByte(int index, int val) {
-        if (index > Memory.memory.length - 1 || index < 0) {
+        if (index > EmulatorMemory.memory.length - 1 || index < 0) {
             Emulator.stop();
             memoryOutOfBoundsEvent(index);
             return false;
@@ -255,7 +255,7 @@ public class Memory {
     }
 
     public static void reloadMemory() {
-        Memory.memory = Memory.savedMemory;
+        EmulatorMemory.memory = EmulatorMemory.savedMemory;
     }
 
 }

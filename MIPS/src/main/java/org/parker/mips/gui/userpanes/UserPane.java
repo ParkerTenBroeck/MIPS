@@ -11,7 +11,12 @@ public abstract class UserPane extends javax.swing.JPanel {
 
     public abstract boolean close();
 
-    public void updateValues(){};
+    /**
+     * this is called whenever the UI requests to update the contents of the displayed panel
+     * this method is only called when the component is visible
+     * example of its use is updating the register values on the emulator state tab
+     */
+    public void update(){}
 
     protected final void setTitle(String title){
         this.title.setText(title);

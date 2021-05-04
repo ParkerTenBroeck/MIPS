@@ -1,14 +1,19 @@
 package org.parker.mips.architectures.mips;
 
 import org.parker.mips.architectures.BaseComputerArchitecture;
+import org.parker.mips.architectures.mips.assembler.MipsAssembler;
 import org.parker.mips.architectures.mips.disassembler.MipsDisassembler;
 import org.parker.mips.architectures.mips.emulator.mips.Emulator;
+import org.parker.mips.architectures.mips.emulator.mips.EmulatorMemory;
 import org.parker.mips.architectures.mips.emulator.mips.MemoryWrapper;
+import org.parker.mips.architectures.mips.gui.MipsEmulatorState;
 import org.parker.mips.architectures.mips.syscall.SystemCallPlugin;
 import org.parker.mips.architectures.mips.syscall.SystemCallPluginHandler;
+import org.parker.mips.gui.userpanes.UserPane;
 import org.parker.mips.gui.userpanes.editor.EditorHandler;
 import org.parker.mips.plugin.PluginLoader;
 import org.parker.mips.util.Memory;
+import org.parker.mips.util.PagedMemory;
 import org.parker.mips.util.ResourceHandler;
 
 import java.awt.event.ActionEvent;
@@ -23,10 +28,10 @@ public class MipsArchitecture extends BaseComputerArchitecture {
     @Override
     public void onLoad() {
 
-        loadDefaultPlugins();
+        loadDefaultSystemCallPlugins();
     }
 
-    public void loadDefaultPlugins() {
+    public void loadDefaultSystemCallPlugins() {
         try {
 
             try {
@@ -59,16 +64,28 @@ public class MipsArchitecture extends BaseComputerArchitecture {
 
     @Override
     public void onAssembleButton(ActionEvent ae) {
-            Emulator.reset();
-            EditorHandler.saveAll();
-            //assemble
+        Emulator.reset();
+        EditorHandler.saveAll();
+
+        PagedMemory pMemory = (PagedMemory) assembleDefault();
+
+        if(pMemory != null) {
+            byte[] temp = new byte[pMemory.getPageCount() * 4096];
+            for (int p = 0; p < pMemory.getPageCount(); p++) {
+                byte[] page = pMemory.getPage(p);
+                for (int i = 0; i < 4096; i++) {
+                    temp[i + p * 4096] = page[i];
+                }
+            }
+            EmulatorMemory.setMemory(temp);
+        }
+
     }
 
     @Override
     public void onStartButton(ActionEvent ae, boolean isSelected) {
         if (isSelected) {
             Emulator.start();
-            //MainGUI.startAutoUpdate();
         } else {
             Emulator.stop();
         }
@@ -87,6 +104,11 @@ public class MipsArchitecture extends BaseComputerArchitecture {
     }
 
     @Override
+    protected Memory assemble(File[] files) {
+        return new MipsAssembler().assemble(files);
+    }
+
+    @Override
     public void onResetButton(ActionEvent ae) {
         Emulator.reset();
     }
@@ -99,5 +121,10 @@ public class MipsArchitecture extends BaseComputerArchitecture {
     @Override
     public Memory getProcessorMemory() {
         return new MemoryWrapper();
+    }
+
+    @Override
+    public UserPane getEmulatorStatePanel() {
+        return new MipsEmulatorState();
     }
 }

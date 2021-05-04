@@ -2,14 +2,19 @@ package org.parker.mips.gui;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.extras.components.FlatTabbedPane;
-import org.parker.mips.architectures.mips.gui.RegisterGUI;
+import org.parker.mips.architectures.BaseComputerArchitecture;
+import org.parker.mips.architectures.mips.MipsArchitecture;
 import org.parker.mips.gui.components.VerticalJLabel;
 import org.parker.mips.gui.theme.ThemeHandler;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class test extends JPanel {
+    private final BaseComputerArchitecture bca;
+
     private JPanel rootPanel;
     private FlatTabbedPane flatTabbedPane1;
     private JPanel emulatorPanel;
@@ -21,13 +26,14 @@ public class test extends JPanel {
         ThemeHandler.init();
 
         JFrame frame = new JFrame();
-        frame.setContentPane(new test());
+        frame.setContentPane(new test(new MipsArchitecture()));
         frame.pack();
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public test() {
+    public test(BaseComputerArchitecture bca) {
+        this.bca = bca;
         $$$setupUI$$$();
 
         JLabel project = new VerticalJLabel("Project", new FlatSVGIcon("Images/Icons/SVG/projectDirectory.svg", 16, 16));
@@ -42,14 +48,62 @@ public class test extends JPanel {
         flatTabbedPane1.setTabComponentAt(1, debug);
         flatTabbedPane1.addTab("", emulatorPanel);
         flatTabbedPane1.setTabComponentAt(2, emulatorState);
+
+        flatTabbedPane1.addMouseListener(new MouseListener() {
+
+            int lastMoved = flatTabbedPane1.getSelectedIndex();
+            Component components;
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (lastMoved != flatTabbedPane1.getSelectedIndex()) {
+                    lastMoved = flatTabbedPane1.getSelectedIndex();
+                } else if (lastMoved == flatTabbedPane1.getSelectedIndex()) {
+
+                    //flatTabbedPane1.setVisible(false);//getComponentAt(lastMoved).setVisible(false);
+                    //flatTabbedPane1.setSize(flatTabbedPane1.getWidth() + 200, flatTabbedPane1.getHeight());
+                    //((JSplitPane) getParent()).resetToPreferredSizes();
+                    //revalidate();
+                    //flatTabbedPane1.getPreferredSize();
+                    //System.out.println("double click");
+                    if (flatTabbedPane1.isEnabled()) {
+                        components = flatTabbedPane1.getComponentAt(lastMoved);
+                        flatTabbedPane1.setComponentAt(lastMoved, null);
+                    //flatTabbedPane1.getComponentAt(lastMoved).setVisible(false);
+                    } else {
+                        flatTabbedPane1.setComponentAt(lastMoved, components);
+                    //flatTabbedPane1.getComponentAt(lastMoved).setVisible(true);
+                    }
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+        });
+
     }
 
     private void createUIComponents() {
         rootPanel = this;
 
-        this.emulatorPanel = new RegisterGUI();
-        this.debugPanel = new JPanel();
-        this.projectPanel = new JPanel();
+        if (bca != null) {
+            this.emulatorPanel = bca.getEmulatorStatePanel();
+        }
+        this.debugPanel = new DebugPanel();
+        this.projectPanel = new ProjectPanel();
     }
 
     /**
@@ -66,10 +120,11 @@ public class test extends JPanel {
         flatTabbedPane1.setAutoscrolls(false);
         flatTabbedPane1.setHasFullBorder(false);
         flatTabbedPane1.setHideTabAreaWithOneTab(false);
+        flatTabbedPane1.setTabAreaInsets(new Insets(0, 0, 0, 0));
         flatTabbedPane1.setTabHeight(10);
         flatTabbedPane1.setTabInsets(new Insets(5, 2, 5, 2));
-        flatTabbedPane1.setTabPlacement(4);
-        flatTabbedPane1.setTabWidthMode(FlatTabbedPane.TabWidthMode.compact);
+        flatTabbedPane1.setTabPlacement(2);
+        flatTabbedPane1.setTabWidthMode(FlatTabbedPane.TabWidthMode.preferred);
         flatTabbedPane1.setTabsClosable(false);
         flatTabbedPane1.setTabsPopupPolicy(FlatTabbedPane.TabsPopupPolicy.never);
         rootPanel.add(flatTabbedPane1, BorderLayout.CENTER);

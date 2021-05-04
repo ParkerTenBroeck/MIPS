@@ -1,10 +1,13 @@
 package org.parker.mips.assembler2.mips;
 
 import org.junit.jupiter.api.Test;
-import org.parker.mips.MIPS;
+import org.parker.mips.architectures.mips.emulator.mips.EmulatorMemory;
+import org.parker.mips.core.MIPS;
 import org.parker.mips.assembler.base.assembler.Assembler;
 import org.parker.mips.architectures.mips.assembler.MipsAssembler;
 import org.parker.mips.architectures.mips.disassembler.MipsDisassembler;
+import org.parker.mips.util.Memory;
+import org.parker.mips.util.PagedMemory;
 
 import java.io.File;
 
@@ -13,7 +16,20 @@ public class MipsAssemblerTest {
 
     public static void main(String... args){
         MIPS.main(new String[0]);
-        new MipsAssembler().assemble(new File("C:\\GitHub\\MIPS\\MIPS/src/test/resources/MIPS/Assembly/Linking Across Files/Program Demonstrating Linking").listFiles());
+        Memory m = new MipsAssembler().assemble(new File[]{new File("C:\\Users\\parke\\OneDrive\\Documents\\MIPS\\Projects\\bad-apple\\bad-apple - Copy (2).asm")});
+        PagedMemory pMemory = (PagedMemory) m;
+
+        if(pMemory != null) {
+            byte[] temp = new byte[pMemory.getPageCount() * 4096];
+            for (int p = 0; p < pMemory.getPageCount(); p++) {
+                byte[] page = pMemory.getPage(p);
+                for (int i = 0; i < 4096; i++) {
+                    temp[i + p * 4096] = page[i];
+                }
+            }
+            EmulatorMemory.setMemory(temp);
+        }
+
         MipsDisassembler.disassemble();
     }
 

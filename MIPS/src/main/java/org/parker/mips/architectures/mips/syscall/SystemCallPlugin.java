@@ -5,12 +5,12 @@
  */
 package org.parker.mips.architectures.mips.syscall;
 
+import org.parker.mips.architectures.mips.emulator.mips.EmulatorMemory;
 import org.parker.mips.util.FileUtils;
 import org.parker.mips.gui.MainGUI;
 import org.parker.mips.gui.userpanes.editor.rsyntax.FormattedTextEditor;
 import org.parker.mips.plugin.PluginBase;
 import org.parker.mips.plugin.PluginClassLoader;
-import org.parker.mips.architectures.mips.emulator.mips.Memory;
 import org.parker.mips.architectures.mips.emulator.mips.Emulator;
 import org.parker.mips.architectures.mips.emulator.mips.Registers;
 
@@ -334,7 +334,7 @@ public abstract class SystemCallPlugin extends PluginBase {
      * @param val the full word (4 bytes) that will be stored at the index
      */
     protected final void setWord(int index, int val) {
-        Memory.setWord(index, val);
+        EmulatorMemory.setWord(index, val);
     }
 
     /**
@@ -343,7 +343,7 @@ public abstract class SystemCallPlugin extends PluginBase {
      * @param val the half word (2 bytes) that will be stored at the index
      */
     protected final void setHelfWord(int index, int val) {
-        Memory.setHalfWord(index, val);
+        EmulatorMemory.setHalfWord(index, val);
     }
 
     /**
@@ -352,7 +352,7 @@ public abstract class SystemCallPlugin extends PluginBase {
      * @param val the byte (1 bytes) that will be stored at the index
      */
     protected final void setByte(int index, int val) {
-        Memory.setByte(index, val);
+        EmulatorMemory.setByte(index, val);
     }
 
     /**
@@ -361,7 +361,7 @@ public abstract class SystemCallPlugin extends PluginBase {
      * @return returns a full word (4 bytes) at the location in memory of index
      */
     protected final int getWord(int index) {
-        return Memory.getWord(index);
+        return EmulatorMemory.getWord(index);
     }
 
     /**
@@ -370,7 +370,7 @@ public abstract class SystemCallPlugin extends PluginBase {
      * @return returns a half word (2 bytes) at the location in memory of index
      */
     protected final int getHalfWord(int index) {
-        return Memory.getHalfWord(index);
+        return EmulatorMemory.getHalfWord(index);
     }
 
     /**
@@ -379,7 +379,7 @@ public abstract class SystemCallPlugin extends PluginBase {
      * @return returns a byte (1 bytes) at the location in memory of index
      */
     protected final int getByte(int index) {
-        return Memory.getByte(index);
+        return EmulatorMemory.getByte(index);
     }
 
     /**

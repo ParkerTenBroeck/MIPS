@@ -2,7 +2,9 @@ package org.parker.mips.assembler.debugger;
 
 import org.parker.mips.assembler.util.Line;
 
-public class FinalizedLabel {
+import java.io.Serializable;
+
+public class FinalizedLabel implements Serializable {
 
     final Line line;
     final String mnemonic;

@@ -16,4 +16,11 @@ public class ArchitecturePluginLoader {
 
         ca.createGUI().setVisible(true);
     }
+
+    public static void requestSystemExit(){
+        ca.requestSystemExit();
+    }
+    public static void requestSystemExit(ComputerArchitecture.SystemClosingEvent sce){
+        ca.requestSystemExit(sce);
+    }
 }

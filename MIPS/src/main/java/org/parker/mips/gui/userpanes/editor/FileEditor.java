@@ -124,7 +124,7 @@ public abstract class FileEditor extends UserPane {
 
         if (currentFile == null) {
 
-            UserPaneTabbedPane.setSelectedTab(this);
+            UserPaneTabbedPane.setSelectedUserPane(this);
             EditorHandler.setLastFocused(this);
             JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
             int returnVal = fc.showOpenDialog(MainGUI.getFrame());
@@ -150,7 +150,7 @@ public abstract class FileEditor extends UserPane {
     }
 
     public final boolean saveAs() {
-        UserPaneTabbedPane.setSelectedTab(this);
+        UserPaneTabbedPane.setSelectedUserPane(this);
         EditorHandler.setLastFocused(this);
         JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
         int returnVal = fc.showOpenDialog(MainGUI.getFrame());

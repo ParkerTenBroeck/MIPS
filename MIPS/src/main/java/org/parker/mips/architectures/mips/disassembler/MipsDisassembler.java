@@ -5,7 +5,7 @@
  */
 package org.parker.mips.architectures.mips.disassembler;
 
-import org.parker.mips.architectures.mips.emulator.mips.Memory;
+import org.parker.mips.architectures.mips.emulator.mips.EmulatorMemory;
 import org.parker.mips.gui.userpanes.editor.rsyntax.FormattedTextEditor;
 
 /**
@@ -17,8 +17,8 @@ public class MipsDisassembler {
     public static void disassemble(){
         StringBuilder sb = new StringBuilder();
 
-        for(int i = 0; i < Memory.getSize() / 4; i ++){
-            sb.append(instructionToString(Memory.getWord(i * 4)) + "\n");
+        for(int i = 0; i < EmulatorMemory.getSize() / 4; i ++){
+            sb.append(instructionToString(EmulatorMemory.getWord(i * 4)) + "\n");
         }
         new FormattedTextEditor(sb.toString().getBytes());
         //Editor.createEditor(sb.toString().getBytes(), "", "");

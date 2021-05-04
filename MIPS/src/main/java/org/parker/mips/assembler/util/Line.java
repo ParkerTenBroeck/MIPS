@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.Serializable;
 
 public class Line implements Serializable {
+
     private String line;
     private int startingLine;
     private int endingLine;

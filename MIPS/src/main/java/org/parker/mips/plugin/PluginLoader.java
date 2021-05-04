@@ -5,12 +5,9 @@
  */
 package org.parker.mips.plugin;
 
-import org.parker.mips.MIPS;
+import org.parker.mips.core.MIPS;
 import org.parker.mips.plugin.exceptions.InvalidDescriptionException;
 import org.parker.mips.plugin.exceptions.InvalidPluginException;
-import org.parker.mips.util.ResourceHandler;
-import org.parker.mips.architectures.mips.syscall.SystemCallPlugin;
-import org.parker.mips.architectures.mips.syscall.SystemCallPluginHandler;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.YAMLException;
 

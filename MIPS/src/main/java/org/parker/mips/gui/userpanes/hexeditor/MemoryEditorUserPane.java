@@ -25,10 +25,12 @@ public class MemoryEditorUserPane extends UserPane {
     private JCheckBox checkBox1;
     private JCheckBox checkBox2;
     private JLabel rowCountLabel;
+    private Memory mem;
 
     public MemoryEditorUserPane(Memory processorMemory) {
 
         this.setTitle("Memory");
+        this.mem = processorMemory;
 
         $$$setupUI$$$();
 
@@ -75,7 +77,7 @@ public class MemoryEditorUserPane extends UserPane {
 
                         value = BaseExpressionCompiler.parseInt(text);
 
-                        ((EditableMemoryHexGrid) bfg).setIndex(value);
+                        ((EditableMemoryHexGrid) bfg).scrollToAddress(value);
                     } catch (Exception ex) {
 
                     }
@@ -137,7 +139,7 @@ public class MemoryEditorUserPane extends UserPane {
     }
 
     @Override
-    public void updateValues() {
+    public void update() {
         if (bfg == null) {
             return;
         }
@@ -150,7 +152,7 @@ public class MemoryEditorUserPane extends UserPane {
     private void createUIComponents() {
 
         panel1 = this;
-        bfg = new EditableMemoryHexGrid(21, 17, EditableHexGrid.GroupSize.Byte);
+        bfg = new EditableMemoryHexGrid(21, 17, EditableHexGrid.GroupSize.Byte, mem);
 
 
         EditableMemoryHexGrid asd = ((EditableMemoryHexGrid) bfg);

@@ -7,13 +7,9 @@ package org.parker.mips.util;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.parker.mips.MIPS;
-import org.parker.mips.architectures.BaseComputerArchitecture;
-import org.parker.mips.gui.MainGUI;
-import org.parker.mips.gui.userpanes.editor.EditorHandler;
-import org.parker.mips.preferences.Preferences;
+import org.parker.mips.core.MIPS;
+import org.parker.mips.architectures.ArchitecturePluginLoader;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -87,7 +83,7 @@ public class UpdateHandler {
 
         String protocol = ResourceHandler.class.getResource("").getProtocol();
         if (!Objects.equals(protocol, "jar")) { //run in jar
-            LOGGER.log(Level.SEVERE,"Cannot Update from IDE? can only update from JAR");
+            LOGGER.log(Level.SEVERE,"Cannot Update from "+protocol+"? can only update from jar");
             return;
         }
         if (isUpToDate) {
@@ -95,6 +91,16 @@ public class UpdateHandler {
             return;
         }
 
+        ArchitecturePluginLoader.requestSystemExit(() -> {
+            String[] run = {"java", "-jar", ResourceHandler.DEFAULT_PATH + FileUtils.FILE_SEPARATOR + "updater.jar", MIPS.JAR_PATH, latestVersionLink};
+            try {
+                Runtime.getRuntime().exec(run);
+            } catch (Exception ex) {
+                LOGGER.log(Level.SEVERE, "Failed to Launch Updater", ex);
+            }
+        });
+        LOGGER.log(Level.INFO, "Update Canceled");
+        /*
         if (!EditorHandler.isAllSaved()) {
             int confirm = BaseComputerArchitecture.createWarningQuestion("Exit Confirmation", "You have unsaved work would you like to save before continuing?");
 
@@ -109,16 +115,7 @@ public class UpdateHandler {
                 Preferences.savePreferencesToDefaultFile();
             }
         }
-
-        String[] run = {"java", "-jar", ResourceHandler.DEFAULT_PATH + FileUtils.FILE_SEPARATOR + "updater.jar", MIPS.JAR_PATH, latestVersionLink};
-        try {
-            Runtime.getRuntime().exec(run);
-            System.exit(0);
-        } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Failed to Launch Updater", ex);
-        }
-
-        //return false;
+         */
     }
 
     private static final class VersionComparison {

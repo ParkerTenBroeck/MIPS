@@ -1,8 +1,10 @@
 package org.parker.mips.assembler.base.assembler;
 
+import org.parker.mips.util.Memory;
+
 import java.io.File;
 
 public interface Assembler {
 
-    void assemble(File[] files);
+    Memory assemble(File[] files);
 }

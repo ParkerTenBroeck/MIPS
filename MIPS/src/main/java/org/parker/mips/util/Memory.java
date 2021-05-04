@@ -139,7 +139,7 @@ public interface Memory {
 
     default void add(long address, long start, long end, Memory memory){
         for(long i = start; i < end; i ++){
-            this.setByte(i, memory.getByte(address));
+            this.setByte(address, memory.getByte(i));
             address ++;
         }
     }

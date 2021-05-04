@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.parker.mips.architectures.mips.emulator.mips.InstructionDecode.runInstruction;
-import static org.parker.mips.architectures.mips.emulator.mips.Memory.getWord;
+import static org.parker.mips.architectures.mips.emulator.mips.EmulatorMemory.getWord;
 import static org.parker.mips.architectures.mips.emulator.mips.Registers.getPc;
 
 /**
@@ -47,7 +47,7 @@ public class Emulator implements Runnable {
         instructionsRan = 0;
         Registers.reset();
         if ((Boolean)processorPrefs.getPreference("reloadMemoryOnReset", false)) {
-            Memory.reloadMemory();
+            EmulatorMemory.reloadMemory();
         }
         MainGUI.refresh();
     }
@@ -78,12 +78,12 @@ public class Emulator implements Runnable {
     public void run() {
         do {
             try {
-                runInstruction(Memory.getWord(Registers.pc));
+                runInstruction(EmulatorMemory.getWord(Registers.pc));
             }catch(Exception e){
                 LOGGER.log(RunTimeLevel.RUN_TIME_ERROR, e.getMessage(), e.getCause());
                 if ((Boolean)processorPrefs.getPreference("breakOnRunTimeError", true)) {
                     Emulator.stop();
-                    MainGUI.refreshAll();
+                    //MainGUI.refreshAll();
                 }
             }
             instructionsRan++;
@@ -107,7 +107,7 @@ public class Emulator implements Runnable {
 
         } while (isRunning);
 
-        MainGUI.refreshAll();
+        //MainGUI.refreshAll();
     }
 
     public static int getOpCode() {

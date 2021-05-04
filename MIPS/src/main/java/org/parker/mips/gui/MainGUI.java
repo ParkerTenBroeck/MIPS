@@ -1,14 +1,11 @@
 package org.parker.mips.gui;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import org.parker.mips.*;
 import org.parker.mips.architectures.BaseComputerArchitecture;
-import org.parker.mips.architectures.mips.gui.RegisterGUI;
+import org.parker.mips.architectures.mips.emulator.mips.EmulatorMemory;
+import org.parker.mips.architectures.mips.gui.MipsEmulatorState;
 import org.parker.mips.architectures.mips.gui.SystemCallPluginInfoFrame;
-import org.parker.mips.assembler.debugger.Debugger;
-import org.parker.mips.assembler.util.Line;
-import org.parker.mips.architectures.mips.emulator.mips.Registers;
-import org.parker.mips.gui.userpanes.editor.FileEditor;
+import org.parker.mips.core.MIPS;
 import org.parker.mips.gui.userpanes.editor.EditorHandler;
 import org.parker.mips.gui.userpanes.editor.rsyntax.FormattedTextEditor;
 import org.parker.mips.gui.theme.ThemeHandler;
@@ -19,8 +16,8 @@ import org.parker.mips.architectures.mips.syscall.SystemCallPlugin.Node;
 import org.parker.mips.architectures.mips.syscall.SystemCallPluginHandler;
 import org.parker.mips.preferences.Preference;
 import org.parker.mips.preferences.Preferences;
-import org.parker.mips.architectures.mips.emulator.mips.Memory;
 import org.parker.mips.architectures.mips.emulator.mips.Emulator;
+import org.parker.mips.util.DesktopBrowser;
 import org.parker.mips.util.FileUtils;
 import org.parker.mips.util.ResourceHandler;
 import org.parker.mips.util.UpdateHandler;
@@ -94,18 +91,14 @@ public class MainGUI extends javax.swing.JFrame {
         return mainPanel;
     }
 
-    public static void refreshAll() {
-        Memory.reloadMemory();
-        refresh();
-    }
-
     public static void refresh() {
         javax.swing.SwingUtilities.invokeLater(() -> {
-            register_GUI1.updateVals();
+            register_GUI1.update();
             //InstructionMemoryGUI.refresh();
             InstructionsRan.setText(Long.toString(Emulator.getInstructionsRan()));
             UserPaneTabbedPane.updateOpenUserPanes();
 
+            /*
             Line line = Debugger.getDataLineFromAddress(Registers.getPc());
             if(line != null) {
                 //LOGGER.log(Level.INFO, (line.getHumanLineNumber() + ": " + line.getLine()));
@@ -114,6 +107,8 @@ public class MainGUI extends javax.swing.JFrame {
                     ((FormattedTextEditor) e).setHighlightedLine(line.getLineNumber());
                 }
             }
+
+             */
         });
     }
 
@@ -130,6 +125,9 @@ public class MainGUI extends javax.swing.JFrame {
             assert url != null;
             ImageIcon icon = new ImageIcon(url);
             this.setIconImage(icon.getImage());
+            //new SVGUniverse()
+
+            //this.setIconImage(new FlatSVGIcon("Images/Icons/SVG/logo4.svg", 255, 255).getImage());
 
             aboutButton.setIcon(new FlatSVGIcon("Images/Icons/PNG/informationDialog.svg", (int) (aboutButton.getWidth() / 1.5), (int) (aboutButton.getHeight() / 1.5)));
             //aboutLinkedFile.setIcon(new FlatSVGIcon("images/informationDialog.svg", (int) (aboutLinkedFile.getWidth() / 1.5), (int) (aboutLinkedFile.getHeight() / 1.5)));
@@ -191,28 +189,7 @@ public class MainGUI extends javax.swing.JFrame {
             @Override
             public void windowClosing(WindowEvent e) {
             LOGGER.log(Level.FINER, "Main Window Exit Action Preformed");
-
-                if (!EditorHandler.isAllSaved()) {
-                    int confirm = BaseComputerArchitecture.createWarningQuestion("Exit Confirmation", "You have unsaved work would you like to save before continuing?");
-
-                    if (confirm == JOptionPane.CANCEL_OPTION) {
-
-                    }else if (confirm == JOptionPane.YES_OPTION) {
-                        if (!EditorHandler.saveAll()) {
-                            return;
-                        }
-                        Preferences.savePreferencesToDefaultFile();
-                        System.exit(0);
-                    }
-                    if (confirm == JOptionPane.NO_OPTION) {
-                        Preferences.savePreferencesToDefaultFile();
-                        System.exit(0);
-                    }
-                } else {
-                    Preferences.savePreferencesToDefaultFile();
-                    System.exit(0);
-                }
-
+            bca.requestSystemExit();
             }
         };
 
@@ -244,7 +221,9 @@ public class MainGUI extends javax.swing.JFrame {
 
 
         Thread.currentThread().setName("GUI");
+
         refresh();
+
         ThemeHandler.updateUI();
         this.setVisible(true);
 
@@ -397,7 +376,7 @@ public class MainGUI extends javax.swing.JFrame {
         resetButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         lowerContentPanel = new javax.swing.JPanel();
-        register_GUI1 = new RegisterGUI();
+        register_GUI1 = new MipsEmulatorState();
         aSM_GUI1 = new UserPaneTabbedPane();
         midButtonSliderPanel = new javax.swing.JPanel();
         enableBreak = new javax.swing.JCheckBox();
@@ -790,7 +769,7 @@ public class MainGUI extends javax.swing.JFrame {
         loadMemoryButton.setText("Load Memory from File");
         saveMemoryButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveMenuButtonActionPerformed(evt);
+                saveMemoryButtonActionPreformed(evt);
             }
         });
         loadMemoryButton.addActionListener(new java.awt.event.ActionListener() {
@@ -868,7 +847,7 @@ public class MainGUI extends javax.swing.JFrame {
     	JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
         int returnVal = fc.showOpenDialog(MainGUI.getFrame());
         if (returnVal == JFileChooser.FILES_ONLY) {
-            FileUtils.saveByteArrayToFileSafe(Memory.getMemory(), fc.getSelectedFile());
+            FileUtils.saveByteArrayToFileSafe(EmulatorMemory.getMemory(), fc.getSelectedFile());
         }
     }
     
@@ -876,21 +855,19 @@ public class MainGUI extends javax.swing.JFrame {
     	JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
         int returnVal = fc.showOpenDialog(MainGUI.getFrame());
         if (returnVal == JFileChooser.FILES_ONLY) {
-            Memory.setMemory(FileUtils.loadFileAsByteArraySafe(fc.getSelectedFile()));
+            EmulatorMemory.setMemory(FileUtils.loadFileAsByteArraySafe(fc.getSelectedFile()));
         }
         Emulator.stop();
-        refreshAll();
+        //refreshAll();
     }
 
     private void newMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newMenuButtonActionPerformed
-        //new FormattedTextEditor();
-        //Editor.createEditor();
         new FormattedTextEditor();
     }
 
     private void asciiChartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asciiChartButtonActionPerformed
         new imageFrame("/Images/asciiChart.bmp");
-    }//GEN-LAST:event_asciiChartButtonActionPerformed
+    }
 
     private void checkForUpdatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkForUpdatesActionPerformed
         UpdateHandler.update();
@@ -952,7 +929,7 @@ public class MainGUI extends javax.swing.JFrame {
     private static javax.swing.JMenuItem optionsButton;
     private static javax.swing.JMenu optionsMenu;
     private static javax.swing.JMenu registerSystemCallPluginsJMenu;
-    private static RegisterGUI register_GUI1;
+    private static MipsEmulatorState register_GUI1;
     private static javax.swing.JButton resetButton;
     private static javax.swing.JMenu processorMenu;
     private static javax.swing.JMenuItem saveMemoryButton;
