@@ -5,15 +5,14 @@
  */
 package org.parker.mips.assembler_old;
 
+import org.parker.mips.architectures.mips.MipsArchitecture;
 import org.parker.mips.assembler.util.AssemblerLevel;
 import org.parker.mips.util.FileUtils;
 import org.parker.mips.util.ResourceHandler;
 import org.parker.mips.assembler_old.data.MemoryLable;
 import org.parker.mips.assembler_old.data.UserLine;
 import org.parker.mips.architectures.mips.assembler.MipsAssembler;
-import org.parker.mips.gui.MainGUI;
 import org.parker.mips.gui.userpanes.editor.EditorHandler;
-import org.parker.mips.preferences.Preferences;
 import org.parker.mips.architectures.mips.emulator.mips.EmulatorMemory;
 
 import java.io.File;
@@ -169,8 +168,6 @@ public class Assembler {
 
     private static final AssemblerLogger LOGGER = new AssemblerLogger(Assembler.class.getName());
 
-    private static final Preferences assPrefs = Preferences.ROOT_NODE.getNode("system/assembler");
-
     public static void assemble(File file) {
 
         memoryLables = new ArrayList<MemoryLable>();
@@ -207,7 +204,7 @@ public class Assembler {
 
         EmulatorMemory.setMemory(memByteArray);
 
-        if ((Boolean)assPrefs.getPreference("saveCompilationInfo", false)) {
+        if (MipsArchitecture.saveAssemblyInfo.val()) {
             saveOriginsToFile(file.getAbsolutePath());
         }
 

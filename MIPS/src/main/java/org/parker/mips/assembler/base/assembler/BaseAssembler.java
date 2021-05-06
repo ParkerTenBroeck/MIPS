@@ -228,7 +228,7 @@ public abstract class BaseAssembler<P extends BasePreProcessor> implements Assem
     @Override
     public Memory assemble(File[] files) {
 
-        isBigEndian = true;
+        isBigEndian = false;
         this.globalLabelMap = new HashMap<>();
         this.assemblyUnits = new ArrayList<>();
         this.preProcessor = createPreProcessor();

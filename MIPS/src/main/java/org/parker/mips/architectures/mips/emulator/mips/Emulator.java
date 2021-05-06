@@ -5,6 +5,7 @@
  */
 package org.parker.mips.architectures.mips.emulator.mips;
 
+import org.parker.mips.architectures.mips.MipsArchitecture;
 import org.parker.mips.architectures.mips.emulator.exceptions.RunTimeLevel;
 import org.parker.mips.gui.MainGUI;
 import org.parker.mips.preferences.Preferences;
@@ -28,8 +29,6 @@ public class Emulator implements Runnable {
 
     private final static Logger LOGGER = Logger.getLogger(Emulator.class.getName());
 
-    private final static Preferences processorPrefs = Preferences.ROOT_NODE.getNode("system/emulator");
-
     public static long getInstructionsRan() {
         return instructionsRan;
     }
@@ -46,8 +45,8 @@ public class Emulator implements Runnable {
         stop();
         instructionsRan = 0;
         Registers.reset();
-        if ((Boolean)processorPrefs.getPreference("reloadMemoryOnReset", false)) {
-            EmulatorMemory.reloadMemory();
+        if (MipsArchitecture.reloadMemoryOnReset.val()) {
+            EmulatorMemory.reload();
         }
         MainGUI.refresh();
     }
@@ -81,9 +80,8 @@ public class Emulator implements Runnable {
                 runInstruction(EmulatorMemory.getWord(Registers.pc));
             }catch(Exception e){
                 LOGGER.log(RunTimeLevel.RUN_TIME_ERROR, e.getMessage(), e.getCause());
-                if ((Boolean)processorPrefs.getPreference("breakOnRunTimeError", true)) {
+                if (MipsArchitecture.breakOnRunTimeError.val()) {
                     Emulator.stop();
-                    //MainGUI.refreshAll();
                 }
             }
             instructionsRan++;

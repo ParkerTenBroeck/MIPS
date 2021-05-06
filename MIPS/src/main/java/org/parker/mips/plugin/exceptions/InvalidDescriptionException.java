@@ -19,7 +19,7 @@ public class InvalidDescriptionException extends Exception {
      * @param message Brief message explaining the cause of the exception
      * @param cause Exception that triggered this Exception
      */
-    public InvalidDescriptionException(final Throwable cause, final String message) {
+    public InvalidDescriptionException(final String message, final Throwable cause) {
         super(message, cause);
     }
 

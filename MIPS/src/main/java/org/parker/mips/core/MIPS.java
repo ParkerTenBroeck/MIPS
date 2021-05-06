@@ -5,7 +5,7 @@
  */
 package org.parker.mips.core;
 
-import org.parker.mips.architectures.ArchitecturePluginLoader;
+import org.parker.mips.architectures.ArchitecturePluginHandler;
 import org.parker.mips.gui.theme.ThemeHandler;
 import org.parker.mips.preferences.Preference;
 import org.parker.mips.preferences.Preferences;
@@ -57,20 +57,18 @@ public class MIPS {
 
         ThemeHandler.init();
 
-        ArchitecturePluginLoader.loadArchitecturePlugin(); //loads the set Computer Architecture
+        ArchitecturePluginHandler.loadArchitecturePlugin(); //loads the set Computer Architecture
 
         checkForUpdates(); //checks for updates
     }
 
-    private static Preferences systemPrefs = Preferences.ROOT_NODE.getNode("system");
-
     private static void applyStaticPreferences(){
         {
-            Preference showToolTips = systemPrefs.getNode("gui").getRawPreference("showToolTips", true);
-            showToolTips.addObserver((o, arg) -> {
+
+            SystemPreferences.showToolTips.addObserver((o, arg) -> {
                 ToolTipManager.sharedInstance().setEnabled((Boolean)arg);
             });
-            ToolTipManager.sharedInstance().setEnabled((Boolean) showToolTips.val());
+            ToolTipManager.sharedInstance().setEnabled(SystemPreferences.showToolTips.val());
         }
     }
 

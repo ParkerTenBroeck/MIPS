@@ -1,12 +1,13 @@
 package org.parker.mips.architectures;
 
 import org.parker.mips.gui.MainGUI;
-import org.parker.mips.gui.MainGUI_2;
 import org.parker.mips.gui.UserPaneTabbedPane;
 import org.parker.mips.gui.userpanes.UserPane;
 import org.parker.mips.gui.userpanes.editor.EditorHandler;
 import org.parker.mips.gui.userpanes.hexeditor.MemoryEditorUserPane;
+import org.parker.mips.plugin.base.PluginBase;
 import org.parker.mips.preferences.Preferences;
+import org.parker.mips.util.ByteMemory;
 import org.parker.mips.util.FileUtils;
 import org.parker.mips.util.Memory;
 
@@ -14,37 +15,99 @@ import javax.annotation.CheckForNull;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @SuppressWarnings("unused")
-public abstract class BaseComputerArchitecture implements ComputerArchitecture{
+public abstract class BaseComputerArchitecture extends PluginBase implements ComputerArchitecture{
 
-    private static JFrame frameInstance;
+    protected static final Preferences ROOT_ARC_PREFS;
+
+    private static MainGUI frameInstance;
     private static ProjectInformation projectInformation;
+
     private static final Logger LOGGER = Logger.getLogger(BaseComputerArchitecture.class.getName() + ".MIPS");
+    private static boolean isAssembling;
+
+    static{
+        ROOT_ARC_PREFS = Preferences.ROOT_NODE.getNode("system/architectures/" + ArchitecturePluginHandler.getDescription().NAME);
+    }
+
+    public static Preferences getRootArcPrefs(){
+        return ROOT_ARC_PREFS;
+    }
 
     @Override
     public final JFrame createGUI() {
-        frameInstance = new MainGUI(this);//new MainGUI(this);
+        frameInstance = new MainGUI(this);
         return frameInstance;
     }
 
-    public abstract void onAssembleButton(ActionEvent ae);
-    public abstract void onStartButton(ActionEvent ae, boolean isSelected);
-    public abstract void onStopButton(ActionEvent ae);
-    public abstract void onSingleStepButton(ActionEvent ae);
-    public abstract void onResetButton(ActionEvent ae);
-    public abstract void onDisassembleButton(ActionEvent ae);
+    public void onAssembleButton(ActionEvent ae) {
+        if(!isAssembling) {
+            isAssembling = true;
+            frameInstance.setControlsEnabled(false);
+            new Thread(() -> {
+                try {
+                    stopEmulator();
+                    EditorHandler.saveAll();
+                    setEmulatorMemory(assembleDefault());
+                    resetEmulator();
+                }catch (Exception e){
+                    isAssembling = false;
+                    SwingUtilities.invokeLater(() -> frameInstance.setControlsEnabled(true));
+                    throw e;
+                }
+                isAssembling = false;
+                SwingUtilities.invokeLater(() -> frameInstance.setControlsEnabled(true));
+            }).start();
+        }
+    }
+
+    public void onStartButton(ActionEvent ae, boolean isSelected) {
+        if (isSelected) {
+            startEmulator();
+        } else {
+            stopEmulator();
+        }
+    }
+
+    public void onStopButton(ActionEvent ae) {
+        stopEmulator();
+    }
+
+    public void onSingleStepButton(ActionEvent ae) {
+        //if (!Emulator.isRunning()) {
+            singeStepEmulator();
+        //}
+    }
+
+    public void onResetButton(ActionEvent ae) {
+        resetEmulator();
+    }
+
+    public void onDisassembleButton(ActionEvent ae) {
+        disassembleCurrentMemory();
+    }
+
+    protected abstract Memory assemble(File[] files);
+    public abstract void startEmulator();
+    public abstract void stopEmulator();
+    public abstract void singeStepEmulator();
+    public abstract void resetEmulator();
+    public abstract void disassembleCurrentMemory();
+
 
     public abstract Memory getProcessorMemory();
+    public void setEmulatorMemory(byte[] data){ setEmulatorMemory(new ByteMemory(data)); }
+    public abstract void setEmulatorMemory(Memory mem);
+
     public abstract UserPane getEmulatorStatePanel();
 
     /**
-     * This method will request to close the program, if the request is successful the program will exti
+     * This method will request to close the program, if the request is successful the program will exit
      * else the method will be returned from
      */
     @Override
@@ -58,7 +121,7 @@ public abstract class BaseComputerArchitecture implements ComputerArchitecture{
             int confirm = BaseComputerArchitecture.createWarningQuestion("Exit Confirmation", "You have unsaved work would you like to save before continuing?");
 
             if (confirm == JOptionPane.CANCEL_OPTION) {
-
+                return;
             }else if (confirm == JOptionPane.YES_OPTION) {
                 if (!EditorHandler.saveAll()) {
                     return;
@@ -107,7 +170,6 @@ public abstract class BaseComputerArchitecture implements ComputerArchitecture{
         return getProjectFilesToAssembleHelper(projectInformation.projectDIR);
     }
 
-    @org.jetbrains.annotations.NotNull
     private List<File> getProjectFilesToAssembleHelper(File myRoot){
         List<File> files = new ArrayList<>();
         for(File file: myRoot.listFiles()){
@@ -126,8 +188,6 @@ public abstract class BaseComputerArchitecture implements ComputerArchitecture{
         }
         return files;
     }
-
-    protected abstract Memory assemble(File[] files);
 
     //static
     //messages (ok)
@@ -192,10 +252,5 @@ public abstract class BaseComputerArchitecture implements ComputerArchitecture{
 
     public static int createCustomOptionDialog(String title, String message, int i, int ii, Icon icon, Object[] objects, Object object) {
         return JOptionPane.showOptionDialog(frameInstance, message, title, i, ii, icon, objects, object);
-    }
-
-    public static class ProjectInformation implements Serializable{
-        public File projectDIR;
-
     }
 }

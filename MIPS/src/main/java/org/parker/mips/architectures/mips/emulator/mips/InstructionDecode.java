@@ -442,7 +442,7 @@ public class InstructionDecode {
 	}
 	
 	public static long getUnsignedInt(int x) {
-		return x & 0x00000000ffffffffL;
+		return x & 0x00000000FFFFFFFFL;
 	}
 
 	public interface Instruction {

@@ -8,7 +8,7 @@ package org.parker.mips.util;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.parker.mips.core.MIPS;
-import org.parker.mips.architectures.ArchitecturePluginLoader;
+import org.parker.mips.architectures.ArchitecturePluginHandler;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -91,7 +91,7 @@ public class UpdateHandler {
             return;
         }
 
-        ArchitecturePluginLoader.requestSystemExit(() -> {
+        ArchitecturePluginHandler.requestSystemExit(() -> {
             String[] run = {"java", "-jar", ResourceHandler.DEFAULT_PATH + FileUtils.FILE_SEPARATOR + "updater.jar", MIPS.JAR_PATH, latestVersionLink};
             try {
                 Runtime.getRuntime().exec(run);

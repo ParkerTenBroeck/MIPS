@@ -1,21 +1,21 @@
 package org.parker.mips.gui;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.google.common.io.Files;
 import org.parker.mips.architectures.BaseComputerArchitecture;
+import org.parker.mips.architectures.mips.MipsArchitecture;
 import org.parker.mips.architectures.mips.emulator.mips.EmulatorMemory;
 import org.parker.mips.architectures.mips.gui.MipsEmulatorState;
 import org.parker.mips.architectures.mips.gui.SystemCallPluginInfoFrame;
 import org.parker.mips.core.MIPS;
+import org.parker.mips.core.SystemPreferences;
 import org.parker.mips.gui.userpanes.editor.EditorHandler;
 import org.parker.mips.gui.userpanes.editor.rsyntax.FormattedTextEditor;
 import org.parker.mips.gui.theme.ThemeHandler;
 import org.parker.mips.log.LogPanel;
-import org.parker.mips.plugin.PluginLoader;
 import org.parker.mips.architectures.mips.syscall.SystemCallPlugin;
 import org.parker.mips.architectures.mips.syscall.SystemCallPlugin.Node;
 import org.parker.mips.architectures.mips.syscall.SystemCallPluginHandler;
-import org.parker.mips.preferences.Preference;
-import org.parker.mips.preferences.Preferences;
 import org.parker.mips.architectures.mips.emulator.mips.Emulator;
 import org.parker.mips.util.DesktopBrowser;
 import org.parker.mips.util.FileUtils;
@@ -48,8 +48,6 @@ public class MainGUI extends javax.swing.JFrame {
 
     private static final Logger LOGGER = Logger.getLogger(MainGUI.class.getName());
 
-    private static final Preferences systemPrefs = Preferences.ROOT_NODE.getNode("system");
-
     public static synchronized boolean canBreak() {
         return enableBreak.isSelected();
     }
@@ -60,18 +58,15 @@ public class MainGUI extends javax.swing.JFrame {
 
         MainGUI.autoUpdateRunning = true;
 
-        if (!(Boolean)systemPrefs.getNode("gui").getPreference("enableGUIAutoUpdateWhileRunning", true)) {
+        if (!SystemPreferences.enableGUIAutoUpdateWhileRunning.val()) {
             return;
         }
         Thread autoUpdateThread = new Thread(() -> {
 
-            Preference<Boolean> autoUpdate = systemPrefs.getNode("gui").getRawPreference("enableGUIAutoUpdateWhileRunning", true);
-            Preference<Integer> refreshTime = systemPrefs.getNode("gui").getRawPreference("GUIAutoUpdateRefreshTime", 100);
-
-            while (autoUpdateRunning && autoUpdate.val()) {
+            while (autoUpdateRunning && SystemPreferences.enableGUIAutoUpdateWhileRunning.val()) {
                 MainGUI.refresh();
                 try {
-                    Thread.sleep(refreshTime.val());
+                    Thread.sleep(SystemPreferences.GUIAutoUpdateRefreshTime.val());
                 } catch (Exception ignored) {
 
                 }
@@ -137,16 +132,15 @@ public class MainGUI extends javax.swing.JFrame {
 
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        systemPrefs.getNode("emulator/runtime").getRawPreference("enableBreakPoints",true).LinkJButton(this, enableBreak);
-        //OptionsHandler.linkedFile.LinkJButton(this, linkedButton);
+        MipsArchitecture.enableBreakPoints.LinkJButton(this, enableBreak);
 
-        systemPrefs.getNode("assembler").getRawPreference("saveCompilationInfo",false).LinkJButton(this, saveAssemblyInformationButton);
-        systemPrefs.getNode("assembler").getRawPreference("savePreProcessedFile",false).LinkJButton(this, savePreProcessedFileButton);
+        MipsArchitecture.saveAssemblyInfo.LinkJButton(this, saveAssemblyInformationButton);
+        MipsArchitecture.savePreProcessedFile.LinkJButton(this, savePreProcessedFileButton);
 
-        systemPrefs.getNode("emulator/runtime").getRawPreference("breakOnRunTimeError",true).LinkJButton(this, breakProgramOnRTEButton);
-        systemPrefs.getNode("emulator/runtime").getRawPreference("adaptiveMemory",false).LinkJButton(this, adaptiveMemoryMenuButton);
+        MipsArchitecture.breakOnRunTimeError.LinkJButton(this, breakProgramOnRTEButton);
+        MipsArchitecture.adaptiveMemory.LinkJButton(this, adaptiveMemoryMenuButton);
 
-        systemPrefs.getNode("gui").getRawPreference("enableGUIAutoUpdateWhileRunning", true).LinkJButton(this,enableGUIUpdatingWhileRunningButton);
+        SystemPreferences.enableGUIAutoUpdateWhileRunning.LinkJButton(this,enableGUIUpdatingWhileRunningButton);
 
         assembleButton.addActionListener((ae) -> {
             LOGGER.log(Level.FINER, "Assemble Button Action Preformed");
@@ -823,6 +817,16 @@ public class MainGUI extends javax.swing.JFrame {
         DesktopBrowser.openLinkInBrowser("https://github.com/ParkerTenBroeck/MIPS/blob/master/README.md");
     }
 
+    public void setControlsEnabled(boolean enabled) {
+        assembleButton.setEnabled(enabled);
+        startButton.setEnabled(enabled);
+        stopButton.setEnabled(enabled);
+        singleStepButton.setEnabled(enabled);
+        resetButton.setEnabled(enabled);
+        memoryButton.setEnabled(enabled);
+        disassembleButton.setEnabled(enabled);
+    }
+
     private void openMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuButtonActionPerformed
         JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
         int returnVal = fc.showOpenDialog(MainGUI.getFrame());
@@ -843,22 +847,46 @@ public class MainGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_saveAsMenuButtonActionPerformed
     
     private void saveMemoryButtonActionPreformed(java.awt.event.ActionEvent evt) {
-        Emulator.stop();
+        bca.stopEmulator();
     	JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
-        int returnVal = fc.showOpenDialog(MainGUI.getFrame());
+        int returnVal = fc.showSaveDialog(MainGUI.getFrame());
         if (returnVal == JFileChooser.FILES_ONLY) {
             FileUtils.saveByteArrayToFileSafe(EmulatorMemory.getMemory(), fc.getSelectedFile());
         }
     }
     
     private void loadMemoryButtonActionPreformed(java.awt.event.ActionEvent evt) {
+        bca.onStopButton(evt);
     	JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
         int returnVal = fc.showOpenDialog(MainGUI.getFrame());
-        if (returnVal == JFileChooser.FILES_ONLY) {
-            EmulatorMemory.setMemory(FileUtils.loadFileAsByteArraySafe(fc.getSelectedFile()));
+        //if (returnVal == JFileChooser.FILES_ONLY) {
+        File selected = fc.getSelectedFile();
+
+        if(returnVal == JFileChooser.CANCEL_OPTION){
+            return;
         }
-        Emulator.stop();
-        //refreshAll();
+
+        if(selected == null || !selected.exists()){
+            LOGGER.log(Level.WARNING, "Cannot load memory chosen file does not exist");
+            return;
+        }
+        if(selected.isDirectory()) {
+            LOGGER.log(Level.WARNING, "Cannot load memory chosen file does not exist");
+            return;
+        }
+        if(!selected.canWrite()){
+            LOGGER.log(Level.WARNING, "Cannot load memory chosen file is read only");
+            return;
+        }
+        byte[] data;
+        try{
+            data = Files.toByteArray(selected);
+        }catch (Exception e){
+            LOGGER.log(Level.SEVERE, "Cannot load memory", e);
+            return;
+        }
+        bca.setEmulatorMemory(data);
+        bca.resetEmulator();
     }
 
     private void newMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newMenuButtonActionPerformed
@@ -892,7 +920,8 @@ public class MainGUI extends javax.swing.JFrame {
             return;
         }
         File chosenFile = fc.getSelectedFile();
-        PluginLoader.loadPlugin(chosenFile);
+        throw new RuntimeException("This stopped being a thing a while ago");
+        //BasePluginLoader.loadPlugin(chosenFile);
     }//GEN-LAST:event_loadPluginJMenuItemActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -7,6 +7,7 @@ package org.parker.mips.log;
 
 
 import org.parker.mips.assembler.util.AssemblerLevel;
+import org.parker.mips.core.SystemPreferences;
 import org.parker.mips.preferences.Preference;
 import org.parker.mips.preferences.Preferences;
 import org.parker.mips.architectures.mips.emulator.exceptions.RunTimeLevel;
@@ -28,8 +29,6 @@ import java.util.logging.*;
  * @author parke
  */
 public class LogPanel extends javax.swing.JPanel {
-
-    private final static Preferences loggerPrefs = Preferences.ROOT_NODE.getNode("system/logger");
 
     private final static Logger LOGGER = Logger.getLogger(LogPanel.class.getName());
 
@@ -165,41 +164,41 @@ public class LogPanel extends javax.swing.JPanel {
         static{
 
             try{
-                showStackTrace = loggerPrefs.getRawPreference("showStackTrace", false);
-                logSystemCallMessages = loggerPrefs.getRawPreference("logSystemCallMessages", true);
-                showCallerClass = loggerPrefs.getRawPreference("showCallerClass", false);
-                showCallerMethod = loggerPrefs.getRawPreference("showCallerMethod", false);
+                showStackTrace = SystemPreferences.showStackTrace;
+                logSystemCallMessages = SystemPreferences.logSystemCallMessages;
+                showCallerClass = SystemPreferences.showCallerClass;
+                showCallerMethod = SystemPreferences.showCallerMethod;
             }catch(Exception e){
               LOGGER.log(Level.SEVERE, "Failed to get Logger Preferences", e);
             }
 
             try {
-                loggerPrefs.getRawPreference("systemLogLevel", "INFO").addObserver((o, v) -> {
+                SystemPreferences.systemLogLevel.addObserver((o, v) -> {
                     systemLevel = Level.parse((String) v);
                 });
-                loggerPrefs.getRawPreference("assemblerLogLevel", "ASSEMBLER_MESSAGE").addObserver((o, v) -> {
+                SystemPreferences.assemblerLogLevel.addObserver((o, v) -> {
                     assemblerLevel = Level.parse((String) v);
                 });
-                loggerPrefs.getRawPreference("runtimeLogLevel", "RUN_TIME_MESSAGE").addObserver((o, v) -> {
+                SystemPreferences.runtimeLogLevel.addObserver((o, v) -> {
                     runtimeLevel = Level.parse((String) v);
                 });
             }catch(Exception e){
                 LOGGER.log(Level.SEVERE, "Failed to add Observers to logPreferences", e);
             }
             try {
-                systemLevel = Level.parse((String) loggerPrefs.getPreference("systemLogLevel", "INFO"));
+                systemLevel = Level.parse(SystemPreferences.systemLogLevel.val());
             }catch(Exception e){
                 systemLevel = Level.INFO;
                 LOGGER.log(Level.SEVERE, "Failed to load systemLevel from Preferences defaulting to level INFO",e);
             }
             try {
-                assemblerLevel = Level.parse((String) loggerPrefs.getPreference("assemblerLogLevel", "ASSEMBLER_MESSAGE"));
+                assemblerLevel = Level.parse(SystemPreferences.assemblerLogLevel.val());
             }catch (Exception e){
                 assemblerLevel = AssemblerLevel.ASSEMBLER_MESSAGE;
                 LOGGER.log(Level.SEVERE, "Failed to load assemblerLevel from Preferences defaulting to level ASSEMBLER_MESSAGE",e);
             }
             try {
-                runtimeLevel = Level.parse((String) loggerPrefs.getPreference("runtimeLogLevel", "RUN_TIME_MESSAGE"));
+                runtimeLevel = Level.parse(SystemPreferences.runtimeLogLevel.val());
             }catch(Exception e){
                 runtimeLevel = RunTimeLevel.RUN_TIME_MESSAGE;
                 LOGGER.log(Level.SEVERE, "Failed to load runtimeLevel from Preferences defaulting to level RUN_TIME_MESSAGE",e);
@@ -209,11 +208,10 @@ public class LogPanel extends javax.swing.JPanel {
         @Override
         public void publish(LogRecord record) {
 
-            if (loggerPrefs == null ||
-                    showStackTrace == null ||
-                    logSystemCallMessages == null ||
-                    showCallerMethod == null ||
-                    showCallerClass == null) {
+            if (showStackTrace == null ||
+                logSystemCallMessages == null ||
+                showCallerMethod == null ||
+                showCallerClass == null) {
                 return;
             }
 

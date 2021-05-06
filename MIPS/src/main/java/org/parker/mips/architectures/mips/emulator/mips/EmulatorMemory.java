@@ -5,6 +5,7 @@
  */
 package org.parker.mips.architectures.mips.emulator.mips;
 
+import org.parker.mips.architectures.mips.MipsArchitecture;
 import org.parker.mips.architectures.mips.emulator.exceptions.RunTimeMemoryException;
 import org.parker.mips.preferences.Preference;
 import org.parker.mips.preferences.Preferences;
@@ -22,9 +23,7 @@ public class EmulatorMemory {
 
     private static final Logger LOGGER = Logger.getLogger(EmulatorMemory.class.getName());
 
-    private static final Preference<Boolean> adaptiveMemory = Preferences.ROOT_NODE.getNode("system/emulator/runtime").getRawPreference("adaptiveMemory", true);
-
-    private static final boolean bigEndian = true;
+    private static final boolean bigEndian = false;
 
     public static void setMemory(byte[] memory) {
         if (memory == null) {
@@ -32,7 +31,7 @@ public class EmulatorMemory {
         } else {
             EmulatorMemory.savedMemory = memory;
         }
-        reloadMemory();
+        reload();
     }
 
     public static byte[] getMemory() {
@@ -85,7 +84,7 @@ public class EmulatorMemory {
         int mem2 = 0xCD;
         int mem1 = 0xCD;
         if (index >= 0 && memory.length > index + 3){
-            if(bigEndianness) {
+            if(!bigEndianness) {
                 mem4 = EmulatorMemory.memory[index] & 0xFF;
                 mem3 = EmulatorMemory.memory[index + 1] & 0xFF;
                 mem2 = EmulatorMemory.memory[index + 2] & 0xFF;
@@ -110,11 +109,11 @@ public class EmulatorMemory {
         int mem2 = 0xCD;
         if (index >= 0 && memory.length > index + 1){
             if(bigEndianness) {
-                mem2 = ((int) EmulatorMemory.memory[index]);
+                mem2 = ((int) EmulatorMemory.memory[index]) & 0xFF;
                 mem1 = ((int) EmulatorMemory.memory[index + 1]) & 0xFF;
             }else{
                 mem2 = ((int) EmulatorMemory.memory[index + 1]) & 0xFF;
-                mem1 = ((int) EmulatorMemory.memory[index]);
+                mem1 = ((int) EmulatorMemory.memory[index]) & 0xFF;
             }
         }
         return mem1 | mem2 << 8;
@@ -132,9 +131,9 @@ public class EmulatorMemory {
 
     public static boolean setWord(int index, int val) {
         if ((index & 3) != 0) {
-            throw new RunTimeMemoryException("setWord must be aligned to 4 error at index:" + index);
+            throw new RunTimeMemoryException("setWord must be alligned to 4 error at index:" + index);
         }
-        if (index + 3 > EmulatorMemory.memory.length || index < 0) {
+        if (index + 3 > EmulatorMemory.memory.length || index < -1) {
             memoryOutOfBoundsEvent(index);
             return false;
         } else {
@@ -155,9 +154,9 @@ public class EmulatorMemory {
 
     public static boolean setHalfWord(int index, int val) {
         if ((index & 1) != 0) {
-            throw new RunTimeMemoryException("setHalfWord must be aligned to 2 error at index:" + index);
+            throw new RunTimeMemoryException("setHalfWord must be alligned to 2 error at index:" + index);
         }
-        if (index + 1 > EmulatorMemory.memory.length || index < 0) {
+        if (index + 1 > EmulatorMemory.memory.length || index < -1) {
             Emulator.stop();
             memoryOutOfBoundsEvent(index);
             return false;
@@ -174,7 +173,7 @@ public class EmulatorMemory {
     }
 
     public static boolean setByte(int index, int val) {
-        if (index > EmulatorMemory.memory.length - 1 || index < 0) {
+        if (index > EmulatorMemory.memory.length - 1 || index < -1) {
             Emulator.stop();
             memoryOutOfBoundsEvent(index);
             return false;
@@ -228,7 +227,7 @@ public class EmulatorMemory {
     }
 
     private static void memoryOutOfBoundsEvent(int currentIndex) {
-        if (adaptiveMemory.val()) {
+        if (MipsArchitecture.adaptiveMemory.val()) {
             resizeMemory(currentIndex);
         } else {
            throw new RunTimeMemoryException("Memory out of bounds at: " + currentIndex);
@@ -254,7 +253,7 @@ public class EmulatorMemory {
         }
     }
 
-    public static void reloadMemory() {
+    public static void reload() {
         EmulatorMemory.memory = EmulatorMemory.savedMemory;
     }
 

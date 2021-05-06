@@ -5,6 +5,7 @@
  */
 package org.parker.mips.architectures.mips.syscall.internal;
 
+import org.parker.mips.architectures.mips.MipsArchitecture;
 import org.parker.mips.architectures.mips.syscall.SystemCallPlugin;
 import org.parker.mips.architectures.mips.syscall.UnloadInternalSystemCallException;
 import org.parker.mips.preferences.Preference;
@@ -17,14 +18,12 @@ import org.parker.mips.preferences.Preferences;
  */
 public class DefaultSystemCalls extends SystemCallPlugin {
 
-    private static final Preference<Boolean> resetProcessorOnTrap0 = Preferences.ROOT_NODE.getNode("system/plugins/systemCalls/Base").getRawPreference("resetProcessorOnTrap0", false);
-
     public DefaultSystemCalls() {
 
         registerSystemCall(new PRSystemCall("SYSTEM_HALT_PROGRAM") {
             @Override
             public void handleSystemCall() {
-                if (resetProcessorOnTrap0.val()) {
+                if (MipsArchitecture.resetProcessorOnTrap0.val()) {
                     resetProcessor();
                 } else {
                     stopProcessor();

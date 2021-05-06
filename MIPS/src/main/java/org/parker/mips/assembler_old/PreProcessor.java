@@ -5,6 +5,7 @@
  */
 package org.parker.mips.assembler_old;
 
+import org.parker.mips.architectures.mips.MipsArchitecture;
 import org.parker.mips.assembler.util.AssemblerLevel;
 import org.parker.mips.util.FileUtils;
 import org.parker.mips.util.ResourceHandler;
@@ -29,8 +30,6 @@ public class PreProcessor {
     private static ArrayList<Statement> statements;
 
     private static final AssemblerLogger LOGGER = new AssemblerLogger(PreProcessor.class.getName());
-
-    private static final Preferences ppPref = Preferences.ROOT_NODE.getNode("system/assembler");
 
     public static ArrayList<UserLine> loadFile(String filePath, UserLine us) {
         BufferedReader reader;
@@ -180,11 +179,11 @@ public class PreProcessor {
     public static ArrayList<UserLine> preProcess(ArrayList<UserLine> file) {
 
         if (file != null) {
-            if ((Boolean)ppPref.getPreference("includeRegDef", true)) {
+            if (MipsArchitecture.includeRegDef.val()) {
                 file.add(0, new UserLine("#include \"" + ResourceHandler.REG_DEF_HEADER_FILE + "\"", -2));
                 LOGGER.log(AssemblerLevel.ASSEMBLER_MESSAGE,"Included regdef.asm");
             }
-            if ((Boolean)ppPref.getPreference("includeSysCallDef", true)) {
+            if (MipsArchitecture.includeSysCallDef.val()) {
                 file.add(0, new UserLine("#include \"" + ResourceHandler.SYS_CALL_DEF_HEADER_FILE + "\"", -3));
                 LOGGER.log(AssemblerLevel.ASSEMBLER_MESSAGE,"Included syscalldef.asm");
             }
@@ -225,7 +224,7 @@ public class PreProcessor {
             cleanedData.add(currentLine);
 
         }
-        if ((Boolean)ppPref.getPreference("saveCleanedFile", true) && firstLayer) {
+        if (MipsArchitecture.savePreProcessedFile.val() && firstLayer) {
             writeCleanedFile(cleanedData);
         }
 
@@ -246,7 +245,7 @@ public class PreProcessor {
             preProcessedData.addAll(preProcessLine(currentLine)); //preprocesses line and adds resulting line / lines to pre processed file
 
         }
-        if ((Boolean)ppPref.getPreference("savePreProcessedFile", true)) {
+        if (MipsArchitecture.savePreProcessedFile.val()) {
             writePreProcessedFile(preProcessedData);
         }
 

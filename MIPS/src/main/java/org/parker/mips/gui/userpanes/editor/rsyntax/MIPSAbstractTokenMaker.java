@@ -1,8 +1,12 @@
+
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
+
 package org.parker.mips.gui.userpanes.editor.rsyntax;
 
 import org.fife.ui.rsyntaxtextarea.AbstractTokenMaker;
@@ -108,6 +112,9 @@ public class MIPSAbstractTokenMaker extends AbstractTokenMaker {
                             currentTokenType = Token.WHITESPACE;
                             break;
 
+                        case '\\':
+
+
                         case '"':
                             currentTokenType = Token.LITERAL_STRING_DOUBLE_QUOTE;
                             break;
@@ -119,6 +126,20 @@ public class MIPSAbstractTokenMaker extends AbstractTokenMaker {
 
                         case '$':
                             currentTokenType = Token.VARIABLE;
+                            break;
+                        case '0':
+                        case '1':
+                        case '2':
+                        case '3':
+                        case '4':
+                        case '5':
+                        case '6':
+                        case '7':
+                        case '8':
+                        case '9':
+                            if(currentTokenType == Token.WHITESPACE){
+                                currentTokenType = Token.LITERAL_NUMBER_DECIMAL_INT;
+                            }
                             break;
 
                         default:

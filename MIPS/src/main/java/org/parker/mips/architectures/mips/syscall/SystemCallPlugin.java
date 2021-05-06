@@ -9,8 +9,8 @@ import org.parker.mips.architectures.mips.emulator.mips.EmulatorMemory;
 import org.parker.mips.util.FileUtils;
 import org.parker.mips.gui.MainGUI;
 import org.parker.mips.gui.userpanes.editor.rsyntax.FormattedTextEditor;
-import org.parker.mips.plugin.PluginBase;
-import org.parker.mips.plugin.PluginClassLoader;
+import org.parker.mips.plugin.base.PluginBase;
+import org.parker.mips.plugin.base.PluginClassLoader;
 import org.parker.mips.architectures.mips.emulator.mips.Emulator;
 import org.parker.mips.architectures.mips.emulator.mips.Registers;
 
@@ -35,7 +35,7 @@ public abstract class SystemCallPlugin extends PluginBase {
     private final SystemCall[] systemCalls;
     private final SystemCall.SystemCallData[] systemCallData;
 
-    private ArrayList<Node<ActionListener>> reigsteredFrameListeners = null;
+    private ArrayList<Node<ActionListener>> registeredFrameListeners = null;
     private ArrayList<Node<ActionListener>> registeredInternalExamples = null;
     private ArrayList<Node<ActionListener>> registeredGeneralListeners = null;
 
@@ -235,7 +235,7 @@ public abstract class SystemCallPlugin extends PluginBase {
      * @return
      */
     protected final boolean registerFrameListeners(Node<ActionListener> data) {
-        this.reigsteredFrameListeners = data.getChildernAndDestroyParent();
+        this.registeredFrameListeners = data.getChildernAndDestroyParent();
         return true;
     }
 
@@ -255,7 +255,7 @@ public abstract class SystemCallPlugin extends PluginBase {
     }
 
     public final ArrayList<Node<ActionListener>> getFrameListeners() {
-        return this.reigsteredFrameListeners;
+        return this.registeredFrameListeners;
     }
 
     public final ArrayList<Node<ActionListener>> getGeneralListeners() {

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.plugin;
+package org.parker.mips.plugin.base;
 
 import org.parker.mips.plugin.exceptions.InvalidDescriptionException;
 import org.yaml.snakeyaml.Yaml;
@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 /**
- *
  * @author parke
  */
 public class PluginDescription {
@@ -32,11 +31,24 @@ public class PluginDescription {
     public PluginDescription(Map<String, Object> map) throws InvalidDescriptionException {
         try {
             this.NAME = map.get("name").toString();
+        } catch (Exception e) {
+            throw new InvalidDescriptionException("Cannot load plugin name");
+        }
+        try {
             this.MAIN = map.get("main").toString();
+        } catch (Exception e) {
+            throw new InvalidDescriptionException("Cannot load plugin main class path");
+        }
+        try {
             this.VERSION = map.get("version").toString();
+        } catch (Exception e) {
+            throw new InvalidDescriptionException("Cannot load plugin version");
+        }
+
+        try {
             this.DESCRIPTION = map.get("description").toString();
         } catch (Exception e) {
-            throw new InvalidDescriptionException("Cannot load base plugin description");
+            throw new InvalidDescriptionException("Cannot load plugin description");
         }
 
         String temp;

@@ -11,6 +11,7 @@ import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.folding.FoldParserManager;
 import org.fife.ui.rtextarea.RTextScrollPane;
+import org.parker.mips.core.SystemPreferences;
 import org.parker.mips.gui.userpanes.editor.TextEditor;
 import org.parker.mips.util.FileUtils;
 import org.parker.mips.util.ResourceHandler;
@@ -39,7 +40,7 @@ import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
 public class FormattedTextEditor extends TextEditor {
 
     private static final Logger LOGGER = Logger.getLogger(FormattedTextEditor.class.getName());
-    private static final Preferences themePrefs = Preferences.ROOT_NODE.getNode("system/theme");
+    //private static final Preferences themePrefs = Preferences.ROOT_NODE.getNode("system/theme");
 
     private static final DefaultHighlighter.DefaultHighlightPainter errorHighlight = new DefaultHighlighter.DefaultHighlightPainter(new Color(255,0,0,128));
 
@@ -134,24 +135,20 @@ public class FormattedTextEditor extends TextEditor {
         this.setLayout(new BorderLayout());
         this.add(scrollPane, BorderLayout.CENTER);
 
-        Preference<String> currentEditorTheme = themePrefs.getRawPreference("currentEditorTheme", "Dark");
-        Preference<SerializableFont> currentEditorFont = themePrefs.getRawPreference("currentEditorFont", new SerializableFont("Segoe UI", 0, 15));
-
-
-        currentEditorTheme.addLikedObserver(this, (o, arg) -> {
+        SystemPreferences.currentEditorTheme.addLikedObserver(this, (o, arg) -> {
             if (textArea != null) {
-                FormattedTextEditor.this.setTheme(currentEditorTheme.val());
-                FormattedTextEditor.this.setAllFont(currentEditorFont.val().toFont());
+                FormattedTextEditor.this.setTheme(SystemPreferences.currentEditorTheme.val());
+                FormattedTextEditor.this.setAllFont(SystemPreferences.currentEditorFont.val().toFont());
             }
         });
-        setTheme(currentEditorTheme.val());
+        setTheme(SystemPreferences.currentEditorTheme.val());
 
-        currentEditorFont.addLikedObserver(this, (o, arg) -> {
+        SystemPreferences.currentEditorFont.addLikedObserver(this, (o, arg) -> {
             if (textArea != null) {
-                FormattedTextEditor.this.setAllFont(currentEditorFont.val().toFont());
+                FormattedTextEditor.this.setAllFont(SystemPreferences.currentEditorFont.val().toFont());
             }
         });
-        setAllFont(currentEditorFont.val().toFont());
+        setAllFont(SystemPreferences.currentEditorFont.val().toFont());
         java.util.prefs.Preferences asd = java.util.prefs.Preferences.systemNodeForPackage(this.getClass());
     }
 

@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.parker.mips.plugin;
+package org.parker.mips.plugin.base;
 
+import org.parker.mips.architectures.BaseComputerArchitecture;
 import org.parker.mips.core.MIPS;
 import org.parker.mips.plugin.exceptions.InvalidDescriptionException;
 import org.parker.mips.plugin.exceptions.InvalidPluginException;
@@ -15,6 +16,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Collections;
 import java.util.Map;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
@@ -31,15 +33,11 @@ public class PluginClassLoader extends URLClassLoader {
     public final File FILE;
     public final Plugin plugin;
 
-    public PluginClassLoader(final File file, final Map<String, Object> yaml, ClassLoader parent) throws MalformedURLException, InvalidPluginException, InvalidDescriptionException {
-        super(new URL[]{file.toURI().toURL()}, Thread.currentThread().getContextClassLoader());
+    public PluginClassLoader(final File file, final String yamlPath, final Map<String, Object> yaml, PluginDescription description, ClassLoader parent) throws InvalidPluginException, InvalidDescriptionException, MalformedURLException {
+        super(new URL[]{file.toURI().toURL()}, parent);
 
-        PLUGIN_YAML = yaml;
-        try {
-            this.DESCRIPTION = new PluginDescription(yaml);
-        } catch (Exception e) {
-            throw new InvalidDescriptionException("Could not load some part of plugin description from: " + file.getAbsolutePath());
-        }
+        this.PLUGIN_YAML = Collections.unmodifiableMap(yaml);
+        this.DESCRIPTION = description;
         this.FILE = file;
 
         try {
@@ -48,33 +46,23 @@ public class PluginClassLoader extends URLClassLoader {
                 if (file.getAbsolutePath().equals(new File(MIPS.JAR_PATH).getAbsolutePath())) {
                     jarClass = this.findClass(DESCRIPTION.MAIN);
                 } else {
-                    jarClass = Class.forName(DESCRIPTION.MAIN, true, this);//Class.forName(description.MAIN, true, this);//Class.forName(description.MAIN, true, this);F
+                    jarClass = Class.forName(DESCRIPTION.MAIN, true, this);
                 }
             } catch (ClassNotFoundException ex) {
                 throw new InvalidPluginException("Cannot find main class '" + DESCRIPTION.MAIN + "'", ex);
             }
-
             Class<? extends Plugin> pluginClass;
             try {
                 pluginClass = jarClass.asSubclass(Plugin.class);
             } catch (ClassCastException ex) {
-                throw new InvalidPluginException("main class `" + DESCRIPTION.MAIN + "' does not extend JavaPlugin", ex);
+                throw new InvalidPluginException("main class `" + DESCRIPTION.MAIN + "' does not extend " + Plugin.class.getName(), ex);
             }
 
             plugin = pluginClass.newInstance();
         } catch (IllegalAccessException ex) {
-            throw new InvalidPluginException("No Valid public constructor", ex);
+            throw new InvalidPluginException("No Valid public constructor for plugin: " + file.getAbsolutePath() + ":->" + yamlPath, ex);
         } catch (InstantiationException ex) {
-            throw new InvalidPluginException("Abnormal plugin type", ex);
-        }
-    }
-
-    @Override
-    public Class<?> loadClass(String string) throws ClassNotFoundException {
-        if (string.startsWith(DESCRIPTION.MAIN)) {
-            return this.findClass(string);
-        } else {
-            return super.loadClass(string);
+            throw new InvalidPluginException("Abnormal plugin type: " + file.getAbsolutePath() + ":->" + yamlPath, ex);
         }
     }
 
@@ -108,11 +96,21 @@ public class PluginClassLoader extends URLClassLoader {
     }
 
     @Override
-    public Class<?> loadClass(String string, boolean bool) throws ClassNotFoundException {
-        if (string.startsWith(DESCRIPTION.MAIN)) {
-            return this.findClass(string);
-        } else {
-            return super.loadClass(string, bool);
+    public Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+        Class<?> c = findLoadedClass(name);
+
+        if(c == null){
+            if (name.startsWith(DESCRIPTION.MAIN)) { //this is the only way i could get it to work with internal lambda funcitons
+                c = this.findClass(name);
+            } else {
+                c = super.loadClass(name, resolve);
+            }
         }
+        if(resolve){
+            resolveClass(c);
+        }
+        return c;
     }
+
+
 }

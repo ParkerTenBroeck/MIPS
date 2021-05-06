@@ -12,6 +12,7 @@ import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
 import com.formdev.flatlaf.extras.FlatInspector;
 import com.formdev.flatlaf.util.StringUtils;
 import com.formdev.flatlaf.util.SystemInfo;
+import org.parker.mips.core.SystemPreferences;
 import org.parker.mips.util.ResourceHandler;
 import org.parker.mips.util.SerializableFont;
 import org.parker.mips.preferences.Preference;
@@ -38,7 +39,7 @@ public class ThemeHandler {
 
 	private static boolean asd = false;
 
-	private static final Preferences themePrefs = Preferences.ROOT_NODE.getNode("system/theme");
+	//private static final Preferences themePrefs = Preferences.ROOT_NODE.getNode("system/theme");
 	private static final Logger LOGGER = Logger.getLogger(ThemeHandler.class.toString());
 
 	public static void init() {
@@ -47,13 +48,11 @@ public class ThemeHandler {
 		}
 		FlatInspector.install("ctrl shift alt X");
 
-		Preference<SerializableFont> currentGUIFont = themePrefs.getRawPreference("currentGUIFont", new SerializableFont("Segoe UI", 0, 15));
-
-		currentGUIFont.addObserver((o,v) -> {
+		SystemPreferences.currentGUIFont.addObserver((o, v) -> {
 			UIManager.put("defaultFont", ((SerializableFont)v).toFont());
 			smoothUpdateUI();
 		});
-		UIManager.put("defaultFont", currentGUIFont.val().toFont());// sets to current font
+		UIManager.put("defaultFont", SystemPreferences.currentGUIFont.val().toFont());// sets to current font
 
 //		OptionsHandler.currentGUITheme.addObserver((o,v) -> {
 //
@@ -75,7 +74,7 @@ public class ThemeHandler {
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		JDialog.setDefaultLookAndFeelDecorated(true);
 
-		Preference<String> currentGUITheme = themePrefs.getRawPreference("currentGUITheme", "Flat Dark");
+		Preference<String> currentGUITheme = SystemPreferences.themePrefs.getRawPreference("currentGUITheme", "Flat Dark");
 
 		setTheme(currentGUITheme.val());
 		currentGUITheme.addObserver((o,v) -> {

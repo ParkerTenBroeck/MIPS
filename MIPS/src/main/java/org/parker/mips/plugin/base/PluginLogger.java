@@ -1,6 +1,5 @@
-package org.parker.mips.plugin;
+package org.parker.mips.plugin.base;
 
-import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
