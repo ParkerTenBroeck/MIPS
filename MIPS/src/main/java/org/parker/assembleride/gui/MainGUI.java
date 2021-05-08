@@ -17,7 +17,7 @@ package org.parker.assembleride.gui;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.google.common.io.Files;
-import org.parker.assembleride.architectures.BaseComputerArchitecture;
+import org.parker.assembleride.architecture.BaseComputerArchitecture;
 import org.parker.mips.architecture.MipsArchitecture;
 import org.parker.mips.architecture.emulator.mips.EmulatorMemory;
 import org.parker.mips.architecture.gui.MipsEmulatorState;

@@ -17,7 +17,7 @@ package org.parker.assembleride.gui;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.extras.components.FlatTabbedPane;
-import org.parker.assembleride.architectures.BaseComputerArchitecture;
+import org.parker.assembleride.architecture.BaseComputerArchitecture;
 import org.parker.mips.architecture.MipsArchitecture;
 import org.parker.assembleride.gui.components.VerticalJLabel;
 import org.parker.assembleride.gui.theme.ThemeHandler;

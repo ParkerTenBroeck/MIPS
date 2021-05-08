@@ -15,7 +15,7 @@
  */
 package org.parker.assembleride.core;
 
-import org.parker.assembleride.architectures.ArchitecturePluginHandler;
+import org.parker.assembleride.architecture.ArchitecturePluginHandler;
 import org.parker.assembleride.gui.theme.ThemeHandler;
 import org.parker.assembleride.preferences.Preferences;
 import org.parker.assembleride.util.ResourceHandler;
@@ -27,10 +27,7 @@ import java.util.logging.Logger;
 
 import static org.parker.assembleride.util.UpdateHandler.checkForUpdates;
 
-/**
- *
- * @author parke
- */
+
 public class MIPS {
 
     public static final String VERSION = "0.9.8.2.3";

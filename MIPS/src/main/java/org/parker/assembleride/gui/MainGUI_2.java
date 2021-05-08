@@ -19,7 +19,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import org.parker.assembleride.core.MIPS;
-import org.parker.assembleride.architectures.BaseComputerArchitecture;
+import org.parker.assembleride.architecture.BaseComputerArchitecture;
 import org.parker.assembleride.gui.components.FlatMatteBorder;
 import org.parker.assembleride.gui.components.FlatZeroWidthSplitPane;
 import org.parker.assembleride.gui.userpanes.editor.rsyntax.FormattedTextEditor;

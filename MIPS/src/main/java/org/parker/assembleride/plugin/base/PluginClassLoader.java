@@ -110,7 +110,11 @@ public class PluginClassLoader extends URLClassLoader {
 
         if(c == null){
             if (name.startsWith(DESCRIPTION.MAIN)) { //this is the only way i could get it to work with internal lambda funcitons
-                c = this.findClass(name);
+                try {
+                    c = this.findClass(name);
+                }catch (NoClassDefFoundError e){
+                    throw new ClassNotFoundException("Class defined in plugin.yml does not exist", e);
+                }
             } else {
                 c = super.loadClass(name, resolve);
             }

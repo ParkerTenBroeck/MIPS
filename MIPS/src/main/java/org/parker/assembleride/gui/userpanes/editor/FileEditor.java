@@ -15,7 +15,7 @@
  */
 package org.parker.assembleride.gui.userpanes.editor;
 
-import org.parker.assembleride.architectures.BaseComputerArchitecture;
+import org.parker.assembleride.architecture.BaseComputerArchitecture;
 import org.parker.assembleride.util.FileUtils;
 import org.parker.assembleride.util.ResourceHandler;
 import org.parker.assembleride.gui.UserPaneTabbedPane;

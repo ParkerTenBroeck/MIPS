@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package org.parker.assembleride.architectures;
+package org.parker.assembleride.architecture;
 
 
 import org.parker.assembleride.core.MIPS;
@@ -36,7 +36,7 @@ public class ArchitecturePluginHandler {
         }
         ComputerArchitecture arcPlugin;
         try {
-            arcPlugin = ArchitecturePluginLoader.loadPluginS(new File(MIPS.JAR_PATH), "/org/parker/mips/architectures/mips/plugin.yml");
+            arcPlugin = ArchitecturePluginLoader.loadPluginS(new File(MIPS.JAR_PATH), "/org/parker/mips/architecture/plugin.yml");
         } catch (Exception e){
             LOGGER.log(Level.SEVERE, "Failed to load Architecture Plugin", e);
             return;

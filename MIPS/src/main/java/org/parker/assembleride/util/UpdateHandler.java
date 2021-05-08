@@ -18,7 +18,7 @@ package org.parker.assembleride.util;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.parker.assembleride.core.MIPS;
-import org.parker.assembleride.architectures.ArchitecturePluginHandler;
+import org.parker.assembleride.architecture.ArchitecturePluginHandler;
 
 import java.io.IOException;
 import java.io.InputStream;

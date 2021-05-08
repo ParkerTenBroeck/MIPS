@@ -13,16 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package org.parker.assembleride.architectures;
+package org.parker.assembleride.architecture;
 
-import java.io.File;
-import java.io.Serializable;
-import java.util.List;
-
-public class ProjectInformation implements Serializable {
-    public File projectDIR;
-    public boolean useDefaults;
-    public boolean readOnly;
-    public List<File> excludedFiles;
-    public List<File> includedFiles;
+public class UnableToExitException extends Exception{
 }

@@ -15,8 +15,8 @@
  */
 package org.parker.assembleride.plugin;
 
-import org.parker.assembleride.architectures.ArchitecturePluginHandler;
-import org.parker.assembleride.architectures.ComputerArchitecture;
+import org.parker.assembleride.architecture.ArchitecturePluginHandler;
+import org.parker.assembleride.architecture.ComputerArchitecture;
 import org.parker.assembleride.plugin.base.BasePluginLoader;
 import org.parker.assembleride.plugin.base.Plugin;
 import org.parker.assembleride.plugin.base.PluginClassLoader;

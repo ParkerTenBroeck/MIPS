@@ -15,7 +15,7 @@
  */
 package org.parker.mips.architecture;
 
-import org.parker.assembleride.architectures.BaseComputerArchitecture;
+import org.parker.assembleride.architecture.BaseComputerArchitecture;
 import org.parker.mips.architecture.assembler.MipsAssembler;
 import org.parker.mips.architecture.disassembler.MipsDisassembler;
 import org.parker.mips.architecture.emulator.mips.Emulator;
@@ -33,6 +33,8 @@ import org.parker.retargetableassembler.util.PagedMemory;
 import org.parker.assembleride.util.ResourceHandler;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -78,12 +80,17 @@ public class MipsArchitecture extends BaseComputerArchitecture {
 
     public void loadDefaultSystemCallPlugins() {
         try {
-            try {
-                SystemCallPluginHandler.registerSystemCallPlugin(SystemCallPluginLoader.loadInternalPluginS("/org/parker/mips/internal/syscall/default.yml"));
-                SystemCallPluginHandler.registerSystemCallPlugin(SystemCallPluginLoader.loadInternalPluginS("/org/parker/mips/internal/syscall/screen.yml"));
-                SystemCallPluginHandler.registerSystemCallPlugin(SystemCallPluginLoader.loadInternalPluginS("/org/parker/mips/internal/syscall/userio.yml"));
-            }catch(Exception e){
-                LOGGER.log(Level.SEVERE, "Failed to load an internal Plugin", e);
+            List<String> internalPlugins = new ArrayList<>();
+            internalPlugins.add("/org/parker/mips/internal/syscall/default.yml");
+            internalPlugins.add("/org/parker/mips/internal/syscall/screen.yml");
+            internalPlugins.add("/org/parker/mips/internal/syscall/userio.yml");
+
+            for(String yamlPath: internalPlugins) {
+                try {
+                    SystemCallPluginHandler.registerSystemCallPlugin(SystemCallPluginLoader.loadInternalPluginS(yamlPath));
+                } catch (Exception e) {
+                    LOGGER.log(Level.SEVERE, "Failed to load an internal Plugin", e);
+                }
             }
 
             File file = new File(ResourceHandler.SYS_CALLS_PLUGIN_PATH);
