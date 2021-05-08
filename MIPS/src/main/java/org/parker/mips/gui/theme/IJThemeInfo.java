@@ -1,16 +1,4 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package org.parker.mips.gui.theme;
-
-/**
- *
- * @author parke
- */
-
-/*
  * Copyright 2019 FormDev Software GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,6 +13,8 @@ package org.parker.mips.gui.theme;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package org.parker.mips.gui.theme;
 
 import java.io.File;
 

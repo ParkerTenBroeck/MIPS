@@ -1,6 +1,6 @@
 package org.parker.mips.architectures.mips.assembler.instructions.formatter;
 
-import org.parker.mips.architectures.mips.assembler.exceptions.FieldOverflow;
+import org.parker.mips.assembler.exception.FieldOverflow;
 import org.parker.mips.assembler.base.assembler.BaseAssembler;
 import org.parker.mips.assembler.instruction.InstructionFormatter;
 
