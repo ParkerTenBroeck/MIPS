@@ -16,7 +16,7 @@
 package org.parker.mips.architecture.disassembler;
 
 import org.parker.mips.architecture.emulator.mips.EmulatorMemory;
-import org.parker.assembleride.gui.userpanes.editor.rsyntax.FormattedTextEditor;
+import org.parker.assembleride.gui.docking.userpanes.editor.rsyntax.FormattedTextEditor;
 import org.parker.retargetableassembler.util.Memory;
 
 public class MipsDisassembler {

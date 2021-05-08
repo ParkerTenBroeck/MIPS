@@ -15,10 +15,10 @@
  */
 package org.parker.mips.architecture.syscall;
 
+import org.parker.assembleride.gui.MainGUI_old;
 import org.parker.mips.architecture.emulator.mips.EmulatorMemory;
 import org.parker.assembleride.util.FileUtils;
-import org.parker.assembleride.gui.MainGUI;
-import org.parker.assembleride.gui.userpanes.editor.rsyntax.FormattedTextEditor;
+import org.parker.assembleride.gui.docking.userpanes.editor.rsyntax.FormattedTextEditor;
 import org.parker.assembleride.plugin.base.PluginBase;
 import org.parker.assembleride.plugin.base.PluginClassLoader;
 import org.parker.mips.architecture.emulator.mips.Emulator;
@@ -313,12 +313,12 @@ public abstract class SystemCallPlugin extends PluginBase {
      */
     protected final boolean throwBreakPoint() {
 
-        if (MainGUI.canBreak()) {
+        if (MainGUI_old.canBreak()) {
             stopProcessor();
             LOGGER.log(Level.INFO, "Program has reached a breakpoint");
         }
 
-        return MainGUI.canBreak();
+        return MainGUI_old.canBreak();
     }
 
     /**

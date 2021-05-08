@@ -16,7 +16,7 @@
 package org.parker.assembleride.util;
 
 import org.parker.assembleride.core.MIPS;
-import org.parker.assembleride.gui.MainGUI;
+import org.parker.assembleride.gui.MainGUI_old;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
@@ -109,7 +109,7 @@ public class ResourceHandler {
     }
 
     public static int openFileChooser(JFileChooser fc) {
-        return fc.showOpenDialog(MainGUI.getFrame());
+        return fc.showOpenDialog(MainGUI_old.getFrame());
     }
 
     private static boolean createDirectory(String path) {

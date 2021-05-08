@@ -13,14 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package org.parker.assembleride.gui.userpanes.editor;
+package org.parker.assembleride.gui.docking.userpanes.editor;
 
 import org.parker.assembleride.architecture.BaseComputerArchitecture;
+import org.parker.assembleride.gui.MainGUI_old;
 import org.parker.assembleride.util.FileUtils;
 import org.parker.assembleride.util.ResourceHandler;
-import org.parker.assembleride.gui.UserPaneTabbedPane;
-import org.parker.assembleride.gui.MainGUI;
-import org.parker.assembleride.gui.userpanes.UserPane;
+import org.parker.assembleride.gui.docking.UserPaneTabbedPane;
+import org.parker.assembleride.gui.docking.userpanes.UserPane;
 import org.parker.assembleride.preferences.Preference;
 
 import javax.swing.*;
@@ -137,7 +137,7 @@ public abstract class FileEditor extends UserPane {
             UserPaneTabbedPane.setSelectedUserPane(this);
             EditorHandler.setLastFocused(this);
             JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
-            int returnVal = fc.showOpenDialog(MainGUI.getFrame());
+            int returnVal = fc.showOpenDialog(MainGUI_old.getFrame());
 
             if (returnVal == JFileChooser.FILES_ONLY) {
                 currentFile = fc.getSelectedFile();
@@ -163,7 +163,7 @@ public abstract class FileEditor extends UserPane {
         UserPaneTabbedPane.setSelectedUserPane(this);
         EditorHandler.setLastFocused(this);
         JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
-        int returnVal = fc.showOpenDialog(MainGUI.getFrame());
+        int returnVal = fc.showOpenDialog(MainGUI_old.getFrame());
 
         if (returnVal == JFileChooser.FILES_ONLY) {
             currentFile = fc.getSelectedFile();

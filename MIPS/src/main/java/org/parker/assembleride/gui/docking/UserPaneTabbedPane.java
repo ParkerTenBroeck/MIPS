@@ -13,12 +13,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package org.parker.assembleride.gui;
+package org.parker.assembleride.gui.docking;
 
 
-import org.parker.assembleride.gui.userpanes.UserPane;
-import org.parker.assembleride.gui.userpanes.editor.FileEditor;
-import org.parker.assembleride.gui.userpanes.editor.EditorHandler;
+import org.parker.assembleride.gui.docking.userpanes.UserPane;
+import org.parker.assembleride.gui.docking.userpanes.editor.FileEditor;
+import org.parker.assembleride.gui.docking.userpanes.editor.EditorHandler;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

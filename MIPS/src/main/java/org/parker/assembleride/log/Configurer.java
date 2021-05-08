@@ -31,7 +31,7 @@ import java.util.zip.ZipOutputStream;
 public class Configurer {
 
     public final static Logger LOGGER = Logger.getLogger(Configurer.class.getName());
-    public final static Logger BASE_LOGGER = Logger.getLogger("org.parker.mips");
+    public final static Logger BASE_LOGGER = Logger.getLogger("org.parker");
 
     private static boolean initt = false;
     public static void init(){

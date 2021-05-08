@@ -5,9 +5,9 @@
  */
 package org.parker.mips.architecture.emulator.mips;
 
+import org.parker.assembleride.gui.MainGUI_old;
 import org.parker.mips.architecture.MipsArchitecture;
 import org.parker.mips.architecture.emulator.exceptions.RunTimeLevel;
-import org.parker.assembleride.gui.MainGUI;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,7 +36,7 @@ public class Emulator implements Runnable {
         if(isRunning){
             LOGGER.log(Level.INFO, "Processor Halted");
             isRunning = false;
-            MainGUI.stopAutoUpdate();
+            MainGUI_old.stopAutoUpdate();
         }
     }
 
@@ -47,7 +47,7 @@ public class Emulator implements Runnable {
         if (MipsArchitecture.reloadMemoryOnReset.val()) {
             EmulatorMemory.reload();
         }
-        MainGUI.refresh();
+        MainGUI_old.refresh();
     }
 
     public static void setDelay(long delay) {

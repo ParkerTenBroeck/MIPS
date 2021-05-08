@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package org.parker.assembleride.gui;
+package org.parker.assembleride.gui.components;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -22,16 +22,9 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author parke
- */
-public class imageFrame extends javax.swing.JFrame {
+public class ImageFrame extends javax.swing.JFrame {
 
-    /**
-     * Creates new form AsciiChart
-     */
-    public imageFrame(String path) {
+    public ImageFrame(String path) {
         initComponents();
 
         try {
@@ -40,7 +33,7 @@ public class imageFrame extends javax.swing.JFrame {
             jLabel1.setIcon(image);
             jPanel1.setPreferredSize(new Dimension(image.getIconWidth(), image.getIconHeight()));
         } catch (IOException ex) {
-            Logger.getLogger(imageFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ImageFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.pack();
         this.show();

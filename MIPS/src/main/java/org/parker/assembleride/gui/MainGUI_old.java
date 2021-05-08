@@ -18,20 +18,21 @@ package org.parker.assembleride.gui;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.google.common.io.Files;
 import org.parker.assembleride.architecture.BaseComputerArchitecture;
-import org.parker.mips.architecture.MipsArchitecture;
+import org.parker.assembleride.gui.components.ImageFrame;
+import org.parker.assembleride.gui.docking.UserPaneTabbedPane;
 import org.parker.mips.architecture.emulator.mips.EmulatorMemory;
 import org.parker.mips.architecture.gui.MipsEmulatorState;
 import org.parker.mips.architecture.gui.SystemCallPluginInfoFrame;
-import org.parker.assembleride.core.MIPS;
-import org.parker.assembleride.core.SystemPreferences;
-import org.parker.assembleride.gui.userpanes.editor.EditorHandler;
-import org.parker.assembleride.gui.userpanes.editor.rsyntax.FormattedTextEditor;
-import org.parker.assembleride.gui.theme.ThemeHandler;
-import org.parker.assembleride.log.LogPanel;
 import org.parker.mips.architecture.syscall.SystemCallPlugin;
 import org.parker.mips.architecture.syscall.SystemCallPlugin.Node;
 import org.parker.mips.architecture.syscall.SystemCallPluginHandler;
 import org.parker.mips.architecture.emulator.mips.Emulator;
+import org.parker.assembleride.core.MIPS;
+import org.parker.assembleride.core.SystemPreferences;
+import org.parker.assembleride.gui.docking.userpanes.editor.EditorHandler;
+import org.parker.assembleride.gui.docking.userpanes.editor.rsyntax.FormattedTextEditor;
+import org.parker.assembleride.gui.theme.ThemeHandler;
+import org.parker.assembleride.log.LogPanel;
 import org.parker.assembleride.util.DesktopBrowser;
 import org.parker.assembleride.util.FileUtils;
 import org.parker.assembleride.util.ResourceHandler;
@@ -55,13 +56,14 @@ import java.util.logging.Logger;
  * @author Parker TenBroeck
  */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
-public class MainGUI extends javax.swing.JFrame {
+@Deprecated
+public class MainGUI_old extends javax.swing.JFrame {
 
     private static boolean autoUpdateRunning;
-    private static MainGUI instance;
+    private static MainGUI_old instance;
     private static BaseComputerArchitecture bca;
 
-    private static final Logger LOGGER = Logger.getLogger(MainGUI.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(MainGUI_old.class.getName());
 
     public static synchronized boolean canBreak() {
         return enableBreak.isSelected();
@@ -69,9 +71,9 @@ public class MainGUI extends javax.swing.JFrame {
 
     @SuppressWarnings("unchecked")
     private static synchronized void startAutoUpdate() {
-        MainGUI.startButton.setSelected(true);
+        MainGUI_old.startButton.setSelected(true);
 
-        MainGUI.autoUpdateRunning = true;
+        MainGUI_old.autoUpdateRunning = true;
 
         if (!SystemPreferences.enableGUIAutoUpdateWhileRunning.val()) {
             return;
@@ -79,7 +81,7 @@ public class MainGUI extends javax.swing.JFrame {
         Thread autoUpdateThread = new Thread(() -> {
 
             while (autoUpdateRunning && SystemPreferences.enableGUIAutoUpdateWhileRunning.val()) {
-                MainGUI.refresh();
+                MainGUI_old.refresh();
                 try {
                     Thread.sleep(SystemPreferences.GUIAutoUpdateRefreshTime.val());
                 } catch (Exception ignored) {
@@ -92,9 +94,9 @@ public class MainGUI extends javax.swing.JFrame {
     }
 
     public static synchronized void stopAutoUpdate() {
-        MainGUI.startButton.setSelected(false);
-        MainGUI.autoUpdateRunning = false;
-        MainGUI.refresh();
+        MainGUI_old.startButton.setSelected(false);
+        MainGUI_old.autoUpdateRunning = false;
+        MainGUI_old.refresh();
     }
 
     public static Component getFrame() {
@@ -103,9 +105,9 @@ public class MainGUI extends javax.swing.JFrame {
 
     public static void refresh() {
         javax.swing.SwingUtilities.invokeLater(() -> {
-            register_GUI1.update();
+            //register_GUI1.update();
             //InstructionMemoryGUI.refresh();
-            InstructionsRan.setText(Long.toString(Emulator.getInstructionsRan()));
+            //InstructionsRan.setText(Long.toString(Emulator.getInstructionsRan()));
             UserPaneTabbedPane.updateOpenUserPanes();
 
             /*
@@ -126,7 +128,7 @@ public class MainGUI extends javax.swing.JFrame {
      * Creates new form Main_GUI
      */
     @SuppressWarnings("null")
-    public MainGUI(BaseComputerArchitecture bca) {
+    public MainGUI_old(BaseComputerArchitecture bca) {
         initComponents();
         this.bca = bca;
 
@@ -147,13 +149,15 @@ public class MainGUI extends javax.swing.JFrame {
 
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        MipsArchitecture.enableBreakPoints.LinkJButton(this, enableBreak);
+        {
+            //MipsArchitecture.enableBreakPoints.LinkJButton(this, enableBreak);
 
-        MipsArchitecture.saveAssemblyInfo.LinkJButton(this, saveAssemblyInformationButton);
-        MipsArchitecture.savePreProcessedFile.LinkJButton(this, savePreProcessedFileButton);
+            //MipsArchitecture.saveAssemblyInfo.LinkJButton(this, saveAssemblyInformationButton);
+            //MipsArchitecture.savePreProcessedFile.LinkJButton(this, savePreProcessedFileButton);
 
-        MipsArchitecture.breakOnRunTimeError.LinkJButton(this, breakProgramOnRTEButton);
-        MipsArchitecture.adaptiveMemory.LinkJButton(this, adaptiveMemoryMenuButton);
+            //MipsArchitecture.breakOnRunTimeError.LinkJButton(this, breakProgramOnRTEButton);
+            //MipsArchitecture.adaptiveMemory.LinkJButton(this, adaptiveMemoryMenuButton);
+        }
 
         SystemPreferences.enableGUIAutoUpdateWhileRunning.LinkJButton(this,enableGUIUpdatingWhileRunningButton);
 
@@ -208,21 +212,23 @@ public class MainGUI extends javax.swing.JFrame {
         try {
 
             ActionListener al = evt -> {
-                Emulator.stop();
-                Emulator.reset();
+                bca.stopEmulator();
+                //Emulator.stop();
+                //Emulator.reset();
                 //if (FileHandler.loadExampleFile(new File(((ThemedJMenuItem) evt.getSource()).getName()))) {
                 //new FormattedTextEditor();
                 File file = new File(((JMenuItem) evt.getSource()).getName());
 
-                new FormattedTextEditor(file);
+                FormattedTextEditor e = new FormattedTextEditor(file);
+
                 //Editor.createEditor(FileUtils.loadFileAsByteArraySafe(file), FileUtils.removeExtension(file.getName()), FormattedTextEditor.class);
-                throw new RuntimeException("eat ass and chew bubblegum");
+                //throw new RuntimeException("eat ass and chew bubblegum");
                 //Assembler.assembleDefault();
                 //}
             };
 
             for (Component comp : Objects.requireNonNull(generateJMenuFromFile(new File(ResourceHandler.EXAMPLES_PATH), al)).getMenuComponents()) {
-                MainGUI.exampleMenu.add(comp);
+                MainGUI_old.exampleMenu.add(comp);
             }
 
         } catch (Exception ignored) {
@@ -844,7 +850,7 @@ public class MainGUI extends javax.swing.JFrame {
 
     private void openMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuButtonActionPerformed
         JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
-        int returnVal = fc.showOpenDialog(MainGUI.getFrame());
+        int returnVal = fc.showOpenDialog(MainGUI_old.getFrame());
 
         if (returnVal != JFileChooser.FILES_AND_DIRECTORIES) {
             File chosenFile = fc.getSelectedFile();
@@ -864,7 +870,7 @@ public class MainGUI extends javax.swing.JFrame {
     private void saveMemoryButtonActionPreformed(java.awt.event.ActionEvent evt) {
         bca.stopEmulator();
     	JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
-        int returnVal = fc.showSaveDialog(MainGUI.getFrame());
+        int returnVal = fc.showSaveDialog(MainGUI_old.getFrame());
         if (returnVal == JFileChooser.FILES_ONLY) {
             FileUtils.saveByteArrayToFileSafe(EmulatorMemory.getMemory(), fc.getSelectedFile());
         }
@@ -873,7 +879,7 @@ public class MainGUI extends javax.swing.JFrame {
     private void loadMemoryButtonActionPreformed(java.awt.event.ActionEvent evt) {
         bca.onStopButton(evt);
     	JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
-        int returnVal = fc.showOpenDialog(MainGUI.getFrame());
+        int returnVal = fc.showOpenDialog(MainGUI_old.getFrame());
         //if (returnVal == JFileChooser.FILES_ONLY) {
         File selected = fc.getSelectedFile();
 
@@ -909,7 +915,7 @@ public class MainGUI extends javax.swing.JFrame {
     }
 
     private void asciiChartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asciiChartButtonActionPerformed
-        new imageFrame("/Images/asciiChart.bmp");
+        new ImageFrame("/Images/asciiChart.bmp");
     }
 
     private void checkForUpdatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkForUpdatesActionPerformed
@@ -930,7 +936,7 @@ public class MainGUI extends javax.swing.JFrame {
 
     private void loadPluginJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadPluginJMenuItemActionPerformed
         JFileChooser fc = new JFileChooser();
-        int returnVal = fc.showOpenDialog(MainGUI.getFrame());
+        int returnVal = fc.showOpenDialog(MainGUI_old.getFrame());
         if (returnVal != 0) {
             return;
         }

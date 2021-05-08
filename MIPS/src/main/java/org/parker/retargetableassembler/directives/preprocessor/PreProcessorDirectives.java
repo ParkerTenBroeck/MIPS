@@ -21,7 +21,6 @@ import org.parker.retargetableassembler.base.preprocessor.IntermediateStatement;
 import org.parker.retargetableassembler.exception.DirectivesError;
 import org.parker.retargetableassembler.util.CompiledExpression;
 import org.parker.retargetableassembler.util.ExpressionCompiler;
-import org.parker.assembleride.util.FileUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -51,7 +50,7 @@ public class PreProcessorDirectives {
 
         File file = new File(path);
         if(!file.exists()){
-            file = new File(s.parentLine.getFile().getParentFile().getAbsolutePath() + FileUtils.FILE_SEPARATOR + path);
+            file = new File(s.parentLine.getFile().getParentFile().getAbsolutePath(), path);
             if(!file.exists()){
                 throw new IllegalArgumentException("File not found");
             }

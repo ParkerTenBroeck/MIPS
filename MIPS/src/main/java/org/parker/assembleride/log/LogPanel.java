@@ -16,6 +16,7 @@
 package org.parker.assembleride.log;
 
 
+import com.formdev.flatlaf.FlatLaf;
 import org.parker.retargetableassembler.util.AssemblerLogLevel;
 import org.parker.assembleride.core.SystemPreferences;
 import org.parker.assembleride.preferences.Preference;
@@ -41,8 +42,36 @@ public class LogPanel extends javax.swing.JPanel {
 
     private final static Logger LOGGER = Logger.getLogger(LogPanel.class.getName());
 
+    private static Color errorTextColor;
+    private static Color warningTextColor;
+    private static Color messageTextColor;
+
 	static {
         LogPanel.initComponents();
+        updateColors();
+    }
+
+    public LogPanel() {
+        initLayout();
+        this.setVisible(true);
+    }
+
+    @Override
+    public void updateUI() {
+        super.updateUI();
+        updateColors();
+    }
+
+    private static void updateColors(){
+        if(FlatLaf.isLafDark()){
+            errorTextColor = new Color(0xC75450);
+            warningTextColor = new Color(0xF0A732);
+            messageTextColor = new Color(0xAFB1B3);
+        }else{
+            errorTextColor = new Color(0xDB5860);
+            warningTextColor = new Color(0xEDA200);
+            messageTextColor = new Color(0x6E6E6E);
+        }
     }
 
     private static void logCustomMessage(String message, SimpleAttributeSet att) {
@@ -78,11 +107,6 @@ public class LogPanel extends javax.swing.JPanel {
         }catch(Exception e){
 
         }
-    }
-
-    public LogPanel() {
-        initLayout();
-        this.setVisible(true);
     }
 
     private void initLayout() {
@@ -254,18 +278,15 @@ public class LogPanel extends javax.swing.JPanel {
 
             if (value == AssemblerLogLevel.ASSEMBLER_MESSAGE.intValue()|| value == RunTimeLevel.RUN_TIME_MESSAGE.intValue()) {
 
-                StyleConstants.setForeground(sas, Color.LIGHT_GRAY);
-                StyleConstants.setBold(sas, false);
+                StyleConstants.setForeground(sas, messageTextColor);
 
             } else if (value == AssemblerLogLevel.ASSEMBLER_WARNING.intValue()|| value == RunTimeLevel.RUN_TIME_WARNING.intValue()) {
 
-                StyleConstants.setForeground(sas, Color.YELLOW);
-                StyleConstants.setBold(sas, false);
+                StyleConstants.setForeground(sas, warningTextColor);
 
             } else if (value == AssemblerLogLevel.ASSEMBLER_ERROR.intValue() || value == RunTimeLevel.RUN_TIME_ERROR.intValue()) {
 
-                StyleConstants.setForeground(sas, Color.RED);
-                StyleConstants.setBold(sas, false);
+                StyleConstants.setForeground(sas, errorTextColor);
                 Throwable tmp = record.getThrown();
                 while(tmp != null) {
                     message += ": " + tmp.getMessage();
@@ -293,18 +314,15 @@ public class LogPanel extends javax.swing.JPanel {
             if (record.getLevel() == Level.INFO) {
 
                 SimpleAttributeSet att = new SimpleAttributeSet();
-                StyleConstants.setForeground(att, Color.LIGHT_GRAY);
-                StyleConstants.setBold(att, false);
+                StyleConstants.setForeground(att, warningTextColor);
 
             } else if (record.getLevel() == Level.WARNING) {
 
-                StyleConstants.setForeground(sas, Color.YELLOW);
-                StyleConstants.setBold(sas, false);
+                StyleConstants.setForeground(sas, warningTextColor);
 
             } else if (record.getLevel() == Level.SEVERE) {
 
-                StyleConstants.setForeground(sas, Color.RED);
-                StyleConstants.setBold(sas, false);
+                StyleConstants.setForeground(sas, errorTextColor);
 
                 if (showStackTrace.val() && record.getThrown() != null) {
                     StringWriter sw = new StringWriter();
@@ -316,6 +334,9 @@ public class LogPanel extends javax.swing.JPanel {
             }
         }
 
+            StyleConstants.setFontFamily(sas, SystemPreferences.currentGUIFont.val().getName());
+            StyleConstants.setFontSize(sas, SystemPreferences.currentGUIFont.val().getSize() + 1);
+            //StyleConstants.setBold(sas, true);
             LogPanel.appendMessageToVirtualConsoleLog(message,sas);
 
             return;

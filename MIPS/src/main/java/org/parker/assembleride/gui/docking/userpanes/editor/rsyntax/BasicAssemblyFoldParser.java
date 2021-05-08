@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package org.parker.assembleride.gui.userpanes.editor.rsyntax;
+package org.parker.assembleride.gui.docking.userpanes.editor.rsyntax;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Token;
@@ -31,13 +31,13 @@ import java.util.List;
  *
  * @author parke
  */
-public class MIPSFoldParser implements FoldParser {
+public class BasicAssemblyFoldParser implements FoldParser {
 
     /**
      * Constructor.
      *
      */
-    public MIPSFoldParser() { 
+    public BasicAssemblyFoldParser() {
     }
 
     /**
@@ -78,6 +78,8 @@ public class MIPSFoldParser implements FoldParser {
                             folds.add(currentFold);
                         }
                         break;
+                    }else if(t.getType() == Token.PREPROCESSOR){
+
                     }
                     t = t.getNextToken();
                 }

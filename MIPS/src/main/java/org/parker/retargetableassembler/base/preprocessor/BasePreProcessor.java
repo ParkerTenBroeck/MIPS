@@ -19,7 +19,6 @@ import org.parker.retargetableassembler.base.assembler.BaseAssembler;
 import org.parker.retargetableassembler.directives.preprocessor.PreProcessorDirectives;
 import org.parker.retargetableassembler.util.Line;
 import org.parker.retargetableassembler.util.AssemblerLogLevel;
-import org.parker.assembleride.util.ResourceHandler;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -54,11 +53,6 @@ public abstract class BasePreProcessor<A extends BaseAssembler> {
         ec = getExpressionCompiler();
         ec.setAssembler(assembler);
         ec.setPreProcessor(this);
-
-        //preprocess(new File(ResourceHandler.REG_DEF_HEADER_FILE));
-        //preDefinedValues.putAll(definedValues);
-        preprocess(new File(ResourceHandler.SYS_CALL_DEF_HEADER_FILE));
-        preDefinedValues.putAll(definedValues);
     }
 
     public List<PreProcessedStatement> preprocess(File file){

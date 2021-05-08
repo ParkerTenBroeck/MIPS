@@ -15,7 +15,7 @@
  */
 package org.parker.assembleride.gui;
 
-import org.parker.mips.architecture.MipsArchitecture;
+import org.parker.assembleride.gui.docking.UserPaneTabbedPane;
 
 import javax.swing.*;
 import java.awt.*;
@@ -137,7 +137,7 @@ public class borderTest {
     private Point dragLocation = new Point();
 
     private void createUIComponents() {
-        test1 = new test(new MipsArchitecture());
+        //test1 = new test(new MipsArchitecture());
 
         //panel1 = new JPanel();
 

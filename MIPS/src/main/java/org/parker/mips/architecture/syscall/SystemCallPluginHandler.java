@@ -15,8 +15,8 @@
  */
 package org.parker.mips.architecture.syscall;
 
+import org.parker.assembleride.gui.MainGUI_old;
 import org.parker.assembleride.util.ResourceHandler;
-import org.parker.assembleride.gui.MainGUI;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -159,7 +159,7 @@ public class SystemCallPluginHandler {
                 } else {
                     LOGGER.log(Level.WARNING, "Unloaded and unregistered: " + plugin.DESCRIPTION.NAME + " With some Errors");
                 }
-                MainGUI.reloadSystemCallPluginLists();
+                MainGUI_old.reloadSystemCallPluginLists();
                 regenerateStandardSysCallHeaderFile();
             } catch(Exception e) {
                 LOGGER.log(Level.SEVERE, "There was an error unloading the plugin", e);

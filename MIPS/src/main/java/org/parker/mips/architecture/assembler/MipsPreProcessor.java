@@ -15,10 +15,12 @@
  */
 package org.parker.mips.architecture.assembler;
 
+import org.parker.assembleride.util.ResourceHandler;
 import org.parker.retargetableassembler.base.preprocessor.BaseExpressionCompiler;
 import org.parker.retargetableassembler.base.preprocessor.BasePreProcessor;
 import org.parker.retargetableassembler.util.ExpressionCompiler;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -29,6 +31,11 @@ public class MipsPreProcessor extends BasePreProcessor<MipsAssembler> {
 
     public MipsPreProcessor(MipsAssembler assembler) {
         super(assembler);
+
+        preprocess(new File(ResourceHandler.REG_DEF_HEADER_FILE));
+        preDefinedValues.putAll(definedValues);
+        preprocess(new File(ResourceHandler.SYS_CALL_DEF_HEADER_FILE));
+        preDefinedValues.putAll(definedValues);
     }
 
     @Override

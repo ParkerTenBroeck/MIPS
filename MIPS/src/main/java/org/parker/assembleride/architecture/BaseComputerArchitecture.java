@@ -15,11 +15,11 @@
  */
 package org.parker.assembleride.architecture;
 
-import org.parker.assembleride.gui.MainGUI;
-import org.parker.assembleride.gui.UserPaneTabbedPane;
-import org.parker.assembleride.gui.userpanes.UserPane;
-import org.parker.assembleride.gui.userpanes.editor.EditorHandler;
-import org.parker.assembleride.gui.userpanes.hexeditor.MemoryEditorUserPane;
+import org.parker.assembleride.gui.MainGUI_old;
+import org.parker.assembleride.gui.docking.UserPaneTabbedPane;
+import org.parker.assembleride.gui.docking.userpanes.UserPane;
+import org.parker.assembleride.gui.docking.userpanes.editor.EditorHandler;
+import org.parker.assembleride.gui.docking.userpanes.hexeditor.MemoryEditorUserPane;
 import org.parker.assembleride.plugin.base.PluginBase;
 import org.parker.assembleride.preferences.Preferences;
 import org.parker.retargetableassembler.util.ByteMemory;
@@ -40,7 +40,7 @@ public abstract class BaseComputerArchitecture extends PluginBase implements Com
 
     protected static final Preferences ROOT_ARC_PREFS;
 
-    private static MainGUI frameInstance;
+    private static MainGUI_old frameInstance;
     private static ProjectInformation projectInformation;
 
     private static final Logger LOGGER = Logger.getLogger(BaseComputerArchitecture.class.getName() + ".MIPS");
@@ -56,7 +56,7 @@ public abstract class BaseComputerArchitecture extends PluginBase implements Com
 
     @Override
     public final JFrame createGUI() {
-        frameInstance = new MainGUI(this);
+        frameInstance = new MainGUI_old(this);
         return frameInstance;
     }
 

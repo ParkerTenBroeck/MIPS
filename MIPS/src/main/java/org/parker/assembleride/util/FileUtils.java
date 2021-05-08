@@ -15,7 +15,7 @@
  */
 package org.parker.assembleride.util;
 
-import org.parker.assembleride.gui.MainGUI;
+import org.parker.assembleride.gui.MainGUI_old;
 
 import javax.swing.*;
 import java.io.*;
@@ -123,7 +123,7 @@ public class FileUtils {
     public static File openUserSelectedFile() {
 
         final JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
-        int returnVal = fc.showOpenDialog(MainGUI.getFrame());
+        int returnVal = fc.showOpenDialog(MainGUI_old.getFrame());
 
         //System.out.println(returnVal);
         if (returnVal != 0) {

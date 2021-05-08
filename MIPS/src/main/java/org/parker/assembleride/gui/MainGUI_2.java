@@ -20,9 +20,9 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import org.parker.assembleride.core.MIPS;
 import org.parker.assembleride.architecture.BaseComputerArchitecture;
-import org.parker.assembleride.gui.components.FlatMatteBorder;
 import org.parker.assembleride.gui.components.FlatZeroWidthSplitPane;
-import org.parker.assembleride.gui.userpanes.editor.rsyntax.FormattedTextEditor;
+import org.parker.assembleride.gui.docking.UserPaneTabbedPane;
+import org.parker.assembleride.gui.docking.userpanes.editor.rsyntax.FormattedTextEditor;
 import org.parker.assembleride.log.LogPanel;
 
 import javax.swing.*;
@@ -46,16 +46,12 @@ public class MainGUI_2 extends JFrame {
 
     private final BaseComputerArchitecture bca;
 
-    public static void main(String... args) {
-        //new MainGUI_2();
-    }
-
     public MainGUI_2(BaseComputerArchitecture bca) {
         this.bca = bca;
         $$$setupUI$$$();
         this.add(rootPanel);
         this.versionLabel.setText(MIPS.VERSION);
-        this.buttonsPanel.setBorder(new FlatMatteBorder(0, 0, 1, 0));
+        //this.buttonsPanel.setBorder(new FlatMatteBorder(0, 0, 1, 0));
         this.pack();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setVisible(true);

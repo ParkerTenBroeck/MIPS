@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package org.parker.assembleride.gui.userpanes.hexeditor;
+package org.parker.assembleride.gui.docking.userpanes.hexeditor;
 
 import org.parker.retargetableassembler.util.Memory;
 

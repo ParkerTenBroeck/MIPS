@@ -16,7 +16,7 @@
 package org.parker.mips.architecture.gui;
 
 import org.parker.mips.architecture.emulator.mips.Registers;
-import org.parker.assembleride.gui.userpanes.UserPane;
+import org.parker.assembleride.gui.docking.userpanes.UserPane;
 
 import javax.swing.*;
 import javax.swing.table.TableColumnModel;

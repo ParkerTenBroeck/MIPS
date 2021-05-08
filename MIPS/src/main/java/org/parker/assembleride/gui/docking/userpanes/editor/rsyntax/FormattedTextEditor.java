@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package org.parker.assembleride.gui.userpanes.editor.rsyntax;
+package org.parker.assembleride.gui.docking.userpanes.editor.rsyntax;
 
 import org.fife.ui.rsyntaxtextarea.AbstractTokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -22,7 +22,7 @@ import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.folding.FoldParserManager;
 import org.fife.ui.rtextarea.RTextScrollPane;
 import org.parker.assembleride.core.SystemPreferences;
-import org.parker.assembleride.gui.userpanes.editor.TextEditor;
+import org.parker.assembleride.gui.docking.userpanes.editor.TextEditor;
 import org.parker.assembleride.util.FileUtils;
 import org.parker.assembleride.util.ResourceHandler;
 
@@ -120,8 +120,8 @@ public class FormattedTextEditor extends TextEditor {
         switch (ext) {
             case "asm":
                 AbstractTokenMakerFactory atmf = (AbstractTokenMakerFactory) TokenMakerFactory.getDefaultInstance();
-                atmf.putMapping("MIPS", "org.parker.assembleride.gui.userpanes.editor.rsyntax.MIPSTokenMaker");
-                FoldParserManager.get().addFoldParserMapping("MIPS", new MIPSFoldParser());
+                atmf.putMapping("MIPS", "org.parker.assembleride.gui.docking.userpanes.editor.rsyntax.MIPSTokenMaker");
+                FoldParserManager.get().addFoldParserMapping("MIPS", new BasicAssemblyFoldParser());
 
                 textArea.setSyntaxEditingStyle("MIPS");
                 textArea.setCodeFoldingEnabled(true);

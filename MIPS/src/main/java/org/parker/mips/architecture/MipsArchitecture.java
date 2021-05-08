@@ -25,7 +25,7 @@ import org.parker.mips.architecture.gui.MipsEmulatorState;
 import org.parker.mips.architecture.syscall.SystemCallPlugin;
 import org.parker.mips.architecture.syscall.SystemCallPluginHandler;
 import org.parker.mips.architecture.syscall.SystemCallPluginLoader;
-import org.parker.assembleride.gui.userpanes.UserPane;
+import org.parker.assembleride.gui.docking.userpanes.UserPane;
 import org.parker.assembleride.preferences.Preference;
 import org.parker.assembleride.preferences.Preferences;
 import org.parker.retargetableassembler.util.Memory;

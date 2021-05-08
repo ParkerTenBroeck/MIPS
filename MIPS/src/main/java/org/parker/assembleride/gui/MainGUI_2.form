@@ -61,7 +61,7 @@
                       <splitpane position="left"/>
                     </constraints>
                   </nested-form>
-                  <component id="895b3" class="org.parker.assembleride.gui.UserPaneTabbedPane" binding="userPaneTabbedPane1" custom-create="true">
+                  <component id="895b3" class="org.parker.assembleride.gui.docking.UserPaneTabbedPane" binding="userPaneTabbedPane1" custom-create="true">
                     <constraints>
                       <splitpane position="right"/>
                     </constraints>

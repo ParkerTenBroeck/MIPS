@@ -12,7 +12,7 @@ import org.parker.assembleride.util.ResourceHandler;
 import org.parker.mips.assembler_old.data.MemoryLable;
 import org.parker.mips.assembler_old.data.UserLine;
 import org.parker.mips.architecture.assembler.MipsAssembler;
-import org.parker.assembleride.gui.userpanes.editor.EditorHandler;
+import org.parker.assembleride.gui.docking.userpanes.editor.EditorHandler;
 import org.parker.mips.architecture.emulator.mips.EmulatorMemory;
 
 import java.io.File;

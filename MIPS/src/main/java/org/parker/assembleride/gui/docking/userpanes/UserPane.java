@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package org.parker.assembleride.gui.userpanes;
+package org.parker.assembleride.gui.docking.userpanes;
 
 import javax.swing.*;
 

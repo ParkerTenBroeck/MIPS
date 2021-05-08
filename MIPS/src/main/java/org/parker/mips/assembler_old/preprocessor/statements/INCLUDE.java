@@ -9,7 +9,7 @@ import org.parker.assembleride.util.FileUtils;
 import org.parker.retargetableassembler.util.AssemblerLogLevel;
 import org.parker.mips.assembler_old.AssemblerLogger;
 import org.parker.mips.assembler_old.data.UserLine;
-import org.parker.assembleride.gui.userpanes.editor.EditorHandler;
+import org.parker.assembleride.gui.docking.userpanes.editor.EditorHandler;
 
 import java.io.File;
 import java.util.ArrayList;

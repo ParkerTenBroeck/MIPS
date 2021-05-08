@@ -7,7 +7,7 @@
     <properties/>
     <border type="none"/>
     <children>
-      <component id="fcb0d" class="org.parker.assembleride.gui.UserPaneTabbedPane" binding="sdmfh">
+      <component id="fcb0d" class="org.parker.assembleride.gui.docking.UserPaneTabbedPane" binding="sdmfh">
         <constraints border-constraint="Center"/>
         <properties/>
       </component>

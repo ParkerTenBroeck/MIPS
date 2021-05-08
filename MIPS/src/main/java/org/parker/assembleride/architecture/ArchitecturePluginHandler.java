@@ -43,9 +43,17 @@ public class ArchitecturePluginHandler {
         }
 
         ComputerArchitecture ca = (ComputerArchitecture) arcPlugin;
-        ca.onLoad();
+        try {
+            ca.onLoad();
+        }catch (Exception e){
+            LOGGER.log(Level.SEVERE, "Error caused by Architecture Plugin on load", e);
+        }
 
-        ca.createGUI().setVisible(true);
+        try {
+            ca.createGUI();
+        }catch (Exception e){
+            LOGGER.log(Level.SEVERE, "Error thrown when creating Architecture GUI", e);
+        }
     }
 
     public static void setToLoadDescription(PluginDescription description) {

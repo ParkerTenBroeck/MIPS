@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package org.parker.assembleride.gui.userpanes.hexeditor;
+package org.parker.assembleride.gui.docking.userpanes.hexeditor;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
@@ -21,7 +21,7 @@ import org.parker.retargetableassembler.base.preprocessor.BaseExpressionCompiler
 import org.parker.assembleride.gui.components.FlatIconButton;
 import org.parker.assembleride.gui.icons.FlatMinusIcon;
 import org.parker.assembleride.gui.icons.FlatPlusIcon;
-import org.parker.assembleride.gui.userpanes.UserPane;
+import org.parker.assembleride.gui.docking.userpanes.UserPane;
 import org.parker.retargetableassembler.util.Memory;
 
 import javax.swing.*;

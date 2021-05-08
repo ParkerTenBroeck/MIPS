@@ -13,9 +13,9 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package org.parker.assembleride.gui;
+package org.parker.assembleride.gui.util;
 
-import org.parker.assembleride.gui.userpanes.editor.rsyntax.FormattedTextEditor;
+import org.parker.assembleride.gui.docking.userpanes.editor.rsyntax.FormattedTextEditor;
 
 import javax.swing.*;
 import java.awt.datatransfer.DataFlavor;
