@@ -1,0 +1,295 @@
+/*
+ *    Copyright 2021 ParkerTenBroeck
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+package org.parker.mips.architecture.gui;
+
+import org.parker.mips.architecture.emulator.mips.Registers;
+import org.parker.assembleride.gui.userpanes.UserPane;
+
+import javax.swing.*;
+import javax.swing.table.TableColumnModel;
+import java.awt.*;
+
+/**
+ *
+ * @author parke
+ */
+public class MipsEmulatorState extends UserPane {
+
+    /**
+     * Creates new form Registers
+     */
+
+
+    private final int[] lastUpdatedVals;
+
+    public MipsEmulatorState() {
+        lastUpdatedVals = new int[40];
+        for(int i = 0; i < lastUpdatedVals.length; i ++){
+            lastUpdatedVals[i] = -2;
+        }
+        initComponents();
+        setFont(this.getFont());
+        update();
+    }
+
+    @Override
+    public final boolean close() {
+        return true;
+    }
+
+
+
+    @Override
+    public void setFont(Font font) {
+        super.setFont(font);
+        if (pc != null) {
+            configTables(this.getFontMetrics(font));
+        }
+    }
+
+    private void configTables(FontMetrics fm) {
+
+        String largestFirst = "Combied";
+        String largestSecond = "0000000000000000000000000000000";
+        String largestThird = "00000000";
+        String largestFourth = "-2147483648";
+
+        int first = fm.stringWidth(largestFirst) + 0;
+        int second = fm.stringWidth(largestSecond) + 0;
+        int third = fm.stringWidth(largestThird) + 0;
+        int fourth = fm.stringWidth(largestFourth) + 0;
+
+        Dimension dim = this.getPreferredSize();
+        dim = new Dimension(first + second + third + fourth + 200, dim.height);
+        this.setPreferredSize(dim);
+        this.setSize(dim);
+        //this.setMaximumSize(dim);
+        //this.setMinimumSize(dim);
+
+        configTable(pc, fm, first, second, third, fourth);
+        configTable(pc1, fm, first, second, third, fourth);
+        configTable(lowHigh, fm, first, second, third, fourth);
+        configTable(registers, fm, first, second, third, fourth);
+    }
+
+    private static void configTable(JTable table, FontMetrics fm, int first, int second, int third, int fourth) {
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
+        TableColumnModel colModel = table.getColumnModel();
+
+        colModel.getColumn(0).setPreferredWidth(first);
+        colModel.getColumn(1).setPreferredWidth(second);
+        colModel.getColumn(2).setPreferredWidth(third);
+        colModel.getColumn(3).setPreferredWidth(fourth);
+    }
+
+    @Override
+    public void update() {
+        int currentRegisterValue;
+
+        for (int i = 1; i <= 31; i++) {
+            currentRegisterValue = Registers.getRegister(i);
+            if(lastUpdatedVals[i] != currentRegisterValue){
+                setRegisterRow(registers, i - 1, currentRegisterValue);
+                lastUpdatedVals[i] = currentRegisterValue;
+            }
+        }
+        currentRegisterValue = Registers.getPc();
+        if(lastUpdatedVals[32] != currentRegisterValue){
+            setRegisterRow(pc, 0, currentRegisterValue);
+            lastUpdatedVals[32] = currentRegisterValue;
+        }
+
+        boolean updatedHighLow = false;
+        currentRegisterValue = Registers.getLow();
+        if(lastUpdatedVals[33] != currentRegisterValue){
+            setRegisterRow(lowHigh, 0, currentRegisterValue);
+            lastUpdatedVals[33] = currentRegisterValue;
+            updatedHighLow = true;
+        }
+
+        currentRegisterValue = Registers.getHigh();
+        if(lastUpdatedVals[34] != currentRegisterValue){
+            setRegisterRow(lowHigh, 1, currentRegisterValue);
+            lastUpdatedVals[34] = currentRegisterValue;
+            updatedHighLow = true;
+        }
+        if(updatedHighLow){
+            lowHigh.setValueAt(((long) Registers.getHigh() << 32) | (long) Registers.getLow(),
+                    2, 3);
+        }
+    }
+
+    private static void setRegisterRow(JTable table, int row, int val) {
+        String bin = String.format("%32s", Integer.toBinaryString(val)).replaceAll(" ", "0");
+        String hex = String.format("%8s", Integer.toHexString(val)).replaceAll(" ", "0");
+
+        table.setValueAt(bin, row, 1);
+        table.setValueAt(hex, row, 2);
+        table.setValueAt(val, row, 3);
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jScrollPane1 = new JScrollPane();
+        jPanel2 = new javax.swing.JPanel();
+        lowHigh = new javax.swing.JTable();
+        registers = new javax.swing.JTable();
+        pc = new javax.swing.JTable();
+        pc1 = new javax.swing.JTable();
+
+        setBackground(new java.awt.Color(102, 102, 102));
+        setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        setOpaque(false);
+
+        jScrollPane1.setBorder(null);
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane1.setOpaque(false);
+
+        jPanel2.setOpaque(false);
+
+        lowHigh.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"Low", null, null, null},
+                {"High", null, null, null},
+                {"Combined", null, null, null}
+            },
+            new String [] {
+                "Register", "Bin", "Hex", "Dec"
+            }
+        ));
+        lowHigh.setEnabled(false);
+        lowHigh.setGridColor(new java.awt.Color(204, 204, 204));
+        lowHigh.setOpaque(false);
+
+        registers.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"1", null, null, null},
+                {"2", null, null, null},
+                {"3", null, null, null},
+                {"4", null, null, null},
+                {"5", null, null, null},
+                {"6", null, null, null},
+                {"7", null, null, null},
+                {"8", null, null, null},
+                {"9", null, null, null},
+                {"10", null, null, null},
+                {"11", null, null, null},
+                {"12", null, null, null},
+                {"13", null, null, null},
+                {"14", null, null, null},
+                {"15", null, null, null},
+                {"16", null, null, null},
+                {"17", null, null, null},
+                {"18", null, null, null},
+                {"19", null, null, null},
+                {"20", null, null, null},
+                {"21", null, null, null},
+                {"22", null, null, null},
+                {"23", null, null, null},
+                {"24", null, null, null},
+                {"25", null, null, null},
+                {"26", null, null, null},
+                {"27", null, null, null},
+                {"28", null, null, null},
+                {"29", null, null, null},
+                {"30", null, null, null},
+                {"31", null, null, null}
+            },
+            new String [] {
+                "Register", "Bin", "Hex", "Dec"
+            }
+        ));
+        registers.setEnabled(false);
+        registers.setOpaque(false);
+
+        pc.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"PC", null, null, null}
+            },
+            new String [] {
+                "Register", "Bin", "Hex", "Dec"
+            }
+        ));
+        pc.setEnabled(false);
+        pc.setGridColor(new java.awt.Color(51, 51, 51));
+        pc.setOpaque(false);
+
+        pc1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"Name", "Bin", "Hex", "Dec"}
+            },
+            new String [] {
+                "Register", "Bin", "Hex", "Dec"
+            }
+        ));
+        pc1.setEnabled(false);
+        pc1.setOpaque(false);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lowHigh, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pc1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(registers, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(pc1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lowHigh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(registers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jScrollPane1.setViewportView(jPanel2);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+    }// </editor-fold>//GEN-END:initComponents
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private static javax.swing.JPanel jPanel2;
+    private static javax.swing.JScrollPane jScrollPane1;
+    private static javax.swing.JTable lowHigh;
+    private static javax.swing.JTable pc;
+    private static javax.swing.JTable pc1;
+    private static javax.swing.JTable registers;
+    // End of variables declaration//GEN-END:variables
+
+}

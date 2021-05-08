@@ -1,5 +1,5 @@
 name: UserIO
-main: org.parker.mips.architectures.mips.syscall.internal.UserIOSystemCalls
+main: org.parker.mips.architecture.syscall.internal.UserIOSystemCalls
 version: 1.0
 author: Parker TenBroeck
 description: Used to add basic Input and Output functionality to MIPS

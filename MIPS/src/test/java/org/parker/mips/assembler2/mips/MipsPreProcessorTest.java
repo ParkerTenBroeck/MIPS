@@ -3,10 +3,10 @@ package org.parker.mips.assembler2.mips;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
-import org.parker.mips.assembler.base.preprocessor.PreProcessedStatement;
-import org.parker.mips.architectures.mips.assembler.MipsAssembler;
-import org.parker.mips.architectures.mips.assembler.MipsPreProcessor;
-import org.parker.mips.util.FileUtils;
+import org.parker.retargetableassembler.base.preprocessor.PreProcessedStatement;
+import org.parker.mips.architecture.assembler.MipsAssembler;
+import org.parker.mips.architecture.assembler.MipsPreProcessor;
+import org.parker.assembleride.util.FileUtils;
 
 import java.io.File;
 import java.util.HashMap;

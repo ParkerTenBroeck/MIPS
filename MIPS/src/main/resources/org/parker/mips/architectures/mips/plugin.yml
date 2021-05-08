@@ -1,4 +1,0 @@
-name: MIPS
-main: org.parker.mips.architectures.mips.MipsArchitecture
-version: 1.0
-description: asd

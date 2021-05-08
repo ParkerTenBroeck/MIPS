@@ -5,15 +5,15 @@
  */
 package org.parker.mips.assembler_old;
 
-import org.parker.mips.architectures.mips.MipsArchitecture;
-import org.parker.mips.assembler.util.AssemblerLevel;
-import org.parker.mips.util.FileUtils;
-import org.parker.mips.util.ResourceHandler;
+import org.parker.mips.architecture.MipsArchitecture;
+import org.parker.retargetableassembler.util.AssemblerLogLevel;
+import org.parker.assembleride.util.FileUtils;
+import org.parker.assembleride.util.ResourceHandler;
 import org.parker.mips.assembler_old.data.MemoryLable;
 import org.parker.mips.assembler_old.data.UserLine;
-import org.parker.mips.architectures.mips.assembler.MipsAssembler;
-import org.parker.mips.gui.userpanes.editor.EditorHandler;
-import org.parker.mips.architectures.mips.emulator.mips.EmulatorMemory;
+import org.parker.mips.architecture.assembler.MipsAssembler;
+import org.parker.assembleride.gui.userpanes.editor.EditorHandler;
+import org.parker.mips.architecture.emulator.mips.EmulatorMemory;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -214,7 +214,7 @@ public class Assembler {
 
         //MainGUI.refreshAll();
 
-        LOGGER.log(AssemblerLevel.ASSEMBLER_MESSAGE, "Compilation of file: " + file.getAbsolutePath() + " has finished\n");
+        LOGGER.log(AssemblerLogLevel.ASSEMBLER_MESSAGE, "Compilation of file: " + file.getAbsolutePath() + " has finished\n");
     }
 
     public static void saveOriginsToFile(String compiledFileName) {
@@ -332,7 +332,7 @@ public class Assembler {
                 }
             }
         }
-        LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR, "Memory Lable does not exist line: " + realLineNumberOfOpCode);
+        LOGGER.log(AssemblerLogLevel.ASSEMBLER_ERROR, "Memory Lable does not exist line: " + realLineNumberOfOpCode);
         //Assembler.MemoryLableError("Memory Lable does not exist", realLineNumberOfOpCode);
         return -1;
     }
@@ -344,7 +344,7 @@ public class Assembler {
                     try {
                         ctul.finalAssemblyPass();
                     }catch(AssemblerException e){
-                        LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR, e);
+                        LOGGER.log(AssemblerLogLevel.ASSEMBLER_ERROR, e);
                     }
                 }
             }
@@ -472,7 +472,7 @@ public class Assembler {
 
         for (int i = 0; i < memoryLables.size(); i++) {
             if (ml.name.equals(memoryLables.get(i).name)) {
-                LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR, null, new MemoryLableException("Cannot have duplicate memory lables", ml.line));
+                LOGGER.log(AssemblerLogLevel.ASSEMBLER_ERROR, null, new MemoryLableException("Cannot have duplicate memory lables", ml.line));
                 //Assembler.MemoryLableError("Cannot have Duplicate Memory Lables", ml.line.realLineNumber);
                 return;
             }

@@ -5,7 +5,7 @@
  */
 package org.parker.mips.assembler_old.preprocessor.statements;
 
-import org.parker.mips.assembler.util.AssemblerLevel;
+import org.parker.retargetableassembler.util.AssemblerLogLevel;
 import org.parker.mips.assembler_old.AssemblerLogger;
 import org.parker.mips.assembler_old.data.AbstractArgumentList;
 import org.parker.mips.assembler_old.data.UserLine;
@@ -42,7 +42,7 @@ public class DEFINLINE extends Statement {
         args = Arrays.copyOf(aal.args, aal.args.length);
         for (int i = 0; i < args.length; i++) {
             if (args[i].trim().contains(" ")) {
-                LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR, "Argument Place holders cannot contain spaces", input);
+                LOGGER.log(AssemblerLogLevel.ASSEMBLER_ERROR, "Argument Place holders cannot contain spaces", input);
             }
         }
 
@@ -66,7 +66,7 @@ public class DEFINLINE extends Statement {
                 inlineUserLines.add(file.get(i));
             }
             if (i == file.size() - 1) {
-                LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR,"Reached end of file #definline never terminated use #endinline", file.get(i));
+                LOGGER.log(AssemblerLogLevel.ASSEMBLER_ERROR,"Reached end of file #definline never terminated use #endinline", file.get(i));
             }
         }
     }
@@ -82,12 +82,12 @@ public class DEFINLINE extends Statement {
 
             for (int i = 0; i < args.length; i++) {
                 if (args[i].trim().contains(" ")) {
-                    LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR,"Arguments cannot contain spaces", input);
+                    LOGGER.log(AssemblerLogLevel.ASSEMBLER_ERROR,"Arguments cannot contain spaces", input);
                 }
             }
 
             if (inputAal.args.length != this.args.length) {
-                LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR,"number of arguments do not match", input);
+                LOGGER.log(AssemblerLogLevel.ASSEMBLER_ERROR,"number of arguments do not match", input);
             }
 
             for (int i = 0; i < inlineUserLines.size(); i++) {

@@ -5,7 +5,7 @@
  */
 package org.parker.mips.assembler_old.preprocessor.statements;
 
-import org.parker.mips.assembler.util.AssemblerLevel;
+import org.parker.retargetableassembler.util.AssemblerLogLevel;
 import org.parker.mips.assembler_old.AssemblerLogger;
 import org.parker.mips.assembler_old.data.AbstractArgumentList;
 import org.parker.mips.assembler_old.data.UserLine;
@@ -32,7 +32,7 @@ public class DEFINE extends Statement {
         input.line = input.line.trim();
         String[] nameAndValue = input.line.split(" ");
         if (nameAndValue.length != 1 && nameAndValue.length != 2) {
-            LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR,"Cannot add Define too many/little arguments or Name has Space", input.realLineNumber);
+            LOGGER.log(AssemblerLogLevel.ASSEMBLER_ERROR,"Cannot add Define too many/little arguments or Name has Space", input.realLineNumber);
         }
         if (nameAndValue.length > 1) {
             arg = nameAndValue[1].trim();

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="org.parker.assembleride.gui.borderTest">
+  <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="500" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <component id="fcb0d" class="org.parker.assembleride.gui.UserPaneTabbedPane" binding="sdmfh">
+        <constraints border-constraint="Center"/>
+        <properties/>
+      </component>
+      <nested-form id="9a1b6" form-file="org/parker/mips/gui/test.form" binding="test1" custom-create="true">
+        <constraints border-constraint="West"/>
+      </nested-form>
+      <grid id="40946" binding="rightFuck" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="East"/>
+        <properties/>
+        <border type="none"/>
+        <children/>
+      </grid>
+    </children>
+  </grid>
+</form>

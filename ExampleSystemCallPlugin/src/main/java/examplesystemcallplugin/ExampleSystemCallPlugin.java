@@ -5,7 +5,7 @@
  */
 package examplesystemcallplugin;
 
-import org.parker.mips.architectures.mips.syscall.SystemCallPlugin;
+import org.parker.mips.architecture.syscall.SystemCallPlugin;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

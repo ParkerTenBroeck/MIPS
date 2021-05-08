@@ -9,7 +9,7 @@ sourceCompatibility = '1.8'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 
-mainClassName = 'org.parker.mips.core.MIPS'
+mainClassName = 'org.parker.assembleride.core.MIPS'
 
 if (!hasProperty('mainClass')) {
     ext.mainClass = mainClassName

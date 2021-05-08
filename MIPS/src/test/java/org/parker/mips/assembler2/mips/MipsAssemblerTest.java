@@ -1,13 +1,13 @@
 package org.parker.mips.assembler2.mips;
 
 import org.junit.jupiter.api.Test;
-import org.parker.mips.architectures.mips.emulator.mips.EmulatorMemory;
-import org.parker.mips.core.MIPS;
-import org.parker.mips.assembler.base.assembler.Assembler;
-import org.parker.mips.architectures.mips.assembler.MipsAssembler;
-import org.parker.mips.architectures.mips.disassembler.MipsDisassembler;
-import org.parker.mips.util.Memory;
-import org.parker.mips.util.PagedMemory;
+import org.parker.mips.architecture.emulator.mips.EmulatorMemory;
+import org.parker.assembleride.core.MIPS;
+import org.parker.retargetableassembler.base.assembler.Assembler;
+import org.parker.mips.architecture.assembler.MipsAssembler;
+import org.parker.mips.architecture.disassembler.MipsDisassembler;
+import org.parker.retargetableassembler.util.Memory;
+import org.parker.retargetableassembler.util.PagedMemory;
 
 import java.io.File;
 

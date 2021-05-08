@@ -5,11 +5,11 @@
  */
 package org.parker.mips.assembler_old.preprocessor.statements;
 
-import org.parker.mips.util.FileUtils;
-import org.parker.mips.assembler.util.AssemblerLevel;
+import org.parker.assembleride.util.FileUtils;
+import org.parker.retargetableassembler.util.AssemblerLogLevel;
 import org.parker.mips.assembler_old.AssemblerLogger;
 import org.parker.mips.assembler_old.data.UserLine;
-import org.parker.mips.gui.userpanes.editor.EditorHandler;
+import org.parker.assembleride.gui.userpanes.editor.EditorHandler;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ public class INCLUDE extends Statement {
                 generatedDataToAdd = loadFile(path, line);
             }
         } catch (Exception e) {
-            LOGGER.log(AssemblerLevel.ASSEMBLER_ERROR,"Failed to load included File", line, e);
+            LOGGER.log(AssemblerLogLevel.ASSEMBLER_ERROR,"Failed to load included File", line, e);
         }
 
     }
