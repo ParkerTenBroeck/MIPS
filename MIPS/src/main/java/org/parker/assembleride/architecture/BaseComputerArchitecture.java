@@ -15,19 +15,25 @@
  */
 package org.parker.assembleride.architecture;
 
+import com.google.common.io.Files;
+import org.parker.assembleride.gui.MainGUI_2;
 import org.parker.assembleride.gui.MainGUI_old;
+import org.parker.assembleride.gui.ToolBar;
 import org.parker.assembleride.gui.docking.UserPaneTabbedPane;
 import org.parker.assembleride.gui.docking.userpanes.UserPane;
 import org.parker.assembleride.gui.docking.userpanes.editor.EditorHandler;
 import org.parker.assembleride.gui.docking.userpanes.hexeditor.MemoryEditorUserPane;
 import org.parker.assembleride.plugin.base.PluginBase;
 import org.parker.assembleride.preferences.Preferences;
+import org.parker.assembleride.util.ResourceHandler;
+import org.parker.mips.architecture.emulator.mips.EmulatorMemory;
 import org.parker.retargetableassembler.util.ByteMemory;
 import org.parker.assembleride.util.FileUtils;
 import org.parker.retargetableassembler.util.Memory;
 
 import javax.annotation.CheckForNull;
 import javax.swing.*;
+import javax.tools.Tool;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.ArrayList;
@@ -40,7 +46,7 @@ public abstract class BaseComputerArchitecture extends PluginBase implements Com
 
     protected static final Preferences ROOT_ARC_PREFS;
 
-    private static MainGUI_old frameInstance;
+    private static JFrame frameInstance;
     private static ProjectInformation projectInformation;
 
     private static final Logger LOGGER = Logger.getLogger(BaseComputerArchitecture.class.getName() + ".MIPS");
@@ -56,14 +62,14 @@ public abstract class BaseComputerArchitecture extends PluginBase implements Com
 
     @Override
     public final JFrame createGUI() {
-        frameInstance = new MainGUI_old(this);
+        frameInstance = new MainGUI_2(this);
         return frameInstance;
     }
 
     public void onAssembleButton(ActionEvent ae) {
         if(!isAssembling) {
             isAssembling = true;
-            frameInstance.setControlsEnabled(false);
+            ToolBar.setControlsEnabled(false);
             new Thread(() -> {
                 try {
                     stopEmulator();
@@ -72,11 +78,11 @@ public abstract class BaseComputerArchitecture extends PluginBase implements Com
                     resetEmulator();
                 }catch (Exception e){
                     isAssembling = false;
-                    SwingUtilities.invokeLater(() -> frameInstance.setControlsEnabled(true));
+                    SwingUtilities.invokeLater(() -> ToolBar.setControlsEnabled(true));
                     throw e;
                 }
                 isAssembling = false;
-                SwingUtilities.invokeLater(() -> frameInstance.setControlsEnabled(true));
+                SwingUtilities.invokeLater(() -> ToolBar.setControlsEnabled(true));
             }).start();
         }
     }
@@ -202,6 +208,57 @@ public abstract class BaseComputerArchitecture extends PluginBase implements Com
             }
         }
         return files;
+    }
+
+    /**
+     * Calling this method will stop the emulator and save the current memory to a file selected
+     * by the user
+     */
+    @Deprecated
+    public void saveEmulatorMemoryToFile() {
+        this.stopEmulator();
+        JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
+        int returnVal = fc.showOpenDialog(frameInstance);
+        if (returnVal == JFileChooser.FILES_ONLY) {
+            FileUtils.saveByteArrayToFileSafe(EmulatorMemory.getMemory(), fc.getSelectedFile());
+        }
+    }
+
+    /**
+     * Calling this method will stop and reset the emulator. all contents of memory will be overridden with
+     * the contents loaded from file
+     */
+    public void loadEmulatorMemoryFromFile() {
+        this.stopEmulator();
+        JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
+        int returnVal = fc.showOpenDialog(frameInstance);
+        File selected = fc.getSelectedFile();
+
+        if(returnVal == JFileChooser.CANCEL_OPTION){
+            return;
+        }
+
+        if(selected == null || !selected.exists()){
+            LOGGER.log(Level.WARNING, "Cannot load memory chosen file does not exist");
+            return;
+        }
+        if(selected.isDirectory()) {
+            LOGGER.log(Level.WARNING, "Cannot load memory chosen file does not exist");
+            return;
+        }
+        if(!selected.canWrite()){
+            LOGGER.log(Level.WARNING, "Cannot load memory chosen file is read only");
+            return;
+        }
+        byte[] data;
+        try{
+            data = Files.toByteArray(selected);
+        }catch (Exception e){
+            LOGGER.log(Level.SEVERE, "Cannot load memory", e);
+            return;
+        }
+        this.setEmulatorMemory(data);
+        this.resetEmulator();
     }
 
     //static

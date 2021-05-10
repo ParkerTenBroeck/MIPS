@@ -42,7 +42,7 @@ public class ArchitecturePluginHandler {
             return;
         }
 
-        ComputerArchitecture ca = (ComputerArchitecture) arcPlugin;
+        ca = (ComputerArchitecture) arcPlugin;
         try {
             ca.onLoad();
         }catch (Exception e){
@@ -73,5 +73,9 @@ public class ArchitecturePluginHandler {
     }
     public static void requestSystemExit(ComputerArchitecture.SystemClosingEvent sce){
         ca.requestSystemExit(sce);
+    }
+
+    public static ComputerArchitecture getCurrentArchitecture() {
+        return ca;
     }
 }

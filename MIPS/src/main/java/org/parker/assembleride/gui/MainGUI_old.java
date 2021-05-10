@@ -834,19 +834,11 @@ public class MainGUI_old extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    @Deprecated
     private void aboutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutButtonActionPerformed
         DesktopBrowser.openLinkInBrowser("https://github.com/ParkerTenBroeck/MIPS/blob/master/README.md");
     }
 
-    public void setControlsEnabled(boolean enabled) {
-        assembleButton.setEnabled(enabled);
-        startButton.setEnabled(enabled);
-        stopButton.setEnabled(enabled);
-        singleStepButton.setEnabled(enabled);
-        resetButton.setEnabled(enabled);
-        memoryButton.setEnabled(enabled);
-        disassembleButton.setEnabled(enabled);
-    }
 
     private void openMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuButtonActionPerformed
         JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
@@ -866,7 +858,8 @@ public class MainGUI_old extends javax.swing.JFrame {
     private void saveAsMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsMenuButtonActionPerformed
         EditorHandler.saveAsLastFocused();
     }//GEN-LAST:event_saveAsMenuButtonActionPerformed
-    
+
+    @Deprecated
     private void saveMemoryButtonActionPreformed(java.awt.event.ActionEvent evt) {
         bca.stopEmulator();
     	JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
@@ -875,9 +868,10 @@ public class MainGUI_old extends javax.swing.JFrame {
             FileUtils.saveByteArrayToFileSafe(EmulatorMemory.getMemory(), fc.getSelectedFile());
         }
     }
-    
+
+    @Deprecated
     private void loadMemoryButtonActionPreformed(java.awt.event.ActionEvent evt) {
-        bca.onStopButton(evt);
+        bca.stopEmulator();
     	JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
         int returnVal = fc.showOpenDialog(MainGUI_old.getFrame());
         //if (returnVal == JFileChooser.FILES_ONLY) {
@@ -934,6 +928,7 @@ public class MainGUI_old extends javax.swing.JFrame {
         new OptionsGUI();
     }
 
+    @Deprecated
     private void loadPluginJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadPluginJMenuItemActionPerformed
         JFileChooser fc = new JFileChooser();
         int returnVal = fc.showOpenDialog(MainGUI_old.getFrame());

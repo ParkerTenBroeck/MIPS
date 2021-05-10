@@ -66,12 +66,13 @@ public class OptionsGUI extends javax.swing.JFrame {
 
 		}
 
-		Object reference = this;
+		JFrame reference = this;
 		WindowListener exitListener = new WindowAdapter() {
 
 			@Override
 			public void windowClosing(WindowEvent e) {
 				Preference.removeAllObserversLinkedToObject(reference);
+				//reference.dispose();
 			}
 		};
 

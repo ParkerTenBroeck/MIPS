@@ -32,6 +32,9 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Collections;
+import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.logging.*;
 
 /**
@@ -42,18 +45,19 @@ public class LogPanel extends javax.swing.JPanel {
 
     private final static Logger LOGGER = Logger.getLogger(LogPanel.class.getName());
 
+
+    private static final Set<LogPanel> availableLogPanels = Collections.newSetFromMap(new WeakHashMap<>());
+
     private static Color errorTextColor;
     private static Color warningTextColor;
     private static Color messageTextColor;
 
-	static {
-        LogPanel.initComponents();
-        updateColors();
+    {
+        availableLogPanels.add(this);
     }
 
     public LogPanel() {
         initLayout();
-        this.setVisible(true);
     }
 
     @Override
@@ -91,26 +95,31 @@ public class LogPanel extends javax.swing.JPanel {
     }
 
     private static void appendMessageToVirtualConsoleLog(String message, SimpleAttributeSet att) {
-        Document doc = LogPanel.jTextPane1.getStyledDocument();
-        try {
-            doc.insertString(doc.getLength(), message + "\n", att);
-        } catch (Exception exc) {
-            //LogFrame.logError(LogFrame.getFullExceptionMessage(exc));
+        for(LogPanel logPane:availableLogPanels) {
+
+            Document doc = logPane.jTextPane1.getStyledDocument();
+            try {
+                doc.insertString(doc.getLength(), message + "\n", att);
+            } catch (Exception ignore) {
+                //LogFrame.logError(LogFrame.getFullExceptionMessage(exc));
+            }
         }
 
     }
 
     private static void appendMessageToVirtualConsoleLog(String message){
-	    Document doc = LogPanel.jTextPane1.getStyledDocument();
-	    try{
-            doc.insertString(doc.getLength(), message + "\n", null);
-        }catch(Exception e){
+        for(LogPanel logPane:availableLogPanels) {
 
+            Document doc = logPane.jTextPane1.getStyledDocument();
+            try {
+                doc.insertString(doc.getLength(), message + "\n", null);
+            } catch (Exception ignore) {
+
+            }
         }
     }
 
     private void initLayout() {
-
         initComponents();
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -125,7 +134,7 @@ public class LogPanel extends javax.swing.JPanel {
         );
     }
 
-    private static void initComponents() {
+    private void initComponents() {
 
         if (jTextPane1 == null) {
 
@@ -179,8 +188,8 @@ public class LogPanel extends javax.swing.JPanel {
     }// </editor-fold>
 
     // Variables declaration - do not modify                     
-    private static javax.swing.JScrollPane jScrollPane1;
-    private static javax.swing.JTextPane jTextPane1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextPane jTextPane1;
     // End of variables declaration                   
 
     public static class LogFrameHandler extends Handler {

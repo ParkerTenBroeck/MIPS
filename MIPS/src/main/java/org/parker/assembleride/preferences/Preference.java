@@ -16,12 +16,14 @@
 package org.parker.assembleride.preferences;
 
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.MapMaker;
 
 import javax.swing.*;
 import java.io.*;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Set;
+import java.lang.ref.WeakReference;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,18 +31,26 @@ public class Preference<T extends Serializable> extends Observable {
 
     private static final Logger LOGGER = Logger.getLogger(Preference.class.getName());
 
-    private HashMultimap<Object, Observer> observerLinkedObject = HashMultimap.create();
-    private static final HashMultimap<Object, Preference> optionLinkedObject = HashMultimap.create();
+    //private HashMultimap<Object, Observer> observerLinkedObject = HashMultimap.create();
+    //private static final HashMultimap<Object, Preference> preferenceLinkedObject = HashMultimap.create();
+
+    private WeakMultiMap<Object, Observer> observerLinkedObject = new WeakMultiMap<>();
+    private static final WeakMultiMap<Object, Preference> preferenceLinkedObject = new WeakMultiMap<>();
 
     protected T value;
 
 
     public static void removeAllObserversLinkedToObject(Object object) {
         LOGGER.log(Level.FINER, "Removing all linked observers from all options from link: " + object);
-        for(Preference o : optionLinkedObject.get(object)){
+        for(Preference o : preferenceLinkedObject.get(object)){
             o.removeAllObserversFromLink(object);
         }
-        optionLinkedObject.removeAll(object);
+        preferenceLinkedObject.removeAll(object);
+        //WeakReference<Object> bruh = new WeakReference<>(object);
+        //new WeakHashMap<Object, Object>();
+        //ConcurrentMap<Object, List<Observer>> hmm = new MapMaker().weakKeys().makeMap();
+        //ConcurrentMap<Object, List<Observer>> test = new ConcurrentHashMap<>(17, 0.75f, );
+
     }
 
 
@@ -66,8 +76,8 @@ public class Preference<T extends Serializable> extends Observable {
 
     public void addLikedObserver(Object link, Observer observer){
         LOGGER.log(Level.FINER, "Added Linked: " + link +  " Observer to Option");
-        observerLinkedObject.put(link, observer);
-        optionLinkedObject.put(link, this);
+        observerLinkedObject.putS(link, observer);
+        preferenceLinkedObject.putS(link, this);
         this.addObserver(observer);
     }
     public void removeAllObserversFromLink(Object link){

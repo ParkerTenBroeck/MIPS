@@ -11,7 +11,7 @@
         <constraints border-constraint="Center"/>
         <properties/>
       </component>
-      <nested-form id="9a1b6" form-file="org/parker/mips/gui/test.form" binding="test1" custom-create="true">
+      <nested-form id="9a1b6" form-file="org/parker/assembleride/gui/test.form" binding="test1" custom-create="true">
         <constraints border-constraint="West"/>
       </nested-form>
       <grid id="40946" binding="rightFuck" layout-manager="BorderLayout" hgap="0" vgap="0">

@@ -18,7 +18,7 @@ package org.parker.assembleride.gui;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import org.parker.assembleride.core.MIPS;
+import org.parker.assembleride.architecture.ArchitecturePluginHandler;
 import org.parker.assembleride.architecture.BaseComputerArchitecture;
 import org.parker.assembleride.gui.components.FlatZeroWidthSplitPane;
 import org.parker.assembleride.gui.docking.UserPaneTabbedPane;
@@ -26,31 +26,28 @@ import org.parker.assembleride.gui.docking.userpanes.editor.rsyntax.FormattedTex
 import org.parker.assembleride.log.LogPanel;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 public class MainGUI_2 extends JFrame {
-    private JPanel rootPanel;
-    private JButton assembleButton;
-    private JButton startButton;
-    private JButton stopButton;
-    private JButton singleStepButton;
-    private JButton resetButton;
-    private JButton memoryButton;
-    private JButton disassembleButton;
-    private JLabel versionLabel;
+    private JPanel contentRoot;
     private UserPaneTabbedPane userPaneTabbedPane1;
     private test test1;
-    private JPanel buttonsPanel;
     private JSplitPane hSplitter;
     private JSplitPane vSplitter;
+    private JPanel rootPanel;
+    private ToolBar toolBar1;
 
     private final BaseComputerArchitecture bca;
+
+    public static void main(String... args) {
+        ArchitecturePluginHandler.loadArchitecturePlugin();
+    }
 
     public MainGUI_2(BaseComputerArchitecture bca) {
         this.bca = bca;
         $$$setupUI$$$();
-        this.add(rootPanel);
-        this.versionLabel.setText(MIPS.VERSION);
+        this.add($$$getRootComponent$$$());
         //this.buttonsPanel.setBorder(new FlatMatteBorder(0, 0, 1, 0));
         this.pack();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -68,14 +65,17 @@ public class MainGUI_2 extends JFrame {
     private void $$$setupUI$$$() {
         createUIComponents();
         rootPanel = new JPanel();
-        rootPanel.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
+        rootPanel.setLayout(new BorderLayout(0, 0));
+        contentRoot = new JPanel();
+        contentRoot.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), 0, 0));
+        rootPanel.add(contentRoot, BorderLayout.CENTER);
         final Spacer spacer1 = new Spacer();
-        rootPanel.add(spacer1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        contentRoot.add(spacer1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         vSplitter.setContinuousLayout(true);
         vSplitter.setOneTouchExpandable(false);
         vSplitter.setOrientation(0);
         vSplitter.setResizeWeight(1.0);
-        rootPanel.add(vSplitter, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
+        contentRoot.add(vSplitter, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
         final LogPanel logPanel1 = new LogPanel();
         logPanel1.setVisible(true);
         vSplitter.setRightComponent(logPanel1);
@@ -88,35 +88,11 @@ public class MainGUI_2 extends JFrame {
         panel1.add(hSplitter, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
         hSplitter.setLeftComponent(test1.$$$getRootComponent$$$());
         hSplitter.setRightComponent(userPaneTabbedPane1);
-        buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(new GridLayoutManager(1, 9, new Insets(5, 5, 5, 5), -1, -1));
-        rootPanel.add(buttonsPanel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        assembleButton = new JButton();
-        assembleButton.setText("Assemble");
-        buttonsPanel.add(assembleButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer2 = new Spacer();
-        buttonsPanel.add(spacer2, new GridConstraints(0, 7, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        startButton = new JButton();
-        startButton.setText("Start");
-        buttonsPanel.add(startButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        stopButton = new JButton();
-        stopButton.setText("Stop");
-        buttonsPanel.add(stopButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        singleStepButton = new JButton();
-        singleStepButton.setText("Single Step");
-        buttonsPanel.add(singleStepButton, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        resetButton = new JButton();
-        resetButton.setText("Reset");
-        buttonsPanel.add(resetButton, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        memoryButton = new JButton();
-        memoryButton.setText("Memory");
-        buttonsPanel.add(memoryButton, new GridConstraints(0, 5, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        disassembleButton = new JButton();
-        disassembleButton.setText("Disassemble");
-        buttonsPanel.add(disassembleButton, new GridConstraints(0, 6, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        versionLabel = new JLabel();
-        versionLabel.setText("VERSION");
-        buttonsPanel.add(versionLabel, new GridConstraints(0, 8, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JPanel panel2 = new JPanel();
+        panel2.setLayout(new BorderLayout(0, 0));
+        rootPanel.add(panel2, BorderLayout.NORTH);
+        panel2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        panel2.add(toolBar1.$$$getRootComponent$$$(), BorderLayout.CENTER);
     }
 
     /**
@@ -127,6 +103,7 @@ public class MainGUI_2 extends JFrame {
     }
 
     private void createUIComponents() {
+        toolBar1 = ToolBar.ToolBarFactory();
         hSplitter = new FlatZeroWidthSplitPane();
         vSplitter = new FlatZeroWidthSplitPane();
         test1 = new test(bca);
