@@ -45,7 +45,11 @@ public class Preferences {
             loadPreferencesFromFile(ResourceHandler.DEFAULT_PERFERENCE_FILE);
         }else{
             LOGGER.log(Level.WARNING, "Preferences file not found, default preferences will be used");
-            loadPreferencesFromInputStream(Preferences.class.getResourceAsStream("Config/DefaultPreferences.yml"));
+            try {
+                loadPreferencesFromInputStream(Preferences.class.getResourceAsStream("Config/DefaultPreferences.yml"));
+            }catch(Exception e){
+                LOGGER.log(Level.SEVERE, "Failed to load default preferences using preferences defaulted in binary", e);
+            }
         }
     }
 

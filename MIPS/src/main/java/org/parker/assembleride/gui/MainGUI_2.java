@@ -28,6 +28,11 @@ import org.parker.assembleride.log.LogPanel;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MainGUI_2 extends JFrame {
     private JPanel contentRoot;
@@ -39,6 +44,7 @@ public class MainGUI_2 extends JFrame {
     private ToolBar toolBar1;
 
     private final BaseComputerArchitecture bca;
+    private static final Logger LOGGER = Logger.getLogger(MainGUI_2.class.getName());
 
     public static void main(String... args) {
         ArchitecturePluginHandler.loadArchitecturePlugin();
@@ -52,6 +58,17 @@ public class MainGUI_2 extends JFrame {
         this.pack();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setVisible(true);
+
+        WindowListener exitListener = new WindowAdapter() {
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                LOGGER.log(Level.FINER, "Main Window Exit Action Preformed");
+                bca.requestSystemExit();
+            }
+        };
+
+        this.addWindowListener(exitListener);
 
     }
 

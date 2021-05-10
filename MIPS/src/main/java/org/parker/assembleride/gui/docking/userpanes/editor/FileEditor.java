@@ -49,7 +49,7 @@ public abstract class FileEditor extends UserPane {
 
 
 
-    public final void updateTitle() {
+    public void updateTitle() {
         if (currentFile != null) {
             setTitle(currentFile.getName() + (isSaved ? "" : " *"));
         } else {
@@ -61,13 +61,13 @@ public abstract class FileEditor extends UserPane {
         return isSaved;
     }
 
-    protected final void setSaved(boolean val) {
+    protected void setSaved(boolean val) {
         isSaved = val;
         updateTitle();
     }
 
     @Override
-    public final boolean close() {
+    public boolean close() {
 
         if (isSaved) {
             EditorHandler.removeEditor(this);
@@ -106,6 +106,7 @@ public abstract class FileEditor extends UserPane {
         return currentFile;
     }
 
+    @Deprecated
     public final File getFalseFile() {
         if (currentFile != null) {
             return currentFile;
@@ -127,7 +128,7 @@ public abstract class FileEditor extends UserPane {
         return null;
     }
 
-    public final boolean save() {
+    public boolean save() {
         if (isSaved) {
             return true;
         }
