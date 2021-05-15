@@ -8,11 +8,9 @@ package org.parker.mips.assembler_old;
 import org.parker.mips.architecture.MipsArchitecture;
 import org.parker.retargetableassembler.util.AssemblerLogLevel;
 import org.parker.assembleride.util.FileUtils;
-import org.parker.assembleride.util.ResourceHandler;
+import org.parker.assembleride.util.SystemResources;
 import org.parker.mips.assembler_old.data.MemoryLable;
 import org.parker.mips.assembler_old.data.UserLine;
-import org.parker.mips.architecture.assembler.MipsAssembler;
-import org.parker.assembleride.gui.docking.userpanes.editor.EditorHandler;
 import org.parker.mips.architecture.emulator.mips.EmulatorMemory;
 
 import java.io.File;
@@ -241,7 +239,7 @@ public class Assembler {
         }
         maxSizeInstruction++;
 
-        File file = new File(ResourceHandler.COMPILER_PATH + FileUtils.FILE_SEPARATOR + "CompilationInfo.txt");
+        File file = new File(SystemResources.COMPILER_PATH + FileUtils.FILE_SEPARATOR + "CompilationInfo.txt");
 
         try (PrintWriter out = new PrintWriter(file)) {
 
@@ -551,10 +549,12 @@ public class Assembler {
         }
     }
 
+    @Deprecated
     public static void assembleDefault() {
         Thread t1 = new Thread(() -> {
-            MipsAssembler a = new MipsAssembler();
-            a.assemble(new File[]{EditorHandler.getFalseFileFromLastFocused()});
+            //MipsAssembler a = new MipsAssembler();
+            //a.assemble(new File[]{EditorHandler.getFalseFileFromLastFocused()});
+            assemble(null);
         });
         t1.setName("Assembler");
         t1.start();

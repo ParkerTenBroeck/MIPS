@@ -30,8 +30,9 @@ import org.parker.assembleride.preferences.Preference;
 import org.parker.assembleride.preferences.Preferences;
 import org.parker.retargetableassembler.util.Memory;
 import org.parker.retargetableassembler.util.PagedMemory;
-import org.parker.assembleride.util.ResourceHandler;
+import org.parker.assembleride.util.SystemResources;
 
+import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +94,7 @@ public class MipsArchitecture extends BaseComputerArchitecture {
                 }
             }
 
-            File file = new File(ResourceHandler.SYS_CALLS_PLUGIN_PATH);
+            File file = new File(SystemResources.SYS_CALLS_PLUGIN_PATH);
             File files[] = file.listFiles();
             for (File f : files) {
                 if (f.exists()) {

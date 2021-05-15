@@ -18,7 +18,7 @@ package org.parker.assembleride.core;
 import org.parker.assembleride.architecture.ArchitecturePluginHandler;
 import org.parker.assembleride.gui.theme.ThemeHandler;
 import org.parker.assembleride.preferences.Preferences;
-import org.parker.assembleride.util.ResourceHandler;
+import org.parker.assembleride.util.SystemResources;
 
 import javax.swing.*;
 import java.io.File;
@@ -59,7 +59,7 @@ public class MIPS {
         Preferences.readPreferencesFromDefaultFile(); //loads Options from file
         applyStaticPreferences();
 
-        ResourceHandler.extractResources(); //loads all resources into documents folder
+        SystemResources.extractResources(); //loads all resources into documents folder
 
         ThemeHandler.init();
 

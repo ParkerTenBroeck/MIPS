@@ -24,13 +24,13 @@ import org.parker.assembleride.gui.components.FlatZeroWidthSplitPane;
 import org.parker.assembleride.gui.docking.UserPaneTabbedPane;
 import org.parker.assembleride.gui.docking.userpanes.editor.rsyntax.FormattedTextEditor;
 import org.parker.assembleride.log.LogPanel;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,6 +53,17 @@ public class MainGUI_2 extends JFrame {
     public MainGUI_2(BaseComputerArchitecture bca) {
         this.bca = bca;
         $$$setupUI$$$();
+
+        try {
+            URL url = ClassLoader.getSystemClassLoader().getResource("Images/Icons/PNG/logo4.png");
+            assert url != null;
+            ImageIcon icon = new ImageIcon(url);
+            this.setIconImage(icon.getImage());
+            this.setTitle(ArchitecturePluginHandler.getCurrentArchitecture().getPluginDescription().NAME);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Failed to load Icon", e);
+        }
+
         this.add($$$getRootComponent$$$());
         //this.buttonsPanel.setBorder(new FlatMatteBorder(0, 0, 1, 0));
         this.pack();
@@ -121,10 +132,16 @@ public class MainGUI_2 extends JFrame {
 
     private void createUIComponents() {
         toolBar1 = ToolBar.ToolBarFactory();
-        hSplitter = new FlatZeroWidthSplitPane();
-        vSplitter = new FlatZeroWidthSplitPane();
+        hSplitter = new JSplitPane();//new FlatZeroWidthSplitPane();
+        vSplitter = new JSplitPane();//new FlatZeroWidthSplitPane();
         test1 = new test(bca);
         userPaneTabbedPane1 = new UserPaneTabbedPane();
-        new FormattedTextEditor();
+
+        try {
+            new FormattedTextEditor(null);
+            throw new NotImplementedException();
+        }catch ( Exception ignore){
+
+        }
     }
 }

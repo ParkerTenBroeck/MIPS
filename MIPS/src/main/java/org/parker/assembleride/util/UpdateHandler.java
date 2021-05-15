@@ -91,7 +91,7 @@ public class UpdateHandler {
 
     public static void update() {
 
-        String protocol = ResourceHandler.class.getResource("").getProtocol();
+        String protocol = SystemResources.class.getResource("").getProtocol();
         if (!Objects.equals(protocol, "jar")) { //run in jar
             LOGGER.log(Level.SEVERE,"Cannot Update from "+protocol+"? can only update from jar");
             return;
@@ -102,7 +102,7 @@ public class UpdateHandler {
         }
 
         ArchitecturePluginHandler.requestSystemExit(() -> {
-            String[] run = {"java", "-jar", ResourceHandler.DEFAULT_PATH + FileUtils.FILE_SEPARATOR + "updater.jar", MIPS.JAR_PATH, latestVersionLink};
+            String[] run = {"java", "-jar", SystemResources.DEFAULT_PATH + FileUtils.FILE_SEPARATOR + "updater.jar", MIPS.JAR_PATH, latestVersionLink};
             try {
                 Runtime.getRuntime().exec(run);
             } catch (Exception ex) {

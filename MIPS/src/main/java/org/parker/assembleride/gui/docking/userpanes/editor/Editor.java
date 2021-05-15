@@ -1,5 +1,9 @@
 package org.parker.assembleride.gui.docking.userpanes.editor;
 
+import java.io.File;
+
 public interface Editor {
-    void save();
+    boolean save();
+    boolean isSaved();
+    File getFile();
 }

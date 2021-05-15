@@ -24,7 +24,7 @@ import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
 
 @SuppressWarnings("unused")
-public class FlatZeroWidthSplitPane extends JSplitPane {
+public class FlatZeroWidthSplitPane extends  JSplitPane {
     private final int dividerDragSize = 9;
     private final int dividerDragOffset = 4;
 

@@ -16,7 +16,7 @@
 package org.parker.assembleride.log;
 
 import org.parker.assembleride.util.FileUtils;
-import org.parker.assembleride.util.ResourceHandler;
+import org.parker.assembleride.util.SystemResources;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -52,13 +52,13 @@ public class Configurer {
                 ZipOutputStream zo = null;
                 ZipEntry ze;
                 try {
-                    File file = new File(ResourceHandler.LASTES_LOG);
+                    File file = new File(SystemResources.LASTES_LOG);
                     if (file.exists()) {
                         BasicFileAttributes view = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
                         long time = view.lastModifiedTime().toMillis();
                         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
                         String date = dateFormat.format(time);
-                        String path = ResourceHandler.LOG_PATH + FileUtils.FILE_SEPARATOR + date + FileUtils.EXTENSION_SEPARATOR + "zip";
+                        String path = SystemResources.LOG_PATH + FileUtils.FILE_SEPARATOR + date + FileUtils.EXTENSION_SEPARATOR + "zip";
                         File zip = new File(path);
                         zip.createNewFile();
                         fos = new FileOutputStream(zip);
@@ -89,7 +89,7 @@ public class Configurer {
             }
 
             try{
-                File file = new File(ResourceHandler.LASTES_LOG);
+                File file = new File(SystemResources.LASTES_LOG);
                 if(!file.exists()){
                     file.createNewFile();
                 }

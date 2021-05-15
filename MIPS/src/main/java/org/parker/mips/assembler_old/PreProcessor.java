@@ -5,10 +5,10 @@
  */
 package org.parker.mips.assembler_old;
 
+import org.parker.assembleride.util.SystemResources;
 import org.parker.mips.architecture.MipsArchitecture;
 import org.parker.retargetableassembler.util.AssemblerLogLevel;
 import org.parker.assembleride.util.FileUtils;
-import org.parker.assembleride.util.ResourceHandler;
 import org.parker.mips.assembler_old.data.UserLine;
 import org.parker.mips.assembler_old.preprocessor.statements.*;
 
@@ -179,11 +179,11 @@ public class PreProcessor {
 
         if (file != null) {
             if (MipsArchitecture.includeRegDef.val()) {
-                file.add(0, new UserLine("#include \"" + ResourceHandler.REG_DEF_HEADER_FILE + "\"", -2));
+                file.add(0, new UserLine("#include \"" + SystemResources.REG_DEF_HEADER_FILE + "\"", -2));
                 LOGGER.log(AssemblerLogLevel.ASSEMBLER_MESSAGE,"Included regdef.asm");
             }
             if (MipsArchitecture.includeSysCallDef.val()) {
-                file.add(0, new UserLine("#include \"" + ResourceHandler.SYS_CALL_DEF_HEADER_FILE + "\"", -3));
+                file.add(0, new UserLine("#include \"" + SystemResources.SYS_CALL_DEF_HEADER_FILE + "\"", -3));
                 LOGGER.log(AssemblerLogLevel.ASSEMBLER_MESSAGE,"Included syscalldef.asm");
             }
         }
@@ -252,12 +252,12 @@ public class PreProcessor {
     }
 
     private static void writePreProcessedFile(ArrayList<UserLine> fileInfo) {
-        File file = new File(ResourceHandler.COMPILER_PATH + FileUtils.FILE_SEPARATOR + "PreProcessedFile.asm");
+        File file = new File(SystemResources.COMPILER_PATH + FileUtils.FILE_SEPARATOR + "PreProcessedFile.asm");
         writeArrayListOfUserLinesToFile(fileInfo, file);
     }
 
     private static void writeCleanedFile(ArrayList<UserLine> fileInfo) {
-        File file = new File(ResourceHandler.COMPILER_PATH + FileUtils.FILE_SEPARATOR + "CleanedFile.asm");
+        File file = new File(SystemResources.COMPILER_PATH + FileUtils.FILE_SEPARATOR + "CleanedFile.asm");
         writeArrayListOfUserLinesToFile(fileInfo, file);
     }
 

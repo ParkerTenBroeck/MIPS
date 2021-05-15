@@ -18,6 +18,7 @@ package org.parker.mips.architecture.disassembler;
 import org.parker.mips.architecture.emulator.mips.EmulatorMemory;
 import org.parker.assembleride.gui.docking.userpanes.editor.rsyntax.FormattedTextEditor;
 import org.parker.retargetableassembler.util.Memory;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class MipsDisassembler {
 
@@ -27,7 +28,8 @@ public class MipsDisassembler {
         for(int i = 0; i < EmulatorMemory.getSize() / 4; i ++){
             sb.append(instructionToString(EmulatorMemory.getWord(i * 4)) + "\n");
         }
-        new FormattedTextEditor(sb.toString().getBytes());
+        throw new NotImplementedException();
+        //new FormattedTextEditor(sb.toString().getBytes());
         //Editor.createEditor(sb.toString().getBytes(), "", "");
     }
 
@@ -36,7 +38,8 @@ public class MipsDisassembler {
         for(int i = 0; i < memory.getSize() / 4; i ++){
             sb.append(instructionToString(memory.getWord(i * 4, true)) + "\n");
         }
-        new FormattedTextEditor(sb.toString().getBytes());
+        throw new NotImplementedException();
+        //new FormattedTextEditor(sb.toString().getBytes());
         //Editor.createEditor(sb.toString().getBytes(), "", "asm");
     }
 

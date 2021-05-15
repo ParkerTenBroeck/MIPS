@@ -16,12 +16,9 @@
 package org.parker.assembleride.gui.docking.userpanes.editor;
 
 import org.parker.assembleride.architecture.BaseComputerArchitecture;
-import org.parker.assembleride.gui.MainGUI_old;
 import org.parker.assembleride.util.FileUtils;
-import org.parker.assembleride.util.ResourceHandler;
-import org.parker.assembleride.gui.docking.UserPaneTabbedPane;
 import org.parker.assembleride.gui.docking.userpanes.UserPane;
-import org.parker.assembleride.preferences.Preference;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.swing.*;
 import java.io.File;
@@ -34,27 +31,25 @@ import java.util.logging.Logger;
  *
  * @author parke
  */
-public abstract class FileEditor extends UserPane {
+public abstract class FileEditor extends UserPane implements Editor{
 
     protected File currentFile;
     private boolean isSaved;
+    private boolean isOpen;
 
     private static final Logger LOGGER = Logger.getLogger(FileEditor.class.getName());
 
     protected FileEditor(File file) {
+        if(file == null){
+            file = createTempFile();
+        }
+        assert  file.exists();
+        assert  file.isFile();
+
         this.currentFile = file;
         isSaved = true;
+        isOpen = true;
         EditorHandler.addEditor(this);
-    }
-
-
-
-    public void updateTitle() {
-        if (currentFile != null) {
-            setTitle(currentFile.getName() + (isSaved ? "" : " *"));
-        } else {
-            setTitle("untitled" + (isSaved ? "" : " *"));
-        }
     }
 
     public final boolean isSaved() {
@@ -63,36 +58,34 @@ public abstract class FileEditor extends UserPane {
 
     protected void setSaved(boolean val) {
         isSaved = val;
-        updateTitle();
+        setTitle(currentFile.getName() + (isSaved ? "" : " *"));
     }
 
+    /**
+     *
+     * @return returns weather this editor has been closed or kept open
+     */
     @Override
     public boolean close() {
 
         if (isSaved) {
-            EditorHandler.removeEditor(this);
+            isOpen = false;
             return true;
         }
-        int choice;
-        if (currentFile != null) {
-            choice = BaseComputerArchitecture.createWarningQuestion("Warning", currentFile.getName() + " is modified, would you like to save?");
-        } else {
-            choice = BaseComputerArchitecture.createWarningQuestion("Warning", "untitled" + " is modified, would you like to save?");
-        }
+        int choice = BaseComputerArchitecture.createWarningQuestion(
+                "Warning", currentFile.getName() + " is modified, would you like to save?");
 
         switch (choice) {
             case JOptionPane.YES_OPTION:
                 if (save()) {
-                    EditorHandler.removeEditor(this);
-                    Preference.removeAllObserversLinkedToObject(this);
+                    isOpen = false;
                     closeP();
                     return true;
                 } else {
                     return false;
                 }
             case JOptionPane.NO_OPTION:
-                EditorHandler.removeEditor(this);
-                Preference.removeAllObserversLinkedToObject(this);
+                isOpen = false;
                 closeP();
                 return true;
             case JOptionPane.CANCEL_OPTION:
@@ -106,26 +99,14 @@ public abstract class FileEditor extends UserPane {
         return currentFile;
     }
 
-    @Deprecated
-    public final File getFalseFile() {
-        if (currentFile != null) {
-            return currentFile;
-        } else {
-            File temp = createTempFile(getName(), ".asm");
-            FileUtils.saveByteArrayToFileSafe(getDataAsBytes(), temp);
-            return temp;
-        }
-    }
-
-    protected final File createTempFile(String prefix, String suffix) {
+    protected File createTempFile(){
         try {
-            File file = Files.createTempFile(prefix, suffix).toFile();
-            file.deleteOnExit();
-            return file;
-        } catch (IOException ex) {
-            LOGGER.log(Level.SEVERE, "Failed to create temporary file", ex);
+            return Files.createTempFile("hmm", "hmm").toFile();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return null;
+        throw new NotImplementedException();
+        //return FileUtils.createTempFile();
     }
 
     public boolean save() {
@@ -133,47 +114,13 @@ public abstract class FileEditor extends UserPane {
             return true;
         }
 
-        if (currentFile == null) {
-
-            UserPaneTabbedPane.setSelectedUserPane(this);
-            EditorHandler.setLastFocused(this);
-            JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
-            int returnVal = fc.showOpenDialog(MainGUI_old.getFrame());
-
-            if (returnVal == JFileChooser.FILES_ONLY) {
-                currentFile = fc.getSelectedFile();
-                if (currentFile == null) {
-                    isSaved = false;
-                    return false;
-                }
-            } else {
-                isSaved = false;
-                return false;
-            }
-        }
-        if (currentFile.isDirectory()) {
-            isSaved = false;
+        try {
+            Files.write(currentFile.toPath(), getDataAsBytes());
             return false;
+        }catch (Exception e){
+            LOGGER.log(Level.WARNING, "Failed to save file: " + currentFile.getAbsolutePath() , e);
+            return true;
         }
-        isSaved = FileUtils.saveByteArrayToFileSafe(getDataAsBytes(), currentFile);
-        return isSaved;
-
-    }
-
-    public final boolean saveAs() {
-        UserPaneTabbedPane.setSelectedUserPane(this);
-        EditorHandler.setLastFocused(this);
-        JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
-        int returnVal = fc.showOpenDialog(MainGUI_old.getFrame());
-
-        if (returnVal == JFileChooser.FILES_ONLY) {
-            currentFile = fc.getSelectedFile();
-            if (currentFile != null) {
-                isSaved = FileUtils.saveByteArrayToFileSafe(getDataAsBytes(), currentFile);
-                return isSaved;
-            }
-        }
-        return false;
     }
 
     protected void closeP(){}

@@ -15,10 +15,11 @@
  */
 package org.parker.assembleride.gui.docking.userpanes.editor;
 
+import org.parker.assembleride.gui.ToolBar;
 import org.parker.assembleride.gui.docking.UserPaneTabbedPane;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  *
@@ -26,11 +27,11 @@ import java.util.ArrayList;
  */
 public class EditorHandler {
 
-    private static final ArrayList<FileEditor> editors = new ArrayList<FileEditor>();
+    private static final Map<File, FileEditor> availableEditors = new WeakHashMap<>();
     private static FileEditor lastFoucsed;
 
     public static boolean isAllSaved() {
-        for (FileEditor e : editors) {
+        for (FileEditor e : availableEditors.values()) {
             if (!e.isSaved()) {
                 return false;
             }
@@ -41,16 +42,10 @@ public class EditorHandler {
     public static boolean saveAll() {
         boolean allSaved = true;
 
-        for (FileEditor e : editors) {
+        for (FileEditor e : availableEditors.values()) {
             allSaved &= e.save();
         }
         return allSaved;
-    }
-
-    public static void saveAsAll() {
-        for (FileEditor e : editors) {
-            e.saveAs();
-        }
     }
 
     public static boolean saveLastFocused() {
@@ -61,26 +56,8 @@ public class EditorHandler {
         }
     }
 
-    public static void saveAsLastFocused() {
-        if (lastFoucsed != null) {
-            lastFoucsed.saveAs();
-        }
-    }
-
     public static void setLastFocused(FileEditor editor) {
         lastFoucsed = editor;
-    }
-
-    /**
-     *
-     * @return retuns must return a file that contains the data represented in
-     * the editor
-     */
-    public static File getFalseFileFromLastFocused() {
-        if (lastFoucsed != null) {
-            return lastFoucsed.getFalseFile();
-        }
-        return null;
     }
 
     public static FileEditor getLastFocused() {
@@ -88,40 +65,44 @@ public class EditorHandler {
     }
 
     public static final void addEditor(FileEditor editor) {
-        if(editors.contains(editor)){
+        if(availableEditors.values().contains(editor)){
             return;
         }
-        editors.add(editor);
+        availableEditors.put(editor.getFile(), editor);
         UserPaneTabbedPane.addUserPane(editor);
         lastFoucsed = editor;
     }
 
     public static final boolean isFileOpen(File file){
-        if(file != null) {
-            String afp = file.getAbsolutePath();
-            for (FileEditor e : editors) {
-                if(e.getFile() != null) {
-                    if (e.getFile().getAbsolutePath().equals(afp)) {
-                        return true;
-                    }
-                }
-            }
+        //if(file != null) {
+        //    String afp = file.getAbsolutePath();
+        //    for (FileEditor e : editors) {
+        //        if(e.getFile() != null) {
+        //            if (e.getFile().getAbsolutePath().equals(afp)) {
+        //                return true;
+        //            }
+        //        }
+        //    }
+        //}
+        if(availableEditors.containsKey(file)){
+            return true;//availableEditors.get(file).isOpen();
         }
         return false;
     }
 
+    @Deprecated
     public static final void removeEditor(FileEditor editor) {
-        editors.remove(editor);
-        UserPaneTabbedPane.removeUserPane(editor);
-        if (lastFoucsed == editor) {
-            lastFoucsed = null;
-        }
+        //editors.remove(editor);
+        //UserPaneTabbedPane.removeUserPane(editor);
+        //if (lastFoucsed == editor) {
+        //   lastFoucsed = null;
+        //}
     }
 
     public static void switchCurrentViewToFile(File file) {
         if(isFileOpen(file)){
             String afp = file.getAbsolutePath();
-            for(FileEditor e: editors){
+            for(FileEditor e: availableEditors.values()){
                 if(e.getFile() != null){
                     if(e.getFile().getAbsolutePath().equals(afp)){
                         setLastFocused(e);
@@ -133,7 +114,7 @@ public class EditorHandler {
     }
 
     public static FileEditor getEditorFromFile(File file) {
-        for(FileEditor editor: editors){
+        for(FileEditor editor: availableEditors.values()){
             if(editor.getFile() != null) {
                 if (editor.getFile().equals(file)) {
                     return editor;

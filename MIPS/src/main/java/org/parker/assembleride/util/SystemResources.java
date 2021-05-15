@@ -34,8 +34,7 @@ import static org.parker.assembleride.util.FileUtils.FILE_SEPARATOR;
  *
  * @author parke
  */
-public class ResourceHandler {
-    //public static final String documentsPath = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
+public class SystemResources {
     public static final String DEFAULT_PATH = FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + FILE_SEPARATOR + "MIPS";
 
     public static final String DEFAULT_PROJECTS_PATH = DEFAULT_PATH + FILE_SEPARATOR + "Projects";
@@ -47,7 +46,7 @@ public class ResourceHandler {
     //Config and related resources
     public static final String CONFIG_PATH = DEFAULT_PATH + FILE_SEPARATOR + "Config";
     public static final String USER_SAVED_CONFIG_PATH = CONFIG_PATH + FILE_SEPARATOR + "UserSavedConfig";
-    public static final String DEFAULT_PERFERENCE_FILE = ResourceHandler.CONFIG_PATH + FILE_SEPARATOR + "Preferences.yml";
+    public static final String DEFAULT_PREFERENCE_FILE = SystemResources.CONFIG_PATH + FILE_SEPARATOR + "Preferences.yml";
 
     //Themes and realted resources
     public static final String THEME_PATH = DEFAULT_PATH + FILE_SEPARATOR + "Themes";
@@ -56,14 +55,14 @@ public class ResourceHandler {
 
     //Header and related resources
     public static final String STANDARD_HEADER_PATH = DEFAULT_PATH + FILE_SEPARATOR + "StandardHeaderFiles";
-    public static final String SYS_CALL_DEF_HEADER_FILE = ResourceHandler.STANDARD_HEADER_PATH + FILE_SEPARATOR + "syscalldef.asm";
-    public static final String REG_DEF_HEADER_FILE = ResourceHandler.STANDARD_HEADER_PATH + FILE_SEPARATOR + "regdef.asm";
+    public static final String SYS_CALL_DEF_HEADER_FILE = SystemResources.STANDARD_HEADER_PATH + FILE_SEPARATOR + "syscalldef.asm";
+    public static final String REG_DEF_HEADER_FILE = SystemResources.STANDARD_HEADER_PATH + FILE_SEPARATOR + "regdef.asm";
 
     //Logging
     public static final String LOG_PATH = DEFAULT_PATH + FILE_SEPARATOR + "Log";
     public static final String LASTES_LOG = LOG_PATH + FILE_SEPARATOR + "latest.xml";
 
-    private final static Logger LOGGER = Logger.getLogger(ResourceHandler.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(SystemResources.class.getName());
 
     public static boolean extractResources() {
 
@@ -100,18 +99,6 @@ public class ResourceHandler {
         return temp;
     }
 
-    public static JFileChooser createFileChooser() {
-        return new JFileChooser();
-    }
-
-    public static JFileChooser createFileChooser(String currentPath) {
-        return new JFileChooser(currentPath);
-    }
-
-    public static int openFileChooser(JFileChooser fc) {
-        return fc.showOpenDialog(MainGUI_old.getFrame());
-    }
-
     private static boolean createDirectory(String path) {
         File dir = new File(path);
         if (!dir.exists()) {
@@ -125,7 +112,7 @@ public class ResourceHandler {
 
         LOGGER.log(Level.CONFIG, "Started extraction of Resources: " + jarPath + " to Dest: " + destPath);
 
-        String protocol = ResourceHandler.class.getResource("").getProtocol();
+        String protocol = SystemResources.class.getResource("").getProtocol();
         if (Objects.equals(protocol, "jar")) { //run in jar
 
             try {

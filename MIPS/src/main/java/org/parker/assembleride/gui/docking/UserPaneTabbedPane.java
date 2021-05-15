@@ -25,7 +25,10 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.util.function.BiConsumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static com.formdev.flatlaf.FlatClientProperties.TABBED_PANE_TAB_CLOSABLE;
 import static com.formdev.flatlaf.FlatClientProperties.TABBED_PANE_TAB_CLOSE_CALLBACK;
@@ -35,7 +38,9 @@ import static com.formdev.flatlaf.FlatClientProperties.TABBED_PANE_TAB_CLOSE_CAL
  * @author parke
  */
 public class UserPaneTabbedPane extends javax.swing.JPanel {
-    
+
+    private static Logger LOGGER = Logger.getLogger(UserPaneTabbedPane.class.getName());
+
     public static void addUserPane(UserPane userPane) {
         jTabbedPane1.add(userPane);
         jTabbedPane1.setSelectedComponent(userPane);
@@ -49,7 +54,9 @@ public class UserPaneTabbedPane extends javax.swing.JPanel {
     public static void setSelectedUserPane(UserPane userPane) {
         jTabbedPane1.setSelectedComponent(userPane);
     }
-    
+
+
+
     public UserPaneTabbedPane() {
         initComponents();
         

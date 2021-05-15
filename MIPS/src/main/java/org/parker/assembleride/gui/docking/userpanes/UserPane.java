@@ -19,9 +19,10 @@ import javax.swing.*;
 
 public abstract class UserPane extends javax.swing.JPanel {
 
-    private JLabel title = new JLabel();
+    protected final JLabel title;
 
     public UserPane(){
+        this.title = createTitleLabel();
     }
 
     public abstract boolean close();
@@ -33,14 +34,19 @@ public abstract class UserPane extends javax.swing.JPanel {
      */
     public void update(){}
 
-    protected final void setTitle(String title){
-        this.title.setText(title);
-    }
-    public final String getTitle(){
-        return this.title.getText();
+    /**
+     * Creates an instance of JLabel that will be used as the Panes label
+     *
+     * @return returns the instance of the created JLabel
+     */
+    protected JLabel createTitleLabel(){
+        return new JLabel();
     }
     public final JLabel getTitleLabel(){
         return this.title;
     }
 
+    protected void setTitle(String title){
+        this.title.setText(title);
+    }
 }

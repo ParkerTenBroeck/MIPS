@@ -37,7 +37,6 @@ public abstract class TextEditor extends FileEditor {
         @Override
         public void focusGained(FocusEvent fe) {
             EditorHandler.setLastFocused(parent);
-            updateTitle();
         }
 
         @Override

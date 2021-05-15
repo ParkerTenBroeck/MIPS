@@ -23,7 +23,8 @@ import com.formdev.flatlaf.extras.FlatInspector;
 import com.formdev.flatlaf.util.StringUtils;
 import com.formdev.flatlaf.util.SystemInfo;
 import org.parker.assembleride.core.SystemPreferences;
-import org.parker.assembleride.util.ResourceHandler;
+import org.parker.assembleride.gui.ui.SplitPaneWithZeroSizeDividerUI;
+import org.parker.assembleride.util.SystemResources;
 import org.parker.assembleride.util.SerializableFont;
 import org.parker.assembleride.preferences.Preference;
 
@@ -169,6 +170,7 @@ public class ThemeHandler {
 			}
 
 			// update all components
+			UIManager.getDefaults().put("SplitPaneUI", SplitPaneWithZeroSizeDividerUI.class.getName());
 			FlatLaf.updateUI();
 			FlatAnimatedLafChange.hideSnapshotWithAnimation();
 		});
@@ -180,7 +182,7 @@ public class ThemeHandler {
 		}
 
 		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setSelectedFile(new File(ResourceHandler.GUI_THEMES, themeInfo.resourceName));
+		fileChooser.setSelectedFile(new File(SystemResources.GUI_THEMES, themeInfo.resourceName));
 		if (fileChooser.showSaveDialog(SwingUtilities.windowForComponent(null)) != JFileChooser.APPROVE_OPTION) {
 			return;
 		}

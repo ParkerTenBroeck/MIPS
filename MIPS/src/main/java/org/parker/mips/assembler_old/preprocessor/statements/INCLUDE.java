@@ -30,6 +30,7 @@ public class INCLUDE extends Statement {
 
     }
 
+    @Deprecated
     public INCLUDE(UserLine line) {
         super(line);
 
@@ -38,7 +39,7 @@ public class INCLUDE extends Statement {
         if (path.contains(":")) {
 
         } else {
-            File file = EditorHandler.getFalseFileFromLastFocused();
+            File file = null;//EditorHandler.get();
             path = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf(FileUtils.FILE_SEPARATOR) + 1) + path;
         }
 

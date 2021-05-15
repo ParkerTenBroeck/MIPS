@@ -16,7 +16,7 @@
 package org.parker.mips.architecture.syscall;
 
 import org.parker.assembleride.gui.MainGUI_old;
-import org.parker.assembleride.util.ResourceHandler;
+import org.parker.assembleride.util.SystemResources;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -170,7 +170,7 @@ public class SystemCallPluginHandler {
     public static void regenerateStandardSysCallHeaderFile() {
         PrintWriter writer = null;
         try {
-            writer = new PrintWriter(ResourceHandler.SYS_CALL_DEF_HEADER_FILE, "UTF-8");
+            writer = new PrintWriter(SystemResources.SYS_CALL_DEF_HEADER_FILE, "UTF-8");
 
             for (SystemCallPlugin plugin : registeredSystemCallPlugins) {
 
@@ -219,9 +219,9 @@ public class SystemCallPluginHandler {
                 writer.println();
                 writer.println();
             }
-            LOGGER.log(Level.CONFIG, "Successfully wrote Standard System Call Header file to: " + ResourceHandler.SYS_CALL_DEF_HEADER_FILE + "\n");
+            LOGGER.log(Level.CONFIG, "Successfully wrote Standard System Call Header file to: " + SystemResources.SYS_CALL_DEF_HEADER_FILE + "\n");
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Error While writing the Standard System Call Header File to: " + ResourceHandler.SYS_CALL_DEF_HEADER_FILE + "\n", e);
+            LOGGER.log(Level.SEVERE, "Error While writing the Standard System Call Header File to: " + SystemResources.SYS_CALL_DEF_HEADER_FILE + "\n", e);
         }
         if(writer != null) {
             writer.close();

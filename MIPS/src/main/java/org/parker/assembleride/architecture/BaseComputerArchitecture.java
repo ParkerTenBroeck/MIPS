@@ -17,7 +17,6 @@ package org.parker.assembleride.architecture;
 
 import com.google.common.io.Files;
 import org.parker.assembleride.gui.MainGUI_2;
-import org.parker.assembleride.gui.MainGUI_old;
 import org.parker.assembleride.gui.ToolBar;
 import org.parker.assembleride.gui.docking.UserPaneTabbedPane;
 import org.parker.assembleride.gui.docking.userpanes.UserPane;
@@ -25,15 +24,15 @@ import org.parker.assembleride.gui.docking.userpanes.editor.EditorHandler;
 import org.parker.assembleride.gui.docking.userpanes.hexeditor.MemoryEditorUserPane;
 import org.parker.assembleride.plugin.base.PluginBase;
 import org.parker.assembleride.preferences.Preferences;
-import org.parker.assembleride.util.ResourceHandler;
+import org.parker.assembleride.util.SystemResources;
 import org.parker.mips.architecture.emulator.mips.EmulatorMemory;
 import org.parker.retargetableassembler.util.ByteMemory;
 import org.parker.assembleride.util.FileUtils;
 import org.parker.retargetableassembler.util.Memory;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.annotation.CheckForNull;
 import javax.swing.*;
-import javax.tools.Tool;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.ArrayList;
@@ -63,6 +62,11 @@ public abstract class BaseComputerArchitecture extends PluginBase implements Com
     @Override
     public final JFrame createGUI() {
         frameInstance = new MainGUI_2(this);
+        return frameInstance;
+    }
+
+    @Override
+    public JFrame getGUI() {
         return frameInstance;
     }
 
@@ -217,10 +221,34 @@ public abstract class BaseComputerArchitecture extends PluginBase implements Com
     @Deprecated
     public void saveEmulatorMemoryToFile() {
         this.stopEmulator();
-        JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
+        JFileChooser fc = new JFileChooser(SystemResources.DEFAULT_PROJECTS_PATH);
+        fc.setDialogType(JFileChooser.SAVE_DIALOG);
         int returnVal = fc.showOpenDialog(frameInstance);
-        if (returnVal == JFileChooser.FILES_ONLY) {
-            FileUtils.saveByteArrayToFileSafe(EmulatorMemory.getMemory(), fc.getSelectedFile());
+
+        File selected = fc.getSelectedFile();
+
+        if(returnVal == JFileChooser.CANCEL_OPTION){
+            return;
+        }
+
+        if(selected == null || !selected.exists()){
+            LOGGER.log(Level.WARNING, "Cannot save memory chosen file does not exist");
+            return;
+        }
+        if(selected.isDirectory()) {
+            LOGGER.log(Level.WARNING, "Cannot save memory chosen file is directory");
+            return;
+        }
+        if(!selected.canRead()){
+            LOGGER.log(Level.WARNING, "Cannot save memory chosen file cannot be read from");
+            return;
+        }
+
+        try{
+            throw new NotImplementedException();
+            //Files.write(getProcessorMemory(), fc.getSelectedFile());
+        }catch (Exception e){
+            LOGGER.log(Level.SEVERE, "Failed to save memory", e);
         }
     }
 
@@ -228,10 +256,13 @@ public abstract class BaseComputerArchitecture extends PluginBase implements Com
      * Calling this method will stop and reset the emulator. all contents of memory will be overridden with
      * the contents loaded from file
      */
+    @Deprecated
     public void loadEmulatorMemoryFromFile() {
         this.stopEmulator();
-        JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
+        JFileChooser fc = new JFileChooser(SystemResources.DEFAULT_PROJECTS_PATH);
+        fc.setDialogType(JFileChooser.OPEN_DIALOG);
         int returnVal = fc.showOpenDialog(frameInstance);
+
         File selected = fc.getSelectedFile();
 
         if(returnVal == JFileChooser.CANCEL_OPTION){
@@ -243,7 +274,7 @@ public abstract class BaseComputerArchitecture extends PluginBase implements Com
             return;
         }
         if(selected.isDirectory()) {
-            LOGGER.log(Level.WARNING, "Cannot load memory chosen file does not exist");
+            LOGGER.log(Level.WARNING, "Cannot load memory chosen file is directory");
             return;
         }
         if(!selected.canWrite()){
@@ -259,6 +290,10 @@ public abstract class BaseComputerArchitecture extends PluginBase implements Com
         }
         this.setEmulatorMemory(data);
         this.resetEmulator();
+    }
+
+    public File createTempFile() {
+        throw new NotImplementedException();
     }
 
     //static

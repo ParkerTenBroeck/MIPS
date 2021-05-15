@@ -41,6 +41,9 @@ public class PluginDescription {
     public PluginDescription(Map<String, Object> map) throws InvalidDescriptionException {
         try {
             this.NAME = map.get("name").toString();
+            if(!NAME.matches("(([a-zA-Z_])([a-zA-Z1-9_])*)")){
+                throw new InvalidDescriptionException("Plugin name is invalid can only contain alphanumeric characters and underscores and start with a-z | A-Z | _");
+            }
         } catch (Exception e) {
             throw new InvalidDescriptionException("Cannot load plugin name");
         }

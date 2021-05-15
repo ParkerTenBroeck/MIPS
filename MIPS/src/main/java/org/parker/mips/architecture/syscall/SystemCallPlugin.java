@@ -23,6 +23,7 @@ import org.parker.assembleride.plugin.base.PluginBase;
 import org.parker.assembleride.plugin.base.PluginClassLoader;
 import org.parker.mips.architecture.emulator.mips.Emulator;
 import org.parker.mips.architecture.emulator.mips.Registers;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -208,8 +209,9 @@ public abstract class SystemCallPlugin extends PluginBase {
 
             	InputStream stream = CLASS_LOADER.getResourceAsStream(resources);
             	byte[] bytes = FileUtils.loadStreamAsByteArray(stream);
-                new FormattedTextEditor(bytes);
+                //new FormattedTextEditor(bytes);
             	//Editor.createEditor(bytes, null, FormattedTextEditor.class);
+                throw new NotImplementedException();
 
             }catch(Exception e) {
             	

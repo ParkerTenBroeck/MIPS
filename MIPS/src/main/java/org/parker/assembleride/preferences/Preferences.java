@@ -16,7 +16,7 @@
 package org.parker.assembleride.preferences;
 
 import org.parker.assembleride.util.FileUtils;
-import org.parker.assembleride.util.ResourceHandler;
+import org.parker.assembleride.util.SystemResources;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.introspector.BeanAccess;
@@ -41,8 +41,8 @@ public class Preferences {
 
 
     public static void readPreferencesFromDefaultFile() {
-        if(new File(ResourceHandler.DEFAULT_PERFERENCE_FILE).exists()) {
-            loadPreferencesFromFile(ResourceHandler.DEFAULT_PERFERENCE_FILE);
+        if(new File(SystemResources.DEFAULT_PREFERENCE_FILE).exists()) {
+            loadPreferencesFromFile(SystemResources.DEFAULT_PREFERENCE_FILE);
         }else{
             LOGGER.log(Level.WARNING, "Preferences file not found, default preferences will be used");
             try {
@@ -54,15 +54,15 @@ public class Preferences {
     }
 
     public static void savePreferencesToDefaultFile() {
-        savePreferencesToFile(ResourceHandler.DEFAULT_PERFERENCE_FILE);
+        savePreferencesToFile(SystemResources.DEFAULT_PREFERENCE_FILE);
     }
 
     public static void readPreferencesFromName(String name) {
-        loadPreferencesFromFile(ResourceHandler.USER_SAVED_CONFIG_PATH + FileUtils.FILE_SEPARATOR + name + ".yml");
+        loadPreferencesFromFile(SystemResources.USER_SAVED_CONFIG_PATH + FileUtils.FILE_SEPARATOR + name + ".yml");
     }
 
     public static void savePreferencesToName(String name) {
-        savePreferencesToFile(ResourceHandler.USER_SAVED_CONFIG_PATH + FileUtils.FILE_SEPARATOR + name + ".yml");
+        savePreferencesToFile(SystemResources.USER_SAVED_CONFIG_PATH + FileUtils.FILE_SEPARATOR + name + ".yml");
     }
 
     public static void savePreferencesToFile(String path){

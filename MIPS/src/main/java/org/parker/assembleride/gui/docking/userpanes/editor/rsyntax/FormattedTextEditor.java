@@ -24,7 +24,7 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 import org.parker.assembleride.core.SystemPreferences;
 import org.parker.assembleride.gui.docking.userpanes.editor.TextEditor;
 import org.parker.assembleride.util.FileUtils;
-import org.parker.assembleride.util.ResourceHandler;
+import org.parker.assembleride.util.SystemResources;
 
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
@@ -72,25 +72,13 @@ public class FormattedTextEditor extends TextEditor {
             textArea.addFocusListener(fl);
         }
 
-        if (file != null) {
-            this.textArea.setText(FileUtils.loadFileAsString(file));
-        }
+        this.textArea.setText(FileUtils.loadFileAsString(file));
 
-        this.updateTitle();
-    }
-
-    public FormattedTextEditor(byte[] textBody){
-        this((File)null);
-        this.textArea.setText(new String(textBody));
-    }
-
-    public FormattedTextEditor(){
-        this((File)null);
     }
 
     public final void setTheme(String name) {
         try {
-            InputStream in = new FileInputStream(ResourceHandler.EDITOR_THEMES + FileUtils.FILE_SEPARATOR + name + ".xml");
+            InputStream in = new FileInputStream(SystemResources.EDITOR_THEMES + FileUtils.FILE_SEPARATOR + name + ".xml");
             Theme theme = Theme.load(in);
             theme.apply(textArea);
         } catch (Exception e) {
@@ -180,7 +168,7 @@ public class FormattedTextEditor extends TextEditor {
         try {
             textArea.removeAllLineHighlights();
             textArea.addLineHighlight(lineNumber, new Color(200, 0, 0, 128));
-
+            //textArea.getHighlighter().addHighlight();
 
             int height = scrollPane.getVisibleRect().height;
             int yPos = clamp(textArea.yForLine(lineNumber) - (height / 2), 0, scrollPane.getVerticalScrollBar().getMaximum() - height);

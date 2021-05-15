@@ -47,4 +47,9 @@ public abstract class PluginBase implements Plugin {
 
         this.LOGGER = new PluginLogger(this);
     }
+
+    @Override
+    public PluginDescription getPluginDescription() {
+        return DESCRIPTION;
+    }
 }

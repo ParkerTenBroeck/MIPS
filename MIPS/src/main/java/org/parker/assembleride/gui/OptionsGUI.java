@@ -22,9 +22,10 @@ import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.ui.FlatUIUtils;
 import com.formdev.flatlaf.util.UIScale;
+import org.parker.assembleride.architecture.ArchitecturePluginHandler;
+import org.parker.assembleride.util.SystemResources;
 import org.parker.mips.architecture.MipsArchitecture;
 import org.parker.assembleride.core.SystemPreferences;
-import org.parker.assembleride.util.ResourceHandler;
 import org.parker.assembleride.gui.theme.IJThemeInfo;
 import org.parker.assembleride.gui.theme.IJThemesManager;
 import org.parker.assembleride.util.SerializableFont;
@@ -112,8 +113,9 @@ public class OptionsGUI extends javax.swing.JFrame {
 
 		// Others
 		this.loadOptionsButton.addActionListener((ae) -> {
-			JFileChooser fc = ResourceHandler.createFileChooser(ResourceHandler.USER_SAVED_CONFIG_PATH);
-			int val = ResourceHandler.openFileChooser(fc);
+			JFileChooser fc = new JFileChooser(SystemResources.USER_SAVED_CONFIG_PATH);
+			fc.setDialogType(JFileChooser.OPEN_DIALOG);
+			int val = fc.showOpenDialog(ArchitecturePluginHandler.getCurrentArchitecture().getGUI());
 
 			if (JFileChooser.APPROVE_OPTION == val) {
 				Preferences.loadPreferencesFromFile(fc.getSelectedFile());
@@ -121,8 +123,9 @@ public class OptionsGUI extends javax.swing.JFrame {
 		});
 
 		this.saveCurrentOptionsButton.addActionListener((ae) -> {
-			JFileChooser fc = ResourceHandler.createFileChooser(ResourceHandler.USER_SAVED_CONFIG_PATH);
-			int val = ResourceHandler.openFileChooser(fc);
+			JFileChooser fc = new JFileChooser(SystemResources.USER_SAVED_CONFIG_PATH);
+			fc.setDialogType(JFileChooser.SAVE_DIALOG);
+			int val = fc.showOpenDialog(ArchitecturePluginHandler.getCurrentArchitecture().getGUI());
 
 			if (JFileChooser.APPROVE_OPTION == val) {
 				Preferences.savePreferencesToFile(fc.getSelectedFile());
@@ -422,7 +425,7 @@ public class OptionsGUI extends javax.swing.JFrame {
 		});
 
 		{// loads list of available themes
-			File file = new File(ResourceHandler.EDITOR_THEMES);
+			File file = new File(SystemResources.EDITOR_THEMES);
 			File[] files = file.listFiles();
 			if (files != null) {
 

@@ -15,9 +15,12 @@
  */
 package org.parker.assembleride.architecture;
 
+import org.parker.assembleride.plugin.base.Plugin;
+import org.parker.assembleride.plugin.base.PluginDescription;
+
 import javax.swing.*;
 
-public interface ComputerArchitecture{
+public interface ComputerArchitecture extends Plugin {
 
     void onLoad();
     void requestSystemExit();
@@ -28,4 +31,5 @@ public interface ComputerArchitecture{
     }
 
     JFrame createGUI();
+    JFrame getGUI();
 }

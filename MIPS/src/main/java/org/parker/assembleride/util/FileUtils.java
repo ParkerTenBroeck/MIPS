@@ -16,6 +16,7 @@
 package org.parker.assembleride.util;
 
 import org.parker.assembleride.gui.MainGUI_old;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.swing.*;
 import java.io.*;
@@ -37,35 +38,6 @@ public class FileUtils {
     public static final char EXTENSION_SEPARATOR = '.';
 
     private final static Logger LOGGER = Logger.getLogger(FileUtils.class.getName());
-
-
-    public static void saveStringToFileSafe(File file, String string) {
-        if (file == null) {
-            return;
-        }
-        file.delete();
-        FileWriter f2 = null;
-        try {
-            f2 = new FileWriter(file, false);
-            f2.write(string);
-            f2.close();
-            LOGGER.log(Level.FINE, "Saved file to: " + file.getAbsolutePath());
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "unable to write String to File: " + ((file!= null) ? "" : file.getAbsolutePath()), e);
-        }finally {
-            try {
-                f2.flush();
-            }catch(Exception e){
-
-            }
-            try {
-                f2.close();
-            }catch(Exception e){
-
-            }
-        }
-
-    }
 
     public static byte[] loadFileAsByteArraySafe(File file) {
         try {
@@ -94,55 +66,6 @@ public class FileUtils {
             LOGGER.log(Level.SEVERE, "Cannot save File: " + ((file!= null) ? "" : file.getAbsolutePath()), e);
         }
         return false;
-    }
-
-    public static byte[] importMXFile(File file) {
-
-        try {
-            List<String> allLines = Files.readAllLines(file.toPath());
-            byte[] tempBytes = new byte[allLines.size() * 4];
-            for (int i = 0; i < allLines.size(); i++) {
-
-                int num = Integer.parseUnsignedInt(allLines.get(i), 2);
-
-                tempBytes[(i * 4)] = (byte) (num >> 24);
-                tempBytes[(i * 4) + 1] = (byte) (num >> 16);
-                tempBytes[(i * 4) + 2] = (byte) (num >> 8);
-                tempBytes[(i * 4) + 3] = (byte) num;
-
-            }
-            LOGGER.log(Level.FINE, "Imported MXN File: " + file.getAbsolutePath());
-            return tempBytes;
-
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Failed to import MX File: " + ((file!= null) ? "" : file.getAbsolutePath()),e);
-        }
-        return new byte[0];
-    }
-
-    public static File openUserSelectedFile() {
-
-        final JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
-        int returnVal = fc.showOpenDialog(MainGUI_old.getFrame());
-
-        //System.out.println(returnVal);
-        if (returnVal != 0) {
-            return null;
-        }
-
-        if (fc.getSelectedFile() == null || !fc.getSelectedFile().exists()) {
-            return null;
-        }
-        return fc.getSelectedFile();
-    }
-
-    public static byte[] readFileAsByteArray(File file) {
-        try {
-            return Files.readAllBytes(file.toPath());
-        } catch (Exception ex) {
-            Logger.getLogger(FileUtils.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return new byte[0];
     }
 
     public static ArrayList<String> loadFileAsStringList(File file) {
@@ -226,9 +149,6 @@ public class FileUtils {
             return -1;
         }
         return filename.lastIndexOf(FILE_SEPARATOR);
-        //int lastUnixPos = filename.lastIndexOf(UNIX_SEPARATOR);
-        //int lastWindowsPos = filename.lastIndexOf(WINDOWS_SEPARATOR);
-        //return Math.max(lastUnixPos, lastWindowsPos);
     }
 
 	public static byte[] loadStreamAsByteArray(InputStream stream) {
@@ -251,4 +171,9 @@ public class FileUtils {
 		}
 		return null;
 	}
+
+	public static File createTempSystemFile(){
+        //return Files.createTempFile();
+        throw new NotImplementedException();
+    }
 }

@@ -25,4 +25,6 @@ public interface Plugin {
     void onLoad();
     
     void onUnload();
+
+    PluginDescription getPluginDescription();
 }

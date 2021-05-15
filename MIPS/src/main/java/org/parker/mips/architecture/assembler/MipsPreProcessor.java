@@ -15,7 +15,7 @@
  */
 package org.parker.mips.architecture.assembler;
 
-import org.parker.assembleride.util.ResourceHandler;
+import org.parker.assembleride.util.SystemResources;
 import org.parker.retargetableassembler.base.preprocessor.BaseExpressionCompiler;
 import org.parker.retargetableassembler.base.preprocessor.BasePreProcessor;
 import org.parker.retargetableassembler.util.ExpressionCompiler;
@@ -32,9 +32,9 @@ public class MipsPreProcessor extends BasePreProcessor<MipsAssembler> {
     public MipsPreProcessor(MipsAssembler assembler) {
         super(assembler);
 
-        preprocess(new File(ResourceHandler.REG_DEF_HEADER_FILE));
+        preprocess(new File(SystemResources.REG_DEF_HEADER_FILE));
         preDefinedValues.putAll(definedValues);
-        preprocess(new File(ResourceHandler.SYS_CALL_DEF_HEADER_FILE));
+        preprocess(new File(SystemResources.SYS_CALL_DEF_HEADER_FILE));
         preDefinedValues.putAll(definedValues);
     }
 

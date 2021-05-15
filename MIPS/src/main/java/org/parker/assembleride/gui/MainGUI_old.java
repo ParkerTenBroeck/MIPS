@@ -35,7 +35,7 @@ import org.parker.assembleride.gui.theme.ThemeHandler;
 import org.parker.assembleride.log.LogPanel;
 import org.parker.assembleride.util.DesktopBrowser;
 import org.parker.assembleride.util.FileUtils;
-import org.parker.assembleride.util.ResourceHandler;
+import org.parker.assembleride.util.SystemResources;
 import org.parker.assembleride.util.UpdateHandler;
 
 import javax.swing.*;
@@ -137,10 +137,6 @@ public class MainGUI_old extends javax.swing.JFrame {
             assert url != null;
             ImageIcon icon = new ImageIcon(url);
             this.setIconImage(icon.getImage());
-            //new SVGUniverse()
-
-            //this.setIconImage(new FlatSVGIcon("Images/Icons/SVG/logo4.svg", 255, 255).getImage());
-
             aboutButton.setIcon(new FlatSVGIcon("Images/Icons/PNG/informationDialog.svg", (int) (aboutButton.getWidth() / 1.5), (int) (aboutButton.getHeight() / 1.5)));
             //aboutLinkedFile.setIcon(new FlatSVGIcon("images/informationDialog.svg", (int) (aboutLinkedFile.getWidth() / 1.5), (int) (aboutLinkedFile.getHeight() / 1.5)));
         } catch (Exception e) {
@@ -227,7 +223,7 @@ public class MainGUI_old extends javax.swing.JFrame {
                 //}
             };
 
-            for (Component comp : Objects.requireNonNull(generateJMenuFromFile(new File(ResourceHandler.EXAMPLES_PATH), al)).getMenuComponents()) {
+            for (Component comp : Objects.requireNonNull(generateJMenuFromFile(new File(SystemResources.EXAMPLES_PATH), al)).getMenuComponents()) {
                 MainGUI_old.exampleMenu.add(comp);
             }
 
@@ -841,7 +837,7 @@ public class MainGUI_old extends javax.swing.JFrame {
 
 
     private void openMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuButtonActionPerformed
-        JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
+        JFileChooser fc = new JFileChooser(SystemResources.DEFAULT_PROJECTS_PATH);
         int returnVal = fc.showOpenDialog(MainGUI_old.getFrame());
 
         if (returnVal != JFileChooser.FILES_AND_DIRECTORIES) {
@@ -855,14 +851,15 @@ public class MainGUI_old extends javax.swing.JFrame {
         EditorHandler.saveLastFocused();
     }//GEN-LAST:event_saveMenuButtonActionPerformed
 
+    @Deprecated
     private void saveAsMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsMenuButtonActionPerformed
-        EditorHandler.saveAsLastFocused();
+        //EditorHandler.saveAsLastFocused();
     }//GEN-LAST:event_saveAsMenuButtonActionPerformed
 
     @Deprecated
     private void saveMemoryButtonActionPreformed(java.awt.event.ActionEvent evt) {
         bca.stopEmulator();
-    	JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
+    	JFileChooser fc = new JFileChooser(SystemResources.DEFAULT_PROJECTS_PATH);
         int returnVal = fc.showSaveDialog(MainGUI_old.getFrame());
         if (returnVal == JFileChooser.FILES_ONLY) {
             FileUtils.saveByteArrayToFileSafe(EmulatorMemory.getMemory(), fc.getSelectedFile());
@@ -872,7 +869,7 @@ public class MainGUI_old extends javax.swing.JFrame {
     @Deprecated
     private void loadMemoryButtonActionPreformed(java.awt.event.ActionEvent evt) {
         bca.stopEmulator();
-    	JFileChooser fc = new JFileChooser(ResourceHandler.DEFAULT_PROJECTS_PATH);
+    	JFileChooser fc = new JFileChooser(SystemResources.DEFAULT_PROJECTS_PATH);
         int returnVal = fc.showOpenDialog(MainGUI_old.getFrame());
         //if (returnVal == JFileChooser.FILES_ONLY) {
         File selected = fc.getSelectedFile();
@@ -904,8 +901,9 @@ public class MainGUI_old extends javax.swing.JFrame {
         bca.resetEmulator();
     }
 
+    @Deprecated
     private void newMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newMenuButtonActionPerformed
-        new FormattedTextEditor();
+        //new FormattedTextEditor();
     }
 
     private void asciiChartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asciiChartButtonActionPerformed
@@ -918,7 +916,7 @@ public class MainGUI_old extends javax.swing.JFrame {
 
     private void documentationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_documentationButtonActionPerformed
         try {
-            DesktopBrowser.openLinkInBrowser(ResourceHandler.DOCUMENTATION_PATH + FileUtils.FILE_SEPARATOR + "index.html");
+            DesktopBrowser.openLinkInBrowser(SystemResources.DOCUMENTATION_PATH + FileUtils.FILE_SEPARATOR + "index.html");
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Cannot open desktop browser", ex);
         }
