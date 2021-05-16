@@ -72,6 +72,8 @@ public class PluginClassLoader extends URLClassLoader {
             throw new InvalidPluginException("No Valid public constructor for plugin: " + file.getAbsolutePath() + ":->" + yamlPath, ex);
         } catch (InstantiationException ex) {
             throw new InvalidPluginException("Abnormal plugin type: " + file.getAbsolutePath() + ":->" + yamlPath, ex);
+        } catch (NoClassDefFoundError ex){
+            throw new InvalidPluginException("Plugin Class not defined: " + file.getAbsolutePath() + ":->" + yamlPath, ex);
         }
     }
 

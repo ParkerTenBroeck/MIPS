@@ -17,10 +17,16 @@ package org.parker.assembleride.architecture;
 
 
 import org.parker.assembleride.core.MIPS;
-import org.parker.assembleride.plugin.ArchitecturePluginLoader;
+import org.parker.assembleride.plugin.base.BasePluginLoader;
+import org.parker.assembleride.plugin.base.Plugin;
+import org.parker.assembleride.plugin.base.PluginClassLoader;
 import org.parker.assembleride.plugin.base.PluginDescription;
+import org.parker.assembleride.plugin.exceptions.InvalidDescriptionException;
+import org.parker.assembleride.plugin.exceptions.InvalidPluginException;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,13 +48,15 @@ public class ArchitecturePluginHandler {
             return;
         }
 
-        ca = (ComputerArchitecture) arcPlugin;
+        LOGGER.log(Level.FINE, "Initializing ");
+        ca = arcPlugin;
         try {
             ca.onLoad();
         }catch (Exception e){
             LOGGER.log(Level.SEVERE, "Error caused by Architecture Plugin on load", e);
         }
 
+        LOGGER.log(Level.FINE, "Creating GUI");
         try {
             ca.createGUI();
         }catch (Exception e){
@@ -56,7 +64,7 @@ public class ArchitecturePluginHandler {
         }
     }
 
-    public static void setToLoadDescription(PluginDescription description) {
+    private static void setToLoadDescription(PluginDescription description) {
         if(description != null){
             ArchitecturePluginHandler.description = description;
         }else{
@@ -75,7 +83,26 @@ public class ArchitecturePluginHandler {
         ca.requestSystemExit(sce);
     }
 
+
     public static ComputerArchitecture getCurrentArchitecture() {
         return ca;
     }
+
+    private static class ArchitecturePluginLoader extends BasePluginLoader {
+        @Override
+        protected PluginClassLoader createPluginLoader(File file, String yamlPath, Map<String, Object> loadedYaml, PluginDescription description, ClassLoader parent) throws MalformedURLException, InvalidDescriptionException, InvalidPluginException {
+            setToLoadDescription(description);
+            return new PluginClassLoader(file, yamlPath, loadedYaml, description, parent);
+        }
+
+        private static ComputerArchitecture loadPluginS(File file, String yaml) throws InvalidDescriptionException, InvalidPluginException {
+            Plugin p = new ArchitecturePluginLoader().loadPlugin(file, yaml);
+            if(!(p instanceof ComputerArchitecture)){
+                throw new InvalidPluginException("Cannot load ArchitecturePlugin, is instance of plugin but not of ComputerArchitecture");
+            }else{
+                return (ComputerArchitecture) p;
+            }
+        }
+    }
+
 }

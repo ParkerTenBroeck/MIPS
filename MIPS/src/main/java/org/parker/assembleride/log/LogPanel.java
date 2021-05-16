@@ -23,10 +23,9 @@ import org.parker.assembleride.preferences.Preference;
 import org.parker.mips.architecture.emulator.exceptions.RunTimeLevel;
 
 import javax.swing.*;
-import javax.swing.text.DefaultCaret;
-import javax.swing.text.Document;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
@@ -52,12 +51,18 @@ public class LogPanel extends javax.swing.JPanel {
     private static Color warningTextColor;
     private static Color messageTextColor;
 
-    {
-        availableLogPanels.add(this);
+    private final static StyledDocument document;
+
+    static{
+        document = new DefaultStyledDocument();
     }
 
     public LogPanel() {
         initLayout();
+    }
+
+    {
+        availableLogPanels.add(this);
     }
 
     @Override
@@ -78,10 +83,6 @@ public class LogPanel extends javax.swing.JPanel {
         }
     }
 
-    private static void logCustomMessage(String message, SimpleAttributeSet att) {
-        LogPanel.appendMessageToVirtualConsoleLog("[Message] " + message, att);
-    }
-
     private static void logCustomMessage(String message, boolean bold, boolean italic, boolean underline, Color color, String font) {
 	    SimpleAttributeSet att = new SimpleAttributeSet();
         StyleConstants.setForeground(att, color);
@@ -95,28 +96,12 @@ public class LogPanel extends javax.swing.JPanel {
     }
 
     private static void appendMessageToVirtualConsoleLog(String message, SimpleAttributeSet att) {
-        for(LogPanel logPane:availableLogPanels) {
-
-            Document doc = logPane.jTextPane1.getStyledDocument();
+        SwingUtilities.invokeLater(() -> {
             try {
-                doc.insertString(doc.getLength(), message + "\n", att);
+                document.insertString(document.getLength(), message + "\n", att);
             } catch (Exception ignore) {
-                //LogFrame.logError(LogFrame.getFullExceptionMessage(exc));
             }
-        }
-
-    }
-
-    private static void appendMessageToVirtualConsoleLog(String message){
-        for(LogPanel logPane:availableLogPanels) {
-
-            Document doc = logPane.jTextPane1.getStyledDocument();
-            try {
-                doc.insertString(doc.getLength(), message + "\n", null);
-            } catch (Exception ignore) {
-
-            }
-        }
+        });
     }
 
     private void initLayout() {
@@ -144,6 +129,14 @@ public class LogPanel extends javax.swing.JPanel {
 
         jScrollPane1 = new JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
+        //jTextPane1.setDocument(document);
+
+        jTextPane1.addHyperlinkListener(new HyperlinkListener() {
+            @Override
+            public void hyperlinkUpdate(HyperlinkEvent e) {
+                System.out.println(e);
+            }
+        });
         //jTextPane1.setBackground((Color) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.TEXT_AREA_BACKGROUND_2_PROPERTY_NAME));
         //jTextPane1.setFont((Font) ThemeHandler.getThemeObjectFromThemeName(ThemeHandler.GENERAL_TEXT_FONT_PROPERTY_NAME)); // NOI18N
         jTextPane1.setEditable(false);
@@ -184,6 +177,8 @@ public class LogPanel extends javax.swing.JPanel {
                 _max = _model.getMaximum();
             }
         });
+
+        jTextPane1.setStyledDocument(document);
 
     }// </editor-fold>
 

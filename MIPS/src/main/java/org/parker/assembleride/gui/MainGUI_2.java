@@ -140,7 +140,7 @@ public class MainGUI_2 extends JFrame {
         try {
             new FormattedTextEditor(null);
             throw new NotImplementedException();
-        }catch ( Exception ignore){
+        } catch (Exception ignore) {
 
         }
     }

@@ -40,8 +40,6 @@ public class MipsPreProcessorTest {
             mmap.put(f.getName().substring(0,FileUtils.indexOfExtension(f.getName())), te);
         }
 
-        //List<PreProcessedStatement> statements = pp.preprocess(new File("src/test/resources/MIPS/PreProcessor/If Directive Test.asm"));
-
         for(Map.Entry<String, com> c:mmap.entrySet()){
             List<PreProcessedStatement> a = pp.preprocess(c.getValue().a);
             List<PreProcessedStatement> s = pp.preprocess(c.getValue().s);
@@ -51,10 +49,6 @@ public class MipsPreProcessorTest {
                 Assert.assertEquals("fuck", a.get(i).toString(), s.get(i).toString());
             }
         }
-
-        //for(int i = 0; i < statements.size(); i ++){
-            //System.out.println(statements.get(i).toString());
-        //}
     }
 
 }
