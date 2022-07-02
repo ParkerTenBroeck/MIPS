@@ -70,7 +70,7 @@ public class UpdateHandler {
                 if (vc.v2PreReleseFlag) {
                     LOGGER.log(Level.WARNING,"You are using an unrelesed PreRelese there may be bugs or unexpected behavior goto. to upgrade to the latest stable version goto Options>Update");
                 } else {
-                    LOGGER.log(Level.WARNING,"You are using a inrelesed full relese there may be bugs and unexpected behavior goto Options>Update to get the latest stable relese");
+                    LOGGER.log(Level.WARNING,"You are using a unreleased version there may be bugs/unexpected behavior goto Options>Update to get the latest stable relese");
                 }
             }
 
@@ -116,9 +116,10 @@ public class UpdateHandler {
             }
         }
 
-        String[] run = {"java", "-jar", ResourceHandler.DEFAULT_PATH + FileUtils.FILE_SEPARATOR + "updater.jar", MIPS.JAR_PATH, latestVersionLink};
+        String[] run = {"java", "-jar", ResourceHandler.DEFAULT_PATH + FileUtils.FILE_SEPARATOR + "Updater.jar", MIPS.JAR_PATH, latestVersionLink};
         try {
-            Runtime.getRuntime().exec(run);
+            Process item =  Runtime.getRuntime().exec(run);
+            LOGGER.log(Level.FINE, item.toString());
             System.exit(0);
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Failed to Launch Updater", ex);

@@ -23,10 +23,22 @@ public class DesktopBrowser {
             try {
                 Desktop.getDesktop().browse(new URI(url.replaceAll("\\\\", "/")));
                 return true;
-            } catch (URISyntaxException ex) {
-                Logger.getLogger(DesktopBrowser.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(DesktopBrowser.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (URISyntaxException|IOException ex) {
+                Logger.getLogger(DesktopBrowser.class.getName()).log(Level.SEVERE, "Failed to open browser", ex);
+            }
+
+        }
+        return false;
+    }
+
+    public static boolean openFileInBrowser(String url) {
+        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+            try {
+                url = "file://" + url.replaceAll("\\\\", "/");
+                Desktop.getDesktop().browse(new URI(url));
+                return true;
+            } catch (URISyntaxException|IOException ex) {
+                Logger.getLogger(DesktopBrowser.class.getName()).log(Level.SEVERE, "Failed to open browser", ex);
             }
 
         }

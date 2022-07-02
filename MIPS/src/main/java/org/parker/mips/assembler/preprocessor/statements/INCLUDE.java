@@ -33,9 +33,9 @@ public class INCLUDE extends Statement {
     public INCLUDE(UserLine line) {
         super(line);
 
-        String path = IDENTIFIRE;
+        String path = IDENTIFIRE.replaceAll("\"", "");
 
-        if (path.contains(":")) {
+        if (path.contains(":") | path.startsWith("/")) {
 
         } else {
             File file = EditorHandler.getFalseFileFromLastFocused();

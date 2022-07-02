@@ -19,6 +19,10 @@ processResources {
         include '**/*.json'
         include '**/*.yml'
     }
+
+    from ('src/main/resources') {
+        include '**/**'
+    }
 }
 
 jar {

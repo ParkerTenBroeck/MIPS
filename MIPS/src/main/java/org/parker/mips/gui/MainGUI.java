@@ -793,7 +793,7 @@ public class MainGUI extends javax.swing.JFrame {
         loadMemoryButton.setText("Load Memory from File");
         saveMemoryButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveMenuButtonActionPerformed(evt);
+                saveMemoryButtonActionPreformed(evt);
             }
         });
         loadMemoryButton.addActionListener(new java.awt.event.ActionListener() {
@@ -913,7 +913,7 @@ public class MainGUI extends javax.swing.JFrame {
 
     private void documentationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_documentationButtonActionPerformed
         try {
-            DesktopBrowser.openLinkInBrowser(ResourceHandler.DOCUMENTATION_PATH + FileUtils.FILE_SEPARATOR + "index.html");
+            DesktopBrowser.openFileInBrowser(ResourceHandler.DOCUMENTATION_PATH + FileUtils.FILE_SEPARATOR + "index.html");
         } catch (Exception ex) {
         }
     }//GEN-LAST:event_documentationButtonActionPerformed

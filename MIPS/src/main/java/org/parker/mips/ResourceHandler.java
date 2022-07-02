@@ -178,7 +178,7 @@ public class ResourceHandler {
                 }
             } catch (Exception ex) {
                 //System.out.println(ex);
-                LOGGER.log(Level.FINEST,null, ex);
+                LOGGER.log(Level.FINEST,"Failed to extract resource from jar: " + MIPS.JAR_PATH, ex);
                 //Logger.getLogger(ResourceHandler.class.getName()).log(Level.SEVERE, null, ex);
                 //LogP.logMessage("no");
                 return false;
@@ -191,7 +191,8 @@ public class ResourceHandler {
             //System.out.println(ResourceHandler.class.getResource("/" + jarPath).getFile());
 
             try {
-                File source = new File("C:\\GitHub\\MIPS\\src\\main\\resources\\" + jarPath);
+                String path = ResourceHandler.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+                File source = new File(path + "../../src/main/resources/" + jarPath);
                 File dest = new File(destPath);
                 copyFolderReplaceOld(source, dest);
             } catch (Exception e) {
