@@ -1,20 +1,51 @@
-# MIPS
-A Java based Assembler and Emulator for the MIPS assembly launguage.
 
+# MIPS   [![Badge License]][License]
 
-## Building Source
+*Assembler & Emulator for the MIPS* <br>
+*assembly language written in Java.*
 
-to build the source simply simple navigate to the root directory of the project and use
+<br>
 
--gradlew build 
+## Building
 
-to build all sources to a jar use
+*How to compile this project.*
 
--gradlew build
--gradlew jar
+1.  Clone or download this repository.
 
-## Available Plugins
+2.  Navigate to the root of the project.
 
-- [RetroSoundPlugin](https://github.com/ParkerTenBroeck/RetroSoundPlugin)
-  - A NES/Famicon sound emulator that gives sound ability to the MIPS ISA.
-  - Many addon sound chips found in NES/Famicon games are available with the plugin
+3.  Compile the project with:
+
+    ```shell
+    gradlew build
+    ```
+    
+4.  Bundle the project with:
+
+    ```shell
+    gradlew jar
+    ```
+
+<br>
+<br>
+
+## Plugins
+
+*Available extensions you can add.*
+
+-   **[RetroSoundPlugin]**
+    
+    *A NES / Famicon sound emulator that gives this* <br>
+    *project the ability to play audio from one of the* <br>
+    *many sound chips it emulates.*
+
+<br>  
+  
+  
+<!----------------------------------------------------------------------------->
+
+[Badge License]: https://img.shields.io/badge/License-Apache_2.0-D22128?style=for-the-badge
+
+[RetroSoundPlugin]: https://github.com/ParkerTenBroeck/RetroSoundPlugin
+
+[License]: LICENSE
